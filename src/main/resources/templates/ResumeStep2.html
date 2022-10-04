@@ -1,0 +1,245 @@
+<!-- 박채원 22.09.30 작성 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <title>
+        RESUME STEP2
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+    <!-- Nucleo Icons -->
+    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <!-- CSS Files -->
+    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
+    <!-- JQUERY CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <!-- AJAX CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+<body>
+<section>
+    <div class="container py-4 flex-wrap" style="margin : 10px, 100px, 10px, 100px;">
+        <div class="row">
+            <div class="col-lg-7" style="width : 1000px">
+                <h3 class="text-center mx-auto">STEP2</h3>
+                &nbsp;
+                <form role="form" id="contact-form" method="post" autocomplete="off">
+                    <input type="hidden" th:value="${resumeId}" name="resumeId">
+                    <div class="card-body">
+                        <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
+                        <h4 class="text-left">| 자격증</h4>
+                        &nbsp;
+                        <div class="row" style="float: inline-start;">
+                            <div class="col-md-6" style="width: 400px;">
+                                <label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                <div class="input-group mb-4">
+                                    <input class="form-control" type="text" name="certificateName">
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="margin-left: 0px;">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
+                                        data-bs-target="#findCertiModal">자격증찾기
+                                </button>
+                            </div>
+                            <div class="col-md-6" style="width: 200px;">
+                                <label>취득년월</label>
+                                <div class="input-group mb-4">
+                                    <input class="form-control" placeholder="YYYY-MM-DD" type="date" value="1900-01-01" name="certiGetDate">
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 200px;">
+                                <label>점수</label>
+                                <div class="input-group mb-4">
+                                    <input class="form-control" type="text" name="certiScore">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="addCertiInfo"></div>
+                        <button type="button" class="btn btn-outline-secondary w-100" onclick="addCertiInfo()">자격증 추가
+                        </button>
+
+
+                        <div style="height: 30px;"></div>
+                        <div class="card-body">
+                            <h4 class="text-left">| 경력사항</h4>
+                            &nbsp;
+                            <div class="row" style="float: inline-start;">
+                                <div class="col-md-6" style="width: 400px;">
+                                    <label>회사명</label>
+                                    <div class="input-group mb-4">
+                                        <input class="form-control" type="text" name="careerCompanyName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="width: 200px;">
+                                    <label>근무기간</label>
+                                    <div class="input-group mb-4">
+                                        <input class="form-control" placeholder="YYYY-MM-DD" type="date" value="1900-01-01" name="careerJoinedDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="width: 5px;">
+                                    <label>&nbsp;</label>
+                                    ~
+                                </div>
+                                <div class="col-md-6" style="width: 200px;">
+                                    <label>&nbsp;</label>
+                                    <div class="input-group mb-4">
+                                        <input class="form-control" placeholder="YYYY-MM-DD" type="date" value="1900-01-01" name="careerRetireDate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label>주요업무</label>
+                                <textarea class="form-control"
+                                          placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>
+                            </div>
+                            <div class="addCareerInfo"></div>
+                            <button type="button" class="btn btn-outline-secondary w-100" onclick="addCareerInfo()">경력사항
+                                추가
+                            </button>
+                            <div style="height: 50px;"></div>
+                            <div class="col-md-6 mx-auto">
+                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resumeStep3}">저장 후 STEP 3로</button>
+                            </div>
+                            <div class="col-md-6 mx-auto">
+                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/goPreviousStep1}">이전</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Find Certification Modal -->
+<div class="modal fade" id="findCertiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">자격증 찾기</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="float: inline-start;">
+                    <div class="col-md-6" style="width: 350px;">
+                        <div class="input-group mb-4">
+                            <input class="form-control findCertiName" type="text" placeholder="자격증명 입력">
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="margin-left: 0px;">
+                        <button type="button" class="btn bg-gradient-dark w-100 findCerti">검색</button>
+                    </div>
+                    <div class="certiList">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn bg-gradient-primary doneFindCerti" data-bs-dismiss="modal">완료</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/core/bootstrap.bundle.min.js"></script>
+</body>
+<script>
+    function addCertiInfo() {
+        var certiInfo = '';
+
+        certiInfo += '<div class="row" style="float: inline-start;">';
+        certiInfo += '<div class="col-md-6" style="width: 400px;">';
+        certiInfo += '<label>자격증명</label>';
+        certiInfo += '<div class="input-group mb-4">';
+        certiInfo += '<input class="form-control" type="text" >';
+        certiInfo += '</div>';
+        certiInfo += '</div>';
+        certiInfo += '<div class="col-md-2" style="margin-left: 0px;">';
+        certiInfo += '<label>&nbsp;</label>';
+        certiInfo += '<button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal" data-bs-target="#findCertiModal">자격증찾기</button>';
+        certiInfo += '</div>';
+        certiInfo += '<div class="col-md-6" style="width: 200px;">';
+        certiInfo += '<label>취득년월</label>';
+        certiInfo += '<div class="input-group mb-4">';
+        certiInfo += '<input class="form-control" placeholder="YYYYMM" type="text" >';
+        certiInfo += '</div>';
+        certiInfo += '</div>';
+        certiInfo += '<div class="col-md-6" style="width: 200px;">';
+        certiInfo += '<label>점수</label>';
+        certiInfo += '<div class="input-group mb-4">';
+        certiInfo += '<input class="form-control" type="text" >';
+        certiInfo += '</div>';
+        certiInfo += '</div>';
+        certiInfo += '</div>';
+
+        $(".addCertiInfo").replaceWith(certiInfo);
+    }
+
+    function addCareerInfo() {
+        var careerInfo = '';
+
+        careerInfo += '<div class="row" style="float: inline-start;">';
+        careerInfo += '<div class="col-md-6" style="width: 400px;">';
+        careerInfo += '<label>회사명</label>';
+        careerInfo += '<div class="input-group mb-4">';
+        careerInfo += '<input class="form-control" type="text" >';
+        careerInfo += '</div>';
+        careerInfo += '</div>';
+        careerInfo += '<div class="col-md-6" style="width: 200px;">';
+        careerInfo += '<label>근무기간</label>';
+        careerInfo += '<div class="input-group mb-4">';
+        careerInfo += '<input class="form-control" placeholder="YYYYMM" type="date" >';
+        careerInfo += '</div>';
+        careerInfo += '</div>';
+        careerInfo += '<div class="col-md-6" style="width: 5px;">';
+        careerInfo += '<label>&nbsp;</label>';
+        careerInfo += '~';
+        careerInfo += '</div>';
+        careerInfo += '<div class="col-md-6" style="width: 200px;">';
+        careerInfo += '<label>&nbsp;</label>';
+        careerInfo += '<div class="input-group mb-4">';
+        careerInfo += '<input class="form-control" placeholder="YYYYMM" type="date" >';
+        careerInfo += '</div>';
+        careerInfo += '</div>';
+        careerInfo += '</div>';
+        careerInfo += '<div class="form-group mb-4">';
+        careerInfo += '<label>주요업무</label>';
+        careerInfo += '<textarea name="message" class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3"></textarea>';
+        careerInfo += '</div>';
+
+        $(".addCareerInfo").replaceWith(careerInfo);
+    }
+
+    $(document).ready(function() {
+        $(".findCerti").click(function () {
+            var schoolName = $(".findCertiName").val();
+
+            $.ajax({
+                type: "get",
+                url: "/findCerti/" + certiName,
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    $(".certiList").empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $(".certiList").append('<input class="form-check-input" type="radio" name="certiName" value="' + data[i].certiName + '">' + data[i].certiName + '<br/>');
+                    }
+                    $(".doneFindSchool").click(function () {
+                        $("#certiName").val($("input:radio[name='certiName']:checked").val());
+                    });
+                }
+            });
+        });
+    })
+</script>
+</html>
