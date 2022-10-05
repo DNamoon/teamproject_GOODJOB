@@ -1,5 +1,8 @@
 /**
  * 2022.10.05 - HO
+ * @Id regCode 타입 Long에서 String으로 변경
+ * (지역코드 02 입력시 2로 들어가서)
+ *
  * 라인 20 @Builder 추가 - CompanyDTO클래스 toEntity메서드에 사용
  */
 package com.goodjob.company;

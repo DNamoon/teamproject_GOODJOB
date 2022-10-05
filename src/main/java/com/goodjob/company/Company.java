@@ -3,6 +3,8 @@
  * 26라인 밑에 comMemdivCode(회원분류코드) 필요 없어짐에 따라 삭제
  * 59라인 회사주소 넣기 위해 comAddress 컬럼 추가
  * 37라인 comLoginId - unique 제약조건 추가(아이디 중복 제한)
+ * 걸리는거!
+ * create-drop하고 다시 테이블 생성했는데 comLoginId에 unique 제약조건 없는것 같음
  */
 package com.goodjob.company;
 
