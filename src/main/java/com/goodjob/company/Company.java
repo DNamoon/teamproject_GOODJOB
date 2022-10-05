@@ -1,7 +1,13 @@
+/**
+ * HO - 2022.10.05
+ * 26라인 밑에 comMemdivCode(회원분류코드) 필요 없어짐에 따라 삭제
+ * 59라인 회사주소 넣기 위해 comAddress 컬럼 추가
+ */
 package com.goodjob.company;
 
 import com.goodjob.member.Memberdiv;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Company {
 
     @Id
@@ -20,10 +27,6 @@ public class Company {
     @OneToOne
     @JoinColumn(name = "comRegCode")
     private Region comRegCode; // 지역분류코드
-
-    @OneToOne
-    @JoinColumn(name = "comMemdivCode")
-    private Memberdiv comMemdivCode; // 회원분류코드
 
     @OneToOne
     @JoinColumn(name = "comComdivCode")
@@ -52,4 +55,8 @@ public class Company {
 
     @Column(length = 1)
     private String comTerms;
+
+    //22.10.05 ho - 회사 주소 넣기 위해 컬럼 추가
+    @Column
+    private String comAddress;
 }

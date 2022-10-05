@@ -62,26 +62,26 @@ class statusTest {
         });
     }
 
-    @Test
-    @Commit
-    void saveCompany() {
-        Comdiv comdiv = new Comdiv("기업분류테스트1", "test");
-        LongStream.rangeClosed(1, 10).forEach(i -> {
-            Company company = new Company(i
-                    , new Region(2L, "서울특별시")
-                    , new Memberdiv(MemberType.COMPANY)
-                    , comdiv
-                    , "test" + i
-                    , "1234"
-                    , "01012341234"
-                    , "test@test.com"
-                    , "testcompany"
-                    , "01023412" + i
-                    , "info"
-                    , "1");
-            companyRepository.save(company);
-        });
-    }
+//    @Test
+//    @Commit
+//    void saveCompany() {
+//        Comdiv comdiv = new Comdiv("기업분류테스트1", "test");
+//        LongStream.rangeClosed(1, 10).forEach(i -> {
+//            Company company = new Company(i
+//                    , new Region(2L, "서울특별시")
+//                    , new Memberdiv(MemberType.COMPANY)
+//                    , comdiv
+//                    , "test" + i
+//                    , "1234"
+//                    , "01012341234"
+//                    , "test@test.com"
+//                    , "testcompany"
+//                    , "01023412" + i
+//                    , "info"
+//                    , "1");
+//            companyRepository.save(company);
+//        });
+//    }
 
     @Test
     @Commit
