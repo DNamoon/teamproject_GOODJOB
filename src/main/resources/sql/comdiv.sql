@@ -1,3 +1,5 @@
+-- 2022.10.05 - HO
+-- comdiv 테이블(기업분류 테이블) 만든 쿼리문
 insert into comdiv(comdivCode, comdivName) VALUE ('Major','대기업');
 insert into comdiv(comdivCode, comdivName) VALUE ('Middle','중견기업');
 insert into comdiv(comdivCode, comdivName) VALUE ('SMEs','중소기업');

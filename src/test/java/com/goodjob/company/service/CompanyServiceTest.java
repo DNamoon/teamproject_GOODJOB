@@ -20,7 +20,7 @@ class CompanyServiceTest {
                 .comName("moon")
                 .comPw("1234")
                 .comLoginId("test4")
-                .comComdivCode(new Comdiv("StartUp","스타트업"))
+               // .comComdivCode(new Comdiv("StartUp","스타트업"))
                 .comEmail("moon@moon.com")
                 .comPhone("010-9999-1111")
                 .comTerms("1")

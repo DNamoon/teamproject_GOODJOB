@@ -21,6 +21,15 @@ public class CompanyService {
         return newCompanyUser.getComId();
     }
 
+    public String checkId(String id, String type) {
+        if(type.equals("user")) {
+            return companyRepository.checkId(id);
+        }else {
+            return null;
+        }
+
+    }
+
 
 
 }
