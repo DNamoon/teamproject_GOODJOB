@@ -106,6 +106,6 @@ public class ResumeController {
         careerService.existOrNotResumeId(careerDTO);
         model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(certificationDTO.getResumeId()));
-        return "redirect:/ResumeStep1";
+        return "PreviousStep1";
     }
 }
