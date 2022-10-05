@@ -35,53 +35,27 @@ public class CompanyController {
         return "com_register";
     }
 
-//    @PostMapping("/com/register")
-//    public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) {
-//        if(result.hasErrors()){
-//            return "com_register";
-//        }
-//        System.out.println("companyDTO.toString() = " + companyDTO.toString());
-//        companyService.createCompanyUser(companyDTO);
-//        return "com_register_alert";
-//    }
-
     @PostMapping("/com/register")
-    public String comRegister(CompanyDTO companyDTO) {
+    public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) {
+        if(result.hasErrors()){
+            return "com_register";
+        }
+        //회원가입시 비밀번호, 비밀번호확인이 동일하지 않을시 회원가입버튼을 눌러도 회원가입이 되지 않도록 하는 코드
+        //result.rejectValue의 field는 DTO의 필드, errorCode는 임의로 지정, defaultMessage는 보여줄 메시지
+        if(!companyDTO.getComPw1().equals(companyDTO.getComPw2())){
+            result.rejectValue("comPw2","passwordInCorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+            return "com_register";
+        }
         System.out.println("companyDTO.toString() = " + companyDTO.toString());
         companyService.createCompanyUser(companyDTO);
         return "com_register_alert";
     }
 
-    @GetMapping("/com/test")
-    public String comRegisterForm2() {
-        return "regi_test";
-    }
-
-    @PostMapping("/com/test")
-    public String comRegister2(CompanyDTO companyDTO) {
-        System.out.println(companyDTO.toString());
-        Long companyUser = companyService.createCompanyUser(companyDTO);
-        log.info(companyUser);
-        return "com_register_alert";
-    }
-
-    @GetMapping("/test")
-    public String com() {
-        return "test-form";
-    }
-
-    @PostMapping("/test")
-    public String createUser(@ModelAttribute(name="companyDTO") CompanyDTO companyDTO) {
-        System.out.println("companyDTO= " + companyDTO.toString());
-
-        companyService.createCompanyUser(companyDTO);
-        return "com_register_alert";
-    }
-
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
-
+//    @PostMapping("/com/register")
+//    public String comRegister(CompanyDTO companyDTO) {
+//        System.out.println("companyDTO.toString() = " + companyDTO.toString());
+//        companyService.createCompanyUser(companyDTO);
+//        return "com_register_alert";
+//    }
 }

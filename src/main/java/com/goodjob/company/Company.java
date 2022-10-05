@@ -2,10 +2,10 @@
  * HO - 2022.10.05
  * 26라인 밑에 comMemdivCode(회원분류코드) 필요 없어짐에 따라 삭제
  * 59라인 회사주소 넣기 위해 comAddress 컬럼 추가
+ * 37라인 comLoginId - unique 제약조건 추가(아이디 중복 제한)
  */
 package com.goodjob.company;
 
-import com.goodjob.member.Memberdiv;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class Company {
     @JoinColumn(name = "comComdivCode")
     private Comdiv comComdivCode; // 회사분류코드
 
-    @Column
+    @Column(unique = true)  //로그인 아이디 중복 허용 안 하기 위해서 엔티티에서 제한.
     private String comLoginId;
 
     @Column
