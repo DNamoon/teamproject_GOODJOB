@@ -99,7 +99,7 @@
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="memGender" value="여"
-                                               id="flexRadioDefault1">
+                                               id="flexRadioDefault1" disabled>
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             여자
                                         </label>
@@ -108,7 +108,7 @@
                                 <div class="input-group mb-4" th:unless="${memberInfo.memGender == '남'}">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="memGender" value="남"
-                                               id="flexRadioDefault1">
+                                               id="flexRadioDefault1" disabled>
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             남자
                                         </label>
@@ -180,7 +180,7 @@
                             <div class="col-md-6" style="width: 400px;">
                                 <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                 <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="schoolName" id="schoolName" required readonly>
+                                    <input class="form-control" type="text" name="schoolName" id="schoolName" readonly required>
                                 </div>
                             </div>
                             <div class="col-md-2" style="margin-left: 0px;">
@@ -335,10 +335,10 @@
                 success: function (data){
                     $(".schoolList").empty();
                     for(var i=0; i<data.length; i++){
-                        $(".schoolList").append('<input class="form-check-input" type="radio" name="schoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');  <!-- 여기 value값에 data[i].schName 넣는 방법이랑 왜 schName이 undefined로 나오는지 -->
+                        $(".schoolList").append('<input class="form-check-input" type="radio" name="selectSchoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');  <!-- 여기 value값에 data[i].schName 넣는 방법이랑 왜 schName이 undefined로 나오는지 -->
                     }
                     $(".doneFindSchool").click(function (){
-                        $("#schoolName").val($("input:radio[name='schoolName']:checked").val());
+                        $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
                     });
                 }
             });
@@ -355,10 +355,10 @@
               success: function (data){
                   $(".majorList").empty();
                   for(var i=0; i<data.length; i++){
-                      $(".majorList").append('<input class="form-check-input" type="radio" name="majorName" value="' + data[i].majName +'">' + data[i].majName +'<br/>');
+                      $(".majorList").append('<input class="form-check-input" type="radio" name="selectMajorName" value="' + data[i].majName +'">' + data[i].majName +'<br/>');
                   }
                   $(".doneFindMajor").click(function (){
-                      $("#majorName").val($("input:radio[name='majorName']:checked").val());
+                      $("#majorName").val($("input:radio[name='selectMajorName']:checked").val());
                   });
               }
            });

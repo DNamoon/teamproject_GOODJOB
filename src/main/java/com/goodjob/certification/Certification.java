@@ -24,7 +24,7 @@ public class Certification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long certiId;
 
-    @Column(columnDefinition = "date default '1900-01-01'")
+    @Column(columnDefinition = "date default '2000-01-01'")
     private Date certiGetDate;
 
     @Column(length = 45)

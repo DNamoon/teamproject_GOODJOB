@@ -4,6 +4,7 @@ import com.goodjob.career.Career;
 import com.goodjob.career.dto.CareerDTO;
 import com.goodjob.career.repository.CareerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class CareerServiceImpl implements CareerService {
 
@@ -18,6 +20,7 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public void registerCareerInfo(CareerDTO careerDTO) {
+        log.info("=========== 이력서 경력사항 등록 ===========");
         Career career = dtoToEntity(careerDTO);
 
         careerRepository.save(career);

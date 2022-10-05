@@ -8,6 +8,7 @@ import com.goodjob.education.repository.EducationRepository;
 import com.goodjob.education.repository.MajorNameRepository;
 import com.goodjob.education.repository.SchoolNameRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class EducationServiceImpl implements EducationService {
 
@@ -26,6 +28,7 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public void registerSchoolInfo(EducationDTO educationDTO) {
+        log.info("=========== 이력서 학적사항 등록 ===========");
         String mergeCredit = educationDTO.getEduGetCredit() + educationDTO.getEduTotalCredit();
         Education education = dtoToEntity(educationDTO, mergeCredit);
 

@@ -2,6 +2,7 @@ package com.goodjob.career;
 
 import com.goodjob.resume.Resume;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @ToString(exclude = "resume")
 @Getter
+@DynamicInsert
 @Builder
 public class Career {
 
@@ -25,10 +27,10 @@ public class Career {
     @Column(length = 45)
     private String careerCompanyName;
 
-    @Column
+    @Column(columnDefinition = "date default '2000-01-01'")
     private Date careerRetireDate;
 
-    @Column
+    @Column(columnDefinition = "date default '2000-01-01'")
     private Date careerJoinedDate;
 
     @Column(length = 45)

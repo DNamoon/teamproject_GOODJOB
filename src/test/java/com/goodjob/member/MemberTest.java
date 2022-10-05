@@ -29,7 +29,6 @@ class MemberTest {
 //        System.out.println(MemberType.COMPANY);
         Member member = new Member(1L,
                 "test",
-                new Memberdiv(MemberType.USER),
                 "1234",
                 "01012341234",
                 "test@com.com",

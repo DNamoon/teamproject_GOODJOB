@@ -26,9 +26,19 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
 
+    @Column(length = 45)
+    private String resumeMemPhone;
+
+    @Column(length = 45)
+    private String resumeMemEmail;
+
+    @Column(length = 45)
+    private String resumeMemAddress;
+
     @ManyToOne
     @JoinColumn(name = "resumeMemId", nullable = false)
-    private Member member;
+    private Member resumeMemId;
+
 
     //하나의 이력서 조회할 때 관련된 모든 항목을 불러오게 하려고 했는데 manytoone이 여러개 있어서 자꾸 오류남 - 하나만 있을 때는 정상작동
 //    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)

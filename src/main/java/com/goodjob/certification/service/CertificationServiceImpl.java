@@ -6,6 +6,7 @@ import com.goodjob.certification.dto.CertificationDTO;
 import com.goodjob.certification.repository.CertificationNameRepository;
 import com.goodjob.certification.repository.CertificationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class CertificationServiceImpl implements CertificationService {
 
@@ -23,6 +25,7 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public void registerCertiInfo(CertificationDTO certificationDTO) {
+        log.info("=========== 이력서 자격증항목 등록 ===========");
         Certification certification = dtoToEntity(certificationDTO);
 
         certificationRepository.save(certification);

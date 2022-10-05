@@ -6,8 +6,6 @@ import com.goodjob.company.CompanyRepository;
 import com.goodjob.company.Region;
 import com.goodjob.member.Member;
 import com.goodjob.member.MemberRepository;
-import com.goodjob.member.MemberType;
-import com.goodjob.member.Memberdiv;
 import com.goodjob.post.Occupation;
 import com.goodjob.post.Post;
 import com.goodjob.post.PostRepository;
@@ -20,11 +18,8 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.LongStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -49,7 +44,6 @@ class statusTest {
 
             Member member = new Member(i
                     , "test" + i
-                    , new Memberdiv(MemberType.USER)
                     , "1234"
                     , "01012341234"
                     , "test@test.com"
@@ -69,7 +63,6 @@ class statusTest {
         LongStream.rangeClosed(1, 10).forEach(i -> {
             Company company = new Company(i
                     , new Region(2L, "서울특별시")
-                    , new Memberdiv(MemberType.COMPANY)
                     , comdiv
                     , "test" + i
                     , "1234"
