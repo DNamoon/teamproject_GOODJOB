@@ -39,4 +39,10 @@ class MemberTest {
                 , "M", "1");
         memberRepository.save(member);
     }
+
+    @Test
+    void count(){
+        Integer integer = memberRepository.countByMemGender("F");
+        System.out.println("integer = " + integer);
+    }
 }
