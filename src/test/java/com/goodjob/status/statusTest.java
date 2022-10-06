@@ -40,7 +40,7 @@ class statusTest {
     @Test
     @Commit
     void saveMember() {
-        LongStream.rangeClosed(1, 10).forEach(i -> {
+        LongStream.rangeClosed(11, 20).forEach(i -> {
 
             Member member = new Member(i
                     , "test" + i

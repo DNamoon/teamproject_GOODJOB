@@ -10,4 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.memLoginId =:loginId")
     Member findLoginInfo(String loginId);
+    
+    Integer countByMemGender(String memGender);
 }
