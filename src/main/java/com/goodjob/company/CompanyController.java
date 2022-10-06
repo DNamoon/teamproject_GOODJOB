@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Log4j2
 @RequestMapping("/auth/com")
 public class CompanyController {
-
+//주석삭제
     @Autowired
     private CompanyService companyService;
 
