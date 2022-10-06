@@ -18,24 +18,25 @@ import javax.validation.Valid;
 
 @Controller
 @Log4j2
+@RequestMapping("/com")
 public class CompanyController {
 
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping("/loginMember")
+    @GetMapping("/login")
     public String loginMember() {
-        return "loginMember";
+        return "com_login";
     }
 
-    @GetMapping("/com/register")
+    @GetMapping("/register")
     public String comRegisterForm(Model model) {
         model.addAttribute("companyDTO", new CompanyDTO());
         return "com_register";
     }
 
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
-    @PostMapping("/com/register")
+    @PostMapping("/register")
     public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) {
         if(result.hasErrors()){
             return "com_register";
