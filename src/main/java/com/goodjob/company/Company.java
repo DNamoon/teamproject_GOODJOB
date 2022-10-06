@@ -1,6 +1,5 @@
 package com.goodjob.company;
 
-import com.goodjob.member.Memberdiv;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +20,6 @@ public class Company {
     @JoinColumn(name = "comRegCode")
     private Region comRegCode; // 지역분류코드
 
-    @OneToOne
-    @JoinColumn(name = "comMemdivCode")
-    private Memberdiv comMemdivCode; // 회원분류코드
-
-    @OneToOne
-    @JoinColumn(name = "comComdivCode")
-    private Comdiv comComdivCode; // 회사분류코드
 
     @Column
     private String comLoginId;

@@ -1,5 +1,6 @@
 package com.goodjob.member;
 
+import com.goodjob.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,10 +8,6 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -29,7 +26,6 @@ class MemberTest {
 //        System.out.println(MemberType.COMPANY);
         Member member = new Member(1L,
                 "test",
-                new Memberdiv(MemberType.USER),
                 "1234",
                 "01012341234",
                 "test@com.com",

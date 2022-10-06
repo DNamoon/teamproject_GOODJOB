@@ -1,6 +1,6 @@
 package com.goodjob.status;
 
-import com.goodjob.member.MemberRepository;
+import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.resume.ResumeRepository;
 import com.goodjob.resume.selfIntroduction.SelfIntroduction;
 import com.goodjob.resume.selfIntroduction.SelfIntroductionRepository;
@@ -20,7 +20,6 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.stream.LongStream;
 
 @SpringBootTest
