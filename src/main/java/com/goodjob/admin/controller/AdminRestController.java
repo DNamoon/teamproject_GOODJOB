@@ -1,7 +1,7 @@
 package com.goodjob.admin.controller;
 
 import com.goodjob.admin.admindto.GenderDTO;
-import com.goodjob.member.MemberRepository;
+import com.goodjob.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
