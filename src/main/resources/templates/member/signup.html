@@ -1,3 +1,4 @@
+<!--김도현 22.9.29 작성-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +63,7 @@
             <div class="col-md-6">
               <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
               <div class="input-group mb-4">
-                <input class="form-control" placeholder="YYYYMMDD" type="date" name="memBirthDate" required>
+                <input class="form-control" type="date" name="memBirthDate" required>
               </div>
             </div>
             <div class="col-md-6">
@@ -76,6 +77,7 @@
               <div class="input-group">
                 <input type="text" class="form-control" id="pw2"  name="pw2" onkeyup="test()" required>
               </div>
+              <label id="confirmMsg"></label>
             </div>
 
             <div class="col-md-6">
@@ -96,11 +98,11 @@
                   <input class="form-control" type="text" id="userAddress" onclick="execPostCode()" readonly name="memAddress">
                 </div>
               </div>
-              <div class="col-md-1" style="margin-left: 0px;">
-                <label>&nbsp;&nbsp;</label>
-                <button type="button" class="btn bg-gradient-dark"onclick="execPostCode()">
-                  주소찾기
-                </button>
+            <div class="col-md-2" style="margin-left: 0px;">
+              <label>&nbsp;</label>
+              <button type="button" class="btn bg-gradient-dark w-80 findAddress" onclick="execPostCode()">주소찾기
+              </button>
+            </div>
               </div>
               <div class="col-md-6" style="width: 330px;">
                 <label>상세주소</label>
@@ -204,12 +206,15 @@
   function test() {
     var p1 = document.getElementById('pw1').value;
     var p2 = document.getElementById('pw2').value;
-    if( p1 != p2 ) {
-      alert("비밀번호가 일치 하지 않습니다");
-      return false;
-    } else{
-      alert("비밀번호가 일치합니다");
-      return true;
+    if(p1.value != p2){
+      $('#confirmMsg').css('color','red')
+      $('#confirmMsg').html("비밀번호 불일치")
+      $("#btn").prop('disabled',true);
+
+    } else { // cnt가 1일 경우 -> 사용 가능한 아이디
+      $('#confirmMsg').css('color','blue')
+      $('#confirmMsg').html("비밀번호 일치")
+      $("#btn").prop('disabled',false);
     }
 
   }

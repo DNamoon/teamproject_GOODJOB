@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member loginIdCheck(String memLoginId) {
+    public Optional<Member> loginIdCheck(String memLoginId) {
        return memberRepository.findByMemLoginId(memLoginId);
 
     }
