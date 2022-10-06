@@ -20,7 +20,6 @@ public class CompanyTest {
     @Autowired
     CompanyRepository companyRepository;
 
-
 //    @Test
 //    @Commit
 //    void save() {
