@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @Getter
 public class Member {
-//주석 삭제
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memId;
