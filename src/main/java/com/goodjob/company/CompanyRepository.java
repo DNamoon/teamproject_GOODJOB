@@ -13,12 +13,6 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
 
-
-    Optional<Company> findByComLoginId(String id);
-
-    @Query("select c from Company c where c.comLoginId = :comLoginId")
-    String checkId(@Param("comLoginId") String comLoginId);
-
     @Query("select count(c) from Company c where c.comLoginId =:comLoginId")
     int checkId2(@Param("comLoginId") String comLoginId);
 }

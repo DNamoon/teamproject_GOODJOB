@@ -252,38 +252,8 @@
 
 
 <script>
-    function execPostCode() {
-        daum.postcode.load(function () {
-            new daum.Postcode({
-                oncomplete: function (data) {
-                    var addr = '';
 
-                    if (data.userSelectedType === 'R') {
-                        addr = data.roadAddress;
-                    } else {
-                        addr = data.jibunAddress;
-                    }
-
-                    document.getElementById("userAddress").value = '(' + data.zonecode + ') ' + addr;
-                    document.getElementById("userDetailAddress").focus();
-                }
-            }).open();
-        });
-    }
-
-    function test() {
-        var p1 = document.getElementById('pw1').value;
-        var p2 = document.getElementById('pw2').value;
-        if (p1 != p2) {
-            alert("비밀번호가 일치 하지 않습니다");
-            return false;
-        } else {
-            alert("비밀번호가 일치합니다");
-            return true;
-        }
-
-    }
-
+    //Daum 주소 찾기API function
     function sample6_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function (data) {
@@ -332,10 +302,11 @@
         }).open();
     }
 
+    //비밀번호1,2 일치 여부 보여주는 fuction
     function passwordConfirm() {
         var password = document.getElementById('comPw1');
         var passwordConfirm = document.getElementById('comPw2');
-        var confirmMsg = document.getElementById('confirmMsg')  //확인 메시지?
+        var confirmMsg = document.getElementById('confirmMsg')  //확인 메시지
         var correctColor = "#73b973"; //맞았을 때 출력되는 색깔.
         var wrongColor = "#ff0000";   //틀렸을 때 출력되는 색깔.
 
@@ -348,31 +319,75 @@
         }
     }
 
-    $(function() {
-        $('#id').blur(function (){
-            $.ajax({
-                type:"POST",
-                url:"/com/register",
-                data:{
-                    "id":$('#id').val()
-                },
-                success:function(data){
-                    if($.trim(data)=="YES"){
-                        if($('#id').val()!=''){
-                            alert("사용가능한 아이디입니다.");
-                        } else {
-                            if($('#id').val()!=''){
-                                alert("중복된 아이디입니다.");
-                                $('#id').val('');
-                                $('#id').focus();
-                            }
-                        }
+
+    //아이디 중복검사
+    //onkeyup이 여기서는 "change keyup"이다!!!
+    $('#id_input').on("change keyup", function(){
+
+        console.log("keyup 테스트");
+        var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
+        var data = {comLoginId : comLoginId}				// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+
+        $.ajax({
+            type : "post",
+            url : "/comIdCheck",
+            data : data,
+            success : function(result){
+                if(result != 'fail'){
+                    $('.id_input_re_1').css("display","inline-block");
+                    $('.id_input_re_2').css("display", "none");
+                } else {
+                    $('.id_input_re_2').css("display","inline-block");
+                    $('.id_input_re_1').css("display", "none");
+                }
+
+            }
+        });
+    });
+
+
+     // 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
+    $("#userId").blur(function () {
+        let idError = $("#idError");
+        idError.css("color", "#ff6289");
+
+        ///ajax 조건식//
+        $.ajax({
+            url: '/idCheck',
+            type: 'get',
+            data: {userId : $("#userId").val()},
+            dataType: 'text',
+            success: function (check) {	// 통신 성공 시 "true" 혹은 "false" 반환
+                if (check === "true") { // 아이디가 이미 존재함
+                    //console.log(check);	// 확인용
+                    idError.show().text("중복 아이디입니다.");
+                    return resId=false;
+                } else {	// "false" 일 경우 - 아이디가 존재하지 않을 경우
+                    //console.log(check);	// 확인용
+                    let regExp = /^[a-z0-9_-]{5,20}$/g; //아이디 정규식(영문 소문자, 숫자, 특수문자(-,_) 만 가능)
+                    let id = $("#userId").val();
+
+                    if (id === null || id === "") { //값이 없을 때
+                        idError.show().text("필수 정보입니다.");
+                        return resId=false;
+                    } else if (!regExp.test(id)) { //정규식에 맞지 않을 때
+                        idError.show().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
+                        return resId=false;
+                    } else { //조건에 맞는 아이디일 때 true 반환
+                        idError.css("color", "#77ab59");
+                        idError.show().text("멋진 아이디네요!");
+                        return resId = true;
                     }
                 }
-            })
-        })
-    })
+            },
+            error: function () {
+                console.log("아이디 체크 오류");
+            }
+        });
+    });
 
+
+    //다른분 아이디 중복체크 - 여기서는 사용 안함.
     var $id = $("#id");
     // 아이디 정규식
     $id.on("keyup", function() { // 키보드에서 손을 땠을 때 실행
@@ -420,73 +435,6 @@
                 }
             })
         }
-    });
-
-    //아이디 중복검사
-    //onkeyup이 여기서는 "change keyup"이다!!!
-    $('#id_input').on("change keyup", function(){
-
-        console.log("keyup 테스트");
-        var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
-        var data = {comLoginId : comLoginId}				// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
-
-        $.ajax({
-            type : "post",
-            url : "/comIdCheck",
-            data : data,
-            success : function(result){
-                if(result != 'fail'){
-                    $('.id_input_re_1').css("display","inline-block");
-                    $('.id_input_re_2').css("display", "none");
-                } else {
-                    $('.id_input_re_2').css("display","inline-block");
-                    $('.id_input_re_1').css("display", "none");
-                }
-
-            }// success 종료
-        }); // ajax 종료
-    });// function 종료
-
-
-
-     // 사론님 로그인 중복체크(정규표현식)
-    $("#userId").blur(function () {
-        let idError = $("#idError");
-        idError.css("color", "#ff6289");
-
-        ///ajax 조건식//
-        $.ajax({
-            url: '/idCheck',
-            type: 'get',
-            data: {userId : $("#userId").val()},
-            dataType: 'text',
-            success: function (check) {	// 통신 성공 시 "true" 혹은 "false" 반환
-                if (check === "true") { // 아이디가 이미 존재함
-                    //console.log(check);	// 확인용
-                    idError.show().text("중복 아이디입니다.");
-                    return resId=false;
-                } else {	// "false" 일 경우 - 아이디가 존재하지 않을 경우
-                    //console.log(check);	// 확인용
-                    let regExp = /^[a-z0-9_-]{5,20}$/g; //아이디 정규식(영문 소문자, 숫자, 특수문자(-,_) 만 가능)
-                    let id = $("#userId").val();
-
-                    if (id === null || id === "") { //값이 없을 때
-                        idError.show().text("필수 정보입니다.");
-                        return resId=false;
-                    } else if (!regExp.test(id)) { //정규식에 맞지 않을 때
-                        idError.show().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
-                        return resId=false;
-                    } else { //조건에 맞는 아이디일 때 true 반환
-                        idError.css("color", "#77ab59");
-                        idError.show().text("멋진 아이디네요!");
-                        return resId = true;
-                    }
-                }
-            },
-            error: function () {
-                console.log("아이디 체크 오류");
-            }
-        });
     });
 
 </script>

@@ -28,15 +28,13 @@ public class CompanyController {
         return "loginMember";
     }
 
-    //빈객체 넘겨주고 회원가입을 진행했는데, 빈객체 안 넘겨줘도 된다고 함. 마지막줄에 있는 코드 처럼 해도 된다고 함.
-    //그럴경우. html 파일에서 th:object로 객체 넘길필요 없이 그냥 PostMapping에서 받아오는 DTO 클래스의 필드명과
-    //input 태그의 name이 일치하도록 해야함!!
     @GetMapping("/com/register")
     public String comRegisterForm(Model model) {
         model.addAttribute("companyDTO", new CompanyDTO());
         return "com_register";
     }
 
+    //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/com/register")
     public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) {
         if(result.hasErrors()){
@@ -67,15 +65,6 @@ public class CompanyController {
             return "success";	// 중복 아이디 x
         }
 
-    } // memberIdChkPOST() 종료
+    }
 
-    //객체 넘기는거 말고!
-    //html 파일에서 th:object로 객체 넘길필요 없이 그냥 PostMapping에서 받아오는 DTO 클래스의 필드명과
-    //input 태그의 name이 일치하도록 해야함!!
-//    @PostMapping("/com/register")
-//    public String comRegister(CompanyDTO companyDTO) {
-//        System.out.println("companyDTO.toString() = " + companyDTO.toString());
-//        companyService.createCompanyUser(companyDTO);
-//        return "com_register_alert";
-//    }
 }

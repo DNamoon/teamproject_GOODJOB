@@ -20,6 +20,7 @@ import javax.transaction.Transactional;
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
+    //기업회원가입정보 DB에 저장하는 메서드
     @Transactional
     public Long createCompanyUser(CompanyDTO companyDTO) {
         Company newCompanyUser = companyDTO.toEntity();
@@ -27,14 +28,7 @@ public class CompanyService {
         return newCompanyUser.getComId();
     }
 
-    public String checkId(String id, String type) {
-        if(type.equals("user")) {
-            return companyRepository.checkId(id);
-        }else {
-            return null;
-        }
-    }
-
+    //아이디 중복확인 메서드
     public int checkId2(String comLoginId) throws Exception {
         return companyRepository.checkId2(comLoginId);
     }
