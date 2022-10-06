@@ -20,8 +20,6 @@ public class CompanyTest {
     void save() {
         Company company = new Company(1L
                 , new Region(2L, "서울특별시")
-                , new Memberdiv(MemberType.COMPANY)
-                , new Comdiv("기업분류테스트1", "기업분류테스트1")
                 , "test1", "1234"
                 , "01012341234"
                 , "tert@test.com"

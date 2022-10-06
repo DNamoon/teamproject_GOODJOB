@@ -16,10 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Member")
-@Getter
 @Builder
+@Getter
 public class Member {
-//주석 삭제
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memId;
@@ -52,7 +52,7 @@ public class Member {
     @Column
     private String memGender;
 
-    @Column(length = 1)
+    @Column(length = 2)
     private String memTerms;
 
     public Member(Long memId, String memLoginId, String memPw, String memPhone, String memEmail, String memName, Date memBirthDate, String memAddress, String memGender, String memTerms) {
@@ -67,4 +67,5 @@ public class Member {
         this.memGender = memGender;
         this.memTerms = memTerms;
     }
+
 }

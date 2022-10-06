@@ -21,10 +21,6 @@ public class Company {
     private Region comRegCode; // 지역분류코드
 
 
-    @OneToOne
-    @JoinColumn(name = "comComdivCode")
-    private Comdiv comComdivCode; // 회사분류코드
-
     @Column
     private String comLoginId;
 
