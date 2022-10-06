@@ -32,7 +32,7 @@
         <h3 class="text-center mx-auto">STEP1</h3>
         &nbsp;
         <!-- 인적사항 -->
-        <form role="form" id="contact-form" th:method="post" autocomplete="off" th:action="@{/resumeStep2/{resumeId}(resumeId=${resumeId})}">
+        <form role="form" id="contact-form" th:method="post" autocomplete="off" th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
           <input type="hidden" th:value="${memberInfo.memId}" name="memId">
           <input type="hidden" th:value="${resumeId}" name="resumeId">
           <div class="card-body">

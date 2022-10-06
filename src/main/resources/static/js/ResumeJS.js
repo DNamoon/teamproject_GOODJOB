@@ -2,11 +2,11 @@ $(document).ready(function(){
     $("#registerResume").click(function(){
         $.ajax({
             type: "get",
-            url: "/registerResume",
+            url: "/resume/registerResume",
             dataType: "text",
             success: function(data){
                 console.log(data);
-                location.href = "/resumeStep1/" + data;
+                location.href = "/resume/resumeStep1/" + data;
             }
         });
     })
@@ -16,7 +16,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "get",
-            url: "/findSchool/" + schoolName,
+            url: "/resume/findSchool/" + schoolName,
             dataType: "json",
             async: false,
             success: function (data){
@@ -36,7 +36,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "get",
-            url: "/findMajor/" + majorName,
+            url: "/resume/findMajor/" + majorName,
             dataType: "json",
             async: false,
             success: function (data){
@@ -56,7 +56,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: "get",
-            url: "/findCerti/" + certiName,
+            url: "/resume/findCerti/" + certiName,
             dataType: "json",
             async: false,
             success: function (data) {

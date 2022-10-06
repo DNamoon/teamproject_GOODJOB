@@ -32,8 +32,8 @@ public class SecurityConfig  {
                 .formLogin().loginPage("/auth/member/login")		//기본 로그인페이지 없애기
                 .defaultSuccessUrl("/").and()
                 .authorizeRequests()
-                .antMatchers("/auth/**","/").permitAll() // /auth이하의 주소들은 인증 필요x
-                .antMatchers("/css/**").permitAll()
+                .antMatchers("/auth/**","/","/resume/**","/admin/**").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/css/**","/js/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();
 

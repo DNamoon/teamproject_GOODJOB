@@ -17,10 +17,7 @@ import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +27,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/resume")
 public class ResumeController {
 
     private final ResumeService resumeService;
@@ -44,7 +42,7 @@ public class ResumeController {
 
     @GetMapping("/myInfo")
     public String registerButton(){
-        return "ResumeRegisterButton";
+        return "/resume/ResumeRegisterButton";
     }
 
     @ResponseBody
@@ -59,7 +57,7 @@ public class ResumeController {
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", resumeMemberDTO);
-        return "ResumeStep1";
+        return "/resume/ResumeStep1";
     }
 
     //학교 검색할 때 AJAX에서 사용하는 메소드
@@ -92,10 +90,10 @@ public class ResumeController {
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
             model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
-            return "ResumeStep2WithContent";
+            return "/resume/ResumeStep2WithContent";
         }
         model.addAttribute("resumeId", resumeId);
-        return "ResumeStep2";
+        return "/resume/ResumeStep2";
     }
     
     @PostMapping("/resumeStep3/{resumeId}")
@@ -106,17 +104,17 @@ public class ResumeController {
         if(selfIntroductionService.existOrNotResumeId(resumeId) == 1){
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("selfIntroInfo", selfIntroductionService.bringSelfIntroInfo(resumeId));
-            return "ResumeStep3WithContent";
+            return "/resume/ResumeStep3WithContent";
         }
 
         model.addAttribute("resumeId", resumeId);
-        return "ResumeStep3";
+        return "/resume/ResumeStep3";
     }
 
     @PostMapping("/submitResume")
     public String submitResume(SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
-        return "redirect:/myInfo";
+        return "redirect:/resume//myInfo";
     }
 
     @PostMapping("/goPreviousStep1/{resumeId}")
@@ -128,7 +126,7 @@ public class ResumeController {
         model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
-        return "ResumeStep1WithContent";
+        return "/resume/ResumeStep1WithContent";
     }
 
     @PostMapping("/goPreviousStep2/{resumeId}")
@@ -138,6 +136,6 @@ public class ResumeController {
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
         model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
-        return "ResumeStep2WithContent";
+        return "/resume/ResumeStep2WithContent";
     }
 }
