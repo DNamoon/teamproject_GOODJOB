@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "Member")
 @Builder
 @Getter
-@Builder
 public class Member {
 //주석 삭제
     @Id

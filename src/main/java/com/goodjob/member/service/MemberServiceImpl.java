@@ -1,10 +1,13 @@
 package com.goodjob.member.service;
 
 import com.goodjob.member.Member;
+import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Optional;
 
 /**
  * 박채원 22.10.02 작성
