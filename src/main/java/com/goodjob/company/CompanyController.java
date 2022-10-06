@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 @Log4j2
-@RequestMapping("/com")
+@RequestMapping("/auth/com")
 public class CompanyController {
 
     @Autowired
