@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.http.HttpRequest;
+import java.util.Optional;
 
 /**
  * 김도현 22.9.29 작성
@@ -42,12 +43,14 @@ public class MemberController {
         return "member/signup";
     }
 
+    //ID 중복확인
     @ResponseBody
     @RequestMapping(value="/checkId",method = RequestMethod.GET)
     public Long checkIdDuplication(@RequestParam("id") String id) {
             Long result = memberService.countByMemLoginId(id);
             return result;
     }
+    //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
         memberDTO.setMemPw(passwordEncoder.encode(memberDTO.getMemPw()));
@@ -63,8 +66,15 @@ public class MemberController {
 
 
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public String login(Member member, MemberDTO memberDTO) {
-        if (memberService.loginIdCheck(member.getMemLoginId()).equals(memberDTO.getMemLoginId())) {
+    public String login(Member member,MemberDTO memberDTO) {
+        //input ID와 DB에 있는지 확인
+        Optional<Member> mem= memberService.loginIdCheck(memberDTO.getMemLoginId());
+        if(!mem.isPresent()) {
+            return "member/signup";
+        } else{
+            member=mem.get();
+        }
+        if (member.getMemLoginId().equals(memberDTO.getMemLoginId())) {
             String encodePw = member.getMemPw();
             //암호화된 비밀번호와 로그인 시 입력받은 비밀번호 match 확인
             if (passwordEncoder.matches(memberDTO.getMemPw(), encodePw)) {
@@ -73,9 +83,8 @@ public class MemberController {
                 return "member/alert";
             }
         } else{
-                return "member/alert";
+                return "member/signup";
             }
-
     }
 
 }

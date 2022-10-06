@@ -21,8 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
  **/
     Long countByMemLoginId(String memLoginId);
 
-
-   Member findByMemLoginId(String memLoginId);
+   Optional<Member> findByMemLoginId(String memLoginId);
 
 
 }
