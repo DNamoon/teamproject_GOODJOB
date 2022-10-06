@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <title>회원가입</title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+  <!-- Nucleo Icons -->
+  <link href="/css/nucleo-icons.css" rel="stylesheet"/>
+  <link href="/css/nucleo-svg.css" rel="stylesheet"/>
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="/css/nucleo-svg.css" rel="stylesheet"/>
+  <!-- CSS Files -->
+  <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
+  <!-- JQUERY CDN -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <!-- AJAX CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="container py-4" >
+  <div class="row" >
+    <div class="col-lg-7" style="width : 1000px">
+      <form th:action="@{/auth/member/signUp}" role="form" id="contact-form" name="frm" th:method="post" >
+      <h3 class="text-center">회원가입</h3>
+        <div class="card-body">
+            <span style="float: right; font-size: 14px;"><span
+                    style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span><br/>
+          <div class="row">
+            <div class="col-md-6">
+              <label>아이디<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group">
+                <input class="form-control" type="text" name="memLoginId" id="id" required>
+              </div>
+              <label id="checkMassage"></label>
+            </div>
+            <div class="col-md-6">
+              <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group mb-4">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="memGender" onclick="checkOnlyOne(this)" value="남" id="genderM">
+                  <label class="form-check-label">남자</label>
+                </div>&nbsp;&nbsp;
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="memGender" onclick="checkOnlyOne(this)" value="여" id="genderF">
+                  <label class="form-check-label">여자</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>이름<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group mb-4">
+                <input class="form-control" type="text" name="memName" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group mb-4">
+                <input class="form-control" placeholder="YYYYMMDD" type="date" name="memBirthDate" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group mb-4">
+                <input type="text" class="form-control" id="pw1" name="memPw" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="pw2"  name="pw2" onkeyup="test()" required>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group">
+                <input type="tel" class="form-control" placeholder="000-0000-0000" name="memPhone" required >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+              <div class="input-group">
+                <input type="email" class="form-control" placeholder="goodjob@goodjob.com" name="memEmail" required>
+              </div>
+            </div>
+              <div class="col-md-6">
+                <label>주소</label>
+                <div class="input-group mb-4">
+                  <input class="form-control" type="text" id="userAddress" onclick="execPostCode()" readonly name="memAddress">
+                </div>
+              </div>
+              <div class="col-md-1" style="margin-left: 0px;">
+                <label>&nbsp;&nbsp;</label>
+                <button type="button" class="btn bg-gradient-dark"onclick="execPostCode()">
+                  주소찾기
+                </button>
+              </div>
+              <div class="col-md-6" style="width: 330px;">
+                <label>상세주소</label>
+                <div class="input-group mb-4">
+                  <input class="form-control" type="text" id="userDetailAddress" name="detailAddress">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-check form-switch mb-4">
+                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="memTerms" value="Y" checked="" required>
+                  <label class="form-check-label" for="flexSwitchCheckDefault" >
+                    <a href="#" class="text-dark" id="modal_open_btn" data-toggle="modal" data-target="#agreeModal"><u>개인정보 수집 및 이용</u></a>을 동의합니다.<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span>
+                    <!-- Modal -->
+                    <div class="modal fade" id="agreeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">개인정보 수집 및 이용 동의서</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            굿잡 (이하 "회사"라 함)는 이용자의 서비스 이용과 관련하여 아래와 같은 개인정보를 수집, 활용합니다.<br/>
+                            목적	수집항목	보유 및 이용기간<br/>
+                            회원가입	필수	이메일, 이름, 성별, 생년월일, 휴대전화번호-회원탈퇴 시 까지<br/>
+                            선택	신입/경력 여부, 연차, 희망직종, 희망근무지역-회원탈퇴 시 까지<br/>
+                            소셜계정<br/>
+                            회원가입필수<br/>
+                            Payco : 동일인식별번호, 이름, 이메일, 성별, 생년월일<br/>
+                            Facebook : 동일인식별번호, 이름, 이메일, 성별, 생년월일<br/>
+                            Kakao : 동일인식별번호, 닉네임/프로필사진, 생년월일, 이메일<br/>
+                            Google : 동일인식별번호, 이름, 이메일, 성별<br/>
+                            Twitter : 동일인식별번호, 이름<br/>
+                            Naver : 동일인식별번호, 이름, 이메일, 성별, 닉네임<br/>
+                            Apple : 동일인식별번호, 이메일	회원탈퇴 시 까지<br/>
+                            본인인증	필수<br/>
+                            이름, 생년월일, 휴대전화번호, 본인인증결과값-인증절차 완료 시까지<br/>
+                            <br/>
+                            이용자는 개인정보의 수집 및 이용 동의를 거부할 권리가 있습니다. 다만 동의 거부 시 굿잡 서비스를 이용할 수 없습니다.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <button id="btn" type="submit" class="btn bg-gradient-dark w-100">회원가입</button>
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</body>
+<script>
+  //id 중복검사
+  $(function(){
+    $("#id").on('keyup',checkMassage);
+  })
+  function checkMassage(){
+    var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
+    $.ajax({
+      url:'/auth/member/checkId?id='+id, //Controller에서 요청 받을 주소
+      success:function(result){ //컨트롤러에서 값을 받는다
+        console.log(result)
+        if(result != 0){ //cnt가 1이 아니면(=0일 경우) -> 이미 존재하는 아이디
+          $('#checkMassage').css('color','red')
+          $('#checkMassage').html("사용할 수 없는 아이디입니다.")
+          $("#btn").prop('disabled',true);
+
+        } else { // cnt가 1일 경우 -> 사용 가능한 아이디
+          $('#checkMassage').css('color','blue')
+          $('#checkMassage').html("사용할 수 있는 아이디입니다.")
+          $("#btn").prop('disabled',false);
+        }
+      }
+    });
+  };
+  function execPostCode() {
+    daum.postcode.load(function () {
+      new daum.Postcode({
+        oncomplete: function (data) {
+          var addr = '';
+
+          if (data.userSelectedType === 'R') {
+            addr = data.roadAddress;
+          } else {
+            addr = data.jibunAddress;
+          }
+
+          document.getElementById("userAddress").value = '(' + data.zonecode + ') ' + addr;
+          document.getElementById("userDetailAddress").focus();
+        }
+      }).open();
+    });
+  }
+  function test() {
+    var p1 = document.getElementById('pw1').value;
+    var p2 = document.getElementById('pw2').value;
+    if( p1 != p2 ) {
+      alert("비밀번호가 일치 하지 않습니다");
+      return false;
+    } else{
+      alert("비밀번호가 일치합니다");
+      return true;
+    }
+
+  }
+  function checkOnlyOne(element) {
+
+    const checkboxes
+            = document.getElementsByName("memGender");
+
+    checkboxes.forEach((cb) => {
+      cb.checked = false;
+    })
+
+    element.checked = true;
+  }
+</script>
+</html>

@@ -11,6 +11,18 @@ public interface MemberService {
 
     ResumeMemberDTO bringMemInfo(String loginId);
 
+    /**
+     * 김도현 22.9.29 작성
+     **/
+    //회원정보 db저장
+    Member register(Member member);
+
+    //회원가입 시 아이디 중복 여부 확인
+    Long countByMemLoginId(String memLoginId);
+
+
+    Member loginIdCheck(String memLoginId);
+
     default ResumeMemberDTO entityToDTO(Member member, String firstPhoneNum, String middlePhoneNum, String lastPhoneNum, String firstEmail, String lastEmail, String firstAddress, String lastAddress){
         ResumeMemberDTO resumeMemberDTO = ResumeMemberDTO.builder()
                 .memId(member.getMemId())
@@ -30,7 +42,7 @@ public interface MemberService {
         return resumeMemberDTO;
     }
 
-    default Member dtoToEntity(ResumeMemberDTO resumeMemberDTO, String mergePhoneNum, String mergeEmail, String mergeAddress){
+    default Member dtoToEntity(ResumeMemberDTO resumeMemberDTO, String mergePhoneNum, String mergeEmail, String mergeAddress) {
         Member member = Member.builder()
                 .memId(resumeMemberDTO.getMemId())
                 .memLoginId(resumeMemberDTO.getMemLoginId())
@@ -43,5 +55,8 @@ public interface MemberService {
                 .build();
 
         return member;
+
     }
+
+
 }
