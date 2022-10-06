@@ -1,8 +1,10 @@
-<!--2022.10.05 - HO-->
+<!--HO - 2022.10.05 -->
 <!--기업 회원가입 페이지-->
 <!--비밀번호 확인 기능 추가중 -> 성공 -->
 <!--비밀번호 일치 하지 않아도 pw1으로 DB에 등록(회원가입 완료) 이런 사항 막아야 함 ->일단 막음-->
-<!--로그인 중복확인 기능 추가중 -->
+<!--로그인 중복확인 기능 추가중
+    -> 2022.10.06 완료-->
+<!--But, 공백이나 특수기호 문제 발생. 정규표현식으로 해결할 수 있을 듯(아직 해결은 안 함)-->
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage"
@@ -33,9 +35,25 @@
     <link id="pagestyle" href="./assets/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
     <!--modal files-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+<!--    slim버전 쓰면 $.ajax()를 사용할 수 없대. 밑에 코드로 변경-->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+    <style>
+        /* 중복아이디 존재하지 않는경우 */
+        .id_input_re_1{
+            color : #73b973;
+            display : none;
+        }
+        /* 중복아이디 존재하는 경우 */
+        .id_input_re_2{
+            color : red;
+            display : none;
+        }
+    </style>
 
 </head>
 
@@ -55,9 +73,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label th:for="comLoginId">아이디<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-4">
-                                <input class="form-control" th:field="*{comLoginId}" placeholder="ID" type="text" name="id" required>
+                            <div class="input-group">
+                                <input class="form-control" th:field="*{comLoginId}" placeholder="ID는 3~15자 사이" type="text"
+                                       name="id_input" id="id_input" required>
                             </div>
+                            <label class="id_input_re_1">사용 가능한 아이디입니다.</label>
+                            <label class="id_input_re_2">아이디가 이미 존재합니다.</label>
                         </div>
                         <div class="col-md-6">
                             <label th:for="comName">기업명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
@@ -68,13 +89,15 @@
                         <div class="col-md-6">
                             <label th:for="comPw">비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                             <div class="input-group mb-4">
-                                <input type="password" class="form-control" th:field="*{comPw1}" id="comPw1" name="comPw1" required>
+                                <input type="password" class="form-control" th:field="*{comPw1}" id="comPw1" name="comPw1"
+                                       placeholder="Password는 3~25자 사이" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                             <div class="input-group">
-                                <input type="password" class="form-control" th:field="*{comPw2}" id="comPw2" name="comPw2" required onkeyup="passwordConfirm()"><br/>
+                                <input type="password" class="form-control" th:field="*{comPw2}" id="comPw2" name="comPw2"
+                                       placeholder="Password 한번더 입력!" required onkeyup="passwordConfirm()"><br/>
                             </div>
                             <label id="confirmMsg"></label>
                         </div>
@@ -142,23 +165,23 @@
                             <label th:for="comAddress">주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                             <div class="input-group mb-4">
                                 <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
-                                <input type="text" class="form-control" th:field="*{comAddress}" id="sample6_postcode" placeholder="우편번호" required>
+                                <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" required>
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <input type="text" class="form-control" th:field="*{comAddress}" id="sample6_address" placeholder="주소" required><br>
+                            <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" required><br>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group mb-4">
-                                    <input type="text" class="form-control" th:field="*{comAddress}" id="sample6_detailAddress"
+                                    <input type="text" class="form-control" th:field="*{comAddress3}" id="sample6_detailAddress"
                                            placeholder="상세주소" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-group mb-4">
-                                    <input type="text" class="form-control" th:field="*{comAddress}" id="sample6_extraAddress"
+                                    <input type="text" class="form-control" th:field="*{comAddress4}" id="sample6_extraAddress"
                                            placeholder="참고항목">
                                 </div>
                             </div>
@@ -398,5 +421,73 @@
             })
         }
     });
+
+    //아이디 중복검사
+    //onkeyup이 여기서는 "change keyup"이다!!!
+    $('#id_input').on("change keyup", function(){
+
+        console.log("keyup 테스트");
+        var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
+        var data = {comLoginId : comLoginId}				// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+
+        $.ajax({
+            type : "post",
+            url : "/comIdCheck",
+            data : data,
+            success : function(result){
+                if(result != 'fail'){
+                    $('.id_input_re_1').css("display","inline-block");
+                    $('.id_input_re_2').css("display", "none");
+                } else {
+                    $('.id_input_re_2').css("display","inline-block");
+                    $('.id_input_re_1').css("display", "none");
+                }
+
+            }// success 종료
+        }); // ajax 종료
+    });// function 종료
+
+
+
+     // 사론님 로그인 중복체크(정규표현식)
+    $("#userId").blur(function () {
+        let idError = $("#idError");
+        idError.css("color", "#ff6289");
+
+        ///ajax 조건식//
+        $.ajax({
+            url: '/idCheck',
+            type: 'get',
+            data: {userId : $("#userId").val()},
+            dataType: 'text',
+            success: function (check) {	// 통신 성공 시 "true" 혹은 "false" 반환
+                if (check === "true") { // 아이디가 이미 존재함
+                    //console.log(check);	// 확인용
+                    idError.show().text("중복 아이디입니다.");
+                    return resId=false;
+                } else {	// "false" 일 경우 - 아이디가 존재하지 않을 경우
+                    //console.log(check);	// 확인용
+                    let regExp = /^[a-z0-9_-]{5,20}$/g; //아이디 정규식(영문 소문자, 숫자, 특수문자(-,_) 만 가능)
+                    let id = $("#userId").val();
+
+                    if (id === null || id === "") { //값이 없을 때
+                        idError.show().text("필수 정보입니다.");
+                        return resId=false;
+                    } else if (!regExp.test(id)) { //정규식에 맞지 않을 때
+                        idError.show().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
+                        return resId=false;
+                    } else { //조건에 맞는 아이디일 때 true 반환
+                        idError.css("color", "#77ab59");
+                        idError.show().text("멋진 아이디네요!");
+                        return resId = true;
+                    }
+                }
+            },
+            error: function () {
+                console.log("아이디 체크 오류");
+            }
+        });
+    });
+
 </script>
 </html>
