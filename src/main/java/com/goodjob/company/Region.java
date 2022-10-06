@@ -23,6 +23,7 @@ import javax.persistence.Id;
 @Builder
 public class Region {
 
+    //타입변환 Long -> String
     @Id
     private String regCode;
     @Column(nullable = false)

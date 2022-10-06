@@ -5,6 +5,7 @@
  * 37라인 comLoginId - unique 제약조건 추가(아이디 중복 제한)
  * 걸리는거!
  * create-drop하고 다시 테이블 생성했는데 comLoginId에 unique 제약조건 없는것 같음
+ * ->확인결과 unique 제약조건 걸려 있음.
  */
 package com.goodjob.company;
 
