@@ -24,23 +24,35 @@ public class ResumeServiceImpl implements ResumeService {
     public Long registerResume(String loginId) {
         log.info("=========== 새 이력서 생성 ===========");
         Member member = memberRepository.findLoginInfo(loginId);
-        Resume resume = Resume.builder().resumeMemId(member).build();
+        Resume resume = Resume.builder()
+                .resumeMemId(member).resumeMemAddress(member.getMemAddress())
+                .resumeMemEmail(member.getMemEmail()).resumeMemPhone(member.getMemPhone())
+                .build();
 
         resumeRepository.save(resume);
-        return resume.getResumeId();  //만약에 오류나면 여기
+        return resume.getResumeId();
     }
 
     @Override
-    public void registerResumeMemberInfo(MemberDTO memberDTO) {
-        log.info("=========== 이력서 인적사항 수정 ===========");
+    public void updateResumeMemberInfo(MemberDTO memberDTO, Long resumeId) {
         String mergePhoneNum = memberDTO.getMemFirstPhoneNum() + '-' + memberDTO.getMemMiddlePhoneNum() + '-' + memberDTO.getMemLastPhoneNum();
         String mergeAddress = memberDTO.getMemFirstAddress() + '@' + memberDTO.getMemLastAddress();
         String mergeEmail = memberDTO.getMemFirstEmail() + '@' + memberDTO.getMemLastEmail();
 
         Resume resume = dtoToEntity(memberDTO, mergePhoneNum, mergeAddress, mergeEmail);
 
-        resumeRepository.save(resume);
+        log.info("=========== 이력서 인적사항 수정 ===========");
+        resumeRepository.updateMemberInfo(mergePhoneNum, mergeEmail, mergeAddress, resumeId);
     }
 
+    @Override
+    public ResumeDTO bringResumeInfo(Long resumeId) {
+        Resume resume = resumeRepository.findResumeInfoByResumeId(resumeId);
+        String[] phoneNum = resume.getResumeMemPhone().split("-");
+        String[] email = resume.getResumeMemEmail().split("@");
+        String[] address = resume.getResumeMemAddress().split("@");
 
+        ResumeDTO resumeDTO = entityToDTO(resume,phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1]);
+        return resumeDTO;
+    }
 }

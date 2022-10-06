@@ -29,7 +29,7 @@ public class Education {
     private String eduCredit;
 
     @OneToOne
-    @JoinColumn(name = "eduResumeId", nullable = false)
+    @JoinColumn(name = "eduResumeId", nullable = false, unique = true)
     private Resume resume;
 
     @OneToOne

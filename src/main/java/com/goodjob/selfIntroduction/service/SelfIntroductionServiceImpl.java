@@ -20,9 +20,31 @@ public class SelfIntroductionServiceImpl implements SelfIntroductionService {
 
     @Override
     public void registerSelfInfo(SelfIntroductionDTO selfIntroductionDTO) {
-        log.info("=========== 이력서 대외활동 및 자소서항목 등록 ===========");
         SelfIntroduction selfIntroduction = dtoToEntity(selfIntroductionDTO);
 
-        selfIntroductionRepository.save(selfIntroduction);
+        if(selfIntroductionRepository.findByResumeId(selfIntroductionDTO.getResumeId()) == null){
+            log.info("=========== 이력서 대외활동 및 자소서항목 등록 ===========");
+            selfIntroductionRepository.save(selfIntroduction);
+        }else{
+            log.info("=========== 이력서 대외활동 및 자소서항목 수정 ===========");
+            selfIntroductionRepository.updateSelfIntroInfo(selfIntroduction.getSelfInterActivity(),selfIntroduction.getSelfLetter(),selfIntroduction.getResume().getResumeId());
+        }
+
+    }
+
+    @Override
+    public int existOrNotResumeId(Long resumeId) {
+        log.info("=========== 이력서 대외활동 및 자소서항목 없음 - 새로 등록 ===========");
+        if(selfIntroductionRepository.findByResumeId(resumeId) == null){
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
+    public SelfIntroductionDTO bringSelfIntroInfo(Long resumeId) {
+        SelfIntroduction selfIntroduction = selfIntroductionRepository.findSelfIntroInfoByResumeId(resumeId);
+        SelfIntroductionDTO selfIntroductionDTO = entityToDTO(selfIntroduction);
+        return selfIntroductionDTO;
     }
 }

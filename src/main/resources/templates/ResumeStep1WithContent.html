@@ -32,7 +32,7 @@
         <h3 class="text-center mx-auto">STEP1</h3>
         &nbsp;
         <!-- 인적사항 -->
-        <form role="form" id="contact-form" th:method="post" autocomplete="off" th:action="@{/resumeStep2}">
+        <form role="form" id="contact-form" th:method="post" autocomplete="off" th:action="@{/resumeStep2/{resumeId}(resumeId=${resumeId})}">
           <input type="hidden" th:value="${memberInfo.memId}" name="memId">
           <input type="hidden" th:value="${resumeId}" name="resumeId">
           <div class="card-body">
@@ -60,7 +60,7 @@
                 <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                 <div class="input-group mb-4">
                   <select class="form-select" id="startPhoneNum" name="memFirstPhoneNum" required>
-                    <option th:value="${memberInfo.memFirstPhoneNum}">[[${memberInfo.memFirstPhoneNum}]] (기본정보)</option>
+                    <option th:value="${resumeMemInfo.memFirstPhoneNum}">[[${resumeMemInfo.memFirstPhoneNum}]] (기본정보)</option>
                     <option value="010">010</option>
                     <option value="011">011</option>
                     <option value="070">070</option>
@@ -74,7 +74,7 @@
               <div class="col-md-6" style="width: 200px;">
                 <label>&nbsp;</label>
                 <div class="input-group mb-4">
-                  <input class="form-control" placeholder="가운데 자리" type="text" th:value="${memberInfo.getMemMiddlePhoneNum()}" name="memMiddlePhoneNum" required>
+                  <input class="form-control" placeholder="가운데 자리" type="text" th:value="${resumeMemInfo.getMemMiddlePhoneNum()}" name="memMiddlePhoneNum" required>
                 </div>
               </div>
               <div class="col-mb-6" style="width: 5px;">
@@ -84,7 +84,7 @@
               <div class="col-md-6" style="width: 200px;">
                 <label>&nbsp;</label>
                 <div class="input-group mb-4">
-                  <input class="form-control" placeholder="마지막 자리" type="text" th:value="${memberInfo.getMemLastPhoneNum()}" name="memLastPhoneNum" required>
+                  <input class="form-control" placeholder="마지막 자리" type="text" th:value="${resumeMemInfo.getMemLastPhoneNum()}" name="memLastPhoneNum" required>
                 </div>
               </div>
               <div class="col-md-6" style="width: 300px; margin-left: 50px;">
@@ -127,7 +127,7 @@
               <div class="col-md-6" style="width: 400px;">
                 <label>이메일</label>
                 <div class="input-group mb-4">
-                  <input class="form-control" type="text" th:value="${memberInfo.memFirstEmail}" name="memFirstEmail">
+                  <input class="form-control" type="text" th:value="${resumeMemInfo.memFirstEmail}" name="memFirstEmail">
                 </div>
               </div>
               <div class="col-mb-6" style="width: 5px;">
@@ -139,7 +139,7 @@
                 <label>&nbsp;</label>
                 <div class="input-group mb-4">
                   <select class="form-select" id="endEmail" name="memLastEmail">
-                    <option th:value="${memberInfo.memLastEmail}">[[${memberInfo.memLastEmail}]] (기본정보)</option>
+                    <option th:value="${resumeMemInfo.memLastEmail}">[[${resumeMemInfo.memLastEmail}]] (기본정보)</option>
                     <option value="naver.com">naver.com</option>
                     <option value="gmail.com">gmail.com</option>
                     <option value="daum.net">daum.net</option>
@@ -151,7 +151,7 @@
                   <label>주소</label>
                   <div class="input-group mb-4">
                     <input class="form-control" type="text" id="userAddress"
-                           onclick="execPostCode()" th:value="${memberInfo.memFirstAddress}" readonly name="memFirstAddress">
+                           onclick="execPostCode()" th:value="${resumeMemInfo.memFirstAddress}" readonly name="memFirstAddress">
                   </div>
                 </div>
                 <div class="col-md-2" style="margin-left: 0px;">
@@ -163,7 +163,7 @@
                 <div class="col-md-6" style="width: 330px;">
                   <label>상세주소</label>
                   <div class="input-group mb-4">
-                    <input class="form-control" type="text" id="userDetailAddress" th:value="${memberInfo.memLastAddress}" name="memLastAddress">
+                    <input class="form-control" type="text" id="userDetailAddress" th:value="${resumeMemInfo.memLastAddress}" name="memLastAddress">
                   </div>
                 </div>
               </div>

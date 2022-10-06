@@ -3,8 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>MyInfo</title>
+    <!-- JQUERY CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <!-- AJAX CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
-<a th:href="@{/resumeStep1}"><button>이력서 등록</button></a>
+<a th:href="@{/resumeStep1}"></a>
+    <button id="registerResume">등록</button>
 </body>
+<script>
+    $(document).ready(function(){
+       $("#registerResume").click(function(){
+         $.ajax({
+             type: "get",
+             url: "/registerResume",
+             dataType: "text",
+             success: function(data){
+                 console.log(data);
+                 location.href = "/resumeStep1/" + data;
+             }
+         });
+       })
+    });
+</script>
 </html>

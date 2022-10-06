@@ -29,6 +29,6 @@ public class SelfIntroduction {
     private String selfLetter;
 
     @OneToOne
-    @JoinColumn(name = "selfResumeId", nullable = false)
+    @JoinColumn(name = "selfResumeId", nullable = false, unique = true)
     private Resume resume;
 }

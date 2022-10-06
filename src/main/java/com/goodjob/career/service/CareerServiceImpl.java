@@ -20,17 +20,21 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public void registerCareerInfo(CareerDTO careerDTO) {
-        log.info("=========== 이력서 경력사항 등록 ===========");
         Career career = dtoToEntity(careerDTO);
 
-        careerRepository.save(career);
+        if(careerRepository.findByResumeId(careerDTO.getResumeId()) == null){
+            log.info("=========== 이력서 경력사항 등록 ===========");
+            careerRepository.save(career);
+        }else{
+            log.info("=========== 이력서 경력사항 수정 ===========");
+            careerRepository.updateCareerInfo(career.getCareerCompanyName(),career.getCareerJoinedDate(),career.getCareerRetireDate(),career.getCareerTask(), career.getResume().getResumeId());
+        }
     }
 
     @Override
-    public void existOrNotResumeId(CareerDTO careerDTO) {
-        if(careerRepository.findByResumeId(careerDTO.getResumeId()) == null){
-            Career career = dtoToEntity(careerDTO);
-            careerRepository.save(career);
-        }
+    public CareerDTO bringCareerInfo(Long resumeId) {
+        Career career = careerRepository.findCareerInfoByResumeId(resumeId);
+        CareerDTO careerDTO = entityToDTO(career);
+        return careerDTO;
     }
 }

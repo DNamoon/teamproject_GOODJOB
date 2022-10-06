@@ -1,15 +1,15 @@
 package com.goodjob.status;
 
+import com.goodjob.career.repository.CareerRepository;
+import com.goodjob.education.repository.EducationRepository;
 import com.goodjob.member.MemberRepository;
 import com.goodjob.resume.ResumeRepository;
 import com.goodjob.selfIntroduction.SelfIntroduction;
 import com.goodjob.career.Career;
-import com.goodjob.resume.certificate.Certificate;
-import com.goodjob.resume.certificate.CertificateName;
-import com.goodjob.resume.certificate.CertificateRepository;
 import com.goodjob.education.Education;
 import com.goodjob.education.MajorName;
 import com.goodjob.education.SchoolName;
+import com.goodjob.selfIntroduction.repository.SelfIntroductionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

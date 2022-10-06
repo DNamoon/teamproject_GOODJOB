@@ -37,6 +37,6 @@ public class Career {
     private String careerTask;
 
     @ManyToOne
-    @JoinColumn(name = "careerResumeId", nullable = false)
+    @JoinColumn(name = "careerResumeId", nullable = false, unique = true)
     private Resume resume;
 }

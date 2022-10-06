@@ -25,18 +25,30 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public void registerCertiInfo(CertificationDTO certificationDTO) {
-        log.info("=========== 이력서 자격증항목 등록 ===========");
         Certification certification = dtoToEntity(certificationDTO);
 
-        certificationRepository.save(certification);
+        if(certificationRepository.findByResumeId(certificationDTO.getResumeId()) == null){
+            log.info("=========== 이력서 자격증항목 등록 ===========");
+            certificationRepository.save(certification);
+        }else{
+            log.info("=========== 이력서 자격증항목 수정 ===========");
+            certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(),certification.getCertiGetDate(),certification.getCertiScore(),certification.getResume().getResumeId());
+        }
     }
 
     @Override
-    public void existOrNotResumeId(CertificationDTO certificationDTO) {
-        if(certificationRepository.findByResumeId(certificationDTO.getResumeId()) == null){
-            Certification certification = dtoToEntity(certificationDTO);
-            certificationRepository.save(certification);
+    public int existOrNotResumeId(Long resumeId) {
+        if(certificationRepository.findByResumeId(resumeId) == null){
+            return 0;
         }
+        return 1;
+    }
+
+    @Override
+    public CertificationDTO bringCertiInfo(Long resumeId) {
+        Certification certification = certificationRepository.findCertiInfoByResumeId(resumeId);
+        CertificationDTO certificationDTO = entityToDTO(certification);
+        return certificationDTO;
     }
 
     @Override

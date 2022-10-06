@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
         String[] email = member.getMemEmail().split("@");
         String[] address = member.getMemAddress().split("@");
         
-        MemberDTO memberDTO = entityToDTO(member, phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1] );
+        MemberDTO memberDTO = entityToDTO(member, phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1]);
         return memberDTO;
     }
 

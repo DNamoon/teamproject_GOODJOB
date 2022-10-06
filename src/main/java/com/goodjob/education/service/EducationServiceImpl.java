@@ -28,11 +28,16 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public void registerSchoolInfo(EducationDTO educationDTO) {
-        log.info("=========== 이력서 학적사항 등록 ===========");
         String mergeCredit = educationDTO.getEduGetCredit() + educationDTO.getEduTotalCredit();
         Education education = dtoToEntity(educationDTO, mergeCredit);
 
-        educationRepository.save(education);
+        if(educationRepository.findSchoolInfoByResumeId(educationDTO.getResumeId()) == null){
+            log.info("=========== 이력서 학적사항 등록 ===========");
+            educationRepository.save(education);
+        }else{
+            log.info("=========== 이력서 학적사항 수정 ===========");
+            educationRepository.updateSchoolInfo(education.getSchoolName().getSchName(),education.getEduGraduationDate(),education.getMajorName().getMajName(),education.getEduCredit(),education.getResume().getResumeId());
+        }
     }
 
     @Override
@@ -42,7 +47,7 @@ public class EducationServiceImpl implements EducationService {
         EducationDTO educationDTO = entityToDTO(education, credit[0], credit[1]);
         return educationDTO;
     }
-
+    
     @Override
     public List<SchoolName> findSchoolName(String keyword) {
         return schoolNameRepository.findSchoolName(keyword);
@@ -52,6 +57,4 @@ public class EducationServiceImpl implements EducationService {
     public List<MajorName> findMajorName(String keyword) {
         return majorNameRepository.findMajorName(keyword);
     }
-
-
 }

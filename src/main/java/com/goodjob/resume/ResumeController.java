@@ -14,7 +14,6 @@ import com.goodjob.member.MemberService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,6 @@ import java.util.List;
  */
 
 @Controller
-@Log4j2
 @RequiredArgsConstructor
 public class ResumeController {
 
@@ -48,11 +46,17 @@ public class ResumeController {
         return "ResumeRegisterButton";
     }
 
-    @GetMapping("/resumeStep1")
-    public String resumeStep1(Model model){
+    @ResponseBody
+    @GetMapping("/registerResume")
+    public Long registerResume(){
+        return resumeService.registerResume(loginId);
+    }
+
+    @GetMapping("resumeStep1/{resumeId}")
+    public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model){
         MemberDTO memberDTO = memberService.bringMemInfo(loginId);
 
-        model.addAttribute("resumeId", resumeService.registerResume(loginId));  //새 이력서 등록을 여기서 하지말고 이력서 등록버튼있는 곳에서 ajax로 인서트하고 넘어오는건? 지금 문제가 스텝1에서 새로고침할 때마다 이력서가 생기니까
+        model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", memberDTO);
         return "ResumeStep1";
     }
@@ -78,19 +82,33 @@ public class ResumeController {
         return certificationService.findCertiName(certiName);
     }
 
-    @PostMapping("/resumeStep2")
-    public String resumeStep2(MemberDTO memberDTO, EducationDTO educationDTO, Model model){
-        resumeService.registerResumeMemberInfo(memberDTO);
+    @PostMapping("/resumeStep2/{resumeId}")
+    public String resumeStep2(@PathVariable("resumeId") Long resumeId, MemberDTO memberDTO, EducationDTO educationDTO, Model model){
+        resumeService.updateResumeMemberInfo(memberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
-        model.addAttribute("resumeId", educationDTO.getResumeId());
+
+        if(certificationService.existOrNotResumeId(resumeId) == 1){
+            model.addAttribute("resumeId", resumeId);
+            model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
+            model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+            return "ResumeStep2WithContent";
+        }
+        model.addAttribute("resumeId", resumeId);
         return "ResumeStep2";
     }
     
-    @PostMapping("/resumeStep3")
-    public String resumeStep3(CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
+    @PostMapping("/resumeStep3/{resumeId}")
+    public String resumeStep3(@PathVariable("resumeId") Long resumeId, CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
         certificationService.registerCertiInfo(certificationDTO);
         careerService.registerCareerInfo(careerDTO);
-        model.addAttribute("resumeId", careerDTO.getResumeId());
+
+        if(selfIntroductionService.existOrNotResumeId(resumeId) == 1){
+            model.addAttribute("resumeId", resumeId);
+            model.addAttribute("selfIntroInfo", selfIntroductionService.bringSelfIntroInfo(resumeId));
+            return "ResumeStep3WithContent";
+        }
+
+        model.addAttribute("resumeId", resumeId);
         return "ResumeStep3";
     }
 
@@ -100,12 +118,25 @@ public class ResumeController {
         return "redirect:/myInfo";
     }
 
-    @PostMapping("/goPreviousStep1")
-    public String goPreviousStep1(CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
-        certificationService.existOrNotResumeId(certificationDTO);
-        careerService.existOrNotResumeId(careerDTO);
+    @PostMapping("/goPreviousStep1/{resumeId}")
+    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
+        certificationService.registerCertiInfo(certificationDTO);
+        careerService.registerCareerInfo(careerDTO);
+
+        model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
-        model.addAttribute("schoolInfo", educationService.bringSchoolInfo(certificationDTO.getResumeId()));
-        return "PreviousStep1";
+        model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
+        model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
+        return "ResumeStep1WithContent";
+    }
+
+    @PostMapping("/goPreviousStep2/{resumeId}")
+    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, SelfIntroductionDTO selfIntroductionDTO, Model model){
+        selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
+
+        model.addAttribute("resumeId", resumeId);
+        model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
+        model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+        return "ResumeStep2WithContent";
     }
 }

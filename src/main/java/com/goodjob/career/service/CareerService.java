@@ -13,7 +13,8 @@ public interface CareerService {
 
     void registerCareerInfo(CareerDTO careerDTO);
 
-    void existOrNotResumeId(CareerDTO careerDTO);
+//    int existOrNotResumeId(Long resumeId);
+    CareerDTO bringCareerInfo(Long resumeId);
 
     default Career dtoToEntity(CareerDTO careerDTO){
         Resume resume = Resume.builder().resumeId(careerDTO.getResumeId()).build();
@@ -30,14 +31,14 @@ public interface CareerService {
         return career;
     }
 
-    default CareerDTO entityToDTO(Career career, Resume resume){
+    default CareerDTO entityToDTO(Career career){
         CareerDTO careerDTO = CareerDTO.builder()
                 .careerId(career.getCareerId())
                 .careerCompanyName(career.getCareerCompanyName())
                 .careerJoinedDate(career.getCareerJoinedDate())
                 .careerRetireDate(career.getCareerRetireDate())
                 .careerTask(career.getCareerTask())
-                .resumeId(resume.getResumeId())
+                .resumeId(career.getResume().getResumeId())
                 .build();
 
         return careerDTO;

@@ -31,7 +31,7 @@ public class Certification {
     private String certiScore;
 
     @ManyToOne
-    @JoinColumn(name = "certiResumeId")
+    @JoinColumn(name = "certiResumeId", nullable = false, unique = true)
     private Resume resume;
 
     @ManyToOne

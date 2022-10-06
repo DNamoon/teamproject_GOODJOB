@@ -108,10 +108,10 @@
                             </button>
                             <div style="height: 50px;"></div>
                             <div class="col-md-6 mx-auto">
-                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resumeStep3}">저장 후 STEP 3로</button>
+                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resumeStep3/{resumeId}(resumeId=${resumeId})}">저장 후 STEP 3로</button>
                             </div>
                             <div class="col-md-6 mx-auto">
-                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/goPreviousStep1}">이전</button>
+                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/goPreviousStep1/{resumeId}(resumeId=${resumeId})}">이전</button>
                             </div>
                         </div>
                     </div>

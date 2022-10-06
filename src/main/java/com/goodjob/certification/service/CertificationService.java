@@ -14,7 +14,8 @@ import java.util.List;
 public interface CertificationService {
 
     void registerCertiInfo(CertificationDTO certificationDTO);
-    void existOrNotResumeId(CertificationDTO certificationDTO);
+    int existOrNotResumeId(Long resumeId);
+    CertificationDTO bringCertiInfo(Long resumeId);
 
     //자격증 검색을 위한 메소드
     List<CertificateName> findCertiName(String keyword);
@@ -34,13 +35,13 @@ public interface CertificationService {
         return certification;
     }
 
-    default CertificationDTO entityToDTO(Certification certification, Resume resume, CertificateName certificateName){
+    default CertificationDTO entityToDTO(Certification certification){
         CertificationDTO certificationDTO = CertificationDTO.builder()
                 .certiId(certification.getCertiId())
                 .certiGetDate(certification.getCertiGetDate())
                 .certiScore(certification.getCertiScore())
-                .resumeId(resume.getResumeId())
-                .certificateName(certificateName.getCertiName())
+                .resumeId(certification.getResume().getResumeId())
+                .certificateName(certification.getCertificateName().getCertiName())
                 .build();
 
         return certificationDTO;
