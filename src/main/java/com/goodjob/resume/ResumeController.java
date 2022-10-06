@@ -9,8 +9,9 @@ import com.goodjob.education.MajorName;
 import com.goodjob.education.SchoolName;
 import com.goodjob.education.dto.EducationDTO;
 import com.goodjob.education.service.EducationService;
-import com.goodjob.member.MemberDTO;
-import com.goodjob.member.MemberService;
+import com.goodjob.member.memDTO.ResumeMemberDTO;
+import com.goodjob.member.service.MemberService;
+import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
 import lombok.RequiredArgsConstructor;
@@ -54,10 +55,10 @@ public class ResumeController {
 
     @GetMapping("resumeStep1/{resumeId}")
     public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model){
-        MemberDTO memberDTO = memberService.bringMemInfo(loginId);
+        ResumeMemberDTO resumeMemberDTO = memberService.bringMemInfo(loginId);
 
         model.addAttribute("resumeId", resumeId);
-        model.addAttribute("memberInfo", memberDTO);
+        model.addAttribute("memberInfo", resumeMemberDTO);
         return "ResumeStep1";
     }
 
@@ -83,8 +84,8 @@ public class ResumeController {
     }
 
     @PostMapping("/resumeStep2/{resumeId}")
-    public String resumeStep2(@PathVariable("resumeId") Long resumeId, MemberDTO memberDTO, EducationDTO educationDTO, Model model){
-        resumeService.updateResumeMemberInfo(memberDTO, resumeId);
+    public String resumeStep2(@PathVariable("resumeId") Long resumeId, ResumeMemberDTO resumeMemberDTO, EducationDTO educationDTO, Model model){
+        resumeService.updateResumeMemberInfo(resumeMemberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
 
         if(certificationService.existOrNotResumeId(resumeId) == 1){

@@ -1,6 +1,8 @@
-package com.goodjob.resume;
+package com.goodjob.resume.service;
 import com.goodjob.member.Member;
-import com.goodjob.member.MemberDTO;
+import com.goodjob.member.memDTO.ResumeMemberDTO;
+import com.goodjob.resume.Resume;
+import com.goodjob.resume.dto.ResumeDTO;
 
 /**
  * 박채원 22.10.03 작성
@@ -8,11 +10,11 @@ import com.goodjob.member.MemberDTO;
 
 public interface ResumeService {
     Long registerResume(String loginId);
-    void updateResumeMemberInfo(MemberDTO memberDTO, Long resumeId);
+    void updateResumeMemberInfo(ResumeMemberDTO resumeMemberDTO, Long resumeId);
     ResumeDTO bringResumeInfo(Long resumeId);
 
-    default Resume dtoToEntity(MemberDTO memberDTO, String mergePhoneNum, String mergeAddress, String mergeEmail){
-        Member member = Member.builder().memId(memberDTO.getMemId()).build();
+    default Resume dtoToEntity(ResumeMemberDTO resumeMemberDTO, String mergePhoneNum, String mergeAddress, String mergeEmail){
+        Member member = Member.builder().memId(resumeMemberDTO.getMemId()).build();
 
         Resume resume = Resume.builder()
                 .resumeMemAddress(mergeAddress)

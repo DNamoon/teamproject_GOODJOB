@@ -1,11 +1,13 @@
-package com.goodjob.resume;
+package com.goodjob.resume.service;
 
 import com.goodjob.member.Member;
-import com.goodjob.member.MemberDTO;
-import com.goodjob.member.MemberRepository;
+import com.goodjob.member.memDTO.ResumeMemberDTO;
+import com.goodjob.member.repository.MemberRepository;
+import com.goodjob.resume.Resume;
+import com.goodjob.resume.repository.ResumeRepository;
+import com.goodjob.resume.dto.ResumeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,12 +36,12 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public void updateResumeMemberInfo(MemberDTO memberDTO, Long resumeId) {
-        String mergePhoneNum = memberDTO.getMemFirstPhoneNum() + '-' + memberDTO.getMemMiddlePhoneNum() + '-' + memberDTO.getMemLastPhoneNum();
-        String mergeAddress = memberDTO.getMemFirstAddress() + '@' + memberDTO.getMemLastAddress();
-        String mergeEmail = memberDTO.getMemFirstEmail() + '@' + memberDTO.getMemLastEmail();
+    public void updateResumeMemberInfo(ResumeMemberDTO resumeMemberDTO, Long resumeId) {
+        String mergePhoneNum = resumeMemberDTO.getMemFirstPhoneNum() + '-' + resumeMemberDTO.getMemMiddlePhoneNum() + '-' + resumeMemberDTO.getMemLastPhoneNum();
+        String mergeAddress = resumeMemberDTO.getMemFirstAddress() + '@' + resumeMemberDTO.getMemLastAddress();
+        String mergeEmail = resumeMemberDTO.getMemFirstEmail() + '@' + resumeMemberDTO.getMemLastEmail();
 
-        Resume resume = dtoToEntity(memberDTO, mergePhoneNum, mergeAddress, mergeEmail);
+        Resume resume = dtoToEntity(resumeMemberDTO, mergePhoneNum, mergeAddress, mergeEmail);
 
         log.info("=========== 이력서 인적사항 수정 ===========");
         resumeRepository.updateMemberInfo(mergePhoneNum, mergeEmail, mergeAddress, resumeId);

@@ -1,4 +1,4 @@
-package com.goodjob.member;
+package com.goodjob.member.memDTO;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ import java.sql.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberDTO {
+public class ResumeMemberDTO {
     private Long memId;
     private String memLoginId;
     private String memFirstPhoneNum;

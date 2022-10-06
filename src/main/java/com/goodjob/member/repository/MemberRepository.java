@@ -1,5 +1,6 @@
-package com.goodjob.member;
+package com.goodjob.member.repository;
 
+import com.goodjob.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

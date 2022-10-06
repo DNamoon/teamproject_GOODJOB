@@ -1,4 +1,4 @@
-package com.goodjob.resume;
+package com.goodjob.resume.dto;
 
 import lombok.*;
 

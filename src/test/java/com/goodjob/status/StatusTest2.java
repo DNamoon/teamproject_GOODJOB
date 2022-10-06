@@ -2,8 +2,8 @@ package com.goodjob.status;
 
 import com.goodjob.career.repository.CareerRepository;
 import com.goodjob.education.repository.EducationRepository;
-import com.goodjob.member.MemberRepository;
-import com.goodjob.resume.ResumeRepository;
+import com.goodjob.member.repository.MemberRepository;
+import com.goodjob.resume.repository.ResumeRepository;
 import com.goodjob.selfIntroduction.SelfIntroduction;
 import com.goodjob.career.Career;
 import com.goodjob.education.Education;
