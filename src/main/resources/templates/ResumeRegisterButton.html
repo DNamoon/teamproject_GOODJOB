@@ -9,22 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body>
-<a th:href="@{/resumeStep1}"></a>
     <button id="registerResume">등록</button>
+<script type="text/javascript" src="/js/ResumeJS.js"></script>
 </body>
-<script>
-    $(document).ready(function(){
-       $("#registerResume").click(function(){
-         $.ajax({
-             type: "get",
-             url: "/registerResume",
-             dataType: "text",
-             success: function(data){
-                 console.log(data);
-                 location.href = "/resumeStep1/" + data;
-             }
-         });
-       })
-    });
-</script>
 </html>

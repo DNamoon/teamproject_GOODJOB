@@ -74,7 +74,7 @@
               <div class="col-md-6" style="width: 200px;">
                 <label>&nbsp;</label>
                 <div class="input-group mb-4">
-                  <input class="form-control" placeholder="가운데 자리" type="text" th:value="${resumeMemInfo.getMemMiddlePhoneNum()}" name="memMiddlePhoneNum" required>
+                  <input class="form-control" placeholder="가운데 자리" type="text" th:value="${resumeMemInfo.getMemMiddlePhoneNum()}" id="memMiddlePhoneNum" name="memMiddlePhoneNum" required>
                 </div>
               </div>
               <div class="col-mb-6" style="width: 5px;">
@@ -84,7 +84,7 @@
               <div class="col-md-6" style="width: 200px;">
                 <label>&nbsp;</label>
                 <div class="input-group mb-4">
-                  <input class="form-control" placeholder="마지막 자리" type="text" th:value="${resumeMemInfo.getMemLastPhoneNum()}" name="memLastPhoneNum" required>
+                  <input class="form-control" placeholder="마지막 자리" type="text" th:value="${resumeMemInfo.getMemLastPhoneNum()}" id="memLastPhoneNum" name="memLastPhoneNum" required>
                 </div>
               </div>
               <div class="col-md-6" style="width: 300px; margin-left: 50px;">
@@ -122,6 +122,7 @@
                   </div>
                 </div>
               </div>
+              <div id="phoneNumVeriNum"></div>
             </div>
             <div class="row" style="float: inline-start;">
               <div class="col-md-6" style="width: 400px;">
@@ -303,67 +304,6 @@
 </div>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/core/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/ResumeJS.js"></script>
 </body>
-<script>
-  function execPostCode() {
-    daum.postcode.load(function () {
-      new daum.Postcode({
-        oncomplete: function (data) {
-          var addr = '';
-
-          if (data.userSelectedType === 'R') {
-            addr = data.roadAddress;
-          } else {
-            addr = data.jibunAddress;
-          }
-
-          document.getElementById("userAddress").value = '(' + data.zonecode + ') ' + addr;
-          document.getElementById("userDetailAddress").focus();
-        }
-      }).open();
-    });
-  }
-
-  $(document).ready(function(){
-    $(".findSchool").click(function(){
-      var schoolName = $(".findSchoolName").val();
-
-      $.ajax({
-        type: "get",
-        url: "/findSchool/" + schoolName,
-        dataType: "json",
-        async: false,
-        success: function (data){
-          $(".schoolList").empty();
-          for(var i=0; i<data.length; i++){
-            $(".schoolList").append('<input class="form-check-input" type="radio" name="selectSchoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');  <!-- 여기 value값에 data[i].schName 넣는 방법이랑 왜 schName이 undefined로 나오는지 -->
-          }
-          $(".doneFindSchool").click(function (){
-            $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
-          });
-        }
-      });
-    });
-
-    $(".findMajor").click(function(){
-      var majorName = $(".findMajorName").val();
-
-      $.ajax({
-        type: "get",
-        url: "/findMajor/" + majorName,
-        dataType: "json",
-        async: false,
-        success: function (data){
-          $(".majorList").empty();
-          for(var i=0; i<data.length; i++){
-            $(".majorList").append('<input class="form-check-input" type="radio" name="selectMajorName" value="' + data[i].majName +'">' + data[i].majName +'<br/>');
-          }
-          $(".doneFindMajor").click(function (){
-            $("#majorName").val($("input:radio[name='selectMajorName']:checked").val());
-          });
-        }
-      });
-    });
-  })
-</script>
 </html>
