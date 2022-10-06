@@ -1,3 +1,6 @@
+<!--HO - 2022.10.05-->
+<!--메인 창. -->
+<!--기업회원가입페이지로 넘어가는 버튼 추가-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,12 +8,19 @@
     <title>Title</title>
 </head>
 <body>
+    <h2>메인 페이지</h2>
+    <hr/>
+
+    <button th:onclick="|location.href='@{/com/register}'|">회원가입</button>
+
+    <h2>메인 페이지</h2>
+    <hr/>
+
 <form th:action="@{/auth/member/signUp}">
     <input type="submit" value="회원가입">
 </form>
 <form th:action="@{/auth/member/login}">
     <input type="submit" value="로그인">
 </form>
-
 </body>
 </html>
