@@ -2,6 +2,7 @@ package com.goodjob.member;
 
 import com.goodjob.resume.Resume;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "Member")
 @Getter
+@Builder
 public class Member {
 
     @Id
@@ -24,10 +26,6 @@ public class Member {
 
     @Column(unique = true)
     private String memLoginId;
-
-    @OneToOne
-    @JoinColumn(name = "memMemdivCode")
-    private Memberdiv memMemdivCode;
 
     @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
     private List<Resume> memResume = new ArrayList<>();
@@ -57,10 +55,9 @@ public class Member {
     @Column(length = 1)
     private String memTerms;
 
-    public Member(Long memId, String memLoginId, Memberdiv memMemdivCode, String memPw, String memPhone, String memEmail, String memName, Date memBirthDate, String memAddress, String memGender, String memTerms) {
+    public Member(Long memId, String memLoginId, String memPw, String memPhone, String memEmail, String memName, Date memBirthDate, String memAddress, String memGender, String memTerms) {
         this.memId = memId;
         this.memLoginId = memLoginId;
-        this.memMemdivCode = memMemdivCode;
         this.memPw = memPw;
         this.memPhone = memPhone;
         this.memEmail = memEmail;

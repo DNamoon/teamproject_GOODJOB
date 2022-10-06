@@ -1,18 +1,15 @@
 package com.goodjob.status;
 
+import com.goodjob.career.repository.CareerRepository;
+import com.goodjob.education.repository.EducationRepository;
 import com.goodjob.member.MemberRepository;
 import com.goodjob.resume.ResumeRepository;
-import com.goodjob.resume.selfIntroduction.SelfIntroduction;
-import com.goodjob.resume.selfIntroduction.SelfIntroductionRepository;
-import com.goodjob.resume.career.Career;
-import com.goodjob.resume.career.CareerRepository;
-import com.goodjob.resume.certificate.Certificate;
-import com.goodjob.resume.certificate.CertificateName;
-import com.goodjob.resume.certificate.CertificateRepository;
-import com.goodjob.resume.education.Education;
-import com.goodjob.resume.education.EducationRepository;
-import com.goodjob.resume.education.MajorName;
-import com.goodjob.resume.education.SchoolName;
+import com.goodjob.selfIntroduction.SelfIntroduction;
+import com.goodjob.career.Career;
+import com.goodjob.education.Education;
+import com.goodjob.education.MajorName;
+import com.goodjob.education.SchoolName;
+import com.goodjob.selfIntroduction.repository.SelfIntroductionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +17,6 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.stream.LongStream;
 
 @SpringBootTest
