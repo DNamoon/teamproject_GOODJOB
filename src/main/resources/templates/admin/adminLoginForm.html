@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head}"/>
+<style>
+    .field-error {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+    .form-control{
+        border-color: #101214;
+        color: #101214;
+    }
+</style>
+<body>
+<header>
+
+</header>
+
+<main>
+
+    <section class="py-7 mt-3">
+        <div class="container">
+            <div class="row justify-space-between py-2">
+                <div class="col-lg-4 mx-auto">
+                    <form th:action="@{login}" method="post" th:object="${adminDTO}">
+
+                        <div th:if="${#fields.hasGlobalErrors()}">
+                            <p class="field-error text-center" th:each="err : ${#fields.globalErrors()}"
+                               th:text="${err}">전체 오류 메시지</p>
+                        </div>
+
+                        <label th:for="ID" th:text="ID"> </label>
+                        <input th:id="ID" type="text" placeholder="ADMIN ID" th:field="*{adLoginId}" class="form-control">
+                        <div class="field-error" th:errors="*{adLoginId}"/>
+
+                        <label th:for="PASSWORD" th:text="PASSWORD"> </label>
+                        <input th:id="PASSWORD" type="text" placeholder="ADMIN PASSWORD" th:field="*{adPw}" class="form-control">
+                        <div class="field-error" th:errors="*{adPw}"/>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn bg-gradient-dark mt-3" th:text="LOGIN"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+
+</footer>
+
+</body>
+</html>
