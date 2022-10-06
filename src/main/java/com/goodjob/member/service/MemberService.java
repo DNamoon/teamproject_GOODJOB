@@ -10,7 +10,6 @@ import com.goodjob.member.memDTO.ResumeMemberDTO;
 public interface MemberService {
 
     ResumeMemberDTO bringMemInfo(String loginId);
-    void updateMemberInfo(ResumeMemberDTO resumeMemberDTO);
 
     default ResumeMemberDTO entityToDTO(Member member, String firstPhoneNum, String middlePhoneNum, String lastPhoneNum, String firstEmail, String lastEmail, String firstAddress, String lastAddress){
         ResumeMemberDTO resumeMemberDTO = ResumeMemberDTO.builder()

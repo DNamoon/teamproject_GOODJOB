@@ -27,15 +27,4 @@ public class MemberServiceImpl implements MemberService {
         ResumeMemberDTO resumeMemberDTO = entityToDTO(member, phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1]);
         return resumeMemberDTO;
     }
-
-    @Override
-    public void updateMemberInfo(ResumeMemberDTO resumeMemberDTO) {
-        String mergePhoneNum = resumeMemberDTO.getMemFirstPhoneNum() + '-' + resumeMemberDTO.getMemMiddlePhoneNum() + '-' + resumeMemberDTO.getMemLastPhoneNum();
-        String mergeEmail = resumeMemberDTO.getMemFirstEmail() + '@' + resumeMemberDTO.getMemLastEmail();
-        String mergeAddress = resumeMemberDTO.getMemFirstAddress() + '@' + resumeMemberDTO.getMemLastAddress();
-
-        Member member = dtoToEntity(resumeMemberDTO, mergePhoneNum, mergeEmail, mergeAddress);
-        
-        //회원 정보 수정문 안적음
-    }
 }
