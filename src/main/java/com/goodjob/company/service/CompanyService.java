@@ -1,3 +1,9 @@
+/**
+ * HO - 2022.10.05
+ * 서비스 클래스
+ * 기업회원 회원가입 메서드
+ * + 2022.10.06 회원가입시 아이디 중복확인 메서드
+ */
 package com.goodjob.company.service;
 
 import com.goodjob.company.Company;
@@ -27,7 +33,10 @@ public class CompanyService {
         }else {
             return null;
         }
+    }
 
+    public int checkId2(String comLoginId) throws Exception {
+        return companyRepository.checkId2(comLoginId);
     }
 
 

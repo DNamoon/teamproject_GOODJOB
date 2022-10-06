@@ -1,5 +1,8 @@
+/**
+ * HO - 2022.10.06
+ * 기업회원가입 DB 들어가는지 테스트
+ */
 package com.goodjob.company;
-
 
 import com.goodjob.member.MemberType;
 import com.goodjob.member.Memberdiv;

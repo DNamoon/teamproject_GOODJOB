@@ -1,5 +1,5 @@
 /**
- * 2022.10.05 - HO
+ * HO - 2022.10.05
  * 라인 20 @Builder 추가 - CompanyDTO클래스 toEntity메서드에 사용
  */
 package com.goodjob.company;
