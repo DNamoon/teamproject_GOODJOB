@@ -1,11 +1,12 @@
 $(document).ready(function(){
+    var num;
+
     $("#registerResume").click(function(){
         $.ajax({
             type: "get",
             url: "/resume/registerResume",
             dataType: "text",
             success: function(data){
-                console.log(data);
                 location.href = "/resume/resumeStep1/" + data;
             }
         });
@@ -65,14 +66,19 @@ $(document).ready(function(){
                     $(".certiList").append('<input class="form-check-input" type="radio" name="selectCertiName" value="' + data[i].certiName + '">' + data[i].certiName + '<br/>');
                 }
                 $(".doneFindCerti").click(function () {
-                    $("#certificateName").val($("input:radio[name='selectCertiName']:checked").val());
+                    var inputId = $("#modalId").val();
+                    $("#" + inputId).val($("input:radio[name='selectCertiName']:checked").val());
                 });
             }
         });
     });
 
-    $(".addCareerInfo").click(function(){
-
+    $(".addCertiInfo").click(function(){
+        addCertiInfo();
+        var size = $("input[name='certificateName']").length;
+        for(var i = 1; i < size; i++){
+            $("input[name='certificateName']").eq(i).attr("id","certiifcateName"+i);
+        }
     });
 });
 
@@ -110,7 +116,7 @@ function addCertiInfo() {
     certiInfo += '</div>';
     certiInfo += '<div class="col-md-2" style="margin-left: 0px;">';
     certiInfo += '<label>&nbsp;</label>';
-    certiInfo += '<button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal" data-bs-target="#findCertiModal">자격증찾기</button>';
+    certiInfo += '<button type="button" class="btn bg-gradient-dark w-100" onclick="getInputId(this)" data-bs-toggle="modal" data-bs-target="#findCertiModal">자격증찾기</button>';
     certiInfo += '</div>';
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
     certiInfo += '<label>취득년월</label>';
@@ -126,7 +132,11 @@ function addCertiInfo() {
     certiInfo += '</div>';
     certiInfo += '</div>';
 
-    $(".addCertiInfo").append(certiInfo);
+    $(".addCertiInfoList").append(certiInfo);
+}
+
+function getInputId(data){
+    $("#modalId").val($(data).parent().parent().find("input").attr("id"));
 }
 
 //경력 추가
