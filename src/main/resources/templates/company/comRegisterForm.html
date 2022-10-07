@@ -13,8 +13,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
 
     <title>회원가입 (기업회원용)</title>
 
@@ -67,7 +67,7 @@
                   th:action="@{/com/register}" th:object="${companyDTO}">
 
 <!--                에러 메시지 보여주는 위치           -->
-            <div th:replace="/company/formErrors :: formErrorsFragment"></div>
+            <div th:replace="form_errors :: formErrorsFragment"></div>
 
                 <div class="card-body">
                     <div class="row">
@@ -166,7 +166,7 @@
                             <div class="input-group mb-4">
                                 <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
                                 <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" required>
-                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-80 findAddress"><br>
                             </div>
                         </div>
                         <div class="mb-4">
@@ -197,7 +197,7 @@
                         <div class="col-md-12">
                             <div class="form-check form-switch mb-4" th:for="comTerms">
                                 <!--                                checked 다음에 1이 true라고 하고 값 1 넘기기-->
-                                <input class="form-check-input" th:field="*{comTerms}" type="checkbox" id="flexSwitchCheckDefault" value="Y"
+                                <input class="form-check-input" th:field="*{comTerms}" type="checkbox" id="flexSwitchCheckDefault" value="1"
                                        checked="" required>
                                 <label class="form-check-label" for="flexSwitchCheckDefault">
                                     <a href="#" class="text-dark" id="modal_open_btn" data-toggle="modal"
@@ -330,7 +330,7 @@
 
         $.ajax({
             type : "post",
-            url : "/com/check",
+            url : "/comIdCheck",
             data : data,
             success : function(result){
                 if(result != 'fail'){
