@@ -31,9 +31,6 @@ public class Company {
     @JoinColumn(name = "comRegCode")
     private Region comRegCode; // 지역분류코드
 
-    @OneToOne
-    @JoinColumn(name = "comComdivCode")
-    private Comdiv comComdivCode; // 회사분류코드
 
     @Column(unique = true)  //로그인 아이디 중복 허용 안 하기 위해서 엔티티에서 제한.
     private String comLoginId;
@@ -49,6 +46,10 @@ public class Company {
 
     @Column
     private String comName;
+
+    @OneToOne
+    @JoinColumn(name = "comComdivCode")
+    private Comdiv comComdivCode; // 회사분류코드
 
     @Column
     private String comBusiNum; // 사업등록번호

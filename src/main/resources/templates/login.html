@@ -38,8 +38,8 @@
                                 <h4 class="font-weight-bolder">로그인</h4>
                             </div>
                             <div class="card-body">
-                                <div th:if="${param.error}" class="ui-icon-alert alert-danger" role="alert">
-                                    <p class="text-center">로그인 정보가 정확하지 않습니다.</p>
+                                <div th:if="${param.error}" role="alert">
+                                    <p class="text-center" style="color: rgb(244, 54, 54);" >아이디 및 비밀번호를 확인해주세요.</p>
                                 </div>
                                 <form role="form">
                                     <div class="mb-3">
@@ -53,7 +53,7 @@
                                     </div>
                                 </form>
                                 <div class="col-md-12 text-center pt-0 px-lg-2 px-1">
-                                    <a href="/member/signUp" class="font-weight-bold" style="color: #344767">회원가입</a>
+                                    <a href="/auth/member/signUp" class="font-weight-bold" style="color: #344767">회원가입</a>
                                 </div>
                             </div>
                         </div>
