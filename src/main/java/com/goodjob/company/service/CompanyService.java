@@ -7,7 +7,7 @@
 package com.goodjob.company.service;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.CompanyRepository;
+import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

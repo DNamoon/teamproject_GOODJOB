@@ -56,7 +56,7 @@ public class Company {
     @Column(length = 5000)
     private String comInfo;
 
-    @Column(length = 1)
+    @Column(length = 2)
     private String comTerms;
 
     //22.10.05 ho - 회사 주소 넣기 위해 컬럼 추가
