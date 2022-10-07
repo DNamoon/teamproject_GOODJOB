@@ -25,6 +25,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <!--modal files-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 </head>
 
@@ -96,17 +97,18 @@
                 <input type="email" class="form-control" placeholder="goodjob@goodjob.com" name="memEmail" required>
               </div>
             </div>
-              <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6" style="width: 400px;">
                 <label>주소</label>
                 <div class="input-group mb-4">
                   <input class="form-control" type="text" id="userAddress" onclick="execPostCode()" readonly name="memAddress">
                 </div>
               </div>
-            <div class="col-md-2" style="margin-left: 0px;">
-              <label>&nbsp;</label>
-              <button type="button" class="btn bg-gradient-dark w-80 findAddress" onclick="execPostCode()">주소찾기
-              </button>
-            </div>
+              <div class="col-md-2" style="margin-left: 0px;">
+                <label>&nbsp;</label>
+                <button type="button" class="btn bg-gradient-dark w-100 findAddress"
+                        onclick="execPostCode()">주소찾기
+                </button>
               </div>
               <div class="col-md-6" style="width: 330px;">
                 <label>상세주소</label>
@@ -114,6 +116,7 @@
                   <input class="form-control" type="text" id="userDetailAddress" name="detailAddress">
                 </div>
               </div>
+            </div>
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -158,8 +161,9 @@
                 <button id="btn" type="submit" class="btn bg-gradient-dark w-100">회원가입</button>
               </div>
             </div>
-          </div>
+        </div>
       </form>
+    </div>
     </div>
   </div>
 </div>
@@ -210,7 +214,7 @@
   function test() {
     var p1 = document.getElementById('pw1').value;
     var p2 = document.getElementById('pw2').value;
-    if(p1.value != p2){
+    if(p1 != p2){
       $('#confirmMsg').css('color','red')
       $('#confirmMsg').html("비밀번호 불일치")
       $("#btn").prop('disabled',true);
