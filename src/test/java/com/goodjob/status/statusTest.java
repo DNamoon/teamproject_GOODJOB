@@ -2,7 +2,7 @@ package com.goodjob.status;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.CompanyRepository;
+import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.Region;
 import com.goodjob.member.Member;
 import com.goodjob.member.repository.MemberRepository;
