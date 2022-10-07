@@ -68,7 +68,7 @@ public class CompanyDTO {
     private String comAddress2;  // 회사주소(주소)
     @NotBlank
     private String comAddress3;  // 회사주소(상세주소)
-    @NotBlank
+
     private String comAddress4;  // 회사주소(참고항목)
     @NotBlank
     @Email
