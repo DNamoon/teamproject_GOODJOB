@@ -108,6 +108,10 @@ public class ResumeController {
         }
 
         model.addAttribute("resumeId", resumeId);
+//        String[] name = certificationDTO.getCertificateName().split(",");
+//        System.out.println(name[0]);
+//        System.out.println(name[1]);
+
         return "/resume/ResumeStep3";
     }
 

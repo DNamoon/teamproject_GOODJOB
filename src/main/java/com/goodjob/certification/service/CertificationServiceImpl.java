@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -25,15 +26,15 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public void registerCertiInfo(CertificationDTO certificationDTO) {
-        Certification certification = dtoToEntity(certificationDTO);
+            Certification certification = dtoToEntity(certificationDTO);
 
-        if(certificationRepository.findByResumeId(certificationDTO.getResumeId()) == null){
-            log.info("=========== 이력서 자격증항목 등록 ===========");
-            certificationRepository.save(certification);
-        }else{
-            log.info("=========== 이력서 자격증항목 수정 ===========");
-            certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(),certification.getCertiGetDate(),certification.getCertiScore(),certification.getResume().getResumeId());
-        }
+            if(certificationRepository.findByResumeId(certificationDTO.getResumeId()) == null){
+                log.info("=========== 이력서 자격증항목 등록 ===========");
+                certificationRepository.save(certification);
+            }else{
+                log.info("=========== 이력서 자격증항목 수정 ===========");
+                certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(),certification.getCertiGetDate(),certification.getCertiScore(),certification.getResume().getResumeId());
+            }
     }
 
     @Override

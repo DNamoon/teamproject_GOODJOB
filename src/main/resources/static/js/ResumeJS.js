@@ -1,6 +1,4 @@
 $(document).ready(function(){
-    var num;
-
     $("#registerResume").click(function(){
         $.ajax({
             type: "get",
