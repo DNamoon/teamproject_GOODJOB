@@ -3,6 +3,8 @@ package com.goodjob.member.repository;
 import com.goodjob.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.Optional;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.memLoginId =:loginId")
-    Member findLoginInfo(String loginId);
+    Member findLoginInfo(@Param("loginId") String loginId);
     
     Integer countByMemGender(String memGender);
 

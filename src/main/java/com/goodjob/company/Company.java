@@ -9,10 +9,7 @@
  */
 package com.goodjob.company;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -62,4 +59,12 @@ public class Company {
     //22.10.05 ho - 회사 주소 넣기 위해 컬럼 추가
     @Column
     private String comAddress;
+
+    // 더미데이터 생성을 위한 임시 생성자 by.OH
+    public Company(Region comRegCode, Comdiv comComdivCode, String comLoginId, String comPw) {
+        this.comRegCode = comRegCode;
+        this.comComdivCode = comComdivCode;
+        this.comLoginId = comLoginId;
+        this.comPw = comPw;
+    }
 }

@@ -37,7 +37,7 @@ public class ResumeController {
     private final CertificationService certificationService;
     private final SelfIntroductionService selfIntroductionService;
 
-    private String loginId = "memberId2";                           //세션 처리 후 세션에서 가져올 값
+    private String loginId = "test21";                           //세션 처리 후 세션에서 가져올 값
 
 
     @GetMapping("/myInfo")

@@ -11,7 +11,7 @@
     <h2>메인 페이지</h2>
     <hr/>
 
-    <button th:onclick="|location.href='@{/com/register}'|">회원가입</button>
+    <button th:onclick="|location.href='@{/auth/com/register}'|">회원가입</button>
 
     <h2>메인 페이지</h2>
     <hr/>
@@ -22,5 +22,9 @@
 <form th:action="@{/auth/member/login}">
     <input type="submit" value="로그인">
 </form>
+
+    <h2>관리자 페이지</h2>
+    <hr/>
+    <button th:onclick="|location.href='@{/admin/login}'|">관리자 로그인</button>
 </body>
 </html>

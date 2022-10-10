@@ -25,6 +25,10 @@ public class SecurityConfig  {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    /**
+     * 10.6 시큐리티가 막지 않아야하는 URI까지 적용.
+     * 추후 논의 필요 By.OH
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().disable()			//cors 방지
@@ -32,8 +36,8 @@ public class SecurityConfig  {
                 .formLogin().loginPage("/auth/member/login")		//기본 로그인페이지 없애기
                 .defaultSuccessUrl("/").and()
                 .authorizeRequests()
-                .antMatchers("/auth/**","/","/resume/**","/admin/**").permitAll() // /auth이하의 주소들은 인증 필요x
-                .antMatchers("/css/**","/js/**").permitAll()
+                .antMatchers("/auth/**","/","/resume/**","/admin/**","/**","/*","/assets/css/nucleo-svg.css").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/css/**","/js/**","/fonts/**","https/**","/img/**","/assets/**","/comIdCheck","/assets/css/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();
 
