@@ -105,13 +105,16 @@ public class ResumeController {
     @ResponseBody
     @RequestMapping(value = "/insertStep2", method = RequestMethod.POST)
     public void resumeStep3(@RequestParam Map params) throws Exception{
-        String json = params.get("certificateList").toString();
+        String certiJson = params.get("certificateList").toString();
+        String careerJson = params.get("careerList").toString();
         ObjectMapper mapper = new ObjectMapper();
-        List<CertificationDTO> list = mapper.readValue(json, new TypeReference<List<CertificationDTO>>(){});
-        certificationService.registerCertiInfo(list);
+        List<CertificationDTO> certiList = mapper.readValue(certiJson, new TypeReference<List<CertificationDTO>>(){});
+        List<CareerDTO> careerList = mapper.readValue(careerJson, new TypeReference<List<CareerDTO>>() {});
+        certificationService.registerCertiInfo(certiList);
+        careerService.registerCareerInfo(careerList);
     }
 
-    @PostMapping("/resumeStep3/{resumeId}")
+    @GetMapping("/resumeStep3/{resumeId}")
     public String resumeStep3(@PathVariable("resumeId") Long resumeId, Model model){
 
         if(selfIntroductionService.existOrNotResumeId(resumeId) == 1){

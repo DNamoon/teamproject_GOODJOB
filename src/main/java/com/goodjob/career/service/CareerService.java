@@ -5,13 +5,15 @@ import com.goodjob.career.Career;
 import com.goodjob.career.dto.CareerDTO;
 import com.goodjob.resume.Resume;
 
+import java.util.List;
+
 /**
  * 박채원 22.10.03 작성
  */
 
 public interface CareerService {
 
-    void registerCareerInfo(CareerDTO careerDTO);
+    void registerCareerInfo(List<CareerDTO> careerDTO);
 
 //    int existOrNotResumeId(Long resumeId);
     CareerDTO bringCareerInfo(Long resumeId);

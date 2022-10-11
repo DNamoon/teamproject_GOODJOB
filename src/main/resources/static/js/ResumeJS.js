@@ -138,7 +138,8 @@ function getInputId(data){
 }
 
 function getCertiList(){
-    var size = $("input[name='certificateName']").length;
+    var certiSize = $("input[name='certificateName']").length;
+    var careerSize = $("input[name='careerCompanyName']").length;
     var resumeId = $("input[name='resumeId']").val();
 
     let CertificateDTO = function (resumeId, certificateName, certiGetDate, certiScore){
@@ -148,9 +149,16 @@ function getCertiList(){
         this.certiScore = certiScore;
     }
 
-    // var certificateList = new Array();
+    let CareerDTO = function (careerCompanyName, careerJoinedDate, careerRetireDate, careerTask, resumeId){
+        this.resumeId = resumeId;
+        this.careerCompanyName = careerCompanyName;
+        this.careerJoinedDate = careerJoinedDate;
+        this.careerRetireDate = careerRetireDate;
+        this.careerTask = careerTask;
+    }
+
     var certificateList = [];
-    for(i = 0; i < size; i++){
+    for(i = 0; i < certiSize; i++){
         var certificateDTO = new CertificateDTO(
             $("input[name='resumeId']").val(),
             $("input[name='certificateName']").eq(i).val(),
@@ -160,17 +168,28 @@ function getCertiList(){
         certificateList.push(certificateDTO);
     }
 
+    var careerList = [];
+    for(i = 0; i < careerSize; i++){
+        var careerDTO = new CareerDTO(
+            $("input[name='careerCompanyName']").eq(i).val(),
+            $("input[name='careerJoinedDate']").eq(i).val(),
+            $("input[name='careerRetireDate']").eq(i).val(),
+            $("input[name='careerTask']").eq(i).val(),
+            $("input[name='resumeId']").val()
+        )
+        careerList.push(careerDTO);
+    }
+
     console.log(certificateList);
+    console.log(careerList);
 
     $.ajax({
         type: "post",
         url: "/resume/insertStep2",
-        data: {"certificateList" : JSON.stringify(certificateList)},
+        data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
         success: function(data){
-            console.log(data);
             location.href = "/resume/resumeStep3/" + resumeId;
         }, error : function(data){
-            console.log(data);
         }
     });
 }
@@ -183,13 +202,13 @@ function addCareerInfo() {
     careerInfo += '<div class="col-md-6" style="width: 400px;">';
     careerInfo += '<label>회사명</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" type="text" >';
+    careerInfo += '<input class="form-control" type="text" name="careerCompanyName">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" placeholder="YYYYMM" type="date" >';
+    careerInfo += '<input class="form-control" placeholder="YYYY-MM-DD" type="date" value="2010-01-01" name="careerJoinedDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 5px;">';
@@ -199,13 +218,13 @@ function addCareerInfo() {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" placeholder="YYYYMM" type="date" >';
+    careerInfo += '<input class="form-control" placeholder="YYYY-MM-DD" type="date" value="2010-01-01" name="careerRetireDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="form-group mb-4">';
     careerInfo += '<label>주요업무</label>';
-    careerInfo += '<textarea name="message" class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3"></textarea>';
+    careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
 
     $(".addCareerInfo").replaceWith(careerInfo);
