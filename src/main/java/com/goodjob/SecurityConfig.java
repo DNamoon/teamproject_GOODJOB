@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -20,6 +21,13 @@ public class SecurityConfig  {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+
+    // There is no PasswordEncoder mapped for the id "null" 에러 해결위해 추가.
+    @Bean
+    public PasswordEncoder noOpPasswordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
