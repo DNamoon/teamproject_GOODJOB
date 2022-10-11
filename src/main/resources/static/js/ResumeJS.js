@@ -137,6 +137,44 @@ function getInputId(data){
     $("#modalId").val($(data).parent().parent().find("input").attr("id"));
 }
 
+function getCertiList(){
+    var size = $("input[name='certificateName']").length;
+    var resumeId = $("input[name='resumeId']").val();
+
+    let CertificateDTO = function (resumeId, certificateName, certiGetDate, certiScore){
+        this.resumeId = resumeId;
+        this.certificateName = certificateName;
+        this.certiGetDate = certiGetDate;
+        this.certiScore = certiScore;
+    }
+
+    // var certificateList = new Array();
+    var certificateList = [];
+    for(i = 0; i < size; i++){
+        var certificateDTO = new CertificateDTO(
+            $("input[name='resumeId']").val(),
+            $("input[name='certificateName']").eq(i).val(),
+            $("input[name='certiGetDate']").eq(i).val(),
+            $("input[name='certiScore']").eq(i).val()
+        )
+        certificateList.push(certificateDTO);
+    }
+
+    console.log(certificateList);
+
+    $.ajax({
+        type: "post",
+        url: "/resume/insertStep2",
+        data: {"certificateList" : JSON.stringify(certificateList)},
+        success: function(data){
+            console.log(data);
+            location.href = "/resume/resumeStep3/" + resumeId;
+        }, error : function(data){
+            console.log(data);
+        }
+    });
+}
+
 //경력 추가
 function addCareerInfo() {
     var careerInfo = '';
@@ -195,5 +233,3 @@ function rangeCredit(){
         $("#eduGetCredit").val($('#eduGetCredit').val());
     }
 }
-
-

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -25,16 +24,20 @@ public class CertificationServiceImpl implements CertificationService {
     private final CertificationNameRepository certificationNameRepository;
 
     @Override
-    public void registerCertiInfo(CertificationDTO certificationDTO) {
-            Certification certification = dtoToEntity(certificationDTO);
-
-            if(certificationRepository.findByResumeId(certificationDTO.getResumeId()) == null){
+    public void registerCertiInfo(List<CertificationDTO> list) {
+        if (certificationRepository.findByResumeId(list.get(0).getResumeId()) == null) {
+            for (int i = 0; i < list.size(); i++) {
+                Certification certification = dtoToEntity(list.get(i));
                 log.info("=========== 이력서 자격증항목 등록 ===========");
                 certificationRepository.save(certification);
-            }else{
-                log.info("=========== 이력서 자격증항목 수정 ===========");
-                certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(),certification.getCertiGetDate(),certification.getCertiScore(),certification.getResume().getResumeId());
             }
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                Certification certification = dtoToEntity(list.get(i));
+                log.info("=========== 이력서 자격증항목 수정 ===========");
+                certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(), certification.getCertiGetDate(), certification.getCertiScore(), certification.getResume().getResumeId());
+            }
+        }
     }
 
     @Override

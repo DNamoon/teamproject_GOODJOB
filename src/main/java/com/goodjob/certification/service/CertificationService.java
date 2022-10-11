@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface CertificationService {
 
-    void registerCertiInfo(CertificationDTO certificationDTO);
+    void registerCertiInfo(List<CertificationDTO> certificationDTO);
     int existOrNotResumeId(Long resumeId);
     CertificationDTO bringCertiInfo(Long resumeId);
 
