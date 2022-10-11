@@ -32,7 +32,7 @@
 <div class="container py-4" >
   <div class="row" >
     <div class="col-lg-7" style="width : 1000px">
-      <form th:action="@{/auth/member/signUp}" role="form" id="contact-form" name="frm" th:method="post" >
+      <form th:action="@{/member/signUp}" role="form" id="contact-form" name="frm" th:method="post" >
       <h3 class="text-center">회원가입</h3>
         <div class="card-body">
             <span style="float: right; font-size: 14px;"><span
@@ -90,10 +90,17 @@
                 <input type="tel" class="form-control" placeholder="000-0000-0000" name="memPhone" required >
               </div>
             </div>
-            <div class="col-md-6">
+            <!--                    이메일 양식 지정-->
+            <div class="col-md px-0">
               <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
               <div class="input-group">
-                <input type="email" class="form-control" placeholder="goodjob@goodjob.com" name="memEmail" required>
+                <input type="text" class="form-control w-40" name="memEmail1" placeholder="goodjob"
+                       required> &nbsp;@ &nbsp;&nbsp;
+                <select class="form-control" name="memEmail2">
+                  <option value="naver.com">naver.com</option>
+                  <option value="daum.net">daum.net</option>
+                  <option value="gmail.com">gmail.com</option>
+                </select>
               </div>
             </div>
             <div class="row">
@@ -176,7 +183,7 @@
   function checkMassage(){
     var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
     $.ajax({
-      url:'/auth/member/checkId?id='+id, //Controller에서 요청 받을 주소
+      url:'/member/checkId?id='+id, //Controller에서 요청 받을 주소
       success:function(result){ //컨트롤러에서 값을 받는다
         console.log(result)
         if(result != 0){ //cnt가 1이 아니면(=0일 경우) -> 이미 존재하는 아이디

@@ -28,10 +28,10 @@ import java.util.Optional;
 /**
  * 김도현 22.9.29 작성
  * 김도현 22.10.07 수정 (login 메소드 구조 변경)
-**/
+ **/
 
 @Controller
-@RequestMapping("/auth/member")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -47,7 +47,13 @@ public class MemberController {
     }
 
     @GetMapping("/signUp")
-    public String signUpForm() {
+    public String signUpForm(HttpServletRequest request) {
+        // 회원가입 시 기존 로그인 상태면 로그아웃 실행
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
         return "member/signup";
     }
 
@@ -55,8 +61,8 @@ public class MemberController {
     @ResponseBody
     @RequestMapping(value="/checkId",method = RequestMethod.GET)
     public Long checkIdDuplication(@RequestParam("id") String id) {
-            Long result = memberService.countByMemLoginId(id);
-            return result;
+        Long result = memberService.countByMemLoginId(id);
+        return result;
     }
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)

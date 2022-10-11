@@ -13,7 +13,8 @@ public class MemberDTO {
     private String memLoginId;
     private String memPw;
     private String memPhone;
-    private String memEmail;
+    private String memEmail1;
+    private String memEmail2;
     private String memName;
     private Date memBirthDate;
     private String memAddress;
@@ -28,7 +29,7 @@ public class MemberDTO {
                 .memPw(memPw)
                 .memName(memName)
                 .memPhone(memPhone)
-                .memEmail(memEmail)
+                .memEmail(memEmail1+"@"+memEmail2)
                 .memBirthDate(memBirthDate)
                 .memAddress(memAddress +"@"+ detailAddress)
                 .memGender(memGender)

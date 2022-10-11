@@ -71,8 +71,8 @@ public class CompanyDTO {
 
     private String comAddress4;  // 회사주소(참고항목)
     @NotBlank
-    @Email
-    private String comEmail;
+    private String comEmail1;
+    private String comEmail2;
 
     public Company toEntity() {
         //엔티티 바꿀 때는 builder이용해서 필요한 객체 만들자.
@@ -90,7 +90,7 @@ public class CompanyDTO {
                 .comComdivCode(comdiv)
                 .comPw(comPw1)
                 .comPhone(comPhone)
-                .comEmail(comEmail)
+                .comEmail(comEmail1+"@"+comEmail2)
                 .comName(comName)
                 .comBusiNum(comBusiNum)
                 .comInfo(comInfo)
