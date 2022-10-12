@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,6 +32,10 @@ public class CompanyService {
     //아이디 중복확인 메서드
     public int checkId2(String comLoginId) throws Exception {
         return companyRepository.checkId2(comLoginId);
+    }
+    public Optional<Company> loginIdCheck(String comLoginId) {
+        return companyRepository.findByComLoginId(comLoginId);
+
     }
 
 

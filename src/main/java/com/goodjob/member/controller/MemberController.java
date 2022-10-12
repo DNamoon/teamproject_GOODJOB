@@ -6,6 +6,7 @@ import com.goodjob.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,7 +60,7 @@ public class MemberController {
             return result;
     }
     //회원가입
-    @RequestMapping(value="/signUp",method = RequestMethod.POST)
+    @RequestMapping(value="/auth/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
         memberDTO.setMemPw(passwordEncoder.encode(memberDTO.getMemPw()));
         Member mem =  memberDTO.toEntity();
@@ -87,6 +88,7 @@ public class MemberController {
                     HttpSession session = request.getSession();
                     //세션에 로그인 회원 정보 저장
                     session.setAttribute("sessionId", memberDTO.getMemLoginId());
+                    session.setAttribute("Type", "member");
 
                     return "redirect:/";
                 } else {
@@ -100,6 +102,7 @@ public class MemberController {
         }
     }
 
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
 
@@ -111,5 +114,6 @@ public class MemberController {
 
         return "redirect:/";
     }
+
 
 }

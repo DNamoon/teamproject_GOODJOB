@@ -19,17 +19,40 @@
     <h2>메인 페이지</h2>
     <hr/>
 
+    <th:block th:if="${session.sessionId== null}">
 <form th:action="@{/auth/member/signUp}">
     <input type="submit" value="개인회원가입">
 </form>
 <form th:action="@{/auth/member/login}">
     <input type="submit" value="로그인">
 </form>
+    </th:block>
 
-    로그인 된 회원 아이디 :<span th:text="${session.sessionId}">message</span>
-    <button class="btn btn-outline-light me-1" type="button"
-            th:onclick="|location.href='@{/auth/member/logout}'|">로그아웃</button>
+<form name="frmSub" method="get" >
+    <th:block th:if="${session.sessionId}">
+    로그인 된 회원 아이디 : <span th:text="${session.sessionId}" >message</span>
 
+    <input class="btn btn-outline-light me-1" type="button" value="My Page"
+          th:onclick="MyPage([[${session.Type}]])"></input>
+        <input class="btn btn-outline-light me-1" type="button" value="로그아웃"
+               th:onclick="|location.href='@{/auth/member/logout}'|"></input>
+    </th:block>
+
+</form>
 
 </body>
+
+<script>
+    function MyPage(mode) {
+        var form = document.frmSub;
+        if(mode == "member"){
+            // alert("Mode:"+mode);
+            form.action = "/auth/member/myPage";
+        }else {
+            alert("Mode:"+mode);
+            // form.action = "/auth/company/mypage";
+        }
+        form.submit();
+    }
+</script>
 </html>
