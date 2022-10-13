@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    maxDate();
+
     $("#registerResume").click(function(){
         $.ajax({
             type: "get",
@@ -102,6 +104,7 @@ function execPostCode() {
 
 //자격증 추가
 function addCertiInfo() {
+    maxDate();
     var certiInfo = '';
 
     certiInfo += '<hr>';
@@ -119,7 +122,7 @@ function addCertiInfo() {
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
     certiInfo += '<label>취득년월</label>';
     certiInfo += '<div class="input-group mb-4">';
-    certiInfo += '<input class="form-control" placeholder="YYYY-MM-DD" type="date" value="2010-01-01" name="certiGetDate">';
+    certiInfo += '<input class="form-control certiGetDate" type="date" name="certiGetDate" max="">';
     certiInfo += '</div>';
     certiInfo += '</div>';
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
@@ -257,6 +260,7 @@ function getListToPrev(){
 
 //경력 추가
 function addCareerInfo() {
+    maxDate();     // 추가되는 애들한테는 최댓값이 적용이 안됨
     var careerInfo = '';
 
     careerInfo += '<div class="row" style="float: inline-start;">';
@@ -269,7 +273,7 @@ function addCareerInfo() {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" placeholder="YYYY-MM-DD" type="date" value="2010-01-01" name="careerJoinedDate">';
+    careerInfo += '<input class="form-control" type="date" name="careerJoinedDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 5px;">';
@@ -279,7 +283,7 @@ function addCareerInfo() {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" placeholder="YYYY-MM-DD" type="date" value="2010-01-01" name="careerRetireDate">';
+    careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '</div>';
@@ -292,6 +296,30 @@ function addCareerInfo() {
 }
 
 //입력검증
+//날짜 최댓값을 오늘로 설정
+function maxDate(){
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = today.getMonth() + 1;  //1월이 0임
+    var dd = today.getDate();
+
+    if(dd < 10){
+        dd = '0' + dd;
+    }
+    if(mm < 10){
+        mm = '0' + mm;
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    $(".eduGraduationDate").attr("max", today);
+    $(".careerRetireDate").attr("max", today);
+    $(".certiGetDate").attr("max", today);
+}
+
+function careerRetireDateMin(){     // min에는 함수를 쓸 수 없음, 같은 div안에 있는 careerJoinedDate값을 최솟값으로 가져야 함
+    return $(".careerJoinedDate").val();
+}
+
 //휴대폰 번호 - 실
 function isFourNumber(phoneNum){
     var exp = /\d\d\d\d/;

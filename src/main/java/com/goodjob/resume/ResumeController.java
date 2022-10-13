@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +90,7 @@ public class ResumeController {
     }
 
     @GetMapping("/resumeStep2/{resumeId}")  //Get으로 바꿈
-    public String resumeStep2(@PathVariable("resumeId") Long resumeId, ResumeMemberDTO resumeMemberDTO, EducationDTO educationDTO, Model model){
+    public String resumeStep2(@PathVariable("resumeId") Long resumeId, @Valid ResumeMemberDTO resumeMemberDTO, @Valid EducationDTO educationDTO, Model model){
         resumeService.updateResumeMemberInfo(resumeMemberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
 
@@ -97,9 +98,6 @@ public class ResumeController {
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
             model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
-
-            System.out.println(certificationService.bringCertiInfo(resumeId));
-            System.out.println(careerService.bringCareerInfo(resumeId));
 
             return "/resume/ResumeStep2WithContent";
         }
@@ -112,6 +110,7 @@ public class ResumeController {
     public void resumeStep3(@RequestParam Map params) throws Exception{
         String certiJson = params.get("certificateList").toString();
         String careerJson = params.get("careerList").toString();
+
         ObjectMapper mapper = new ObjectMapper();
         List<CertificationDTO> certiList = mapper.readValue(certiJson, new TypeReference<List<CertificationDTO>>(){});
         List<CareerDTO> careerList = mapper.readValue(careerJson, new TypeReference<List<CareerDTO>>() {});
@@ -134,7 +133,7 @@ public class ResumeController {
     }
 
     @GetMapping("/submitResume")
-    public String submitResume(SelfIntroductionDTO selfIntroductionDTO){
+    public String submitResume(@Valid SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
         return "redirect:/resume//myInfo";
     }
@@ -150,7 +149,7 @@ public class ResumeController {
     }
 
     @GetMapping("/goPreviousStep2/{resumeId}")  //Get
-    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, SelfIntroductionDTO selfIntroductionDTO, Model model){
+    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, @Valid SelfIntroductionDTO selfIntroductionDTO, Model model){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
 
         model.addAttribute("resumeId", resumeId);

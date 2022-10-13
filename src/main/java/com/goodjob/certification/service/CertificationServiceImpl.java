@@ -52,10 +52,11 @@ public class CertificationServiceImpl implements CertificationService {
     @Override
     public List<CertificationDTO> bringCertiInfo(Long resumeId) {
         List<Certification> certificationList = certificationRepository.findCertiInfoByResumeId(resumeId);
-        List<CertificationDTO> certificationDTOList = new ArrayList<>();
+        List<CertificationDTO> certificationDTOList = new ArrayList<CertificationDTO>();
         for(Certification certification : certificationList){
             certificationDTOList.add(entityToDTO(certification));
         }
+
         return certificationDTOList;
     }
 
