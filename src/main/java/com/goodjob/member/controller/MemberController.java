@@ -48,7 +48,13 @@ public class MemberController {
     }
 
     @GetMapping("/signUp")
-    public String signUpForm() {
+    public String signUpForm(HttpServletRequest request) {
+        // 회원가입 시 기존 로그인 상태면 로그아웃 실행
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
         return "member/signup";
     }
 
@@ -60,7 +66,7 @@ public class MemberController {
             return result;
     }
     //회원가입
-    @RequestMapping(value="/auth/signUp",method = RequestMethod.POST)
+    @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
         memberDTO.setMemPw(passwordEncoder.encode(memberDTO.getMemPw()));
         Member mem =  memberDTO.toEntity();
@@ -102,7 +108,6 @@ public class MemberController {
         }
     }
 
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
 
@@ -114,6 +119,5 @@ public class MemberController {
 
         return "redirect:/";
     }
-
 
 }

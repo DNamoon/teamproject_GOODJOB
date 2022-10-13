@@ -28,11 +28,11 @@
 </head>
 <body class="page-header min-vh-100">
 <div class="container py-4">
-    <form th:action="@{/member/login}" role="form" name="frm" th:method="post" >
+    <form th:action="@{/com/login}" role="form" name="frm" th:method="post" >
         <div class="page-header min-vh-100">
             <div class="container py-4">
                 <div class="row">
-                    <div class="col-lg-5 mx-auto">
+                    <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
                         <div class="card card-plain">
                             <div class="text-center pb-0 text-left">
                                 <h4 class="font-weight-bolder">로그인</h4>
@@ -43,17 +43,17 @@
                                 </div>
                                 <form role="form">
                                     <div class="mb-3">
-                                        <input type="text" class="form-control form-control-lg" id ="id" placeholder="아이디" name="memLoginId" required>
+                                        <input type="text" class="form-control form-control-lg" id ="id" placeholder="아이디" name="comLoginId" required>
                                     </div>
                                     <div class="mb-3">
-                                        <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호" name="memPw"  style="-webkit-text-security:square;" required >
+                                        <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호" name="comPw1"  style="-webkit-text-security:square;" required >
                                     </div>
                                     <div class="col-md-12">
                                         <button type="submit" class="btn bg-gradient-dark w-100" style="font-size:15px" >로그인</button>
                                     </div>
                                 </form>
                                 <div class="col-md-12 text-center pt-0 px-lg-2 px-1">
-                                    <a href="/auth/member/signUp" class="font-weight-bold" style="color: #344767">회원가입</a>
+                                    <a href="/com/register" class="font-weight-bold" style="color: #344767">회원가입</a>
                                 </div>
                             </div>
                         </div>

@@ -26,7 +26,7 @@ import java.util.Optional;
 @Log4j2
 @RequestMapping("/com")
 public class CompanyController {
-    //주석삭제
+//주석삭제
     @Autowired
     private CompanyService companyService;
 
@@ -106,7 +106,6 @@ public class CompanyController {
                     HttpSession session = request.getSession();
                     //세션에 로그인 회원 정보 저장
                     session.setAttribute("sessionId", companyDTO.getComLoginId());
-                    session.setAttribute("Type", "company");
 
                     return "redirect:/";
                 } else {

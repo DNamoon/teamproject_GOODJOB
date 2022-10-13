@@ -8,13 +8,13 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage"
-    xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
 
     <title>회원가입 (기업회원용)</title>
 
@@ -36,8 +36,8 @@
     <!--modal files-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
 
-<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
-<!--    slim버전 쓰면 $.ajax()를 사용할 수 없대. 밑에 코드로 변경-->
+    <!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+    <!--    slim버전 쓰면 $.ajax()를 사용할 수 없대. 밑에 코드로 변경-->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
@@ -62,14 +62,15 @@
     <div class="row">
         <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
             <h3 class="text-center">회원가입 (기업회원용)</h3>
-            <label><span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 은 필수항목입니다.</label>
+            <div class="card-body">
+            <span style="float: right; font-size: 14px;"><span
+                    style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span><br/>
             <form role="form" id="contact-form" name="frm" method="post" autocomplete="off"
                   th:action="@{/com/register}" th:object="${companyDTO}">
 
-<!--                에러 메시지 보여주는 위치           -->
-            <div th:replace="form_errors :: formErrorsFragment"></div>
+                <!--                에러 메시지 보여주는 위치           -->
+                <div th:replace="/company/formErrors :: formErrorsFragment"></div>
 
-                <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
                             <label th:for="comLoginId">아이디<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
@@ -153,22 +154,30 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label th:for="comEmail">이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                        <div class="input-group">
-                            <input type="email" class="form-control" th:field="*{comEmail}" placeholder="goodjob@goodjob.com" name="email"
-                                   required>
-                        </div>
+                <!--                    이메일 양식 지정-->
+                <div class="col-md px-0">
+                    <label th:for="comEmail">이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control w-40" th:field="*{comEmail1}" placeholder="goodjob"
+                               name="email"
+                               required> &nbsp;@ &nbsp;&nbsp;
+                        <select class="form-control" th:field="*{comEmail2}">
+                            <option value="naver.com">naver.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="gmail.com">gmail.com</option>
+                        </select>
                     </div>
+                </div>
                     <div>
                         <div class="col-md-6 px-0">
                             <label th:for="comAddress">주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                             <div class="input-group mb-4">
                                 <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
                                 <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" required>
-                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-80 findAddress"><br>
+                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-150 findAddress">
                             </div>
                         </div>
+
                         <div class="mb-4">
                             <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" required><br>
                         </div>
@@ -330,7 +339,7 @@
 
         $.ajax({
             type : "post",
-            url : "/comIdCheck",
+            url : "/com/check",
             data : data,
             success : function(result){
                 if(result != 'fail'){
@@ -346,7 +355,7 @@
     });
 
 
-     // 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
+    // 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
     $("#userId").blur(function () {
         let idError = $("#idError");
         idError.css("color", "#ff6289");

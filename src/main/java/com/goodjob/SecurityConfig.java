@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * 김도현 22.10.07 수정 (로그인 에러로 filterChain 메소드 수정)
  */
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig  {
 
 
     //  비밀번호 암호화 (단방향)
@@ -22,17 +22,23 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+
+    // There is no PasswordEncoder mapped for the id "null" 에러 해결위해 추가.
+    @Bean
+    public PasswordEncoder noOpPasswordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().disable()            //cors 방지
-                .csrf().disable()            //csrf 방지
-//                .formLogin().loginPage("/auth/member/login").and()		//기본 로그인페이지 없애기
-//                             .defaultSuccessUrl("/").and()
+        http.cors().disable()			//cors 방지
+                .csrf().disable()			//csrf 방지
+                //                .formLogin().loginPage("/auth/member/login")		//기본 로그인페이지 없애기
+                //                .defaultSuccessUrl("/").and()
                 .authorizeRequests()
-                .antMatchers("/com/**","/auth/**", "/", "/resume/**", "/admin/**").permitAll() // /auth이하의 주소들은 인증 필요x
-                .antMatchers("/css/**", "/js/**").permitAll()
-//                .antMatchers("/auth/member/login").isAnonymous()
-                .anyRequest().authenticated().and()// 이외 모든 요청은 인증 시 접근 가능
+                .antMatchers("/auth/**","/","/resume/**","/admin/**","/com/**").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/css/**","/js/**").permitAll()
+                .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();
 
         return http.build();
