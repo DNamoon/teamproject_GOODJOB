@@ -34,7 +34,6 @@ public class SelfIntroductionServiceImpl implements SelfIntroductionService {
 
     @Override
     public int existOrNotResumeId(Long resumeId) {
-        log.info("=========== 이력서 대외활동 및 자소서항목 없음 - 새로 등록 ===========");
         if(selfIntroductionRepository.findByResumeId(resumeId) == null){
             return 0;
         }

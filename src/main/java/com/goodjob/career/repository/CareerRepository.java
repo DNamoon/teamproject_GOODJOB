@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * 박채원 22.10.03 작성
@@ -14,10 +15,13 @@ import java.sql.Date;
 
 public interface CareerRepository extends JpaRepository<Career, Long> {
     @Query("select c from Career c where c.resume.resumeId =:resumeId")
-    Career findCareerInfoByResumeId(Long resumeId);
+    List<Career> findCareerInfoByResumeId(Long resumeId);
 
     @Query("select c.resume.resumeId from Career c where c.resume.resumeId =:resumeId")
     Long findByResumeId(Long resumeId);
+
+    @Query("select count(c) from Career c where c.resume.resumeId =:resumeId")
+    int countCareerByResumeId(Long resumeId);
 
     @Transactional
     @Modifying

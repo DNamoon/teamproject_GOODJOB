@@ -15,7 +15,7 @@ public interface CertificationService {
 
     void registerCertiInfo(List<CertificationDTO> certificationDTO);
     int existOrNotResumeId(Long resumeId);
-    CertificationDTO bringCertiInfo(Long resumeId);
+    List<CertificationDTO> bringCertiInfo(Long resumeId);
 
     //자격증 검색을 위한 메소드
     List<CertificateName> findCertiName(String keyword);

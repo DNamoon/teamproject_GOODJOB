@@ -31,8 +31,8 @@
       <div class="col-lg-7" style="width : 1000px">
         <h3 class="text-center mx-auto">STEP1</h3>
         &nbsp;
-        <!-- 인적사항 -->
-        <form role="form" id="contact-form" th:method="post" autocomplete="off" th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
+        <!-- 인적사항  get으로 바꿈-->
+        <form role="form" id="contact-form" th:method="get" autocomplete="off" th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
           <input type="hidden" th:value="${memberInfo.memId}" name="memId">
           <input type="hidden" th:value="${resumeId}" name="resumeId">
           <div class="card-body">

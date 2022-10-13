@@ -63,6 +63,7 @@ public class ResumeController {
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", resumeMemberDTO);
+
         return "/resume/ResumeStep1";
     }
 
@@ -87,7 +88,7 @@ public class ResumeController {
         return certificationService.findCertiName(certiName);
     }
 
-    @PostMapping("/resumeStep2/{resumeId}")
+    @GetMapping("/resumeStep2/{resumeId}")  //Get으로 바꿈
     public String resumeStep2(@PathVariable("resumeId") Long resumeId, ResumeMemberDTO resumeMemberDTO, EducationDTO educationDTO, Model model){
         resumeService.updateResumeMemberInfo(resumeMemberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
@@ -96,6 +97,10 @@ public class ResumeController {
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
             model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+
+            System.out.println(certificationService.bringCertiInfo(resumeId));
+            System.out.println(careerService.bringCareerInfo(resumeId));
+
             return "/resume/ResumeStep2WithContent";
         }
         model.addAttribute("resumeId", resumeId);
@@ -103,7 +108,7 @@ public class ResumeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/insertStep2", method = RequestMethod.POST)
+    @RequestMapping(value = "/insertStep2", method = RequestMethod.GET)
     public void resumeStep3(@RequestParam Map params) throws Exception{
         String certiJson = params.get("certificateList").toString();
         String careerJson = params.get("careerList").toString();
@@ -120,6 +125,7 @@ public class ResumeController {
         if(selfIntroductionService.existOrNotResumeId(resumeId) == 1){
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("selfIntroInfo", selfIntroductionService.bringSelfIntroInfo(resumeId));
+
             return "/resume/ResumeStep3WithContent";
         }
 
@@ -127,31 +133,30 @@ public class ResumeController {
         return "/resume/ResumeStep3";
     }
 
-    @PostMapping("/submitResume")
+    @GetMapping("/submitResume")
     public String submitResume(SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
         return "redirect:/resume//myInfo";
     }
 
-//    @PostMapping("/goPreviousStep1/{resumeId}")
-//    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
-//        certificationService.registerCertiInfo(certificationDTO);
-//        careerService.registerCareerInfo(careerDTO);
-//
-//        model.addAttribute("resumeId", resumeId);
-//        model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
-//        model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
-//        model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
-//        return "/resume/ResumeStep1WithContent";
-//    }
+    @GetMapping("/goPreviousStep1/{resumeId}")  //Get
+    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model){
+        model.addAttribute("resumeId", resumeId);
+        model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
+        model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
+        model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
 
-    @PostMapping("/goPreviousStep2/{resumeId}")
+        return "/resume/ResumeStep1WithContent";
+    }
+
+    @GetMapping("/goPreviousStep2/{resumeId}")  //Get
     public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, SelfIntroductionDTO selfIntroductionDTO, Model model){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
         model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+
         return "/resume/ResumeStep2WithContent";
     }
 }

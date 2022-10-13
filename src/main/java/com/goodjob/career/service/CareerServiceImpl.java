@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public void registerCareerInfo(List<CareerDTO> list) {
-        if (careerRepository.findByResumeId(list.get(0).getResumeId()) == null) {
+        if(careerRepository.countCareerByResumeId(list.get(0).getResumeId()) == 0){
             for (int i = 0; i < list.size(); i++) {
                 Career career = dtoToEntity(list.get(i));
                 log.info("=========== 이력서 경력사항 등록 ===========");
@@ -39,9 +40,13 @@ public class CareerServiceImpl implements CareerService {
     }
 
     @Override
-    public CareerDTO bringCareerInfo(Long resumeId) {
-        Career career = careerRepository.findCareerInfoByResumeId(resumeId);
-        CareerDTO careerDTO = entityToDTO(career);
-        return careerDTO;
+    public List<CareerDTO> bringCareerInfo(Long resumeId) {
+        List<Career> careerList = careerRepository.findCareerInfoByResumeId(resumeId);
+        List<CareerDTO> careerDTOList = new ArrayList<CareerDTO>();
+        for(Career career : careerList){
+            careerDTOList.add(entityToDTO(career));
+        }
+
+        return careerDTOList;
     }
 }

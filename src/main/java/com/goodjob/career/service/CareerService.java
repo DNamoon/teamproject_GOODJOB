@@ -16,7 +16,7 @@ public interface CareerService {
     void registerCareerInfo(List<CareerDTO> careerDTO);
 
 //    int existOrNotResumeId(Long resumeId);
-    CareerDTO bringCareerInfo(Long resumeId);
+    List<CareerDTO> bringCareerInfo(Long resumeId);
 
     default Career dtoToEntity(CareerDTO careerDTO){
         Resume resume = Resume.builder().resumeId(careerDTO.getResumeId()).build();

@@ -137,7 +137,7 @@ function getInputId(data){
     $("#modalId").val($(data).parent().parent().find("input").attr("id"));
 }
 
-function getCertiList(){
+function getListToNext(){
     var certiSize = $("input[name='certificateName']").length;
     var careerSize = $("input[name='careerCompanyName']").length;
     var resumeId = $("input[name='resumeId']").val();
@@ -174,7 +174,7 @@ function getCertiList(){
             $("input[name='careerCompanyName']").eq(i).val(),
             $("input[name='careerJoinedDate']").eq(i).val(),
             $("input[name='careerRetireDate']").eq(i).val(),
-            $("input[name='careerTask']").eq(i).val(),
+            $("textarea[name='careerTask']").eq(i).val(),
             $("input[name='resumeId']").val()
         )
         careerList.push(careerDTO);
@@ -184,12 +184,73 @@ function getCertiList(){
     console.log(careerList);
 
     $.ajax({
-        type: "post",
+        type: "get",
         url: "/resume/insertStep2",
         data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
         success: function(data){
+            alert("step3으로 감");
             location.href = "/resume/resumeStep3/" + resumeId;
         }, error : function(data){
+            alert("step3으로 못 감");
+        }
+    });
+}
+
+function getListToPrev(){
+    var certiSize = $("input[name='certificateName']").length;
+    var careerSize = $("input[name='careerCompanyName']").length;
+    var resumeId = $("input[name='resumeId']").val();
+
+    let CertificateDTO = function (resumeId, certificateName, certiGetDate, certiScore){
+        this.resumeId = resumeId;
+        this.certificateName = certificateName;
+        this.certiGetDate = certiGetDate;
+        this.certiScore = certiScore;
+    }
+
+    let CareerDTO = function (careerCompanyName, careerJoinedDate, careerRetireDate, careerTask, resumeId){
+        this.resumeId = resumeId;
+        this.careerCompanyName = careerCompanyName;
+        this.careerJoinedDate = careerJoinedDate;
+        this.careerRetireDate = careerRetireDate;
+        this.careerTask = careerTask;
+    }
+
+    var certificateList = [];
+    for(i = 0; i < certiSize; i++){
+        var certificateDTO = new CertificateDTO(
+            $("input[name='resumeId']").val(),
+            $("input[name='certificateName']").eq(i).val(),
+            $("input[name='certiGetDate']").eq(i).val(),
+            $("input[name='certiScore']").eq(i).val()
+        )
+        certificateList.push(certificateDTO);
+    }
+
+    var careerList = [];
+    for(i = 0; i < careerSize; i++){
+        var careerDTO = new CareerDTO(
+            $("input[name='careerCompanyName']").eq(i).val(),
+            $("input[name='careerJoinedDate']").eq(i).val(),
+            $("input[name='careerRetireDate']").eq(i).val(),
+            $("textarea[name='careerTask']").eq(i).val(),
+            $("input[name='resumeId']").val()
+        )
+        careerList.push(careerDTO);
+    }
+
+    console.log(certificateList);
+    console.log(careerList);
+
+    $.ajax({
+        type: "get",
+        url: "/resume/insertStep2",
+        data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
+        success: function(data){
+            alert("step1으로 되돌아감")
+            location.href = "/resume/goPreviousStep1/" + resumeId;
+        }, error : function(data){
+            alert("step1으로 못 되돌아감")
         }
     });
 }

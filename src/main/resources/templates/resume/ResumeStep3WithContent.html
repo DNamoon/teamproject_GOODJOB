@@ -27,7 +27,7 @@
       <div class="col-lg-7" style="width : 1000px">
         <h3 class="text-center mx-auto">STEP3</h3>
         &nbsp;
-        <form role="form" id="contact-form" method="post" autocomplete="off">
+        <form role="form" id="contact-form" method="get" autocomplete="off">  <!-- get으로 바꿈 -->
           <input type="hidden" th:value="${resumeId}" name="resumeId">
           <div class="card-body">
             <h4 class="text-left">| 대외활동</h4>
@@ -44,6 +44,8 @@
 
             <div style="height: 30px;"></div>
             <div class="card-body">
+              <span style="float: right; font-size: 14px;"><span
+                      style="color: rgb(244, 54, 54);">&nbsp;자기소개서</span> 항목은 필수사항 입니다.</span>
               <h4 class="text-left">| 자기소개서</h4>
               &nbsp;
               <div class="row" style="float: inline-start;">
