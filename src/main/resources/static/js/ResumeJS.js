@@ -1,6 +1,7 @@
 $(document).ready(function(){
     maxDate();
-
+    
+    //이력서 등록버튼 눌리면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function(){
         $.ajax({
             type: "get",
@@ -11,7 +12,8 @@ $(document).ready(function(){
             }
         });
     })
-
+    
+    //학교 찾기
     $(".findSchool").click(function(){
         var schoolName = $(".findSchoolName").val();
 
@@ -32,6 +34,7 @@ $(document).ready(function(){
         });
     });
 
+    //전공 찾기
     $(".findMajor").click(function(){
         var majorName = $(".findMajorName").val();
 
@@ -52,6 +55,7 @@ $(document).ready(function(){
         });
     });
 
+    //자격증 찾기
     $(".findCerti").click(function () {
         var certiName = $(".findCertiName").val();
 
@@ -183,18 +187,12 @@ function getListToNext(){
         careerList.push(careerDTO);
     }
 
-    console.log(certificateList);
-    console.log(careerList);
-
     $.ajax({
         type: "get",
         url: "/resume/insertStep2",
         data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
         success: function(data){
-            alert("step3으로 감");
             location.href = "/resume/resumeStep3/" + resumeId;
-        }, error : function(data){
-            alert("step3으로 못 감");
         }
     });
 }
@@ -204,15 +202,17 @@ function getListToPrev(){
     var careerSize = $("input[name='careerCompanyName']").length;
     var resumeId = $("input[name='resumeId']").val();
 
-    let CertificateDTO = function (resumeId, certificateName, certiGetDate, certiScore){
+    let CertificateDTO = function (resumeId, certiId, certificateName, certiGetDate, certiScore){
         this.resumeId = resumeId;
+        this.certiId = certiId;
         this.certificateName = certificateName;
         this.certiGetDate = certiGetDate;
         this.certiScore = certiScore;
     }
 
-    let CareerDTO = function (careerCompanyName, careerJoinedDate, careerRetireDate, careerTask, resumeId){
+    let CareerDTO = function (careerId, careerCompanyName, careerJoinedDate, careerRetireDate, careerTask, resumeId){
         this.resumeId = resumeId;
+        this.careerId = careerId;
         this.careerCompanyName = careerCompanyName;
         this.careerJoinedDate = careerJoinedDate;
         this.careerRetireDate = careerRetireDate;
@@ -223,6 +223,7 @@ function getListToPrev(){
     for(i = 0; i < certiSize; i++){
         var certificateDTO = new CertificateDTO(
             $("input[name='resumeId']").val(),
+            $("input[name='certiId']").eq(i).val(),
             $("input[name='certificateName']").eq(i).val(),
             $("input[name='certiGetDate']").eq(i).val(),
             $("input[name='certiScore']").eq(i).val()
@@ -233,6 +234,7 @@ function getListToPrev(){
     var careerList = [];
     for(i = 0; i < careerSize; i++){
         var careerDTO = new CareerDTO(
+            $("input[name= 'careerId']").eq(i).val(),
             $("input[name='careerCompanyName']").eq(i).val(),
             $("input[name='careerJoinedDate']").eq(i).val(),
             $("input[name='careerRetireDate']").eq(i).val(),
@@ -242,18 +244,12 @@ function getListToPrev(){
         careerList.push(careerDTO);
     }
 
-    console.log(certificateList);
-    console.log(careerList);
-
     $.ajax({
         type: "get",
         url: "/resume/insertStep2",
         data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
-        success: function(data){
-            alert("step1으로 되돌아감")
+        success: function(data) {
             location.href = "/resume/goPreviousStep1/" + resumeId;
-        }, error : function(data){
-            alert("step1으로 못 되돌아감")
         }
     });
 }

@@ -36,7 +36,7 @@ public class CertificationServiceImpl implements CertificationService {
             for (int i = 0; i < list.size(); i++) {
                 Certification certification = dtoToEntity(list.get(i));
                 log.info("=========== 이력서 자격증항목 수정 ===========");
-                certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(), certification.getCertiGetDate(), certification.getCertiScore(), certification.getResume().getResumeId());
+                certificationRepository.updateCertiInfo(certification.getCertificateName().getCertiName(), certification.getCertiGetDate(), certification.getCertiScore(), certification.getCertiId());
             }
         }
     }

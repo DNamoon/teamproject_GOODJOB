@@ -34,7 +34,7 @@ public class CareerServiceImpl implements CareerService {
             for (int i = 0; i < list.size(); i++) {
                 Career career = dtoToEntity(list.get(i));
                 log.info("=========== 이력서 경력사항 수정 ===========");
-                careerRepository.updateCareerInfo(career.getCareerCompanyName(), career.getCareerJoinedDate(), career.getCareerRetireDate(), career.getCareerTask(), career.getResume().getResumeId());
+                careerRepository.updateCareerInfo(career.getCareerCompanyName(), career.getCareerJoinedDate(), career.getCareerRetireDate(), career.getCareerTask(), career.getCareerId());
             }
         }
     }

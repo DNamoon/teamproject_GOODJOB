@@ -25,6 +25,6 @@ public interface CareerRepository extends JpaRepository<Career, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Career c set c.careerCompanyName =:companyName, c.careerJoinedDate =:joinDate, c.careerRetireDate =:retireDate, c.careerTask =:task where c.resume.resumeId =:resumeId")
-    void updateCareerInfo(String companyName, Date joinDate, Date retireDate, String task, Long resumeId);
+    @Query("update Career c set c.careerCompanyName =:companyName, c.careerJoinedDate =:joinDate, c.careerRetireDate =:retireDate, c.careerTask =:task where c.careerId =:careerId")
+    void updateCareerInfo(String companyName, Date joinDate, Date retireDate, String task, Long careerId);
 }

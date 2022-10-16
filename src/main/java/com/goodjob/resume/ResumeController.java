@@ -95,6 +95,9 @@ public class ResumeController {
         educationService.registerSchoolInfo(educationDTO);
 
         if(certificationService.existOrNotResumeId(resumeId) == 1){
+            System.out.println("=====================step2WC GO NEXT" + certificationService.bringCertiInfo(resumeId));
+            System.out.println("=====================step2WC GO NEXT" + careerService.bringCareerInfo(resumeId));
+
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
             model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
@@ -114,6 +117,10 @@ public class ResumeController {
         ObjectMapper mapper = new ObjectMapper();
         List<CertificationDTO> certiList = mapper.readValue(certiJson, new TypeReference<List<CertificationDTO>>(){});
         List<CareerDTO> careerList = mapper.readValue(careerJson, new TypeReference<List<CareerDTO>>() {});
+
+        System.out.println("=====================insert" + certiList);
+        System.out.println("=====================insert" + careerList);
+
         certificationService.registerCertiInfo(certiList);
         careerService.registerCareerInfo(careerList);
     }
@@ -151,6 +158,9 @@ public class ResumeController {
     @GetMapping("/goPreviousStep2/{resumeId}")  //Get
     public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, @Valid SelfIntroductionDTO selfIntroductionDTO, Model model){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
+
+        System.out.println("=====================step2WC GO PREVIOUS" + certificationService.bringCertiInfo(resumeId));
+        System.out.println("=====================step2WC GO PREVIOUS" + careerService.bringCareerInfo(resumeId));
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));

@@ -1,13 +1,8 @@
 package com.goodjob.certification.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-//import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.JSONParser;
-import org.springframework.boot.json.JsonParser;
-
 
 import java.util.ArrayList;
 
@@ -23,13 +18,5 @@ public class CertificationListDTO {
         return certificationDTOList;
     }
 
-//    public void setCertificationDTOList(ArrayList<CertificationDTO> certificationDTOList) {
-//        JSONObJECT
-//       certificationDTOList = new ArrayList<>();
-//        JsonParser parser = new JSONParser();
-//        JSONArray arr =  (JSONArray) parser.parse(param);
-//        certificationDTOList = arr;
-//        this.certificationDTOList = certificationDTOList;
-//    }
 
 }
