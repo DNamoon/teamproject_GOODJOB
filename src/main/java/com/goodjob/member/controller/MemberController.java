@@ -4,26 +4,11 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Optional;
 
 /**
@@ -32,20 +17,12 @@ import java.util.Optional;
 **/
 
 @Controller
-@RequestMapping("/auth/member")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
+    private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/signUp")
     public String signUpForm(HttpServletRequest request) {
@@ -62,8 +39,8 @@ public class MemberController {
     @ResponseBody
     @RequestMapping(value="/checkId",method = RequestMethod.GET)
     public Long checkIdDuplication(@RequestParam("id") String id) {
-            Long result = memberService.countByMemLoginId(id);
-            return result;
+        Long result = memberService.countByMemLoginId(id);
+        return result;
     }
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)

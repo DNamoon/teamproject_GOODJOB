@@ -24,10 +24,10 @@
     <hr/>
 
     <th:block th:if="${session.sessionId== null}">
-<form th:action="@{/auth/member/signUp}">
+<form th:action="@{/member/signUp}">
     <input type="submit" value="개인회원가입">
 </form>
-<form th:action="@{/auth/member/login}">
+<form th:action="@{/member/login}">
     <input type="submit" value="로그인">
 </form>
     </th:block>
@@ -37,9 +37,9 @@
     로그인 된 회원 아이디 : <span th:text="${session.sessionId}" >message</span>
 
     <input class="btn btn-outline-light me-1" type="button" value="My Page"
-          th:onclick="MyPage([[${session.Type}]])"></input>
+          th:onclick="UserType([[${session.Type}]])"></input>
         <input class="btn btn-outline-light me-1" type="button" value="로그아웃"
-               th:onclick="|location.href='@{/auth/member/logout}'|"></input>
+               th:onclick="|location.href='@{/member/logout}'|"></input>
     </th:block>
 
 </form>
@@ -47,14 +47,14 @@
 </body>
 
 <script>
-    function MyPage(mode) {
-        var form = document.frmSub;
+    function UserType(mode) {
+        const form = document.frmSub;
         if(mode == "member"){
             // alert("Mode:"+mode);
-            form.action = "/auth/member/myPage";
+            form.action = "/member/myPage";
         }else {
             alert("Mode:"+mode);
-            // form.action = "/auth/company/mypage";
+            // form.action = "/company/mypage";
         }
         form.submit();
     }

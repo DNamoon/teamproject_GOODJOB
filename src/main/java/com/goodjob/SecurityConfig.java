@@ -22,13 +22,6 @@ public class SecurityConfig  {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
-    // There is no PasswordEncoder mapped for the id "null" 에러 해결위해 추가.
-    @Bean
-    public PasswordEncoder noOpPasswordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().disable()			//cors 방지
@@ -36,7 +29,7 @@ public class SecurityConfig  {
                 //                .formLogin().loginPage("/auth/member/login")		//기본 로그인페이지 없애기
                 //                .defaultSuccessUrl("/").and()
                 .authorizeRequests()
-                .antMatchers("/auth/**","/","/resume/**","/admin/**","/com/**").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**").permitAll() // /auth이하의 주소들은 인증 필요x
                 .antMatchers("/css/**","/js/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();

@@ -1,0 +1,109 @@
+
+ //mypage sidebar toggle
+    window.addEventListener('DOMContentLoaded', event => {
+
+        // Toggle the side navigation
+        const sidebarToggle = document.body.querySelector('#sidebarToggle');
+        if (sidebarToggle) {
+            // Uncomment Below to persist sidebar toggle between refreshes
+            // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+            //     document.body.classList.toggle('sb-sidenav-toggled');
+            // }
+            sidebarToggle.addEventListener('click', event => {
+                event.preventDefault();
+                document.body.classList.toggle('sb-sidenav-toggled');
+                localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+            });
+        }
+    });
+
+ //id 중복검사
+ $(function(){
+     $("#id").on('keyup',checkMassage);
+ })
+ function checkMassage(){
+     var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
+     $.ajax({
+         url:'/member/checkId?id='+id, //Controller에서 요청 받을 주소
+         success:function(result){ //컨트롤러에서 값을 받는다
+             console.log(result)
+             if(result != 0){ //cnt가 1이 아니면(=0일 경우) -> 이미 존재하는 아이디
+                 $('#checkMassage').css('color','red')
+                 $('#checkMassage').html("사용할 수 없는 아이디입니다.")
+                 $("#btn").prop('disabled',true);
+
+             } else { // cnt가 1일 경우 -> 사용 가능한 아이디
+                 $('#checkMassage').css('color','blue')
+                 $('#checkMassage').html("사용할 수 있는 아이디입니다.")
+                 $("#btn").prop('disabled',false);
+             }
+         }
+     });
+ };
+ //주소찾기
+ function execPostCode() {
+     daum.postcode.load(function () {
+         new daum.Postcode({
+             oncomplete: function (data) {
+                 var addr = '';
+
+                 if (data.userSelectedType === 'R') {
+                     addr = data.roadAddress;
+                 } else {
+                     addr = data.jibunAddress;
+                 }
+
+                 document.getElementById("userAddress").value = '(' + data.zonecode + ') ' + addr;
+                 document.getElementById("userDetailAddress").focus();
+             }
+         }).open();
+     });
+ }
+ //회원가입 비밀번호 확인
+ function test() {
+     var p1 = document.getElementById('pw1').value;
+     var p2 = document.getElementById('pw2').value;
+     if(p1 != p2){
+         $('#confirmMsg').css('color','red')
+         $('#confirmMsg').html("비밀번호 불일치")
+         $("#btn").prop('disabled',true);
+
+     } else { // cnt가 1일 경우 -> 사용 가능한 아이디
+         $('#confirmMsg').css('color','blue')
+         $('#confirmMsg').html("비밀번호 일치")
+         $("#btn").prop('disabled',false);
+     }
+
+ }
+ // login 페이지 기업 or 개인 회원 체크
+ function checkOnlyOneLogin(element) {
+     //checkbox 중복 선택 불가
+     const checkboxes
+         = document.getElementsByName("type");
+
+     checkboxes.forEach((cb) => {
+         cb.checked = false;
+     })
+
+     element.checked = true;
+     $('#chk').val(element.value) //
+ }
+
+ function UserTypeLogin() {
+     const form = document.forms['frm'];
+     const type = $('#chk').val();
+     console.log(type);
+
+     if(type=="member"){
+         alert("Mode:"+type);
+         form.action = "/member/login";
+         form.submit();
+     }else if(type=="none"){
+         alert("회원타입을 선택해주세요.")
+     }else {
+         alert("Mode:"+type);
+         form.action = "/company/login";
+         form.submit();
+     }
+
+ }

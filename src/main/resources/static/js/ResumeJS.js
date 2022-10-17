@@ -174,6 +174,7 @@ function isFourNumber(phoneNum){
     } else {
         console.log("dd");
         $("#phoneNumVeriDiv").append("4자리 숫자로 입력해주세요");
+
         phoneNum.focus();
         return false;
     }

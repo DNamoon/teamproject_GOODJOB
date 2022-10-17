@@ -42,10 +42,6 @@ public class CompanyService {
     public int checkId2(String comLoginId) throws Exception {
         return companyRepository.checkId2(comLoginId);
     }
-    public Optional<Company> loginIdCheck(String comLoginId) {
-        return companyRepository.findByComLoginId(comLoginId);
-
-    }
 
     public Optional<Company> loginIdCheck(String comLoginId) {
         return companyRepository.findByComLoginId(comLoginId);

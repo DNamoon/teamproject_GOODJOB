@@ -1,6 +1,7 @@
 package com.goodjob.member.service;
 
 import com.goodjob.member.Member;
+import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,6 @@ public class MemberServiceImpl implements MemberService {
         return resumeMemberDTO;
     }
 
-
-
 /**
  * 김도현 22.9.29 작성
  **/
@@ -49,7 +48,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Optional<Member> loginIdCheck(String memLoginId) {
        return memberRepository.findByMemLoginId(memLoginId);
+    }
 
+    @Override
+    public MemberDTO memInfo(String loginId) {
+        Member mem = memberRepository.findLoginInfo(loginId);
+        String name = mem.getMemName();
+        String email = mem.getMemEmail();
+        String id = mem.getMemLoginId();
+        String gender = mem.getMemGender();
+
+
+        return null;
     }
 
 }
