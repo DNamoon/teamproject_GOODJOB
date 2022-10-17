@@ -19,6 +19,7 @@ public interface CertificationService {
 
     //자격증 검색을 위한 메소드
     List<CertificateName> findCertiName(String keyword);
+    Long addNullCertiInfo(Long resumeId);
 
     default Certification dtoToEntity(CertificationDTO certificationDTO){
         Resume resume = Resume.builder().resumeId(certificationDTO.getResumeId()).build();

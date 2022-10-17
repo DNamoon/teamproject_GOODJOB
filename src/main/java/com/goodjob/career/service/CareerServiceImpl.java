@@ -4,6 +4,7 @@ import com.goodjob.career.Career;
 import com.goodjob.career.dto.CareerDTO;
 import com.goodjob.career.repository.CareerRepository;
 import com.goodjob.certification.Certification;
+import com.goodjob.resume.Resume;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,14 @@ public class CareerServiceImpl implements CareerService {
         }
 
         return careerDTOList;
+    }
+
+    @Override
+    public Long addNullCareerInfo(Long resumeId) {
+        Resume resume = Resume.builder().resumeId(resumeId).build();
+        Career career = Career.builder()
+                .resume(resume)
+                .build();
+        return careerRepository.save(career).getCareerId();
     }
 }

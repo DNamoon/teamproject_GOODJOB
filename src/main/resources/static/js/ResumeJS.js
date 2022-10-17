@@ -1,6 +1,11 @@
 $(document).ready(function(){
     maxDate();
-    
+
+    var size = $("input[name='certificateName']").length;
+    for(var i = 1; i < size; i++){
+        $("input[name='certificateName']").eq(i).attr("id","certificateName"+i);
+    }
+
     //이력서 등록버튼 눌리면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function(){
         $.ajax({
@@ -25,7 +30,7 @@ $(document).ready(function(){
             success: function (data){
                 $(".schoolList").empty();
                 for(var i=0; i<data.length; i++){
-                    $(".schoolList").append('<input class="form-check-input" type="radio" name="selectSchoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');  <!-- 여기 value값에 data[i].schName 넣는 방법이랑 왜 schName이 undefined로 나오는지 -->
+                    $(".schoolList").append('<input class="form-check-input" type="radio" name="selectSchoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');
                 }
                 $(".doneFindSchool").click(function (){
                     $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
@@ -71,7 +76,8 @@ $(document).ready(function(){
                 }
                 $(".doneFindCerti").click(function () {
                     var inputId = $("#modalId").val();
-                    $("#" + inputId).val($("input:radio[name='selectCertiName']:checked").val());
+                    // $("#" + inputId).val($("input:radio[name='selectCertiName']:checked").val());
+                    $("#" + inputId).attr("value", $("input:radio[name='selectCertiName']:checked").val());
                 });
             }
         });
@@ -81,8 +87,35 @@ $(document).ready(function(){
         addCertiInfo();
         var size = $("input[name='certificateName']").length;
         for(var i = 1; i < size; i++){
-            $("input[name='certificateName']").eq(i).attr("id","certiifcateName"+i);
+            $("input[name='certificateName']").eq(i).attr("id","certificateName"+i);
         }
+    });
+
+    //step2WithContent에서 새로 추가한 자격증을 DB에 넣기 위함
+    $(".addCertiInfoWC").click(function(){
+        var resumeId = $("input[name='resumeId']").val();
+        $.ajax({
+            url: "/resume/addCertiInfo/" + resumeId,
+            type: "get",
+            dataType: "text",
+            success: function(data){
+                addCertiInfoWC(data);
+            }
+        })
+    });
+
+    //step2WithContent에서 새로 추가한 경력사항을 DB에 넣기 위함
+    $(".addCareerInfoWC").click(function(){
+        var resumeId = $("input[name='resumeId']").val();
+
+        $.ajax({
+            url: "/resume/addCareerInfo/" + resumeId,
+            type: "get",
+            dataType: "text",
+            success: function(data){
+                addCareerInfoWC(data);
+            }
+        })
     });
 });
 
@@ -106,7 +139,7 @@ function execPostCode() {
     });
 }
 
-//자격증 추가
+//STEP2용 자격증 추가
 function addCertiInfo() {
     maxDate();
     var certiInfo = '';
@@ -140,6 +173,41 @@ function addCertiInfo() {
     $(".addCertiInfoList").append(certiInfo);
 }
 
+//STEP2WithContent용 자격증 추가
+function addCertiInfoWC(data) {
+    maxDate();
+    var certiInfo = '';
+
+    certiInfo += '<hr>';
+    certiInfo += '<div class="row" style="float: inline-start;">';
+    certiInfo += '<div class="col-md-6" style="width: 400px;">';
+    certiInfo += '<label>자격증명</label>';
+    certiInfo += '<div class="input-group mb-4">';
+    certiInfo += '<input class="form-control" type="text" name="certificateName" id="certificateName" readonly>';
+    certiInfo += '</div>';
+    certiInfo += '</div>';
+    certiInfo += '<div class="col-md-2" style="margin-left: 0px;">';
+    certiInfo += '<label>&nbsp;</label>';
+    certiInfo += '<button type="button" class="btn bg-gradient-dark w-100" onclick="getInputId(this)" data-bs-toggle="modal" data-bs-target="#findCertiModal">자격증찾기</button>';
+    certiInfo += '</div>';
+    certiInfo += '<div class="col-md-6" style="width: 200px;">';
+    certiInfo += '<label>취득년월</label>';
+    certiInfo += '<div class="input-group mb-4">';
+    certiInfo += '<input class="form-control certiGetDate" type="date" name="certiGetDate" max="">';
+    certiInfo += '</div>';
+    certiInfo += '</div>';
+    certiInfo += '<div class="col-md-6" style="width: 200px;">';
+    certiInfo += '<label>점수</label>';
+    certiInfo += '<div class="input-group mb-4">';
+    certiInfo += '<input class="form-control" type="text" type="text" name="certiScore">';
+    certiInfo += '</div>';
+    certiInfo += '<input type="hidden" value="' + data + '" name="certiId">';
+    certiInfo += '</div>';
+    certiInfo += '</div>';
+
+    $(".addCertiInfoList").append(certiInfo);
+}
+
 function getInputId(data){
     $("#modalId").val($(data).parent().parent().find("input").attr("id"));
 }
@@ -149,15 +217,17 @@ function getListToNext(){
     var careerSize = $("input[name='careerCompanyName']").length;
     var resumeId = $("input[name='resumeId']").val();
 
-    let CertificateDTO = function (resumeId, certificateName, certiGetDate, certiScore){
+    let CertificateDTO = function (resumeId, certiId, certificateName, certiGetDate, certiScore){
         this.resumeId = resumeId;
+        this.certiId = certiId;
         this.certificateName = certificateName;
         this.certiGetDate = certiGetDate;
         this.certiScore = certiScore;
     }
 
-    let CareerDTO = function (careerCompanyName, careerJoinedDate, careerRetireDate, careerTask, resumeId){
+    let CareerDTO = function (careerId, careerCompanyName, careerJoinedDate, careerRetireDate, careerTask, resumeId){
         this.resumeId = resumeId;
+        this.careerId = careerId;
         this.careerCompanyName = careerCompanyName;
         this.careerJoinedDate = careerJoinedDate;
         this.careerRetireDate = careerRetireDate;
@@ -168,6 +238,7 @@ function getListToNext(){
     for(i = 0; i < certiSize; i++){
         var certificateDTO = new CertificateDTO(
             $("input[name='resumeId']").val(),
+            $("input[name='certiId']").eq(i).val(),
             $("input[name='certificateName']").eq(i).val(),
             $("input[name='certiGetDate']").eq(i).val(),
             $("input[name='certiScore']").eq(i).val()
@@ -178,6 +249,7 @@ function getListToNext(){
     var careerList = [];
     for(i = 0; i < careerSize; i++){
         var careerDTO = new CareerDTO(
+            $("input[name='careerId']").eq(i).val(),
             $("input[name='careerCompanyName']").eq(i).val(),
             $("input[name='careerJoinedDate']").eq(i).val(),
             $("input[name='careerRetireDate']").eq(i).val(),
@@ -254,7 +326,7 @@ function getListToPrev(){
     });
 }
 
-//경력 추가
+//STEP2용 경력 추가
 function addCareerInfo() {
     maxDate();     // 추가되는 애들한테는 최댓값이 적용이 안됨
     var careerInfo = '';
@@ -265,6 +337,44 @@ function addCareerInfo() {
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control" type="text" name="careerCompanyName">';
     careerInfo += '</div>';
+    careerInfo += '</div>';
+    careerInfo += '<div class="col-md-6" style="width: 200px;">';
+    careerInfo += '<label>근무기간</label>';
+    careerInfo += '<div class="input-group mb-4">';
+    careerInfo += '<input class="form-control" type="date" name="careerJoinedDate">';
+    careerInfo += '</div>';
+    careerInfo += '</div>';
+    careerInfo += '<div class="col-md-6" style="width: 5px;">';
+    careerInfo += '<label>&nbsp;</label>';
+    careerInfo += '~';
+    careerInfo += '</div>';
+    careerInfo += '<div class="col-md-6" style="width: 200px;">';
+    careerInfo += '<label>&nbsp;</label>';
+    careerInfo += '<div class="input-group mb-4">';
+    careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="">';
+    careerInfo += '</div>';
+    careerInfo += '</div>';
+    careerInfo += '</div>';
+    careerInfo += '<div class="form-group mb-4">';
+    careerInfo += '<label>주요업무</label>';
+    careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
+    careerInfo += '</div>';
+
+    $(".addCareerInfo").replaceWith(careerInfo);
+}
+
+//STEP2WithContent용 경력 추가
+function addCareerInfoWC(data) {
+    maxDate();
+    var careerInfo = '';
+
+    careerInfo += '<div class="row" style="float: inline-start;">';
+    careerInfo += '<div class="col-md-6" style="width: 400px;">';
+    careerInfo += '<label>회사명</label>';
+    careerInfo += '<div class="input-group mb-4">';
+    careerInfo += '<input class="form-control" type="text" name="careerCompanyName">';
+    careerInfo += '</div>';
+    careerInfo += '<input type="hidden" value="' + data + '" name="careerId">';
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';

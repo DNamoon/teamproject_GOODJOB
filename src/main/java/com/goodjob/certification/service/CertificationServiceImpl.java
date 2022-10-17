@@ -5,6 +5,7 @@ import com.goodjob.certification.Certification;
 import com.goodjob.certification.dto.CertificationDTO;
 import com.goodjob.certification.repository.CertificationNameRepository;
 import com.goodjob.certification.repository.CertificationRepository;
+import com.goodjob.resume.Resume;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -63,5 +64,17 @@ public class CertificationServiceImpl implements CertificationService {
     @Override
     public List<CertificateName> findCertiName(String keyword) {
         return certificationNameRepository.findCertiName(keyword);
+    }
+
+    @Override
+    public Long addNullCertiInfo(Long resumeId) {
+        log.info("======= 빈 자격증 정보 추가 ==========");
+        Resume resume = Resume.builder().resumeId(resumeId).build();
+        CertificateName certificateName = CertificateName.builder().certiName("없음").build();
+        Certification certification = Certification.builder()
+                .certificateName(certificateName)
+                .resume(resume)
+                .build();
+        return certificationRepository.save(certification).getCertiId();
     }
 }

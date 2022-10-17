@@ -28,5 +28,4 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     @Modifying
     @Query("update Certification c set c.certificateName.certiName =:certiName, c.certiGetDate =:getDate, c.certiScore =:score where c.certiId =:certiId")
     void updateCertiInfo(String certiName, Date getDate, String score, Long certiId);
-
 }
