@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -21,15 +22,15 @@ public class MemMyPageController {
 
     private final MemberService memberService;
 
-    @GetMapping("/myPage")
+    @PostMapping("/myPage")
     public String myPageForm(HttpSession session, Model model){
         String id = (String)session.getAttribute("sessionId");
-        model.addAttribute("memberInfo",memberService.bringMemInfo(id));
+        model.addAttribute("memberInfo",memberService.memInfo(id));
         return "member/myPageInfo";
     }
 
-    @GetMapping("/myPageInfo")
-    public String getInfo( Long memId, Model model){
+    @GetMapping("/myPage")
+    public String infoUpdate( Long memId, Model model){
 
         model.addAttribute("resumeId", memId);
 

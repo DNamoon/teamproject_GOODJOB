@@ -30,8 +30,6 @@ class StatusTest2 {
     @Autowired
     EducationRepository educationRepository;
     @Autowired
-    CertificateRepository certificateRepository;
-    @Autowired
     CareerRepository careerRepository;
     @Autowired
     MemberRepository memberRepository;

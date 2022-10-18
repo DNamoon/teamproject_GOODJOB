@@ -32,7 +32,7 @@
 </form>
     </th:block>
 
-<form name="frmSub" method="get" >
+<form name="frmSub" method="post" >
     <th:block th:if="${session.sessionId}">
     로그인 된 회원 아이디 : <span th:text="${session.sessionId}" >message</span>
 
@@ -50,11 +50,10 @@
     function UserType(mode) {
         const form = document.frmSub;
         if(mode == "member"){
-            // alert("Mode:"+mode);
             form.action = "/member/myPage";
         }else {
             alert("Mode:"+mode);
-            // form.action = "/company/mypage";
+             form.action = "/com/mypage";
         }
         form.submit();
     }

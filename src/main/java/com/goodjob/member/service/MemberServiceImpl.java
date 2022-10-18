@@ -6,8 +6,8 @@ import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.sql.Date;
 import java.util.Optional;
 
 /**
@@ -54,12 +54,14 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO memInfo(String loginId) {
         Member mem = memberRepository.findLoginInfo(loginId);
         String name = mem.getMemName();
-        String email = mem.getMemEmail();
-        String id = mem.getMemLoginId();
+        String[] email = mem.getMemEmail().split("@");
+        String phone = mem.getMemPhone();
         String gender = mem.getMemGender();
+        Date birth = mem.getMemBirthDate();
+        MemberDTO memberDTO = MemberDTO.builder().memName(name).memEmail1(email[0]).memEmail2(email[1]).memPhone(phone).memGender(gender)
+                .memBirthDate(birth).build();
 
-
-        return null;
+        return memberDTO;
     }
 
 }

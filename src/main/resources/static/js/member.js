@@ -1,26 +1,13 @@
 
- //mypage sidebar toggle
-    window.addEventListener('DOMContentLoaded', event => {
+$(document).ready(function() {
+    $("#bb").click(function() {
+        $("#dis").removeAttr("disabled");
+        $("#bb").css("display", 'none');
+        $("#realUpdate").append("<button type='button'>되는거니</button>");
+    })
+});
 
-        // Toggle the side navigation
-        const sidebarToggle = document.body.querySelector('#sidebarToggle');
-        if (sidebarToggle) {
-            // Uncomment Below to persist sidebar toggle between refreshes
-            // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-            //     document.body.classList.toggle('sb-sidenav-toggled');
-            // }
-            sidebarToggle.addEventListener('click', event => {
-                event.preventDefault();
-                document.body.classList.toggle('sb-sidenav-toggled');
-                localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-            });
-        }
-    });
-
- //id 중복검사
- $(function(){
-     $("#id").on('keyup',checkMassage);
- })
+//id 중복 확인
  function checkMassage(){
      var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
      $.ajax({
@@ -88,22 +75,21 @@
      element.checked = true;
      $('#chk').val(element.value) //
  }
-
+//로그인 시 type 확인 후 해당 db조회
  function UserTypeLogin() {
      const form = document.forms['frm'];
      const type = $('#chk').val();
      console.log(type);
 
      if(type=="member"){
-         alert("Mode:"+type);
          form.action = "/member/login";
          form.submit();
      }else if(type=="none"){
          alert("회원타입을 선택해주세요.")
      }else {
-         alert("Mode:"+type);
-         form.action = "/company/login";
+         form.action = "/com/login";
          form.submit();
      }
 
  }
+ // 개인정보 수정버튼 function
