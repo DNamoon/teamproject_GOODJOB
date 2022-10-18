@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
@@ -40,5 +43,11 @@ class MemberTest {
     void count() {
         Integer integer = memberRepository.countByMemGender("F");
         System.out.println("integer = " + integer);
+    }
+    @Test
+    public String getInfo(HttpSession session, Model model){
+        String id = (String)session.getAttribute("sessionId");
+        
+        return "member/myPageForm";
     }
 }

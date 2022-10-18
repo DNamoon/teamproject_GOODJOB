@@ -85,6 +85,14 @@
   :root {
     scroll-behavior: smooth;
   }
+  .col-md-0{
+    position:static;
+    top: 0px;
+    left: 0;
+    height: 80px;
+    width: 400px;
+    margin: 0 auto;
+  }
 }
 
 body {
@@ -1362,7 +1370,6 @@ progress {
     flex: 0 0 auto;
     width: auto;
   }
-
   .col-md-1 {
     flex: 0 0 auto;
     width: 8.333333%;

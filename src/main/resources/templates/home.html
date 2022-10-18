@@ -19,26 +19,43 @@
     로그인 된 회원 아이디 :<span th:text="${session.sessionId}">message</span>
     <button class="btn btn-outline-light me-1" type="button"
             th:onclick="|location.href='@{/com/logout}'|">로그아웃</button>
-    <button th:onclick="|location.href='@{/auth/com/register}'|">회원가입</button>
 
     <h2>메인 페이지</h2>
     <hr/>
 
+    <th:block th:if="${session.sessionId== null}">
 <form th:action="@{/member/signUp}">
     <input type="submit" value="개인회원가입">
 </form>
 <form th:action="@{/member/login}">
     <input type="submit" value="로그인">
 </form>
+    </th:block>
 
-    <h2>관리자 페이지</h2>
-    <hr/>
-    <button th:onclick="|location.href='@{/admin/login}'|">관리자 로그인</button>
+<form name="frmSub" method="post" >
+    <th:block th:if="${session.sessionId}">
+    로그인 된 회원 아이디 : <span th:text="${session.sessionId}" >message</span>
 
-    로그인 된 회원 아이디 :<span th:text="${session.sessionId}">message</span>
-    <button class="btn btn-outline-light me-1" type="button"
-            th:onclick="|location.href='@{/auth/member/logout}'|">로그아웃</button>
+    <input class="btn btn-outline-light me-1" type="button" value="My Page"
+          th:onclick="UserType([[${session.Type}]])"></input>
+        <input class="btn btn-outline-light me-1" type="button" value="로그아웃"
+               th:onclick="|location.href='@{/member/logout}'|"></input>
+    </th:block>
 
+</form>
 
 </body>
+
+<script>
+    function UserType(mode) {
+        const form = document.frmSub;
+        if(mode == "member"){
+            form.action = "/member/myPage";
+        }else {
+            alert("Mode:"+mode);
+             form.action = "/com/mypage";
+        }
+        form.submit();
+    }
+</script>
 </html>

@@ -9,59 +9,55 @@
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
 
     <title>로그인</title>
-
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <!-- 한글 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-
-    <!-- Nucleo Icons -->
-    <link href="/assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
-
+    <!--javascript Files-->
+    <script src="/js/member.js"></script>
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
-
     <!-- CSS Files -->
     <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet" />
 </head>
 <body class="page-header min-vh-100">
-<div class="container py-4">
-    <form th:action="@{/member/login}" role="form" name="frm" th:method="post" >
-        <div class="page-header min-vh-100">
-            <div class="container py-4">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                        <div class="card card-plain">
-                            <div class="text-center pb-0 text-left">
-                                <h4 class="font-weight-bolder">로그인</h4>
-                            </div>
-                            <div class="card-body">
+        <div class="col-md-0">
+            <div class="row">
+                <div class="col-lg-7" style="width : 500px">
+                    <div class="text-center pb-0 text-left">
+                        <h4 class="font-weight-bolder">로그인</h4>
+                    </div>
+                        <form role="form" name="frm" method="post">
                                 <div th:if="${param.error}" role="alert">
                                     <p class="text-center" style="color: rgb(244, 54, 54);" >아이디 및 비밀번호를 확인해주세요.</p>
                                 </div>
-                                <form role="form">
                                     <div class="mb-3">
-                                        <input type="text" class="form-control form-control-lg" id ="id" placeholder="아이디" name="memLoginId" required>
+                                        <input type="text" class="form-control form-control-lg" id ="id" placeholder="아이디" name="loginId" required>
                                     </div>
                                     <div class="mb-3">
-                                        <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호" name="memPw"  style="-webkit-text-security:square;" required >
+                                        <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호" name="pw"  style="-webkit-text-security:square;" required >
+                                    </div>
+                                    <div class="col-4 mx-auto">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" value="member" name="type" onclick="checkOnlyOneLogin(this)">
+                                            <label class="form-check-label">개인회원</label>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" value="company" name="type" onclick="checkOnlyOneLogin(this)">
+                                            <label class="form-check-label">기업회원</label>
+                                        </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn bg-gradient-dark w-100" style="font-size:15px" >로그인</button>
+                                        <input type="hidden" id="chk" value="none">
+                                        <button type="button" class="btn bg-gradient-dark w-100" onclick="UserTypeLogin()" style="font-size:15px" >로그인</button>
                                     </div>
-                                </form>
                                 <div class="col-md-12 text-center pt-0 px-lg-2 px-1">
                                     <a href="/auth/member/signUp" class="font-weight-bold" style="color: #344767">회원가입</a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                 </form>
             </div>
         </div>
-    </form>
 </div>
 </body>
 </html>
