@@ -1,11 +1,5 @@
 
-$(document).ready(function() {
-    $("#bb").click(function() {
-        $("#dis").removeAttr("disabled");
-        $("#bb").css("display", 'none');
-        $("#realUpdate").append("<button type='button'>되는거니</button>");
-    })
-});
+
 
 //id 중복 확인
  function checkMassage(){
@@ -93,3 +87,10 @@ $(document).ready(function() {
 
  }
  // 개인정보 수정버튼 function
+$(document).ready(function() {
+    $("#bb").click(function() {
+        $("#dis").removeAttr("disabled");
+        $("#bb").css("display", 'none');
+        $("#realUpdate").append("<button type=\"submit\" class=\"btn bg-gradient-dark w-100\" style=\"font-size:15px\">수정완료</button>");
+    })
+});

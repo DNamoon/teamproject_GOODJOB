@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * 김도현 22.9.29 작성
  * 김도현 22.10.07 수정 (login 메소드 구조 변경)
-**/
+ **/
 
 @Controller
 @RequestMapping("/member")
@@ -45,7 +45,7 @@ public class MemberController {
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
-        memberDTO.setMemPw(passwordEncoder.encode(memberDTO.getMemPw()));
+        memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem =  memberDTO.toEntity();
         memberService.register(mem);
         return "redirect:/";
@@ -59,29 +59,26 @@ public class MemberController {
 
     @RequestMapping(value="/login",method = RequestMethod.POST)
     public String login( @ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
-        Optional<Member> mem = memberService.loginIdCheck(memberDTO.getMemLoginId());
+        Optional<Member> mem = memberService.loginIdCheck(memberDTO.getLoginId());
 
-        if (mem.isPresent()) {  //id가 db에 있으면
+        if (mem.isPresent()) {  // id null 체크
             Member member = mem.get();
-            if (member.getMemLoginId().equals(memberDTO.getMemLoginId())) {  //id 가 있으면
+            if (member.getMemLoginId().equals(memberDTO.getLoginId())) {  //회원정보가 있는 id
                 String encodePw = member.getMemPw();
                 //암호화된 비밀번호와 로그인 시 입력받은 비밀번호 match 확인
-                if (passwordEncoder.matches(memberDTO.getMemPw(), encodePw)) {
-                    //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
+                if (passwordEncoder.matches(memberDTO.getPw(), encodePw)) {
                     HttpSession session = request.getSession();
-                    //세션에 로그인 회원 정보 저장
-                    session.setAttribute("sessionId", memberDTO.getMemLoginId());
+                    session.setAttribute("sessionId", memberDTO.getLoginId());
                     session.setAttribute("Type", "member");
-
-                    return "redirect:/";
+                    return "redirect:/"; // 로그인 성공 시 메인페이지
                 } else {
                     return "redirect:login?error";  //pw가 틀린 경우
                 }
             } else {
-                return "member/signup";
+                return "redirect:login?error"; //id가 틀린경우
             }
         } else {
-            return "redirect:login?error"; //id가 없는 경우
+            return "member/signup";  //id가 없는 경우
         }
     }
 

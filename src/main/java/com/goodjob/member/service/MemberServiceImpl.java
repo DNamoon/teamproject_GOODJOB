@@ -58,10 +58,16 @@ public class MemberServiceImpl implements MemberService {
         String phone = mem.getMemPhone();
         String gender = mem.getMemGender();
         Date birth = mem.getMemBirthDate();
-        MemberDTO memberDTO = MemberDTO.builder().memName(name).memEmail1(email[0]).memEmail2(email[1]).memPhone(phone).memGender(gender)
+        Long pk = mem.getMemId();
+        MemberDTO memberDTO = MemberDTO.builder().memId(pk).memName(name).memEmail1(email[0]).memEmail2(email[1]).memPhone(phone).memGender(gender)
                 .memBirthDate(birth).build();
 
         return memberDTO;
+    }
+    @Override
+    public void updateMemInfo(MemberDTO memberDTO) {
+        Member mem =  memberDTO.toEntity();
+        memberRepository.updateInfo(mem);
     }
 
 }
