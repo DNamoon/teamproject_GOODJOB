@@ -43,7 +43,6 @@ public class Member {
     private String memName;
 
     @Column
-    @DateTimeFormat(pattern = "yyyy-mm-DD")
     private Date memBirthDate;
 
     @Column
@@ -56,7 +55,6 @@ public class Member {
     private String memTerms;
 
     public Member(Long memId, String memLoginId, String memPw, String memPhone, String memEmail, String memName, Date memBirthDate, String memAddress, String memGender, String memTerms) {
-        this.memId = memId;
         this.memLoginId = memLoginId;
         this.memPw = memPw;
         this.memPhone = memPhone;
@@ -67,5 +65,16 @@ public class Member {
         this.memGender = memGender;
         this.memTerms = memTerms;
     }
-
+    // 10.7 더미데이터 생성을 위한 임시생성자 by.OH
+    public Member(String memLoginId, String memPw, String memPhone, String memEmail, String memName, Date memBirthDate, String memAddress, String memGender, String memTerms) {
+        this.memLoginId = memLoginId;
+        this.memPw = memPw;
+        this.memPhone = memPhone;
+        this.memEmail = memEmail;
+        this.memName = memName;
+        this.memBirthDate = memBirthDate;
+        this.memAddress = memAddress;
+        this.memGender = memGender;
+        this.memTerms = memTerms;
+    }
 }
