@@ -3,6 +3,8 @@ package com.goodjob.admin.controller;
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.admindto.AdminDTO;
+import com.goodjob.admin.postpaging.ArticlePage;
+import com.goodjob.admin.postpaging.ArticlePageService;
 import com.goodjob.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 관리자 컨트롤러 By.OH
+ */
 @Slf4j
 @Controller
 @RequestMapping("/admin")
@@ -22,11 +27,12 @@ import javax.servlet.http.HttpSession;
 public class AdminController {
 
     private final AdminService adminService;
+    private final ArticlePageService articlePageService;
 
     @GetMapping
     public String adminHome(@SessionAttribute(name = AdminConst.ADMIN, required = false) Admin admin, Model model) {
         if (admin != null) {
-            return "admin/adminTest";
+            return "admin/adminHome";
         }
         return "redirect:login";
     }
@@ -55,7 +61,19 @@ public class AdminController {
         HttpSession session = request.getSession();
 
         session.setAttribute(AdminConst.ADMIN, loginAdmin);
-
+        session.setMaxInactiveInterval(60 * 10);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/post/{pageNum}")
+    public String postBbs(@PathVariable Long pageNum,Model model) {
+        ArticlePage articlePage = articlePageService.getArticlePage(pageNum);
+        model.addAttribute("postPage", articlePage);
+        return "admin/adminPostManage";
+    }
+
+    @GetMapping("/memberManage")
+    public String adminMemberPage(){
+        return "admin/adminMemberManage";
     }
 }
