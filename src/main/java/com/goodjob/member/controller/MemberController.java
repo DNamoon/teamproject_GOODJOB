@@ -45,7 +45,8 @@ public class MemberController {
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
-        memberDTO.setMemPw(passwordEncoder.encode(memberDTO.getMemPw()));
+        //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+        memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem =  memberDTO.toEntity();
         memberService.register(mem);
         return "redirect:/";
@@ -59,18 +60,21 @@ public class MemberController {
 
     @RequestMapping(value="/login",method = RequestMethod.POST)
     public String login( @ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
-        Optional<Member> mem = memberService.loginIdCheck(memberDTO.getMemLoginId());
+        //ho - 22.10.17 getMemLoginId -> getLoginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+        Optional<Member> mem = memberService.loginIdCheck(memberDTO.getLoginId());
 
         if (mem.isPresent()) {  //id가 db에 있으면
             Member member = mem.get();
-            if (member.getMemLoginId().equals(memberDTO.getMemLoginId())) {  //id 가 있으면
+            //ho - 22.10.17 getMemLoginId -> getLoginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+            //70,73,77라인 변경
+            if (member.getMemLoginId().equals(memberDTO.getLoginId())) {  //id 가 있으면
                 String encodePw = member.getMemPw();
                 //암호화된 비밀번호와 로그인 시 입력받은 비밀번호 match 확인
-                if (passwordEncoder.matches(memberDTO.getMemPw(), encodePw)) {
+                if (passwordEncoder.matches(memberDTO.getPw(), encodePw)) {
                     //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
                     HttpSession session = request.getSession();
                     //세션에 로그인 회원 정보 저장
-                    session.setAttribute("sessionId", memberDTO.getMemLoginId());
+                    session.setAttribute("sessionId", memberDTO.getLoginId());
                     session.setAttribute("Type", "member");
 
                     return "redirect:/";

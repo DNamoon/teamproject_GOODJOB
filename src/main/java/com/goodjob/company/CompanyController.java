@@ -61,7 +61,8 @@ public class CompanyController {
         //회원가입시 비밀번호, 비밀번호확인이 동일하지 않을시 회원가입버튼을 눌러도 회원가입이 되지 않도록 하는 코드
         //result.rejectValue의 field는 DTO의 필드, errorCode는 임의로 지정, defaultMessage는 보여줄 메시지
         //defaultMessage는 form_errors.html에서 작성한 ${err}에 나타난다.
-        if(!companyDTO.getComPw1().equals(companyDTO.getComPw2())){
+        //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+        if(!companyDTO.getPw().equals(companyDTO.getComPw2())){
             result.rejectValue("comPw2","passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
             return "/company/comRegisterForm";
@@ -94,25 +95,31 @@ public class CompanyController {
     //22.10.10추가
     @RequestMapping(value="/login",method = RequestMethod.POST)
     public String login(@ModelAttribute(name = "companyDTO") CompanyDTO companyDTO, HttpServletRequest request) {
-        Optional<Company> com = companyService.loginIdCheck(companyDTO.getComLoginId());
+        //ho - 22.10.17 getComLoginId -> getLoginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 99,103,113라인 변경
+        Optional<Company> com = companyService.loginIdCheck(companyDTO.getLoginId());
 
         if (com.isPresent()) {  //id가 db에 있으면
             Company company = com.get();
-            if (company.getComLoginId().equals(companyDTO.getComLoginId())) {  //id 가 있으면
+            if (company.getComLoginId().equals(companyDTO.getLoginId())) {  //id 가 있으면
                 String encodePw = company.getComPw();
+                log.info("DB에 저장된 비밀번호: " + encodePw);
+                log.info("비밀번호 입력값 : " + companyDTO.getPw());
                 //암호화된 비밀번호와 로그인 시 입력받은 비밀번호 match 확인
-                if (passwordEncoder.matches(companyDTO.getComPw1(), encodePw)) {
+                //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 106,109라인 변경
+                if (passwordEncoder.matches(companyDTO.getPw(), encodePw)) {
                     //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
                     HttpSession session = request.getSession();
                     //세션에 로그인 회원 정보 저장
-                    session.setAttribute("sessionId", companyDTO.getComLoginId());
+                    session.setAttribute("sessionId", companyDTO.getLoginId());
+                    //10.17추가
+                    session.setAttribute("Type", "company");
 
                     return "redirect:/";
                 } else {
                     return "redirect:login?error";  //pw가 틀린 경우
                 }
             } else {
-                return "member/signup";
+                return "/company/comRegisterForm";
             }
         } else {
             return "redirect:login?error"; //id가 없는 경우
@@ -130,6 +137,29 @@ public class CompanyController {
         }
 
         return "redirect:/";
+    }
+
+    //ho - 22.10.17 마이페이지 세션 넘기기+
+    @GetMapping("/myPage")
+    public String companyMyPage(HttpSession httpSession, Model model){
+        String sessionId = (String) httpSession.getAttribute("sessionId");
+        Optional<Company> company = companyService.loginIdCheck(sessionId);
+        Company com = company.get();
+        CompanyDTO companyInfo = companyService.entityToDTO2(com);
+        model.addAttribute("companyInfo",companyInfo);
+        return "/company/companyMyPage";
+    }
+
+    @PostMapping("/update")
+    public String companyInfoUpdate(CompanyDTO companyInfo, Model model) {
+        model.addAttribute("companyInfo",companyInfo);
+        System.out.println("================="+companyInfo);
+        log.info("=======정보는 넘기는데 =============");
+
+        companyService.companyInfoUpdate(companyInfo);
+        log.info("=======될까?=========");
+
+        return "redirect:/com/myPage";
     }
 
 }

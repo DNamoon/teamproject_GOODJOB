@@ -1,3 +1,8 @@
+/**
+ * ho - 22.10.17 로그인 폼 통일위해
+ * loginId,pw 필드 통일
+ * 18,19,33,34라인 변경 (memLoginId->loginId , memPw->pw)
+ */
 package com.goodjob.member.memDTO;
 
 import com.goodjob.member.Member;
@@ -10,8 +15,8 @@ import java.sql.Date;
 @Builder
 public class MemberDTO {
     private Long memId;
-    private String memLoginId;
-    private String memPw;
+    private String loginId;
+    private String pw;
     private String memPhone;
     private String memEmail1;
     private String memEmail2;
@@ -25,8 +30,8 @@ public class MemberDTO {
     public Member toEntity() {
         Member member = Member.builder()
                 .memId(memId)
-                .memLoginId(memLoginId)
-                .memPw(memPw)
+                .memLoginId(loginId)
+                .memPw(pw)
                 .memName(memName)
                 .memPhone(memPhone)
                 .memEmail(memEmail1+"@"+memEmail2)

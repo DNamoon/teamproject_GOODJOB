@@ -102,7 +102,7 @@
          alert("회원타입을 선택해주세요.")
      }else {
          alert("Mode:"+type);
-         form.action = "/company/login";
+         form.action = "/com/login";
          form.submit();
      }
 

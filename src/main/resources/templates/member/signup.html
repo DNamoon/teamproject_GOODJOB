@@ -1,5 +1,5 @@
 <!--김도현 22.9.29 작성-->
-
+<!--ho - 22.10.17 로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 창 name 통일. loginId,pw 통일(46,79라인 변경)-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +42,8 @@
             <div class="col-md-6">
               <label>아이디<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
               <div class="input-group">
-                <input class="form-control" type="text" name="memLoginId" id="id" required>
+<!--                ho - 22.10.17 memloginId -> loginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
+                <input class="form-control" type="text" name="loginId" id="id" required>
               </div>
               <label id="checkMassage"></label>
             </div>
@@ -74,7 +75,8 @@
             <div class="col-md-6">
               <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
               <div class="input-group mb-4">
-                <input type="text" class="form-control" id="pw1" name="memPw" required>
+<!--                ho - 22.10.17 memPw -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
+                <input type="text" class="form-control" id="pw1" name="pw" required>
               </div>
             </div>
             <div class="col-md-6">
