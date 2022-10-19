@@ -113,6 +113,7 @@ public class CompanyService {
 
     }
 
+    //22.10.18 - ho 기업회원정보 수정하고 DB에 저장.
     public void companyInfoUpdate(CompanyDTO companyDTO){
         Company company = companyDTO.toEntity();
         System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());

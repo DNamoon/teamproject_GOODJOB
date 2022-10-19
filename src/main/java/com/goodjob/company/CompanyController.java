@@ -150,14 +150,13 @@ public class CompanyController {
         return "/company/companyMyPage";
     }
 
+    //ho - 22.10.19 기업정보 수정하기(업데이트 버전)
     @PostMapping("/update")
-    public String companyInfoUpdate(CompanyDTO companyInfo, Model model) {
-        model.addAttribute("companyInfo",companyInfo);
-        System.out.println("================="+companyInfo);
-        log.info("=======정보는 넘기는데 =============");
+    public String companyInfoUpdate(CompanyDTO companyInfo) {
 
+        log.info("============="+companyInfo);
+        log.info("============="+companyInfo.toEntity().getComLoginId() );
         companyService.companyInfoUpdate(companyInfo);
-        log.info("=======될까?=========");
 
         return "redirect:/com/myPage";
     }

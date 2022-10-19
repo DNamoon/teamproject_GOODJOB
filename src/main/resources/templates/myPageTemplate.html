@@ -8,22 +8,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="description" content=""/>
         <meta name="author" content=""/>
-        <title>Dashboard - SB Admin</title>
+        <title>Mypage - company</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
         <link href="/css/styles.css" rel="stylesheet"/>
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-        <link rel="icon" type="image/png" href="/img/favicon.png">
+<!--        <link rel="icon" type="image/png" href="/img/favicon.png">-->
 
-        <title>회원가입 (기업회원용)</title>
 
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
         <!-- 한글 폰트 -->
         <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+        <!-- Nucleo Icons -->
+        <link href="/css/nucleo-icons.css" rel="stylesheet"/>
+        <link href="/css/nucleo-svg.css" rel="stylesheet"/>
+
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+        <link href="/css/nucleo-svg.css" rel="stylesheet"/>
+
         <!-- CSS Files -->
-        <link href="/css/styles.css" rel="stylesheet" />
         <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
         <!--modal files-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
@@ -38,7 +45,9 @@
     <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">GOOD JOB</a>
+        <a class="navbar-brand ps-3" href="/">GOOD JOB</a>
+        <!-- Sidebar Toggle-->
+        <!-- <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button> -->
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
@@ -69,24 +78,21 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <a class="nav-link" href="mypage_info.html">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="/com/myPage">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            회원정보 수정
+                            기업회원정보
                         </a>
 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            이력서 관리
-                        </a>
-                        <a class="nav-link collapsed" th:onclick="|location.href='@{/resume/registerResume}'|" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            이력서 작성
-                        </a>
-                        <a class="nav-link" href="mypage_list.html">
+                        <a class="nav-link" href="index.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            지원현황
+                            채용공고 관리
                         </a>
                     </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    GOOD JOB
                 </div>
             </nav>
         </div>
@@ -94,9 +100,8 @@
             <main>
                 <div class="container-fluid px-4">
                     <!-- 내용 -->
-                    <!-- Sidebar Toggle-->
-                    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-
+                    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"
+                            style="float:left;"><i class="fas fa-bars"></i></button>
                     <th:block th:replace="${content}"></th:block>
                 </div>
             </main>
@@ -118,11 +123,9 @@
             crossorigin="anonymous"></script>
     <script src="/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/demo/chart-area-demo.js"></script>
-    <script src="/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/js/datatables-simple-demo.js"></script>
-    <script src="js/member.js"></script>
+    <script src="/js/company.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     </body>
 </th:block>
 </html>

@@ -2,6 +2,9 @@
  * 2022.10.05 - HO
  * 회원가입시 아이디 중복확인 시도중(checkId 메서드)
  * ->2022.10.06 checkId2 메서드로 구현.
+ *
+ * +2022.10.18 -HO
+ * 기업회원정보 수정하기 - updateInfo()
  */
 package com.goodjob.company.repository;
 
@@ -22,6 +25,7 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     //추가
     Optional<Company> findByComLoginId(String comLoginId);
 
+    //22.10.18 기업회원정보 수정하기
     @Transactional
     @Modifying
     @Query("update Company c set c.comName =:#{#c.comName}, c.comBusiNum =:#{#c.comBusiNum}, c.comPhone =:#{#c.comPhone}," +
