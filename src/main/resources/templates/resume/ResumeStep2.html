@@ -23,6 +23,8 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <!-- AJAX CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- DATEPICKER CDN -->
+
 </head>
 <body>
 <section>
@@ -81,7 +83,7 @@
                                 <div class="col-md-6" style="width: 200px;">
                                     <label>근무기간</label>
                                     <div class="input-group mb-4">
-                                        <input class="form-control careerJoinedDate" type="date" name="careerJoinedDate">
+                                        <input class="form-control careerJoinedDate" id="careerJoinedDate" type="date" name="careerJoinedDate">
                                     </div>
                                 </div>
                                 <div class="col-md-6" style="width: 5px;">
@@ -91,7 +93,7 @@
                                 <div class="col-md-6" style="width: 200px;">
                                     <label>&nbsp;</label>
                                     <div class="input-group mb-4">
-                                        <input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="">
+                                        <input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">
                                     </div>
                                 </div>
                             </div>

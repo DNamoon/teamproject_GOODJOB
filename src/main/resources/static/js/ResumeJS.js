@@ -159,7 +159,7 @@ function addCertiInfo() {
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
     certiInfo += '<label>취득년월</label>';
     certiInfo += '<div class="input-group mb-4">';
-    certiInfo += '<input class="form-control certiGetDate" type="date" name="certiGetDate" max="">';
+    certiInfo += '<input class="form-control certiGetDate" type="date" name="certiGetDate" max="" onclick="maxDate()">';
     certiInfo += '</div>';
     certiInfo += '</div>';
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
@@ -193,7 +193,7 @@ function addCertiInfoWC(data) {
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
     certiInfo += '<label>취득년월</label>';
     certiInfo += '<div class="input-group mb-4">';
-    certiInfo += '<input class="form-control certiGetDate" type="date" name="certiGetDate" max="">';
+    certiInfo += '<input class="form-control certiGetDate" type="date" name="certiGetDate" max="" onclick="maxDate()">';
     certiInfo += '</div>';
     certiInfo += '</div>';
     certiInfo += '<div class="col-md-6" style="width: 200px;">';
@@ -341,7 +341,7 @@ function addCareerInfo() {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" type="date" name="careerJoinedDate">';
+    careerInfo += '<input class="form-control careerJoinedDate" id="careerJoinedDate" type="date" name="careerJoinedDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 5px;">';
@@ -351,7 +351,7 @@ function addCareerInfo() {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="">';
+    careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="" min="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '</div>';
@@ -379,7 +379,7 @@ function addCareerInfoWC(data) {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control" type="date" name="careerJoinedDate">';
+    careerInfo += '<input class="form-control careerJoinedDate" id="careerJoinedDate" type="date" name="careerJoinedDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 5px;">';
@@ -389,7 +389,7 @@ function addCareerInfoWC(data) {
     careerInfo += '<div class="col-md-6" style="width: 200px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<div class="input-group mb-4">';
-    careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="">';
+    careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '</div>';
@@ -402,7 +402,14 @@ function addCareerInfoWC(data) {
 }
 
 //입력검증
-//날짜 최댓값을 오늘로 설정
+//이력서에서 근무기간 선택할 때 두번째 달력의 날짜가 첫번째 날짜보다 적게 입력되는거 방지
+function rangeDate(data){
+    var minDate = $(data).parent().parent().parent().find("input[id=careerJoinedDate]").val();
+    $(data).attr("min", minDate);
+    maxDate();
+}
+
+//날짜 최댓값을 현재날짜로 제한
 function maxDate(){
     var today = new Date();
     var yyyy = today.getFullYear();
@@ -420,10 +427,6 @@ function maxDate(){
     $(".eduGraduationDate").attr("max", today);
     $(".careerRetireDate").attr("max", today);
     $(".certiGetDate").attr("max", today);
-}
-
-function careerRetireDateMin(){     // min에는 함수를 쓸 수 없음, 같은 div안에 있는 careerJoinedDate값을 최솟값으로 가져야 함
-    return $(".careerJoinedDate").val();
 }
 
 //휴대폰 번호 - 실
