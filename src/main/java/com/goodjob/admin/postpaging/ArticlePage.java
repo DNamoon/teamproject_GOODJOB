@@ -15,7 +15,6 @@ public class ArticlePage {
     private Long total;
     private Long currentPage;
     private List<Post> postContent;
-    private List<Notice> noticeContent;
     private Long totalPage;
     private Long startPage;
     private Long endPage;
@@ -24,28 +23,6 @@ public class ArticlePage {
         this.total = total;
         this.currentPage = currentPage;
         this.postContent = postContent;
-        if (total == 0) {
-            totalPage = 0L;
-            startPage = 0L;
-            endPage = 0L;
-        } else {
-            totalPage = total / size;
-            if (total % size > 0) {
-                totalPage++;
-            }
-            Long modVal = currentPage % 5;
-            startPage = currentPage / 5 * 5 + 1;
-            if (modVal == 0) startPage -= 5;
-
-            endPage = startPage + 4;
-            if (endPage > totalPage) endPage = totalPage;
-        }
-    }
-
-    public ArticlePage(Long total, Long currentPage, List<Notice> noticeContent, Long size) {
-        this.total = total;
-        this.currentPage = currentPage;
-        this.noticeContent = noticeContent;
         if (total == 0) {
             totalPage = 0L;
             startPage = 0L;

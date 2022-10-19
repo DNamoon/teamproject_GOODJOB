@@ -25,7 +25,6 @@ import java.time.LocalDate;
 public class NoticeController {
 
     private final NoticeService noticeService;
-    private final ArticlePageService articlePageService;
 
     @GetMapping("/{pageNum}")
     public String noticeListForm(@PathVariable int pageNum, Model model) {

@@ -18,7 +18,6 @@ import java.util.List;
 public class ArticlePageService {
 
     private final PostRepository postRepository;
-    private final NoticeRepository noticeRepository;
     private Long size = 10L;
 
     public ArticlePage getArticlePage(Long pageNum) {
@@ -28,10 +27,4 @@ public class ArticlePageService {
         return new ArticlePage(totalCount, pageNum, size, content);
     }
 
-    public ArticlePage getNoticePage(Long pageNum) {
-        long totalCount = noticeRepository.count();
-        List<Notice> content = noticeRepository.findAllByNoticeIdBetweenOrderByNoticeIdDesc
-                (totalCount - (size * pageNum), totalCount - (size * (pageNum - 1)));
-        return new ArticlePage(totalCount, pageNum, content, size);
-    }
 }
