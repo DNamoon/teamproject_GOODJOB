@@ -15,7 +15,6 @@ public class AdminService {
     private final AdminRepository adminRepository;
 
     public Admin login(String adLoginId, String adPw) {
-
         return adminRepository.findAdminByAdLoginId(adLoginId).filter(
                 m -> m.getAdPw().equals(adPw)).orElse(null);
 

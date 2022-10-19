@@ -72,17 +72,6 @@ public class AdminController {
         return "/admin/adminPostManage";
     }
 
-    @GetMapping("/notice")
-    public String noticeForm(Model model){
-        ArticlePage articlePage = articlePageService.getArticlePage(1L);
-        model.addAttribute("postPage", articlePage);
-        return "/admin/adminNotice";
-    }
-    @GetMapping("/notice/insert")
-    public String noticeForm(){
-        return "/admin/adminNoticeInsertForm";
-    }
-
     @GetMapping("/memberManage")
     public String adminMemberPage(){
         return "/admin/adminMemberManage";

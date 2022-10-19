@@ -16,7 +16,7 @@
                             <h6 class="text-2xl m-lg-1">공고 관리 게시판</h6>
                         </div>
                         <div class="d-flex flex-row justify-content-end">
-                            <a th:text="글쓰기" role="button" class="text-white btn btn mx-4"
+                            <a th:text="글쓰기" role="button" class="text-white btn mx-4"
                                style="background-color: #344767;" th:href="@{/admin/notice/insert}"></a>
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
@@ -26,11 +26,11 @@
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
                                             style="width: 20%">
-                                            기업명
+                                            NO
                                         </th>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75 ps-2"
                                             style="width: 40%">
-                                            공고명/공고내용
+                                            제목
                                         </th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
                                             style="width: 10%">
@@ -38,13 +38,13 @@
                                         </th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
                                             style="width: 20%">
-                                            시작/마감일
+                                            등록일
                                         </th>
                                         <th class="text-secondary opacity-7" style="width: 10%"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:object="${postPage}" th:each="post : ${postPage.content}">
+                                    <tr th:object="${noticeList}" th:each="notice : ${noticeList}">
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div>
@@ -53,31 +53,29 @@
                                                               alt="user1">-->
                                                 </div>
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p th:text="${post.postComId.getComName()}"
+                                                    <p th:text="${notice.noticeId}"
                                                        class="text-sm font-weight-bold m-lg-1"/>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <h6 th:text="${post.postTitle}" class="m-lg-2 text-sm"/>
-                                            <p th:text="${post.postContent}" class="text-xxs text-secondary m-lg-2"></p>
+                                            <a th:href="@{/admin/notice/{noticeId}/details(noticeId=${notice.noticeId})}"><h6 th:text="${notice.noticeTitle}" class="m-lg-2 text-sm"/></a>
                                         </td>
                                         <td class="align-middle text-center text-sm">
-                                            <th:block th:if="${#dates.createNow().after(post.postEndDate)}">
-                                                <span class="badge rounded-pill badge-sm bg-gradient-warning">공고마감</span>
+                                            <th:block>
+                                                <span class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
                                             </th:block>
-                                            <th:block th:if="${#dates.createNow().before(post.postEndDate)}">
-                                                <span class="badge rounded-pill badge-sm bg-gradient-success">공고 중</span>
+                                            <th:block>
+                                                <span class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
                                             </th:block>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span th:text="${post.postStartDate}"
+                                            <span th:text="${notice.noticeDate}"
                                                   class="text-secondary text-xs font-weight-bold"></span>
-                                            <p th:text="${post.postEndDate}" class="text-xs text-secondary mb-0"></p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
-                                            <span th:id="${post.postId}"
-                                                  th:onclick="deletePost(this.getAttribute('id'))"
+                                            <span th:id="${notice.noticeId}"
+                                                  th:onclick="deleteNotice(this.getAttribute('id'))"
                                                   class="badge badge-sm bg-gradient-danger rounded-pill" role="button">
                                                 삭제
                                             </span>
@@ -88,19 +86,24 @@
                                     </tbody>
                                 </table>
                                 <div class="d-flex flex-row justify-content-center">
-                                    <th:block th:if="${postPage.hasArticles()}">
-                                        <th:block th:if="${postPage.startPage > 5}">
-                                            <a class="m-lg-1 fs-5"
-                                               th:href="@{/admin/post/{pageNum}(pageNum=${postPage.getStartPage()-5})}">&lt;&lt;</a>
+                                    <th:block th:if="${noticeList.hasContent()}">
+                                        <th:block th:if="${noticeList.hasPrevious()}">
+                                            <a class="m-lg-1 fs-5" th:if="${noticeList.getNumber()>=5}"
+                                               th:href="@{/admin/notice/{pageNum}(pageNum=${noticeList.getNumber()-4})}">&lt;&lt;</a>
                                         </th:block>
                                         <th:block
-                                                th:each="num : ${#numbers.sequence(postPage.startPage,postPage.endPage)}">
-                                            <a class="m-lg-1 fs-5" th:text="${num}"
-                                               th:href="@{/admin/post/{pageNum}(pageNum=${num})}"></a>
+                                                th:each="num : ${#numbers.sequence(noticeList.getNumber(),noticeList.getNumber()+5)}">
+                                            <th:block th:if="${num<=noticeList.getTotalPages() && num > 0}">
+                                                <div class="pageIndex">
+                                                    <a class="m-lg-1 fs-5" th:id="${num}" th:text="${num}"
+                                                       th:href="@{/admin/notice/{pageNum}(pageNum=${num})}">[[${num}]]</a>
+                                                </div>
+                                            </th:block>
                                         </th:block>
-                                        <th:block th:if="${postPage.endPage < postPage.totalPage}">
+                                        <th:block
+                                                th:if="${noticeList.hasNext() && noticeList.getNumber()<noticeList.getTotalPages()-5}">
                                             <a class="m-lg-1 fs-5"
-                                               th:href="@{/admin/post/{pageNum}(pageNum=${postPage.getStartPage()+5})}">&gt;&gt;</a>
+                                               th:href="@{/admin/notice/{pageNum}(pageNum=${noticeList.getNumber()+6})}">&gt;&gt;</a>
                                         </th:block>
                                     </th:block>
                                 </div>
@@ -113,5 +116,41 @@
     </div>
     </div>
 </main>
+<script th:inline="javascript">
+    function deleteNotice(noticeId) {
+        if (confirm("삭제 하시겠습니까?") == true) {
+            $.ajax({
+                url: "/admin/notice/delete",
+                type: "post",
+                data: {noticeId: noticeId},
+                success: function () {
+                    alert("삭제되었습니다");
+                    location.href = "/admin/notice/1";
+                }
+            })
+        }
+    }
+
+    $(document).ready(function () {
+        let pageIndex = [[${noticeList.getNumber()}]] + 1
+        let pageNum = [[${pageNum}]];
+        let a
+        $(".pageIndex a").each(function () {
+            let val = $(".pageIndex a").text();
+            let val2 = this.getAttribute('id');
+            var idx = parseInt($(this).parent().index());
+            var thistitle = parseInt($(this).text())
+            // console.log(pageIndex)
+            // console.log(thistitle)
+            // console.log(val2)
+            // console.log(pageNum)
+            // console.log(text)
+            console.log(val)
+            if (pageNum == val2) {
+                // $(".pageIndex a").eq(pageNum).addClass("fs-1");
+            }
+        });
+    });
+</script>
 </body>
 </html>

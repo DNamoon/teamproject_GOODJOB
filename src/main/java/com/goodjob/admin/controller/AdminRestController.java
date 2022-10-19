@@ -92,13 +92,9 @@ public class AdminRestController {
             session.invalidate();
         }
     }
-    @PostMapping(value = "/product/image", produces = "application/json; charset=utf8")
+    @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-
-
-//        String fileRoot = "/Users/oh/IdeaProjects/teamproject_petApet/src/main/resources/static/img/osh/"; // 외부경로로 저장을 희망할때.
-
         String originalFileName = multipartFile.getOriginalFilename();    //오리지날 파일명
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));    //파일 확장자
         String savedFileName = UUID.randomUUID() + extension;    //저장될 파일 명

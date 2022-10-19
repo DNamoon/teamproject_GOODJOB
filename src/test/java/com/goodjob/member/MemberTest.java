@@ -21,23 +21,6 @@ class MemberTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @Test
-    @Commit
-    void sava() {
-        IntStream.rangeClosed(11, 20).forEach(i -> {
-
-            Member member = new Member(
-                    "test"+i,
-                    "1234",
-                    "010-1234-1234",
-                    "test@com.com",
-                    "testuser",
-                    Date.valueOf(LocalDate.of(2002 - i, 1, 1)),
-                    "address@dsfsdf"
-                    , "여", "1");
-            memberRepository.save(member);
-        });
-    }
 
     @Test
     void count() {
