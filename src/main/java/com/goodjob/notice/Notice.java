@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * 22.10.19 By.OH
+ */
 @Entity
 @Getter
 @NoArgsConstructor

@@ -1,7 +1,5 @@
 package com.goodjob.notice;
 
-import com.goodjob.admin.postpaging.ArticlePage;
-import com.goodjob.admin.postpaging.ArticlePageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +24,7 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
+    //JPA 페이징 관련 메소드
     @GetMapping("/{pageNum}")
     public String noticeListForm(@PathVariable int pageNum, Model model) {
         pageNum = (pageNum == 0) ? 0 : (pageNum - 1);
@@ -33,7 +32,6 @@ public class NoticeController {
         Pageable pageable = PageRequest.of(pageNum, 10, sort);
         Page<Notice> noticeList = noticeService.findNoticeList(pageable);
         model.addAttribute("noticeList", noticeList);
-        model.addAttribute("pageNum", pageNum);
         return "/admin/adminNotice";
     }
 

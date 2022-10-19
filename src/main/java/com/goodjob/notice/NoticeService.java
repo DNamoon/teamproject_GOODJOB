@@ -5,7 +5,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * 22.10.19 By.OH
+ */
 public interface NoticeService {
 
     Optional<Notice> findOne(Long noticeId);
