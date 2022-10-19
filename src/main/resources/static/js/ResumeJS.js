@@ -147,7 +147,7 @@ function addCertiInfo() {
     certiInfo += '<hr>';
     certiInfo += '<div class="row" style="float: inline-start;">';
     certiInfo += '<div class="col-md-6" style="width: 400px;">';
-    certiInfo += '<label>자격증명</label>';
+    certiInfo += '<label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>';
     certiInfo += '<div class="input-group mb-4">';
     certiInfo += '<input class="form-control" type="text" name="certificateName" id="certificateName" readonly>';
     certiInfo += '</div>';
@@ -168,6 +168,10 @@ function addCertiInfo() {
     certiInfo += '<input class="form-control" type="text" type="text" name="certiScore">';
     certiInfo += '</div>';
     certiInfo += '</div>';
+    certiInfo += '<div class="col-md-6" style="width: 24px;">';
+    certiInfo += '<label>&nbsp;</label>';
+    certiInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; vertical-align: middle"></button>';
+    certiInfo += '</div>';
     certiInfo += '</div>';
 
     $(".addCertiInfoList").append(certiInfo);
@@ -181,7 +185,7 @@ function addCertiInfoWC(data) {
     certiInfo += '<hr>';
     certiInfo += '<div class="row" style="float: inline-start;">';
     certiInfo += '<div class="col-md-6" style="width: 400px;">';
-    certiInfo += '<label>자격증명</label>';
+    certiInfo += '<label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>';
     certiInfo += '<div class="input-group mb-4">';
     certiInfo += '<input class="form-control" type="text" name="certificateName" id="certificateName" readonly>';
     certiInfo += '</div>';
@@ -202,6 +206,10 @@ function addCertiInfoWC(data) {
     certiInfo += '<input class="form-control" type="text" type="text" name="certiScore">';
     certiInfo += '</div>';
     certiInfo += '<input type="hidden" value="' + data + '" name="certiId">';
+    certiInfo += '</div>';
+    certiInfo += '<div class="col-md-6" style="width: 24px;">';
+    certiInfo += '<label>&nbsp;</label>';
+    certiInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; vertical-align: middle"></button>';
     certiInfo += '</div>';
     certiInfo += '</div>';
 
@@ -328,7 +336,6 @@ function getListToPrev(){
 
 //STEP2용 경력 추가
 function addCareerInfo() {
-    maxDate();     // 추가되는 애들한테는 최댓값이 적용이 안됨
     var careerInfo = '';
 
     careerInfo += '<div class="row" style="float: inline-start;">';
@@ -354,8 +361,12 @@ function addCareerInfo() {
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="" min="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
+    careerInfo += '<div class="col-md-6 my-2 mx-auto" style="width: 24px;">';
+    careerInfo += '<label>&nbsp;</label>';
+    careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; display: block;"></button>';
     careerInfo += '</div>';
-    careerInfo += '<div class="form-group mb-4">';
+    careerInfo += '</div>';
+    careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
     careerInfo += '<label>주요업무</label>';
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
@@ -365,7 +376,6 @@ function addCareerInfo() {
 
 //STEP2WithContent용 경력 추가
 function addCareerInfoWC(data) {
-    maxDate();
     var careerInfo = '';
 
     careerInfo += '<div class="row" style="float: inline-start;">';
@@ -392,8 +402,12 @@ function addCareerInfoWC(data) {
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
+    careerInfo += '<div class="col-md-6" style="width: 24px;">';
+    careerInfo += '<label>&nbsp;</label>';
+    careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; vertical-align: middle"></button>';
     careerInfo += '</div>';
-    careerInfo += '<div class="form-group mb-4">';
+    careerInfo += '</div>';
+    careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
     careerInfo += '<label>주요업무</label>';
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
