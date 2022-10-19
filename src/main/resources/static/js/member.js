@@ -91,6 +91,23 @@ $(document).ready(function() {
     $("#bb").click(function() {
         $("#dis").removeAttr("disabled");
         $("#bb").css("display", 'none');
-        $("#realUpdate").append("<button type=\"submit\" class=\"btn bg-gradient-dark w-100\" style=\"font-size:15px\">수정완료</button>");
+        $("#realUpdate").append("<button type=\"button\" class=\"btn bg-gradient-dark w-100\" style=\"font-size:15px\" data-target=\"#pwCheck\" data-toggle=\"modal\">수정완료</button>");
     })
 });
+$(document).ready(function() {
+    $("#aa").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/member/checkPW",
+            data: "id="+$("#id").val()+"&pw="+$('#pw').val(),
+            success: function (data) {
+              if(data=="0"){
+                document.getElementById("formUpdate").submit();
+            }else {
+                alert("비밀번호를 확인해주세요.")
+            }
+        }
+     })
+    })
+});
+
