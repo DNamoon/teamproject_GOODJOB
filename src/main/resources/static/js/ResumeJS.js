@@ -1,5 +1,6 @@
 $(document).ready(function(){
     maxDate();
+    isXBtnDisabled();
 
     var size = $("input[name='certificateName']").length;
     for(var i = 1; i < size; i++){
@@ -101,7 +102,7 @@ $(document).ready(function(){
             dataType: "text",
             success: function(data){
                 addCertiInfoWC(data);
-                isXCertiBtnDisabled();
+                isXBtnDisabled();
             }
         })
     });
@@ -121,7 +122,7 @@ $(document).ready(function(){
             dataType: "text",
             success: function(data){
                 addCareerInfoWC(data);
-                isXCareerBtnDisabled();
+                isXBtnDisabled();
             }
         })
     });
@@ -234,13 +235,13 @@ function deleteCertiWC(dataBtn, certiId){
         type: "get",
         success: function(){
             $(dataBtn).parent().parent().remove();
-            isXCertiBtnDisabled();
+            isXBtnDisabled();
         }
     });
 }
 
-//자격증 항목을 삭제했을 때 항목의 수가 1개이면 x버튼을 비활성화 함
-function isXCertiBtnDisabled(){
+//자격증, 경력 항목을 삭제했을 때 항목의 수가 1개이면 x버튼을 비활성화 함
+function isXBtnDisabled(){
     console.log($("button[id=deleteCertiBtn]").length);
 
     if($("button[id=deleteCertiBtn]").length <= 1){
@@ -248,10 +249,6 @@ function isXCertiBtnDisabled(){
     }else{
         $("#deleteCertiBtn").eq(0).attr("disabled", false);
     }
-}
-
-function isXCareerBtnDisabled(){
-    console.log($("button[id=deleteCareerBtn]").length);
 
     if($("button[id=deleteCareerBtn]").length <= 1){
         $("#deleteCareerBtn").eq(0).attr("disabled", true);
@@ -419,7 +416,7 @@ function addCareerInfo() {
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
 
-    $(".addCareerInfo").append(careerInfo);
+    $(".addCareerInfoList").append(careerInfo);
 }
 
 //step2에서 추가된 경력항목을 삭제하기 위한 함수
@@ -458,7 +455,7 @@ function addCareerInfoWC(data) {
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 24px;">';
     careerInfo += '<label>&nbsp;</label>';
-    careerInfo += '<button type="button deleteCareerBtn" id="deleteCareerBtn" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerWC(this,' + data + ')"></button>';
+    careerInfo += '<button type="button" id="deleteCareerBtn" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerWC(this,' + data + ')"></button>';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
@@ -467,7 +464,7 @@ function addCareerInfoWC(data) {
     careerInfo += '</div>';
     careerInfo += '</div>';
 
-    $(".addCareerInfo").append(careerInfo);
+    $(".addCareerInfoList").append(careerInfo);
 }
 
 //step2WC에서 추가된 경력항목을 삭제하기 위함
@@ -477,7 +474,7 @@ function deleteCareerWC(deleteBtn, careerId){
         type: "get",
         success: function () {
             $(deleteBtn).parent().parent().parent().remove();
-            isXCareerBtnDisabled();
+            isXBtnDisabled();
         }
     });
 }
