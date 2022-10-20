@@ -59,4 +59,9 @@ public class CareerServiceImpl implements CareerService {
                 .build();
         return careerRepository.save(career).getCareerId();
     }
+
+    @Override
+    public void deleteCareerList(Long careerId) {
+        careerRepository.deleteById(careerId);
+    }
 }

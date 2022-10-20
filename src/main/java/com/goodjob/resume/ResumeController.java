@@ -172,4 +172,18 @@ public class ResumeController {
 
         return "/resume/ResumeStep2WithContent";
     }
+
+    @ResponseBody
+    @GetMapping("/deleteCertiList/{certiId}")
+    public void deleteCertiList(@PathVariable("certiId") Long certiId){
+        certificationService.deleteCertiInfo(certiId);
+    }
+
+    @ResponseBody
+    @GetMapping("deleteCareerList/{careerId}")
+    public void deleteCareerList(@PathVariable("careerId") Long careerId){
+        System.out.println("===============================" + careerId);
+        careerService.deleteCareerList(careerId);
+    }
+
 }

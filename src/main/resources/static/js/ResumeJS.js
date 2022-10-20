@@ -144,8 +144,8 @@ function addCertiInfo() {
     maxDate();
     var certiInfo = '';
 
-    certiInfo += '<hr>';
     certiInfo += '<div class="row" style="float: inline-start;">';
+    certiInfo += '<hr>';
     certiInfo += '<div class="col-md-6" style="width: 400px;">';
     certiInfo += '<label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>';
     certiInfo += '<div class="input-group mb-4">';
@@ -168,13 +168,17 @@ function addCertiInfo() {
     certiInfo += '<input class="form-control" type="text" type="text" name="certiScore">';
     certiInfo += '</div>';
     certiInfo += '</div>';
-    certiInfo += '<div class="col-md-6" style="width: 24px;">';
+    certiInfo += '<div class="col-md-6 mx-auto" style="width: 24px;">';
     certiInfo += '<label>&nbsp;</label>';
-    certiInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; vertical-align: middle"></button>';
+    certiInfo += '<button type="button" id="deleteCertiBtn" class="btn-close" style="background-color: #96a2b8;" onclick="deleteAddInfo(this)"></button>';
     certiInfo += '</div>';
     certiInfo += '</div>';
 
     $(".addCertiInfoList").append(certiInfo);
+}
+
+function deleteAddInfo(data){
+    $(data).parent().parent().remove();
 }
 
 //STEP2WithContent용 자격증 추가
@@ -207,13 +211,25 @@ function addCertiInfoWC(data) {
     certiInfo += '</div>';
     certiInfo += '<input type="hidden" value="' + data + '" name="certiId">';
     certiInfo += '</div>';
-    certiInfo += '<div class="col-md-6" style="width: 24px;">';
+    certiInfo += '<div class="col-md-6 mx-auto" style="width: 24px;">';
     certiInfo += '<label>&nbsp;</label>';
-    certiInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; vertical-align: middle"></button>';
+    certiInfo += '<button type="button" id="deleteCertiBtn" class="btn-close" style="background-color: #96a2b8;" onclick="deleteCertiWC(this,' + data + ')"></button>';
     certiInfo += '</div>';
     certiInfo += '</div>';
 
     $(".addCertiInfoList").append(certiInfo);
+}
+
+function deleteCertiWC(dataBtn, certiId){
+    console.log(certiId);
+
+    $.ajax({
+        url: "/resume/deleteCertiList/" + certiId,
+        type: "get",
+        success: function(){
+            $(dataBtn).parent().parent().remove();
+        }
+    });
 }
 
 function getInputId(data){
@@ -338,6 +354,7 @@ function getListToPrev(){
 function addCareerInfo() {
     var careerInfo = '';
 
+    careerInfo += '<div>';
     careerInfo += '<div class="row" style="float: inline-start;">';
     careerInfo += '<div class="col-md-6" style="width: 400px;">';
     careerInfo += '<label>회사명</label>';
@@ -363,7 +380,7 @@ function addCareerInfo() {
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6 my-2 mx-auto" style="width: 24px;">';
     careerInfo += '<label>&nbsp;</label>';
-    careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; display: block;"></button>';
+    careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerInfo(this)"></button>';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
@@ -371,13 +388,18 @@ function addCareerInfo() {
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
 
-    $(".addCareerInfo").replaceWith(careerInfo);
+    $(".addCareerInfo").append(careerInfo);
+}
+
+function deleteCareerInfo(data){
+    $(data).parent().parent().parent().remove();
 }
 
 //STEP2WithContent용 경력 추가
 function addCareerInfoWC(data) {
     var careerInfo = '';
 
+    careerInfo += '<div>';
     careerInfo += '<div class="row" style="float: inline-start;">';
     careerInfo += '<div class="col-md-6" style="width: 400px;">';
     careerInfo += '<label>회사명</label>';
@@ -404,15 +426,27 @@ function addCareerInfoWC(data) {
     careerInfo += '</div>';
     careerInfo += '<div class="col-md-6" style="width: 24px;">';
     careerInfo += '<label>&nbsp;</label>';
-    careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; vertical-align: middle"></button>';
+    careerInfo += '<button type="button deleteCareerBtn" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerWC(this,' + data + ')"></button>';
     careerInfo += '</div>';
     careerInfo += '</div>';
     careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
     careerInfo += '<label>주요업무</label>';
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
+    careerInfo += '</div>';
 
-    $(".addCareerInfo").replaceWith(careerInfo);
+    $(".addCareerInfo").append(careerInfo);
+}
+
+function deleteCareerWC(deleteBtn, careerId){
+    console.log(careerId);
+    $.ajax({
+        url: "/resume/deleteCareerList/" + careerId,
+        type: "get",
+        success: function () {
+            $(deleteBtn).parent().parent().parent().remove();
+        }
+    });
 }
 
 //입력검증

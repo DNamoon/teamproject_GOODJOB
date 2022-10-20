@@ -77,4 +77,9 @@ public class CertificationServiceImpl implements CertificationService {
                 .build();
         return certificationRepository.save(certification).getCertiId();
     }
+
+    @Override
+    public void deleteCertiInfo(Long certiId) {
+        certificationRepository.deleteById(certiId);
+    }
 }
