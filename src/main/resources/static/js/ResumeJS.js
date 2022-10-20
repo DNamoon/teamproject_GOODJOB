@@ -221,13 +221,19 @@ function addCertiInfoWC(data) {
 }
 
 function deleteCertiWC(dataBtn, certiId){
-    console.log(certiId);
-
     $.ajax({
         url: "/resume/deleteCertiList/" + certiId,
         type: "get",
         success: function(){
             $(dataBtn).parent().parent().remove();
+
+            console.log($("button[id=deleteCertiBtn]").length);
+
+            if($("button[id=deleteCertiBtn]").length <= 1){
+                $("#deleteCertiBtn").attr("disabled", true);
+            }else{
+                $("#deleteCertiBtn").attr("disabled", false);
+            }
         }
     });
 }
@@ -439,7 +445,6 @@ function addCareerInfoWC(data) {
 }
 
 function deleteCareerWC(deleteBtn, careerId){
-    console.log(careerId);
     $.ajax({
         url: "/resume/deleteCareerList/" + careerId,
         type: "get",
@@ -483,7 +488,6 @@ function isFourNumber(phoneNum){
     if(phoneNum.value.match(exp)){
         return true;
     } else {
-        console.log("dd");
         $("#phoneNumVeriDiv").append("4자리 숫자로 입력해주세요");
         phoneNum.focus();
         return false;
