@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{/myPageTemplate ::setContent(~{this::content})}">
+<th:block th:replace="~{/member/myPageTemplate ::setContent(~{this::content})}">
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -10,7 +10,7 @@
     <th:block th:fragment="content">
         <div class="container py-4" >
             <div class="row" >
-                <div class="col-lg-8 mx-auto" style="width : 1000px">
+                <div class="col-lg-10 mx-auto" style="width : 1000px">
                  <form role="form" id="formUpdate" method="post" th:action="@{/member/myPageInfo}">
                      <h3 class="text-center">개인정보 수정</h3>
                      <div class="card-body">
@@ -20,10 +20,9 @@
                          <div class="col-md-6">
                              <label>아이디</label>
                              <div class="input-group">
-                                 <input class="form-control" type="text" name="loginId" th:value="${session.sessionId}" readonly>
-                                 <input type="hidden" name="memId" th:value="${memberInfo.memId}">
+                                 <input class="form-control" type="text" id="id" name="loginId" th:value="${session.sessionId}" readonly>
+                                 <input type="hidden" id="memId" name="memId" th:value="${memberInfo.memId}">
                              </div>
-                             <label id="checkMassage"></label>
                          </div>
                              <div class="col-md-6">
                                  <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
@@ -52,25 +51,34 @@
                              </div>
                              <div class="col-md-6">
                                  <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                 <div class="input-group">
+                                 <div class="input-group mb-4">
                                      <input type="tel" class="form-control" placeholder="000-0000-0000" name="memPhone" th:value="${memberInfo.memPhone}"  >
                                  </div>
                              </div>
-                             <div class="col-md-6" style="width: 100px; ">
+                             <div class="col-md-6">
                                  <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                 <div class="input-group mb-4">
+                                 <div class="input-group mb-4" style="width: 215px;">
                                      <input class="form-control" type="text" th:value="${memberInfo.memEmail1}" name="memEmail1">
-                                     &nbsp;@&nbsp;
+                                 </div>
+                                 <div class="col-mb-6" style="width: 5px;">
+                                     <label>&nbsp;</label>
+                                     @
+                                 </div>
+                                 &nbsp;&nbsp;
+                                 <div class="col-md-6" style="width: 215px;">
+                                     <label>&nbsp;</label>
+                                     <div class="input-group mb-4">
                                      <select class="form-select" name="memEmail2">
                                          <option th:value="${memberInfo.memEmail2}">[[${memberInfo.memEmail2}]] (기본정보)</option>
                                          <option value="naver.com">naver.com</option>
                                          <option value="gmail.com">gmail.com</option>
                                          <option value="daum.net">daum.net</option>
                                      </select>
-                                 </div>
+                                    </div>
+                                </div>
                              </div>
                                  <div class="row" style="float: inline-start;">
-                                     <div class="col-md-6" style="width: 400px;">
+                                     <div class="col-md-6" style="width: 300px;">
                                          <label>주소</label>
                                          <div class="input-group mb-4">
                                              <input class="form-control" type="text" id="userAddress"
@@ -79,24 +87,102 @@
                                      </div>
                                      <div class="col-md-2" style="margin-left: 0px;">
                                          <label>&nbsp;</label>
-                                         <button type="button" class="btn bg-gradient-dark w-100 findAddress"
+                                         <button type="button" class="btn bg-gradient-dark findAddress"
                                                  onclick="execPostCode()">주소찾기
                                          </button>
                                      </div>
-                                     <div class="col-md-6" style="width: 330px;">
+                                     <div class="col-md-6" style="width: 300px;">
                                          <label>상세주소</label>
                                          <div class="input-group mb-4">
                                              <input class="form-control" type="text" id="userDetailAddress" th:value="${memberInfo.detailAddress}" name="memLastAddress" >
                                          </div>
                                      </div>
                                  </div>
-                         </div>
+                             </div>
                          </fieldset>
                          </div>
-                     <button type="button" id="bb" class="btn bg-gradient-dark w-100" onclick="updateInfo()" style="font-size:15px" >수정</button>
-                     <div id="realUpdate"></div>
+                     <div class="row">
+                         <div class="col">
+                        <button type="button" id="bb" class="btn bg-gradient-dark w-100 " onclick="updateInfo()" style="font-size:15px" >수정</button>
+                         <div id="realUpdate"></div>
+                         </div>
+                         <div class="col">
+                             <button type="button" id="changePw" class="btn bg-gradient-dark w-100 "style="font-size:15px"data-target="#change" data-toggle="modal">비밀번호 변경</button>
+                         </div>
+                         <div class="col">
+                         <button type="button" class="btn bg-gradient-dark w-100 "style="font-size:15px"data-target="#delete" data-toggle="modal">회원탈퇴</button>
+                        </div>
+                     </div>
                  </form>
-             </div>
+                    <!--개인정보 수정 Modal -->
+                    <div class="modal fade" id="pwCheck" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">비밀번호 확인</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                        <label text="비밀번호"> </label>
+                                        <input id="pw" type="text" name="pw" class="form-control">
+                                        <div class="d-flex justify-content-center">
+                                            <button id="updatebtn" type="button" class="btn bg-gradient-dark mt-3">확인</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- 회원탈퇴 Modal -->
+                    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">비밀번호 확인</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <label text="비밀번호"> </label>
+                                    <input id="deletePw" type="text" name="deletePw" class="form-control">
+                                    <div class="d-flex justify-content-center">
+                                        <button id="deletebtn" type="button" class="btn bg-gradient-dark mt-3">확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 비밀번호변경 Modal -->
+                    <div class="modal fade" id="change" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="text-center pb-0 text-left">
+                                    <h4 class="font-weight-bolder">비밀번호 변경</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="text-center">
+                                        <div class="mb-3">
+                                            <span>재설정할 비밀번호를 입력해주세요.</span><br/>
+                                            <input type="text"id="pw1" name="pw1"><br/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span>비밀번호를 다시 입력해주세요.</span><br/>
+                                            <input type="text" id="pw2" name="pw2" onkeyup="test()" required><br/>
+                                            <label id="confirmMsg"></label>
+                                        </div>
+                                        <div class="row mx-auto">
+                                            <div class="col">
+                                                <button type="submit" id="ok"class="btn bg-gradient-dark" >확인</button>
+                                            </div>
+                                            <div class="col">
+                                                <button type="button" id="return"class="btn bg-gradient-dark" data-dismiss="modal" >취소</button>
+                                            </div>
+                                        </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
          </div>
      </div>
     </th:block>
