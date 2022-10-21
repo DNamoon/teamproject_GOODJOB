@@ -514,6 +514,7 @@ function isFourNumber(phoneNum){
         return true;
     } else {
         $("#phoneNumVeriDiv").append("4자리 숫자로 입력해주세요");
+
         phoneNum.focus();
         return false;
     }

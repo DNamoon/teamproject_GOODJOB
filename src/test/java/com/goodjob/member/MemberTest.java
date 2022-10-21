@@ -6,8 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.stream.IntStream;
 
 @Transactional
 @SpringBootTest
@@ -19,26 +24,30 @@ class MemberTest {
     @Test
     @Commit
     void sava() {
-//        Memberdiv memberdiv = new Memberdiv(MemberType.COMPANY);
-//        MemberType memberType = MemberType.valueOf("COMPANY");
-//     Arrays.stream(MemberType.values()).iterator().forEachRemaining(i-> System.out.println(i));
-//        System.out.println("memberType = " + memberType);
-//        System.out.println(MemberType.COMPANY);
-        Member member = new Member(1L,
-                "test",
-                "1234",
-                "01012341234",
-                "test@com.com",
-                "testuser",
-                Date.valueOf("1000-10-10"),
-                "address"
-                , "M", "1");
-        memberRepository.save(member);
+        IntStream.rangeClosed(11, 20).forEach(i -> {
+
+            Member member = new Member(
+                    "test"+i,
+                    "1234",
+                    "010-1234-1234",
+                    "test@com.com",
+                    "testuser",
+                    Date.valueOf(LocalDate.of(2002 - i, 1, 1)),
+                    "address@dsfsdf"
+                    , "여", "1");
+            memberRepository.save(member);
+        });
     }
 
     @Test
-    void count(){
+    void count() {
         Integer integer = memberRepository.countByMemGender("F");
         System.out.println("integer = " + integer);
+    }
+    @Test
+    public String getInfo(HttpSession session, Model model){
+        String id = (String)session.getAttribute("sessionId");
+        
+        return "member/myPageForm";
     }
 }

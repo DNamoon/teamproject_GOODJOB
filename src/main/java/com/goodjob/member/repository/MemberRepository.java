@@ -2,7 +2,12 @@ package com.goodjob.member.repository;
 
 import com.goodjob.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Date;
 import java.util.Optional;
 
 /**
@@ -11,7 +16,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.memLoginId =:loginId")
-    Member findLoginInfo(String loginId);
+    Member findLoginInfo(@Param("loginId") String loginId);
     
     Integer countByMemGender(String memGender);
 
@@ -23,5 +28,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
    Optional<Member> findByMemLoginId(String memLoginId);
 
-
+   @Transactional
+   @Modifying
+   @Query("update Member m set m.memAddress =:#{#p.memAddress},m.memBirthDate =:#{#p.memBirthDate}" +
+            ",m.memEmail =:#{#p.memEmail},m.memGender =:#{#p.memGender},m.memName =:#{#p.memName},m.memPhone =:#{#p.memPhone} where m.memId =:#{#p.memId}")
+    void updateInfo(@Param("p") Member member);
 }

@@ -10,10 +10,11 @@ import java.sql.Date;
 @Builder
 public class MemberDTO {
     private Long memId;
-    private String memLoginId;
-    private String memPw;
+    private String loginId;
+    private String pw;
     private String memPhone;
-    private String memEmail;
+    private String memEmail1;
+    private String memEmail2;
     private String memName;
     private Date memBirthDate;
     private String memAddress;
@@ -24,11 +25,11 @@ public class MemberDTO {
     public Member toEntity() {
         Member member = Member.builder()
                 .memId(memId)
-                .memLoginId(memLoginId)
-                .memPw(memPw)
+                .memLoginId(loginId)
+                .memPw(pw)
                 .memName(memName)
                 .memPhone(memPhone)
-                .memEmail(memEmail)
+                .memEmail(memEmail1+"@"+memEmail2)
                 .memBirthDate(memBirthDate)
                 .memAddress(memAddress +"@"+ detailAddress)
                 .memGender(memGender)
