@@ -17,11 +17,11 @@ import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.quartz.QuartzTransactionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -45,9 +45,6 @@ public class ResumeController {
     private final CertificationService certificationService;
     private final SelfIntroductionService selfIntroductionService;
 
-    private String loginId = "member3921";                           //세션 처리 후 세션에서 가져올 값
-
-
     @GetMapping("/myInfo")
     public String registerButton(){
         return "/resume/ResumeRegisterButton";
@@ -55,13 +52,15 @@ public class ResumeController {
 
     @ResponseBody
     @GetMapping("/registerResume")
-    public Long registerResume(){
-        return resumeService.registerResume(loginId);
+    public Long registerResume(HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
+        return resumeService.registerResume(id);
     }
 
     @GetMapping("/resumeStep1/{resumeId}")
-    public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model){
-        ResumeMemberDTO resumeMemberDTO = memberService.bringMemInfo(loginId);
+    public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
+        ResumeMemberDTO resumeMemberDTO = memberService.bringMemInfo(id);
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", resumeMemberDTO);
@@ -153,9 +152,11 @@ public class ResumeController {
     }
 
     @GetMapping("/goPreviousStep1/{resumeId}")  //Get
-    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model){
+    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
+
         model.addAttribute("resumeId", resumeId);
-        model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
+        model.addAttribute("memberInfo", memberService.bringMemInfo(id));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
 
@@ -182,7 +183,6 @@ public class ResumeController {
     @ResponseBody
     @GetMapping("deleteCareerList/{careerId}")
     public void deleteCareerList(@PathVariable("careerId") Long careerId){
-        System.out.println("===============================" + careerId);
         careerService.deleteCareerList(careerId);
     }
 
