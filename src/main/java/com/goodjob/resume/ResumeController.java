@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * 박채원 22.10.02 작성
- * 
  * 박채원 22.10.08 수정
  * resumeStep3 메소드 수정 - 뷰에서 가져온 자격증 리스트 정보 DB에 추가하는 부분
  */
@@ -89,7 +88,7 @@ public class ResumeController {
         return certificationService.findCertiName(certiName);
     }
 
-    @GetMapping("/resumeStep2/{resumeId}")  //Get으로 바꿈
+    @GetMapping("/resumeStep2/{resumeId}")
     public String resumeStep2(@PathVariable("resumeId") Long resumeId, @Valid ResumeMemberDTO resumeMemberDTO, @Valid EducationDTO educationDTO, Model model){
         resumeService.updateResumeMemberInfo(resumeMemberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
@@ -151,7 +150,7 @@ public class ResumeController {
         return "redirect:/member/myPage";
     }
 
-    @GetMapping("/goPreviousStep1/{resumeId}")  //Get
+    @GetMapping("/goPreviousStep1/{resumeId}")
     public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
         String id = (String)session.getAttribute("sessionId");
 
@@ -163,7 +162,7 @@ public class ResumeController {
         return "/resume/ResumeStep1WithContent";
     }
 
-    @GetMapping("/goPreviousStep2/{resumeId}")  //Get
+    @GetMapping("/goPreviousStep2/{resumeId}")
     public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, @Valid SelfIntroductionDTO selfIntroductionDTO, Model model){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
 
