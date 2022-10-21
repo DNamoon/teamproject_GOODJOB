@@ -1,5 +1,6 @@
 package com.goodjob.resume;
 
+import com.goodjob.career.Career;
 import com.goodjob.certification.Certification;
 import com.goodjob.education.Education;
 import com.goodjob.member.Member;
@@ -41,15 +42,15 @@ public class Resume {
 
 
     //하나의 이력서 조회할 때 관련된 모든 항목을 불러오게 하려고 했는데 manytoone이 여러개 있어서 자꾸 오류남 - 하나만 있을 때는 정상작동
-//    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-//    private List<Career> career;
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
+    private List<Career> career;
 
-    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private List<Certification> certification;
 
-    @OneToOne(mappedBy = "resume", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private Education education;
 
-    @OneToOne(mappedBy = "resume", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "resume", cascade = CascadeType.REMOVE)
     private SelfIntroduction selfIntroduction;
 }
