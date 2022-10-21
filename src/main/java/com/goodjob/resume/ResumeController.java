@@ -45,7 +45,7 @@ public class ResumeController {
     private final CertificationService certificationService;
     private final SelfIntroductionService selfIntroductionService;
 
-    private String loginId = "test21";                           //세션 처리 후 세션에서 가져올 값
+    private String loginId = "member3921";                           //세션 처리 후 세션에서 가져올 값
 
 
     @GetMapping("/myInfo")
@@ -149,7 +149,7 @@ public class ResumeController {
     @GetMapping("/submitResume")
     public String submitResume(@Valid SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
-        return "redirect:/resume//myInfo";
+        return "redirect:/member/myPage";
     }
 
     @GetMapping("/goPreviousStep1/{resumeId}")  //Get
