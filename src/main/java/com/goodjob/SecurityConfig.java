@@ -33,7 +33,6 @@ public class SecurityConfig  {
                 .antMatchers("/css/**","/js/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();
-
         return http.build();
     }
 }
