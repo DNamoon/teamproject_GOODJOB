@@ -1,4 +1,3 @@
-<!-- 박채원 22.09.30 작성 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,15 +23,17 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <!-- AJAX CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- DATEPICKER CDN -->
+
 </head>
 <body>
 <section>
-    <div class="container py-4 flex-wrap" style="margin : 10px, 100px, 10px, 100px;">
+    <div class="container py-4 flex-wrap" style="align-content: center">
         <div class="row">
-            <div class="col-lg-7" style="width : 1000px">
+            <div class="col-lg-7 mx-auto" style="width : 1100px">
                 <h3 class="text-center mx-auto">STEP2</h3>
                 &nbsp;
-                <form role="form" id="contact-form" method="post" autocomplete="off">
+                <form role="form" id="contact-form" method="get" autocomplete="off">
                     <input type="hidden" th:value="${resumeId}" name="resumeId">
                     <div class="card-body">
                         <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
@@ -42,19 +43,18 @@
                             <div class="col-md-6" style="width: 400px;">
                                 <label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                 <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="certificateName" id="certificateName" readonly>
+                                    <input class="form-control" type="text" name="certificateName" id="certificateName0" readonly>
                                 </div>
                             </div>
                             <div class="col-md-2" style="margin-left: 0px;">
                                 <label>&nbsp;</label>
-                                <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
-                                        data-bs-target="#findCertiModal">자격증찾기
+                                <button type="button" class="btn bg-gradient-dark w-100" id="findCertiBtn" data-bs-toggle="modal" data-bs-target="#findCertiModal" onclick="getInputId(this)">자격증찾기
                                 </button>
                             </div>
                             <div class="col-md-6" style="width: 200px;">
                                 <label>취득년월</label>
                                 <div class="input-group mb-4">
-                                    <input class="form-control" placeholder="YYYY-MM-DD" type="date" value="2010-01-01" name="certiGetDate">
+                                    <input class="form-control certiGetDate" type="date" name="certiGetDate" max="">
                                 </div>
                             </div>
                             <div class="col-md-6" style="width: 200px;">
@@ -63,10 +63,11 @@
                                     <input class="form-control" type="text" name="certiScore">
                                 </div>
                             </div>
+
+                            <div class="addCertiInfoList"></div>
+                            <button type="button" class="btn btn-outline-secondary w-50 addCertiInfo">자격증 추가
+                            </button>
                         </div>
-                        <div class="addCertiInfo"></div>
-                        <button type="button" class="btn btn-outline-secondary w-100 addCertiInfo">자격증 추가
-                        </button>
 
 
                         <div style="height: 30px;"></div>
@@ -83,7 +84,7 @@
                                 <div class="col-md-6" style="width: 200px;">
                                     <label>근무기간</label>
                                     <div class="input-group mb-4">
-                                        <input class="form-control" placeholder="YYYY-MM-DD" type="date" value="1900-01-01" name="careerJoinedDate">
+                                        <input class="form-control careerJoinedDate" id="careerJoinedDate" type="date" name="careerJoinedDate">
                                     </div>
                                 </div>
                                 <div class="col-md-6" style="width: 5px;">
@@ -93,25 +94,24 @@
                                 <div class="col-md-6" style="width: 200px;">
                                     <label>&nbsp;</label>
                                     <div class="input-group mb-4">
-                                        <input class="form-control" placeholder="YYYY-MM-DD" type="date" value="1900-01-01" name="careerRetireDate">
+                                        <input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group mb-4">
+                            <div class="form-group mb-4" style="width: 1000px">
                                 <label>주요업무</label>
-                                <textarea class="form-control"
-                                          placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>
+                                <textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>
                             </div>
-                            <div class="addCareerInfo"></div>
-                            <button type="button" class="btn btn-outline-secondary w-100" onclick="addCareerInfo()">경력사항
+                            <div class="addCareerInfoList"></div>
+                            <button type="button" class="btn btn-outline-secondary w-50 addCareerInfo">경력사항
                                 추가
                             </button>
                             <div style="height: 50px;"></div>
                             <div class="col-md-6 mx-auto">
-                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resume/resumeStep3/{resumeId}(resumeId=${resumeId})}">저장 후 STEP 3로</button>
+                                <button type="button" class="btn bg-gradient-dark w-100" onclick="getListToNext()">저장 후 STEP 3로</button>
                             </div>
                             <div class="col-md-6 mx-auto">
-                                <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resume/goPreviousStep1/{resumeId}(resumeId=${resumeId})}">이전</button>
+                                <button type="button" class="btn bg-gradient-dark w-100" onclick="getListToPrev()">이전</button>
                             </div>
                         </div>
                     </div>
@@ -122,6 +122,7 @@
 </section>
 <!-- Find Certification Modal -->
 <div class="modal fade" id="findCertiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <input type="hidden" id="modalId">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
