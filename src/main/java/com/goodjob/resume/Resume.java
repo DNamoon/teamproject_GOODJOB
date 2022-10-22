@@ -6,6 +6,7 @@ import com.goodjob.education.Education;
 import com.goodjob.member.Member;
 import com.goodjob.selfIntroduction.SelfIntroduction;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,6 +26,7 @@ import java.util.List;
 @ToString
 @Getter
 @Builder
+@DynamicInsert
 @EntityListeners(value = {AuditingEntityListener.class})
 public class Resume {
 
@@ -32,10 +34,10 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
 
-    @Column(length = 50)
+    @Column(columnDefinition = "varchar(50) default '이력서'")
     private String resumeTitle;
 
-    @Column
+    @Column(columnDefinition = "default curdate()")
     @LastModifiedDate
     private Date resumeUpdateDate;
 

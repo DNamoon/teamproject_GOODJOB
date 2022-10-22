@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,6 +68,11 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeListDTO> getResumeList(Long memId) {
         List<Resume> resumeList = resumeRepository.getResumeByResumeMemIdOrderByResumeId(Member.builder().memId(memId).build());
         return resumeList.stream().map(resume -> entityToListDTO(resume)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteResume(Long resumeId) {
+        resumeRepository.deleteById(resumeId);
     }
 
 

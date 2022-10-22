@@ -6,18 +6,6 @@ $(document).ready(function(){
     for(var i = 1; i < size; i++){
         $("input[name='certificateName']").eq(i).attr("id","certificateName"+i);
     }
-
-    //이력서 등록버튼 눌리면 이력서 번호부터 등록하고 시작
-    $("#registerResume").click(function(){
-        $.ajax({
-            type: "get",
-            url: "/resume/registerResume",
-            dataType: "text",
-            success: function(data){
-                location.href = "/resume/resumeStep1/" + data;
-            }
-        });
-    })
     
     //학교 찾기
     $(".findSchool").click(function(){
