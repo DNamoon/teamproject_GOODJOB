@@ -54,4 +54,9 @@ public class Member {
     @Column(length = 2)
     private String memTerms;
 
+    /** 비밀번호 변경 메서드 **/
+    public void updatePassword(String password){
+        System.out.println("++++++++"+password);
+        this.memPw = password;
+    }
 }
