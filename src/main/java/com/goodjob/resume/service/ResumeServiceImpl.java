@@ -4,11 +4,15 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.resume.Resume;
+import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.repository.ResumeRepository;
 import com.goodjob.resume.dto.ResumeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.03 작성
@@ -57,4 +61,12 @@ public class ResumeServiceImpl implements ResumeService {
         ResumeDTO resumeDTO = entityToDTO(resume,phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1]);
         return resumeDTO;
     }
+
+    @Override
+    public List<ResumeListDTO> getResumeList(Long memId) {
+        List<Resume> resumeList = resumeRepository.getResumeByResumeMemIdOrderByResumeId(Member.builder().memId(memId).build());
+        return resumeList.stream().map(resume -> entityToListDTO(resume)).collect(Collectors.toList());
+    }
+
+
 }

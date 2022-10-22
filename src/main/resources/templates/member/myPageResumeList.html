@@ -8,7 +8,55 @@
 
     </head>
     <th:block th:fragment="content">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="container text-center border-2">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="text-bold">작성중</h5>
+                                <a href="#"><h5 class="text-decoration-underline">0</h5></a>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-bold">지원완료</h5>
+                                <a href="#"><h5 class="text-decoration-underline">0</h5></a>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-bold">최종합격</h5>
+                                <a href="#"><h5 class="text-decoration-underline">0</h5></a>
+                            </div>
+                            <div class="col">
+                                <h5 class="text-bold">불합격</h5>
+                                <a href="#"><h5 class="text-decoration-underline">0</h5></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="container">
+                        <div class="row" style="height: 30px">
+                            <div class="col-7">
+                                <h5 class="text-bold">내 이력서</h5>
+                            </div>
+                            <div class="col-5">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button class="btn btn-outline-primary me-md-2 btn-sm" type="button">새 이력서 등록</button>
+                                    <button class="btn btn-outline-danger btn-sm" type="button">선택삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr style="margin-bottom: 25px">
+                        <div class="container resumeList">
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </th:block>
     </body>
 </th:block>

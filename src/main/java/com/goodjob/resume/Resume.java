@@ -6,13 +6,17 @@ import com.goodjob.education.Education;
 import com.goodjob.member.Member;
 import com.goodjob.selfIntroduction.SelfIntroduction;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 
 /**
  * 박채원 22.10.02 작성
+ * 박채원 22.10.23 수정 - 이력서제목, 수정날짜 컬럼 추가
  */
 
 @Entity
@@ -21,11 +25,19 @@ import java.util.List;
 @ToString
 @Getter
 @Builder
+@EntityListeners(value = {AuditingEntityListener.class})
 public class Resume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
+
+    @Column(length = 50)
+    private String resumeTitle;
+
+    @Column
+    @LastModifiedDate
+    private Date resumeUpdateDate;
 
     @Column(length = 45)
     private String resumeMemPhone;
