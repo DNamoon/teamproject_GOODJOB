@@ -13,6 +13,7 @@ import com.goodjob.education.dto.EducationDTO;
 import com.goodjob.education.service.EducationService;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.service.MemberService;
+import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
@@ -187,4 +188,15 @@ public class ResumeController {
         resumeService.deleteResume(resumeId);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
+
+    @ResponseBody
+    @GetMapping("/changeTitle/{resumeId}")
+    public void changeTitle(@PathVariable("resumeId") Long resumeId, @RequestParam("title") String title){
+        resumeService.changeTitle(resumeId, title);
+    }
+
+//    @PutMapping("/changeTitle/{resumeId}")
+//    public void changeTitle(@RequestBody ResumeListDTO resumeListDTO){
+//        resumeService.changeTitle(resumeListDTO);
+//    }
 }

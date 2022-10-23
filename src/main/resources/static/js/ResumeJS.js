@@ -19,7 +19,7 @@ $(document).ready(function(){
             success: function (data){
                 $(".schoolList").empty();
                 for(var i=0; i<data.length; i++){
-                    $(".schoolList").append('<input class="form-check-input" type="radio" name="selectSchoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');
+                    $(".schoolList").append('<input class="form-check-input me-1" type="radio" name="selectSchoolName" value="' + data[i].schName +'" style="background-color: #e4e1e4">' + data[i].schName +'<br/>');
                 }
                 $(".doneFindSchool").click(function (){
                     $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
@@ -40,7 +40,7 @@ $(document).ready(function(){
             success: function (data){
                 $(".majorList").empty();
                 for(var i=0; i<data.length; i++){
-                    $(".majorList").append('<input class="form-check-input" type="radio" name="selectMajorName" value="' + data[i].majName +'">' + data[i].majName +'<br/>');
+                    $(".majorList").append('<input class="form-check-input me-1" type="radio" name="selectMajorName" value="' + data[i].majName +'" style="background-color: #e4e1e4">' + data[i].majName +'<br/>');
                 }
                 $(".doneFindMajor").click(function (){
                     $("#majorName").val($("input:radio[name='selectMajorName']:checked").val());
@@ -61,7 +61,7 @@ $(document).ready(function(){
             success: function (data) {
                 $(".certiList").empty();
                 for (var i = 0; i < data.length; i++) {
-                    $(".certiList").append('<input class="form-check-input" type="radio" name="selectCertiName" value="' + data[i].certiName + '">' + data[i].certiName + '<br/>');
+                    $(".certiList").append('<input class="form-check-input me-1" type="radio" name="selectCertiName" value="' + data[i].certiName + '" style="background-color: #e4e1e4">' + data[i].certiName + '<br/>');
                 }
                 $(".doneFindCerti").click(function () {
                     var inputId = $("#modalId").val();

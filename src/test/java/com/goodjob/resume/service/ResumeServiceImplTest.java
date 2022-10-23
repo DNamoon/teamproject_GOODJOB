@@ -17,8 +17,6 @@ class ResumeServiceImplTest {
 
     @Test
     void deleteResume() {
-        List<Resume> resume = resumeRepository.getResumeByResumeMemIdOrderByResumeId(Member.builder().memId(5L).build());
-        System.out.println(resume);
 //        resumeRepository.deleteById(355L);
     }
 }

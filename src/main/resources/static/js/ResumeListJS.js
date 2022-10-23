@@ -3,7 +3,7 @@
  */
 
 $(document).ready(function () {
-    getJSONResumeList(5);   //memId를 받아와야하는데 어떻게?
+    getJSONResumeList($("input[id=sessionInput]").val());
 
     //이력서 등록버튼 눌리면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function () {
@@ -34,7 +34,7 @@ function getJSONResumeList(memId) {
             list += '<input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox" style="background-color: #e4e1e4">'
             list += '</div>';
             list += '<div class="col-8" style="margin-top: 8px">';
-            list += '<h5 class="text-bold" name="resumeTitle">' + resume.resumeTitle + '</h5>';
+            list += '<h5 class="text-bold" name="resumeTitle" onclick="changeTitleForm(this)">' + resume.resumeTitle + '</h5>';
             list += '<h6 style="color: #bbb8bb">최종수정날짜 | ' + resume.resumeUpdateDate + '</h6>';
             list += '</div>';
             list += '<div class="col-2">';
@@ -64,12 +64,12 @@ function deleteResume(data) {
             success: function (result) {
                 if (result === 'success') {
                     alert("이력서가 삭제되었습니다.");
-                    getJSONResumeList(5);
+                    getJSONResumeList($("input[id=sessionInput]").val());
                 }
             }
         });
     } else{
-        getJSONResumeList(5);
+        getJSONResumeList($("input[id=sessionInput]").val());
     }
 }
 
@@ -77,4 +77,44 @@ function deleteResume(data) {
 function updateResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
     location.href = "/resume/goPreviousStep1/" + resumeId;
+}
+
+function changeTitleForm(data){
+    var titleInput = '';
+    titleInput += '<input class="form-control col-md-8" type="text" name="changeTitle" placeholder="ex) OO회사 이력서, OO직종 이력서">';
+    titleInput += '<button class="btn btn-sm btn-outline-secondary" type="button" onclick="changeTitle(this)">수정</button>';
+
+    $(data).replaceWith(titleInput);
+}
+
+function changeTitle(data){
+    var resumeId = $(data).parent().parent().find("input[id=resumeId]").val();
+    console.log(resumeId);
+    var title = $("input[name=changeTitle]").val();
+    console.log(title);
+
+    var resume = {
+        resumeId: resumeId,
+        resumeTitle: title
+    }
+
+    $.ajax({
+        url: "/resume/changeTitle/" + resumeId,
+        type: "get",
+        data: {"title" : title},
+        success: function (){
+            getJSONResumeList($("input[id=sessionInput]").val());
+        }
+    })
+
+    //put으로 하는거 왜 안되는지 모름
+    // $.ajax({
+    //     url: "/resume/changeTitle/" + resumeId,
+    //     type: "put",
+    //     data: JSON.stringify(resume),
+    //     contentType: "application/json; charset=utf-8",
+    //     success: function (){
+    //         getJSONResumeList($("input[id=sessionInput]").val());
+    //     }
+    // })
 }

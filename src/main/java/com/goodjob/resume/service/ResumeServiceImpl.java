@@ -65,8 +65,8 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeListDTO> getResumeList(Long memId) {
-        List<Resume> resumeList = resumeRepository.getResumeByResumeMemIdOrderByResumeId(Member.builder().memId(memId).build());
+    public List<ResumeListDTO> getResumeList(String loginId) {
+        List<Resume> resumeList = resumeRepository.getResumeByResumeMemId_MemLoginIdOrderByResumeId(loginId);
         return resumeList.stream().map(resume -> entityToListDTO(resume)).collect(Collectors.toList());
     }
 
@@ -74,6 +74,17 @@ public class ResumeServiceImpl implements ResumeService {
     public void deleteResume(Long resumeId) {
         resumeRepository.deleteByResumeId(resumeId);
     }
+
+    @Override
+    public void changeTitle(Long resumeId, String title) {
+        resumeRepository.changeTitle(title, resumeId);
+    }
+
+//    @Override
+//    public void changeTitle(ResumeListDTO resumeListDTO) {
+//        Resume resume = listDTOToEntity(resumeListDTO);
+//        resumeRepository.save(resume);
+//    }
 
 
 }

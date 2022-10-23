@@ -21,8 +21,13 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     @Query("update Resume r set r.resumeMemPhone =:memPhoneNum, r.resumeMemEmail =:memEmail, r.resumeMemAddress =:memAddress where r.resumeId =:resumeId")
     void updateMemberInfo(String memPhoneNum, String memEmail, String memAddress, Long resumeId);
 
-    List<Resume> getResumeByResumeMemIdOrderByResumeId(Member member);
+    List<Resume> getResumeByResumeMemId_MemLoginIdOrderByResumeId(String memId);
 
     @Transactional
     void deleteByResumeId(Long resumeId);
+
+    @Transactional
+    @Modifying
+    @Query("update Resume r set r.resumeTitle =:title where r.resumeId =:resumeId")
+    void changeTitle(String title, Long resumeId);
 }

@@ -38,9 +38,10 @@
             <div class="row">
                 <div class="col-lg-10 mx-auto">
                     <div class="container">
-                        <div class="row" style="height: 30px">
+                        <div class="row" style="height: 40px">
                             <div class="col-7">
                                 <h5 class="text-bold">내 이력서</h5>
+                                <label style="color: #cbc8cb">제목을 클릭하면 제목을 변경할 수 있습니다.</label>
                             </div>
                             <div class="col-5">
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -49,6 +50,7 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" th:value="${session.sessionId}" id="sessionInput">
                         <hr style="margin-bottom: 25px">
                         <div class="container resumeList">
 
