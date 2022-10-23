@@ -31,7 +31,7 @@ function getJSONResumeList(memId) {
         $.each(arr, function (idx, resume) {
             list += '<div class="row">';
             list += '<div class="col-2 text-center" style="margin-top: 8px">';
-            list += '<input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox" style="background-color: #e4e1e4">'
+            list += '<input class="form-check-input me-1" type="checkbox" value="' + resume.resumeId + '" name="resumeCheckBox" style="background-color: #e4e1e4">'
             list += '</div>';
             list += '<div class="col-8" style="margin-top: 8px">';
             list += '<h5 class="text-bold" name="resumeTitle" onclick="changeTitleForm(this)">' + resume.resumeTitle + '</h5>';
@@ -59,8 +59,9 @@ function deleteResume(data) {
 
     if (confirm("이력서를 삭제하겠습니까?") == true) {
         $.ajax({
-            url: "/resume/deleteResume/" + resumeId,
+            url: "/resume/deleteResume",
             type: "get",
+            data: {"resumeId" : resumeId},
             success: function (result) {
                 if (result === 'success') {
                     alert("이력서가 삭제되었습니다.");
@@ -79,6 +80,7 @@ function updateResume(data) {
     location.href = "/resume/goPreviousStep1/" + resumeId;
 }
 
+//이력서 제목 수정폼
 function changeTitleForm(data){
     var titleInput = '';
     titleInput += '<input class="form-control col-md-8" type="text" name="changeTitle" placeholder="ex) OO회사 이력서, OO직종 이력서">';
@@ -87,6 +89,7 @@ function changeTitleForm(data){
     $(data).replaceWith(titleInput);
 }
 
+//이력서 제목 수정
 function changeTitle(data){
     var resumeId = $(data).parent().parent().find("input[id=resumeId]").val();
     console.log(resumeId);
@@ -117,4 +120,27 @@ function changeTitle(data){
     //         getJSONResumeList($("input[id=sessionInput]").val());
     //     }
     // })
+}
+
+function deleteCheckedResume(){
+    var checkedList = [];
+    var size = $("input:checkbox[name=resumeCheckBox]:checked").length;
+
+    for(i = 0; i < size; i++) {
+        checkedList.push($("input:checkbox[name=resumeCheckBox]:checked").eq(i).val());
+    };
+
+    if (confirm("이력서를 삭제하겠습니까?") == true) {
+        $.ajax({
+            url: "/resume/deleteResume",
+            type: "get",
+            data: {"resumeId": JSON.stringify(checkedList)},
+            success: function (result) {
+                if (result === 'success') {
+                    alert("이력서가 삭제되었습니다.");
+                    getJSONResumeList($("input[id=sessionInput]").val());
+                }
+            }
+        });
+    };
 }

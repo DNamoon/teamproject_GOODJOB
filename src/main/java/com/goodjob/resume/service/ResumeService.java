@@ -16,7 +16,7 @@ public interface ResumeService {
     void updateResumeMemberInfo(ResumeMemberDTO resumeMemberDTO, Long resumeId);
     ResumeDTO bringResumeInfo(Long resumeId);
     List<ResumeListDTO> getResumeList(String loginId);
-    void deleteResume(Long resumeId);
+    void deleteResume(List<String> resumeId);
 //    void changeTitle(ResumeListDTO resumeListDTO);
     void changeTitle(Long resumeId, String title);
 

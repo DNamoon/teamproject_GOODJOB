@@ -1,5 +1,6 @@
 package com.goodjob.resume;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goodjob.career.dto.CareerDTO;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.02 작성
@@ -183,9 +185,14 @@ public class ResumeController {
         careerService.deleteCareerList(careerId);
     }
 
-    @GetMapping("/deleteResume/{resumeId}")
-    public ResponseEntity<String> deleteResume(@PathVariable("resumeId") Long resumeId){
-        resumeService.deleteResume(resumeId);
+    @ResponseBody
+    @GetMapping("/deleteResume")
+    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws JsonProcessingException {
+        String resumeIdJson = params.get("resumeId").toString();
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
+
+        resumeService.deleteResume(resumeIdList);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 

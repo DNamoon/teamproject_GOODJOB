@@ -71,8 +71,10 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public void deleteResume(Long resumeId) {
-        resumeRepository.deleteByResumeId(resumeId);
+    public void deleteResume(List<String> resumeId) {
+        for(String id : resumeId){
+            resumeRepository.deleteByResumeId(Long.valueOf(id));
+        }
     }
 
     @Override
