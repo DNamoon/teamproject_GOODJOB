@@ -184,8 +184,7 @@ public class ResumeController {
 
     @GetMapping("/deleteResume/{resumeId}")
     public ResponseEntity<String> deleteResume(@PathVariable("resumeId") Long resumeId){
-        System.out.println("+++++++++++++" + resumeId);
-        careerService.deleteCareerList(resumeId);
+        resumeService.deleteResume(resumeId);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }

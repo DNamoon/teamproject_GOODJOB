@@ -14,11 +14,7 @@ import java.util.List;
  */
 
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
-    @Query("select r from Resume r where r.resumeId =:resumeId")
-    Resume findResumeInfoByResumeId(Long resumeId);
-
-    @Query("select r.resumeId from Resume r where r.resumeId =:resumeId")
-    Long findByResumeId(Long resumeId);
+    Resume findByResumeId(Long resumeId);
 
     @Transactional
     @Modifying
@@ -26,4 +22,7 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     void updateMemberInfo(String memPhoneNum, String memEmail, String memAddress, Long resumeId);
 
     List<Resume> getResumeByResumeMemIdOrderByResumeId(Member member);
+
+    @Transactional
+    void deleteByResumeId(Long resumeId);
 }

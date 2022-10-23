@@ -56,20 +56,20 @@ function deleteResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
     console.log(resumeId);
 
-    confirm("이력서를 삭제하겠습니까?");
-    if (confirm) {
+
+    if (confirm("이력서를 삭제하겠습니까?") == true) {
         $.ajax({
             url: "/resume/deleteResume/" + resumeId,
             type: "get",
             success: function (result) {
                 if (result === 'success') {
                     alert("이력서가 삭제되었습니다.");
-                    getJSONResumeList();
+                    getJSONResumeList(5);
                 }
             }
         });
-    } else {
-        getJSONResumeList();
+    } else{
+        getJSONResumeList(5);
     }
 }
 

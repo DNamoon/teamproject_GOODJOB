@@ -55,7 +55,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public ResumeDTO bringResumeInfo(Long resumeId) {
-        Resume resume = resumeRepository.findResumeInfoByResumeId(resumeId);
+        Resume resume = resumeRepository.findByResumeId(resumeId);
         String[] phoneNum = resume.getResumeMemPhone().split("-");
         String[] email = resume.getResumeMemEmail().split("@");
         String[] address = resume.getResumeMemAddress().split("@");
@@ -72,7 +72,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public void deleteResume(Long resumeId) {
-        resumeRepository.deleteById(resumeId);
+        resumeRepository.deleteByResumeId(resumeId);
     }
 
 

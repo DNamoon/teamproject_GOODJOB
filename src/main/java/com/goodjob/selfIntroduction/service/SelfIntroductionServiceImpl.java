@@ -22,7 +22,7 @@ public class SelfIntroductionServiceImpl implements SelfIntroductionService {
     public void registerSelfInfo(SelfIntroductionDTO selfIntroductionDTO) {
         SelfIntroduction selfIntroduction = dtoToEntity(selfIntroductionDTO);
 
-        if(selfIntroductionRepository.findByResumeId(selfIntroductionDTO.getResumeId()) == null){
+        if(selfIntroductionRepository.findByResume_ResumeId(selfIntroductionDTO.getResumeId()) == null){
             log.info("=========== 이력서 대외활동 및 자소서항목 등록 ===========");
             selfIntroductionRepository.save(selfIntroduction);
         }else{
@@ -34,7 +34,7 @@ public class SelfIntroductionServiceImpl implements SelfIntroductionService {
 
     @Override
     public int existOrNotResumeId(Long resumeId) {
-        if(selfIntroductionRepository.findByResumeId(resumeId) == null){
+        if(selfIntroductionRepository.findByResume_ResumeId(resumeId) == null){
             return 0;
         }
         return 1;
@@ -42,7 +42,7 @@ public class SelfIntroductionServiceImpl implements SelfIntroductionService {
 
     @Override
     public SelfIntroductionDTO bringSelfIntroInfo(Long resumeId) {
-        SelfIntroduction selfIntroduction = selfIntroductionRepository.findSelfIntroInfoByResumeId(resumeId);
+        SelfIntroduction selfIntroduction = selfIntroductionRepository.findByResume_ResumeId(resumeId);
         SelfIntroductionDTO selfIntroductionDTO = entityToDTO(selfIntroduction);
         return selfIntroductionDTO;
     }
