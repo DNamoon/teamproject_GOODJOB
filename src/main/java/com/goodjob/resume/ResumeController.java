@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -145,7 +144,7 @@ public class ResumeController {
     @GetMapping("/submitResume")
     public String submitResume(@Valid SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
-        return "redirect:/member/myPage";
+        return "redirect:/member/myPageResume";
     }
 
     @GetMapping("/goPreviousStep1/{resumeId}")

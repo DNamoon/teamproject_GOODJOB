@@ -42,16 +42,18 @@
                                               rows="10" name="selfLetter" th:value="${selfIntroInfo.selfLetter}">[[${selfIntroInfo.selfLetter}]]</textarea>
                                         </div>
                                         <div style="height: 50px;"></div>
-                                        <div class="col-md-6 mx-auto">
-                                            <button type="submit" class="btn bg-gradient-dark w-100"
-                                                    th:formaction="@{/resume/goPreviousStep2/{resumeId}(resumeId=${resumeId})}">
-                                                이전
-                                            </button>
-                                        </div>
-                                        <div class="col-md-6 mx-auto">
-                                            <button type="submit" class="btn bg-gradient-dark w-100"
-                                                    th:formaction="@{/resume/submitResume}">최종제출
-                                            </button>
+                                        <div class="row">
+                                            <div class="col-md-6 mx-auto">
+                                                <button type="submit" class="btn bg-gradient-dark w-100"
+                                                        th:formaction="@{/resume/goPreviousStep2/{resumeId}(resumeId=${resumeId})}">
+                                                    이전
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6 mx-auto">
+                                                <button type="submit" class="btn bg-gradient-dark w-100"
+                                                        th:formaction="@{/resume/submitResume}">최종제출
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

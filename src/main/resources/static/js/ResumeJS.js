@@ -394,7 +394,7 @@ function addCareerInfo() {
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="" min="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6 my-2 mx-auto" style="width: 24px;">';
+    careerInfo += '<div class="col-md-2">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerInfo(this)"></button>';
     careerInfo += '</div>';
@@ -441,7 +441,7 @@ function addCareerInfoWC(data) {
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 24px;">';
+    careerInfo += '<div class="col-md-2">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<button type="button" id="deleteCareerBtn" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerWC(this,' + data + ')"></button>';
     careerInfo += '</div>';
