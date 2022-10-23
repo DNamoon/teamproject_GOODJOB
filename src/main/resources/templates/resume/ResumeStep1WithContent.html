@@ -1,308 +1,301 @@
 <!-- 박채원 22.09.30 작성 -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-    <title>
-        RESUME STEP1
-    </title>
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
-    <!-- Nucleo Icons -->
-    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-    <!-- JQUERY CDN -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <!-- AJAX CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-</head>
-<body>
-<section>
-    <div class="container py-4 flex-wrap">
-        <div class="row">
-            <div class="col-lg-7 mx-auto" style="width : 1000px">
-                <h3 class="text-center mx-auto">STEP1</h3>
-                &nbsp;
-                <form role="form" id="contact-form" th:method="get" autocomplete="off"
-                      th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
-                    <input type="hidden" th:value="${memberInfo.memId}" name="memId">
-                    <input type="hidden" th:value="${resumeId}" name="resumeId">
-                    <div class="card-body">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/resume/ResumeTemplate ::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title>RESUME STEP1</title>
+    </head>
+    <th:block th:fragment="content">
+        <section>
+            <div class="container py-4 flex-wrap">
+                <div class="row">
+                    <div class="col-lg-7 mx-auto" style="width : 1000px">
+                        <h3 class="text-center mx-auto">STEP1</h3>
+                        &nbsp;
+                        <form role="form" id="contact-form" th:method="get" autocomplete="off"
+                              th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
+                            <input type="hidden" th:value="${memberInfo.memId}" name="memId">
+                            <input type="hidden" th:value="${resumeId}" name="resumeId">
+                            <div class="card-body">
                         <span style="float: right; font-size: 14px;"><span
                                 style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span>
-                        <h4 class="text-left">| 인적사항</h4>
-                        &nbsp;
-                        <div class="row" style="float: inline-start;">
-                            <div class="col-md-6">
-                                <label>성명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="memName"
-                                           th:value="${memberInfo.memName}" readonly>
+                                <h4 class="text-left">| 인적사항</h4>
+                                &nbsp;
+                                <div class="row" style="float: inline-start;">
+                                    <div class="col-md-6">
+                                        <label>성명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" name="memName"
+                                                   th:value="${memberInfo.memName}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="width:400px">
+                                        <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="date"
+                                                   th:value="${memberInfo.memBirthDate}"
+                                                   name="memBirthDate" readonly>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6" style="width:400px">
-                                <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="date" th:value="${memberInfo.memBirthDate}"
-                                           name="memBirthDate" readonly>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="row" style="float: inline-start;">
-                            <div class="col-md-6" style="width: 200px;">
-                                <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <select class="form-select" id="startPhoneNum" name="memFirstPhoneNum" required>
-                                        <option th:value="${resumeMemInfo.memFirstPhoneNum}">
-                                            [[${resumeMemInfo.memFirstPhoneNum}]] (기본정보)
-                                        </option>
-                                        <option value="010">010</option>
-                                        <option value="011">011</option>
-                                        <option value="070">070</option>
-                                    </select>
+                                <div class="row" style="float: inline-start;">
+                                    <div class="col-md-6" style="width: 200px;">
+                                        <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-select" id="startPhoneNum" name="memFirstPhoneNum"
+                                                    required>
+                                                <option th:value="${resumeMemInfo.memFirstPhoneNum}">
+                                                    [[${resumeMemInfo.memFirstPhoneNum}]] (기본정보)
+                                                </option>
+                                                <option value="010">010</option>
+                                                <option value="011">011</option>
+                                                <option value="070">070</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-mb-6" style="width: 5px;">
+                                        <label>&nbsp;</label>
+                                        -
+                                    </div>
+                                    <div class="col-md-6" style="width: 200px;">
+                                        <label>&nbsp;</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" placeholder="가운데 자리" type="text"
+                                                   th:value="${resumeMemInfo.getMemMiddlePhoneNum()}"
+                                                   id="memMiddlePhoneNum"
+                                                   name="memMiddlePhoneNum" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-mb-6" style="width: 5px;">
+                                        <label>&nbsp;</label>
+                                        -
+                                    </div>
+                                    <div class="col-md-6" style="width: 200px;">
+                                        <label>&nbsp;</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" placeholder="마지막 자리" type="text"
+                                                   th:value="${resumeMemInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
+                                                   name="memLastPhoneNum" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="width: 300px; margin-left: 50px;">
+                                        <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="memGender" value="남"
+                                                       th:checked="${memberInfo.memGender eq '남'}" id="genderM">
+                                                <label class="form-check-label">남자</label>
+                                            </div>&nbsp;&nbsp;
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="memGender" value="여"
+                                                       th:checked="${memberInfo.memGender eq '여'}" id="genderF">
+                                                <label class="form-check-label">여자</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-mb-6" style="width: 5px;">
-                                <label>&nbsp;</label>
-                                -
-                            </div>
-                            <div class="col-md-6" style="width: 200px;">
-                                <label>&nbsp;</label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" placeholder="가운데 자리" type="text"
-                                           th:value="${resumeMemInfo.getMemMiddlePhoneNum()}" id="memMiddlePhoneNum"
-                                           name="memMiddlePhoneNum" required>
-                                </div>
-                            </div>
-                            <div class="col-mb-6" style="width: 5px;">
-                                <label>&nbsp;</label>
-                                -
-                            </div>
-                            <div class="col-md-6" style="width: 200px;">
-                                <label>&nbsp;</label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" placeholder="마지막 자리" type="text"
-                                           th:value="${resumeMemInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
-                                           name="memLastPhoneNum" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6" style="width: 300px; margin-left: 50px;">
-                                <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="memGender" value="남"
-                                               th:checked="${memberInfo.memGender eq '남'}" id="genderM">
-                                        <label class="form-check-label">남자</label>
-                                    </div>&nbsp;&nbsp;
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="memGender" value="여"
-                                               th:checked="${memberInfo.memGender eq '여'}" id="genderF">
-                                        <label class="form-check-label">여자</label>
+                                <div class="row" style="float: inline-start;">
+                                    <div class="col-md-6" style="width: 400px;">
+                                        <label>이메일</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text"
+                                                   th:value="${resumeMemInfo.memFirstEmail}"
+                                                   name="memFirstEmail">
+                                        </div>
+                                    </div>
+                                    <div class="col-mb-6" style="width: 5px;">
+                                        <label>&nbsp;</label>
+                                        @
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div class="col-md-6" style="width: 215px;">
+                                        <label>&nbsp;</label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-select" id="endEmail" name="memLastEmail">
+                                                <option th:value="${resumeMemInfo.memLastEmail}">
+                                                    [[${resumeMemInfo.memLastEmail}]] (기본정보)
+                                                </option>
+                                                <option value="naver.com">naver.com</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="float: inline-start;">
+                                        <div class="col-md-6" style="width: 400px;">
+                                            <label>주소</label>
+                                            <div class="input-group mb-4">
+                                                <input class="form-control" type="text" id="userAddress"
+                                                       onclick="execPostCode()"
+                                                       th:value="${resumeMemInfo.memFirstAddress}"
+                                                       readonly name="memFirstAddress">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="margin-left: 0px;">
+                                            <label>&nbsp;</label>
+                                            <button type="button" class="btn bg-gradient-dark w-100 findAddress"
+                                                    onclick="execPostCode()">주소찾기
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6" style="width: 330px;">
+                                            <label>상세주소</label>
+                                            <div class="input-group mb-4">
+                                                <input class="form-control" type="text" id="userDetailAddress"
+                                                       th:value="${resumeMemInfo.memLastAddress}" name="memLastAddress">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" style="float: inline-start;">
-                            <div class="col-md-6" style="width: 400px;">
-                                <label>이메일</label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" th:value="${resumeMemInfo.memFirstEmail}"
-                                           name="memFirstEmail">
-                                </div>
-                            </div>
-                            <div class="col-mb-6" style="width: 5px;">
-                                <label>&nbsp;</label>
-                                @
-                            </div>
-                            &nbsp;&nbsp;
-                            <div class="col-md-6" style="width: 215px;">
-                                <label>&nbsp;</label>
-                                <div class="input-group mb-4">
-                                    <select class="form-select" id="endEmail" name="memLastEmail">
-                                        <option th:value="${resumeMemInfo.memLastEmail}">
-                                            [[${resumeMemInfo.memLastEmail}]] (기본정보)
-                                        </option>
-                                        <option value="naver.com">naver.com</option>
-                                        <option value="gmail.com">gmail.com</option>
-                                        <option value="daum.net">daum.net</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row" style="float: inline-start;">
-                                <div class="col-md-6" style="width: 400px;">
-                                    <label>주소</label>
-                                    <div class="input-group mb-4">
-                                        <input class="form-control" type="text" id="userAddress"
-                                               onclick="execPostCode()" th:value="${resumeMemInfo.memFirstAddress}"
-                                               readonly name="memFirstAddress">
+
+                            <!-- 학적사항 -->
+                            <div style="height: 30px;"></div>
+                            <div class="card-body">
+                                <span style="float: right; font-size: 14px;">고졸 이하의 경우 학교명은 '고졸이하', 전공은 '없음'을 검색해 주세요.</span>
+                                <h4 class="text-left">| 학적</h4>
+                                &nbsp;
+                                <div class="row" style="float: inline-start;">
+                                    <div class="col-md-6" style="width: 400px;">
+                                        <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" name="schoolName" id="schoolName"
+                                                   th:value="${schoolInfo.schoolName}" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-left: 0px;">
+                                        <label>&nbsp;</label>
+                                        <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
+                                                data-bs-target="#findSchoolModal">학교찾기
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6" style="width: 325px;">
+                                        <label>졸업년월<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD"
+                                                   type="date"
+                                                   name="eduGraduationDate" th:value="${schoolInfo.eduGraduationDate}"
+                                                   max=""
+                                                   required>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2" style="margin-left: 0px;">
-                                    <label>&nbsp;</label>
-                                    <button type="button" class="btn bg-gradient-dark w-100 findAddress"
-                                            onclick="execPostCode()">주소찾기
-                                    </button>
-                                </div>
-                                <div class="col-md-6" style="width: 330px;">
-                                    <label>상세주소</label>
-                                    <div class="input-group mb-4">
-                                        <input class="form-control" type="text" id="userDetailAddress"
-                                               th:value="${resumeMemInfo.memLastAddress}" name="memLastAddress">
+                                <div class="row" style="float: inline-start;">
+                                    <div class="col-md-6" style="width: 400px;">
+                                        <label>전공<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" name="majorName" id="majorName"
+                                                   th:value="${schoolInfo.majorName}" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-left: 0px;">
+                                        <label>&nbsp;</label>
+                                        <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
+                                                data-bs-target="#findMajorModal">전공찾기
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6" style="width: 150px;">
+                                        <label>학점</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" name="eduGetCredit"
+                                                   th:value="${schoolInfo.eduGetCredit}">
+                                        </div>
+                                    </div>
+                                    <div class="col-mb-6" style="width: 5px;">
+                                        <label>&nbsp;</label>
+                                        /
+                                    </div>
+                                    <div class="col-md-6" style="width: 150px;">
+                                        <label>&nbsp;</label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-select" id="eduTotalCredit" name="eduTotalCredit">
+                                                <option th:value="'/' + ${schoolInfo.eduTotalCredit}">
+                                                    [[${schoolInfo.eduTotalCredit}]] (기본정보)
+                                                </option>
+                                                <option value="/4.5">4.5</option>
+                                                <option value="/4.3">4.3</option>
+                                                <option value="/4.0">4.0</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 학적사항 -->
-                    <div style="height: 30px;"></div>
-                    <div class="card-body">
-                        <span style="float: right; font-size: 14px;">고졸 이하의 경우 학교명은 '고졸이하', 전공은 '없음'을 검색해 주세요.</span>
-                        <h4 class="text-left">| 학적</h4>
-                        &nbsp;
-                        <div class="row" style="float: inline-start;">
-                            <div class="col-md-6" style="width: 400px;">
-                                <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="schoolName" id="schoolName"
-                                           th:value="${schoolInfo.schoolName}" readonly required>
+                                <div style="height: 50px;"></div>
+                                <div class="col-md-6 mx-auto">
+                                    <button type="submit" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
                                 </div>
                             </div>
-                            <div class="col-md-2" style="margin-left: 0px;">
-                                <label>&nbsp;</label>
-                                <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
-                                        data-bs-target="#findSchoolModal">학교찾기
-                                </button>
-                            </div>
-                            <div class="col-md-6" style="width: 325px;">
-                                <label>졸업년월<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD" type="date"
-                                           name="eduGraduationDate" th:value="${schoolInfo.eduGraduationDate}" max=""
-                                           required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="float: inline-start;">
-                            <div class="col-md-6" style="width: 400px;">
-                                <label>전공<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="majorName" id="majorName"
-                                           th:value="${schoolInfo.majorName}" required readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-2" style="margin-left: 0px;">
-                                <label>&nbsp;</label>
-                                <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
-                                        data-bs-target="#findMajorModal">전공찾기
-                                </button>
-                            </div>
-                            <div class="col-md-6" style="width: 150px;">
-                                <label>학점</label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="eduGetCredit"
-                                           th:value="${schoolInfo.eduGetCredit}">
-                                </div>
-                            </div>
-                            <div class="col-mb-6" style="width: 5px;">
-                                <label>&nbsp;</label>
-                                /
-                            </div>
-                            <div class="col-md-6" style="width: 150px;">
-                                <label>&nbsp;</label>
-                                <div class="input-group mb-4">
-                                    <select class="form-select" id="eduTotalCredit" name="eduTotalCredit">
-                                        <option th:value="'/' + ${schoolInfo.eduTotalCredit}">
-                                            [[${schoolInfo.eduTotalCredit}]] (기본정보)
-                                        </option>
-                                        <option value="/4.5">4.5</option>
-                                        <option value="/4.3">4.3</option>
-                                        <option value="/4.0">4.0</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="height: 50px;"></div>
-                        <div class="col-md-6 mx-auto">
-                            <button type="submit" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Find School Modal -->
-<div class="modal fade" id="findSchoolModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">학교 찾기</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row" style="float: inline-start;">
-                    <div class="col-md-6" style="width: 350px;">
-                        <div class="input-group mb-4">
-                            <input class="form-control findSchoolName" type="text" placeholder="학교명 입력">
-                        </div>
-                    </div>
-                    <div class="col-md-3" style="margin-left: 0px;">
-                        <button type="button" class="btn bg-gradient-dark w-100 findSchool">검색</button>
-                    </div>
-                    <div class="schoolList">
-
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn bg-gradient-primary doneFindSchool" data-bs-dismiss="modal">완료</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Find Major Modal -->
-<div class="modal fade" id="findMajorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">전공 찾기</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row" style="float: inline-start;">
-                    <div class="col-md-6" style="width: 350px;">
-                        <div class="input-group mb-4">
-                            <input class="form-control findMajorName" type="text" placeholder="전공 입력">
+        </section>
+        <!-- Find School Modal -->
+        <div class="modal fade" id="findSchoolModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">학교 찾기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="float: inline-start;">
+                            <div class="col-md-6" style="width: 350px;">
+                                <div class="input-group mb-4">
+                                    <input class="form-control findSchoolName" type="text" placeholder="학교명 입력">
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="margin-left: 0px;">
+                                <button type="button" class="btn bg-gradient-dark w-100 findSchool">검색</button>
+                            </div>
+                            <div class="schoolList">
+
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3" style="margin-left: 0px;">
-                        <button type="button" class="btn bg-gradient-dark w-100 findMajor">검색</button>
-                    </div>
-                    <div class="majorList">
-
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-primary doneFindSchool" data-bs-dismiss="modal">
+                            완료
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn bg-gradient-primary doneFindMajor" data-bs-dismiss="modal">완료</button>
+        </div>
+        <!-- Find Major Modal -->
+        <div class="modal fade" id="findMajorModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">전공 찾기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="float: inline-start;">
+                            <div class="col-md-6" style="width: 350px;">
+                                <div class="input-group mb-4">
+                                    <input class="form-control findMajorName" type="text" placeholder="전공 입력">
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="margin-left: 0px;">
+                                <button type="button" class="btn bg-gradient-dark w-100 findMajor">검색</button>
+                            </div>
+                            <div class="majorList">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-primary doneFindMajor" data-bs-dismiss="modal">완료
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/core/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/js/ResumeJS.js"></script>
-</body>
+    </th:block>
+</th:block>
 </html>

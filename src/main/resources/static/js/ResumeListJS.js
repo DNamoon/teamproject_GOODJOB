@@ -54,11 +54,13 @@ function getJSONResumeList(memId) {
 //이력서 삭제
 function deleteResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
+    console.log(resumeId);
+
     confirm("이력서를 삭제하겠습니까?");
     if (confirm) {
         $.ajax({
             url: "/resume/deleteResume/" + resumeId,
-            type: "delete",
+            type: "get",
             success: function (result) {
                 if (result === 'success') {
                     alert("이력서가 삭제되었습니다.");
@@ -72,7 +74,7 @@ function deleteResume(data) {
 }
 
 //이력서 수정
-function updateResume(data){
+function updateResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
-    location.href="/resume/goPreviousStep1/" + resumeId;
+    location.href = "/resume/goPreviousStep1/" + resumeId;
 }

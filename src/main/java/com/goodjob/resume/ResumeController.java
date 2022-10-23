@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -182,9 +183,9 @@ public class ResumeController {
         careerService.deleteCareerList(careerId);
     }
 
-    @ResponseBody
-    @DeleteMapping("/deleteResume/{resumeId}")
+    @GetMapping("/deleteResume/{resumeId}")
     public ResponseEntity<String> deleteResume(@PathVariable("resumeId") Long resumeId){
+        System.out.println("+++++++++++++" + resumeId);
         careerService.deleteCareerList(resumeId);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }

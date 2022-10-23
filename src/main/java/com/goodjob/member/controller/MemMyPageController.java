@@ -41,6 +41,7 @@ public class MemMyPageController {
         model.addAttribute("memberInfo",memberService.memInfo(id));
         return "member/myPageInfo";
     }
+
    //개인정보 수정 시 비밀번호 확인
     @ResponseBody
     @PostMapping("/checkPW")
@@ -60,6 +61,7 @@ public class MemMyPageController {
         memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
     }
+
     //회원탈퇴 (비밀번호 확인 후 회원 정보 삭제,이력서 정보 같이 삭제)
     @ResponseBody
     @RequestMapping("/delete")
@@ -74,6 +76,7 @@ public class MemMyPageController {
         }
         return "1";
     }
+
     //비밀번호 변경
     @GetMapping("/changePw")
     public String changePwForm(HttpServletRequest session,Model model){
