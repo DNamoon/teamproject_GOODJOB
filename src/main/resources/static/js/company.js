@@ -16,8 +16,10 @@ function btnActive(){
     target3.style.display = 'none';
 
     //'정보 수정완료'버튼 보이기
-    const target7 = document.getElementById("btn_hidden2");
+    const target7 = document.getElementById("modal_open_btn");
     target7.hidden = false;
+    // target7.disabled = true;
+
 
     //로그인 아이디, 주소찾기는 계속 disabled  -> 정보수정할때 disabled 값 못 받아오는 문제 발견. 삭제.
     // const target4 = document.getElementById("loginId");
@@ -27,6 +29,14 @@ function btnActive(){
     // target5.disabled = true;
     // target6.disabled = true;
 }
+
+// $('#comComdivCode').click(function () {
+//     if($('#comComdivCode').value == 0){
+//         $('#modal_open_btn').disabled = true;
+//     } else {
+//         $('#modal_open_btn').disabled = false;
+//     }
+// })
 
 //'이전으로 돌아가기'버튼 클릭시
 function btnDisabled(){
@@ -44,8 +54,38 @@ function btnDisabled(){
     target.disabled = true;
 
     //'정보 수정완료'버튼 숨기기
-    const target7 = document.getElementById("btn_hidden2");
+    const target7 = document.getElementById("modal_open_btn");
     target7.hidden = true;
+}
+
+//회원정보 수정시 비밀번호 확인
+    $('#confirm').click(function (){
+        const password = document.getElementById("password_confirm").value;
+        const pw = {password: password};
+
+        $.ajax({
+            type:"post",
+            url:"/com/confirm",
+            data:pw,
+            success : function (result) {
+                if(result == "true") {
+                    alert("회원정보를 수정합니다.");
+                    $('#confirmPasswordModal').ariaModal.close;
+                    // this.type = "submit";
+                    $("#contact-form").submit();
+                } else {
+                    alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
+                    return;
+                }
+            }
+
+        })
+    });
+
+function password_confirm() {
+    const password = document.getElementById("password_confirm");
+
+    $.ajax("/confirm")
 }
 
 //Daum 주소 찾기API function

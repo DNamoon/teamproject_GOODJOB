@@ -54,7 +54,7 @@ public class CompanyController {
 
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/register")
-    public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) {
+    public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) throws Exception {
         if(result.hasErrors()){
             return "/company/comRegisterForm";
         }
@@ -67,14 +67,22 @@ public class CompanyController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "/company/comRegisterForm";
         }
+
+        //22.10.20 아이디 중복시 에러메시지 + 로그인 폼 반환
+        if(companyService.checkId2(companyDTO.getLoginId()) !=0){
+            result.rejectValue("loginId","loginIdDuplicated"
+            ,"아이디가 중복됩니다. 다른 아이디를 지정하십시오.");
+            return "/company/comRegisterForm";
+        }
+
         System.out.println("companyDTO.toString() = " + companyDTO.toString());
         companyService.createCompanyUser(companyDTO);
         return "/company/comRegisterView";
     }
 
     //회원가입 아이디 증복확인시 $.ajax 사용하기 위한 코드
-    @RequestMapping(value = "/check", method = RequestMethod.POST)
     @ResponseBody
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
     public String memberIdChkPOST(String comLoginId) throws Exception{
         int result = companyService.checkId2(comLoginId);
 
@@ -87,10 +95,10 @@ public class CompanyController {
     }
 
     //22.10.10추가
-    @GetMapping("/login")
-    public String loginFrom() {
-        return "/company/login";
-    }
+//    @GetMapping("/login")
+//    public String loginForm() {
+//        return "/company/login";
+//    }
 
     //22.10.10추가
     @RequestMapping(value="/login",method = RequestMethod.POST)
@@ -116,13 +124,13 @@ public class CompanyController {
 
                     return "redirect:/";
                 } else {
-                    return "redirect:login?error";  //pw가 틀린 경우
+                    return "redirect:/login?error";  //pw가 틀린 경우
                 }
             } else {
-                return "/company/comRegisterForm";
+                return "/company/comRegisterForm";  //id가 없는 경우 회원가입 폼으로 이동
             }
         } else {
-            return "redirect:login?error"; //id가 없는 경우
+            return "redirect:/login?error"; //id가 없는 경우
         }
     }
 
@@ -154,11 +162,52 @@ public class CompanyController {
     @PostMapping("/update")
     public String companyInfoUpdate(CompanyDTO companyInfo) {
 
-        log.info("============="+companyInfo);
-        log.info("============="+companyInfo.toEntity().getComLoginId() );
-        companyService.companyInfoUpdate(companyInfo);
+        log.info("=============" + companyInfo);
+        log.info("=============" + companyInfo.toEntity().getComLoginId());
+        String loginId = companyInfo.getLoginId();
+        Optional<Company> company = companyService.loginIdCheck(loginId);
+        String comPw = company.get().getComPw();  //DB에 있는 암호화된 패스워드
+        log.info("==========DB 암호화 패스워드 : " + comPw);
+        String pw = companyInfo.getPw();  //view 단에서 name이 pw인 창 입력값
+        log.info("=========== pw 입력값 : " + pw);
 
-        return "redirect:/com/myPage";
+        if (passwordEncoder.matches(comPw, pw)) {
+            companyService.companyInfoUpdate(companyInfo);
+            return "redirect:/com/myPage";
+        } else {
+            return "/company/error";
+        }
     }
+
+        //ho - 22.10.20 기업정보 수정하기 전 비밀번호 확인
+    @ResponseBody
+    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
+    public String passwordConfirm(CompanyDTO companyInfo, HttpSession session,String password) throws Exception {
+        //log.info("===========로그인 아이디 받아오나? : "+companyInfo.getLoginId());
+        String comLoginId = (String) session.getAttribute("sessionId");
+        log.info("=========== 세션에 있는 로그인 아이디 받아오나? : "+comLoginId);
+        Optional<Company> company1 = companyService.loginIdCheck(comLoginId);
+        log.info("============ DB에 있는 로그인 아이디 : " + company1.get().getComLoginId());
+        company1.get().getComPw();
+
+        log.info("=============companyInfo에서 로그인 아이디 : "+companyInfo.getLoginId());
+        Optional<Company> company = companyService.loginIdCheck(companyInfo.getLoginId());
+        log.info("=============DB에서 가져오는 비밀번호 :"+company.get().getComPw());
+        log.info("=============입력창에서 받아온 비밀번호 : "+ password);
+
+        String password1 = companyInfo.getPw(); //입력한 비밀번호값
+//        if(passwordEncoder.matches(company1.get().getComPw(),password)) {
+//            return "true";
+//        } else {
+//            return "false";
+//        }
+        if(password1 == null || !passwordEncoder.matches(company1.get().getComPw(),password1)) {
+            return "true";
+        } else {
+            return "false";
+        }
+
+    }
+
 
 }

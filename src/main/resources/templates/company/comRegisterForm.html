@@ -208,8 +208,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-check form-switch mb-4" th:for="comTerms">
-                                <!--                                checked 다음에 1이 true라고 하고 값 1 넘기기-->
-                                <input class="form-check-input" th:field="*{comTerms}" type="checkbox" id="flexSwitchCheckDefault" value="1"
+                                <!--                                checked 다음에 1이 true라고 하고 값 Y 넘기기-->
+                                <input class="form-check-input" th:field="*{comTerms}" type="checkbox" id="flexSwitchCheckDefault" value="Y"
                                        checked="" required>
                                 <label class="form-check-label" for="flexSwitchCheckDefault">
                                     <a href="#" class="text-dark" id="modal_open_btn" data-toggle="modal"
@@ -290,7 +290,7 @@
 
         console.log("keyup 테스트");
         var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
-        var data = {comLoginId : comLoginId}				// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+        var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
 
         $.ajax({
             type : "post",

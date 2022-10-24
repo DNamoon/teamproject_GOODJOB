@@ -95,13 +95,13 @@
      console.log(type);
 
      if(type=="member"){
-         alert("Mode:"+type);
+         //alert("Mode:"+type);
          form.action = "/member/login";
          form.submit();
      }else if(type=="none"){
          alert("회원타입을 선택해주세요.")
-     }else {
-         alert("Mode:"+type);
+     }else if(type=="company"){
+         //alert("Mode:"+type);
          form.action = "/com/login";
          form.submit();
      }
