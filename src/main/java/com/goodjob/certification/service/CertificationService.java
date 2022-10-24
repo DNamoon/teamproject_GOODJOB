@@ -13,12 +13,14 @@ import java.util.List;
 
 public interface CertificationService {
 
-    void registerCertiInfo(CertificationDTO certificationDTO);
+    void registerCertiInfo(List<CertificationDTO> certificationDTO);
     int existOrNotResumeId(Long resumeId);
-    CertificationDTO bringCertiInfo(Long resumeId);
+    List<CertificationDTO> bringCertiInfo(Long resumeId);
 
     //자격증 검색을 위한 메소드
     List<CertificateName> findCertiName(String keyword);
+    Long addNullCertiInfo(Long resumeId);
+    void deleteCertiInfo(Long certiId);
 
     default Certification dtoToEntity(CertificationDTO certificationDTO){
         Resume resume = Resume.builder().resumeId(certificationDTO.getResumeId()).build();

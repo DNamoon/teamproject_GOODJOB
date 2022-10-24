@@ -1,5 +1,8 @@
 package com.goodjob.resume;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goodjob.career.dto.CareerDTO;
 import com.goodjob.career.service.CareerService;
 import com.goodjob.certification.CertificateName;
@@ -11,18 +14,27 @@ import com.goodjob.education.dto.EducationDTO;
 import com.goodjob.education.service.EducationService;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.service.MemberService;
+import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.02 작성
+ * 박채원 22.10.08 수정
+ * resumeStep3 메소드 수정 - 뷰에서 가져온 자격증 리스트 정보 DB에 추가하는 부분
  */
 
 @Controller
@@ -37,26 +49,21 @@ public class ResumeController {
     private final CertificationService certificationService;
     private final SelfIntroductionService selfIntroductionService;
 
-    private String loginId = "test21";                           //세션 처리 후 세션에서 가져올 값
-
-
-    @GetMapping("/myInfo")
-    public String registerButton(){
-        return "/resume/ResumeRegisterButton";
-    }
-
     @ResponseBody
     @GetMapping("/registerResume")
-    public Long registerResume(){
-        return resumeService.registerResume(loginId);
+    public Long registerResume(HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
+        return resumeService.registerResume(id);
     }
 
-    @GetMapping("resumeStep1/{resumeId}")
-    public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model){
-        ResumeMemberDTO resumeMemberDTO = memberService.bringMemInfo(loginId);
+    @GetMapping("/resumeStep1/{resumeId}")
+    public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
+        ResumeMemberDTO resumeMemberDTO = memberService.bringMemInfo(id);
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", resumeMemberDTO);
+
         return "/resume/ResumeStep1";
     }
 
@@ -81,8 +88,8 @@ public class ResumeController {
         return certificationService.findCertiName(certiName);
     }
 
-    @PostMapping("/resumeStep2/{resumeId}")
-    public String resumeStep2(@PathVariable("resumeId") Long resumeId, ResumeMemberDTO resumeMemberDTO, EducationDTO educationDTO, Model model){
+    @GetMapping("/resumeStep2/{resumeId}")
+    public String resumeStep2(@PathVariable("resumeId") Long resumeId, @Valid ResumeMemberDTO resumeMemberDTO, @Valid EducationDTO educationDTO, Model model){
         resumeService.updateResumeMemberInfo(resumeMemberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
 
@@ -90,20 +97,46 @@ public class ResumeController {
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
             model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+
             return "/resume/ResumeStep2WithContent";
         }
         model.addAttribute("resumeId", resumeId);
         return "/resume/ResumeStep2";
     }
-    
-    @PostMapping("/resumeStep3/{resumeId}")
-    public String resumeStep3(@PathVariable("resumeId") Long resumeId, CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
-        certificationService.registerCertiInfo(certificationDTO);
-        careerService.registerCareerInfo(careerDTO);
+
+    @ResponseBody
+    @RequestMapping(value = "/insertStep2", method = RequestMethod.GET)
+    public void resumeStep3(@RequestParam Map params) throws Exception{
+        String certiJson = params.get("certificateList").toString();
+        String careerJson = params.get("careerList").toString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<CertificationDTO> certiList = mapper.readValue(certiJson, new TypeReference<List<CertificationDTO>>(){});
+        List<CareerDTO> careerList = mapper.readValue(careerJson, new TypeReference<List<CareerDTO>>() {});
+
+        certificationService.registerCertiInfo(certiList);
+        careerService.registerCareerInfo(careerList);
+    }
+
+    @ResponseBody
+    @GetMapping("/addCertiInfo/{resumeId}")
+    public Long addNullCertiInfo(@PathVariable("resumeId") Long resumeId){
+        return certificationService.addNullCertiInfo(resumeId);
+    }
+
+    @ResponseBody
+    @GetMapping("/addCareerInfo/{resumeId}")
+    public Long addNullCareerInfo(@PathVariable("resumeId") Long resumeId){
+        return careerService.addNullCareerInfo(resumeId);
+    }
+
+    @GetMapping("/resumeStep3/{resumeId}")
+    public String resumeStep3(@PathVariable("resumeId") Long resumeId, Model model){
 
         if(selfIntroductionService.existOrNotResumeId(resumeId) == 1){
             model.addAttribute("resumeId", resumeId);
             model.addAttribute("selfIntroInfo", selfIntroductionService.bringSelfIntroInfo(resumeId));
+
             return "/resume/ResumeStep3WithContent";
         }
 
@@ -111,31 +144,66 @@ public class ResumeController {
         return "/resume/ResumeStep3";
     }
 
-    @PostMapping("/submitResume")
-    public String submitResume(SelfIntroductionDTO selfIntroductionDTO){
+    @GetMapping("/submitResume")
+    public String submitResume(@Valid SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
-        return "redirect:/resume//myInfo";
+        return "redirect:/member/myPageResume";
     }
 
-    @PostMapping("/goPreviousStep1/{resumeId}")
-    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, CertificationDTO certificationDTO, CareerDTO careerDTO, Model model){
-        certificationService.registerCertiInfo(certificationDTO);
-        careerService.registerCareerInfo(careerDTO);
+    @GetMapping("/goPreviousStep1/{resumeId}")
+    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
 
         model.addAttribute("resumeId", resumeId);
-        model.addAttribute("memberInfo", memberService.bringMemInfo(loginId));
+        model.addAttribute("memberInfo", memberService.bringMemInfo(id));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
+
         return "/resume/ResumeStep1WithContent";
     }
 
-    @PostMapping("/goPreviousStep2/{resumeId}")
-    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, SelfIntroductionDTO selfIntroductionDTO, Model model){
+    @GetMapping("/goPreviousStep2/{resumeId}")
+    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, @Valid SelfIntroductionDTO selfIntroductionDTO, Model model){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
         model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+
         return "/resume/ResumeStep2WithContent";
     }
+
+    @ResponseBody
+    @GetMapping("/deleteCertiList/{certiId}")
+    public void deleteCertiList(@PathVariable("certiId") Long certiId){
+        certificationService.deleteCertiInfo(certiId);
+    }
+
+    @ResponseBody
+    @GetMapping("deleteCareerList/{careerId}")
+    public void deleteCareerList(@PathVariable("careerId") Long careerId){
+        careerService.deleteCareerList(careerId);
+    }
+
+    @ResponseBody
+    @GetMapping("/deleteResume")
+    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws JsonProcessingException {
+        String resumeIdJson = params.get("resumeId").toString();
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
+
+        resumeService.deleteResume(resumeIdList);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/changeTitle/{resumeId}")
+    public void changeTitle(@PathVariable("resumeId") Long resumeId, @RequestParam("title") String title){
+        resumeService.changeTitle(resumeId, title);
+    }
+
+//    @PutMapping("/changeTitle/{resumeId}")
+//    public void changeTitle(@RequestBody ResumeListDTO resumeListDTO){
+//        resumeService.changeTitle(resumeListDTO);
+//    }
 }

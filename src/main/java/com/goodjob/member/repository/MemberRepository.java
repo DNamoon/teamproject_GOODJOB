@@ -23,6 +23,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 /**
  * 김도현 22.9.29 작성
+ * 10.17 개인정보 수정 메소드 추가
+ * 10.19 email 발송 메소드 추가
  **/
     Long countByMemLoginId(String memLoginId);
 
@@ -33,4 +35,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
    @Query("update Member m set m.memAddress =:#{#p.memAddress},m.memBirthDate =:#{#p.memBirthDate}" +
             ",m.memEmail =:#{#p.memEmail},m.memGender =:#{#p.memGender},m.memName =:#{#p.memName},m.memPhone =:#{#p.memPhone} where m.memId =:#{#p.memId}")
     void updateInfo(@Param("p") Member member);
+
+    Boolean existsByMemEmail(String memEmail);
+
+    Member findByMemEmail(String memEmail);
+
+    Member findByMemId(Long memId);
+
 }

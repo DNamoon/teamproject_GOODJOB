@@ -47,6 +47,7 @@ public interface MemberService {
 
     /**
      * 김도현 22.9.29 작성
+     * 10.19 추가
      **/
 
     //회원정보 db저장
@@ -62,4 +63,14 @@ public interface MemberService {
     MemberDTO memInfo(String loginId);
 
     void updateMemInfo(MemberDTO memberDTO);
+
+    void deleteById(Long memId);
+
+    boolean checkEmail(String memEmail);
+
+    void updatePassword(String tmpPw, String memberEmail);
+
+    String getTmpPassword();
+
+    void changePassword(String changePw, Long memId);
 }

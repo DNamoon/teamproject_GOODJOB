@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * 박채원 22.10.02 작성
@@ -37,6 +38,6 @@ public class Career {
     private String careerTask;
 
     @ManyToOne
-    @JoinColumn(name = "careerResumeId", nullable = false, unique = true)
+    @JoinColumn(name = "careerResumeId", nullable = false)
     private Resume resume;
 }
