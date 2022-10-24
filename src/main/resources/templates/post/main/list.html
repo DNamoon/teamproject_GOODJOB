@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/post-tbl.css">
+    <style>
+        .center {
+            text-align: center;
+            margin-top: 10px
+        }
+
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <thead>
+            <tr>
+                <th>회사</th>
+                <th>제목</th>
+                <th>모집시작일</th>
+                <th>모집종료일</th>
+                <th>직종</th>
+                <th>모집인원</th>
+                <th>성별</th>
+            </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="dto : ${result.dtoList}">
+            <tr>
+                <th><span th:text="${dto.getComName}"></span></th>
+                <th>[[${dto.getPostTitle()}]]</th>
+                <th>[[${dto.postStartDate}]]</th>
+                <th>[[${dto.postEndDate}]]</th>
+                <th>[[${dto.occName}]]</th>
+                <th>[[${dto.postRecruitNum}]]</th>
+                <th>[[${dto.postGender}]]</th>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
+    <!-- pagination -->
+
+
+<!--    <div class="center">-->
+<!--        <div class="pagination">-->
+<!--            <ul >-->
+<!--                <li class="prev" th:if="${result.prev}">-->
+<!--                    <a href="#" tabindex="-1">Previous</a>-->
+<!--                </li>-->
+<!--                <li th:class=" 'page-item'+ ${result.page == page?'active':''}" th:each="page:${result.pageList}">-->
+<!--                    <a href="#">[[${page}]]</a>-->
+<!--                </li>-->
+<!--                <li class="next" th:if="${result.next}">-->
+<!--                    <a href="#">Next</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="center">
+        <div class="pagination">
+            <a th:href="@{/p/list(page=${result.start -1})}"  th:if="${result.prev}">&laquo;</a>
+            <th:block th:each="page:${result.pageList}">
+                <a th:href="@{/p/list(page=${page})}" >[[${page}]]</a>
+            </th:block>
+            <a th:href="@{/p/list(page=${result.end +1})}"  th:if="${result.next}">&raquo;</a>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+</html>
