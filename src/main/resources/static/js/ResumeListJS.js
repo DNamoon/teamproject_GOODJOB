@@ -5,7 +5,7 @@
 $(document).ready(function () {
     getJSONResumeList($("input[id=sessionInput]").val());
 
-    //이력서 등록버튼 눌리면 이력서 번호부터 등록하고 시작
+    //이력서 등록버튼 누르면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function () {
         var size = $("h5[name='resumeTitle']").length;
 
@@ -54,8 +54,6 @@ function getJSONResumeList(memId) {
 //이력서 삭제
 function deleteResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
-    console.log(resumeId);
-
 
     if (confirm("이력서를 삭제하겠습니까?") == true) {
         $.ajax({
