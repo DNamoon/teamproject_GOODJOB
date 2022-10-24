@@ -4,10 +4,17 @@ import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
+import com.goodjob.admin.postpaging.ArticlePage;
 import com.goodjob.admin.repository.AdminRepository;
+import com.goodjob.notice.Notice;
+import com.goodjob.notice.NoticeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalField;
 import java.util.List;
+import java.util.stream.LongStream;
 
 @SpringBootTest
 @Transactional
@@ -26,6 +34,8 @@ public class AdminTest {
     AdminRepository adminRepository;
     @Autowired
     VisitorStatisticsRepository visitorStatisticsRepository;
+    @Autowired
+    NoticeRepository noticeRepository;
 
     @Test
     @Commit
@@ -62,5 +72,21 @@ public class AdminTest {
 //        List<VisitorStatistics> all = visitorStatisticsRepository.findAll();
 //        VisitorStatistics visitorStatistics = all.get(0);
 //        System.out.println("visitorStatistics = " + visitorStatistics);
+    }
+    @Test
+    void pageTest(){
+        Sort sort = Sort.by("noticeId").descending();
+        Pageable pageable = PageRequest.of(0,10 , sort);
+        Page<Notice> result = noticeRepository.findAll(pageable);
+        for (Notice notice : result) {
+            System.out.println("notice = " + notice);
+        }
+    }
+    @Test
+    @Commit
+    void saveNotice(){
+        LongStream.rangeClosed(6,50).forEach(i->{
+            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
+        });
     }
 }
