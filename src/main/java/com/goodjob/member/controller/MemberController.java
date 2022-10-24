@@ -9,9 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -30,12 +35,14 @@ public class MemberController {
     private final MailService mailService;
 
     @GetMapping("/signUp")
-    public String signUpForm(HttpServletRequest request) {
+    public String signUpForm(HttpServletRequest request, Model model, MemberDTO memberDTO) {
         // 회원가입 시 기존 로그인 상태면 로그아웃 실행
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
+
+        model.addAttribute("signUpCheck", memberDTO);
         return "member/signup";
     }
 
@@ -49,8 +56,11 @@ public class MemberController {
 
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
-    public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
+    public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+        if(result.hasErrors()){
+            return "member/signup";
+        }
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem = memberDTO.toEntity();
         memberService.register(mem);
