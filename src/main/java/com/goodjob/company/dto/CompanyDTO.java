@@ -12,6 +12,9 @@
  *  comAddress1,2,3,4 추가
  *  - 뒤로가기나 새로고침시 기존 comAddress가 하나인 경우에 모둔 우편번호창, 상세주소창 등에 모든 주소가 재입력 되는 문제 발생.
  *  - 창마다 name을 따로 주어 받아오게 해 문제해결.
+ *
+ *  +2022.10.17
+ *  로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 창 name 통일. 필드도 loginId,pw 통일(46,51, 93, 96라인 변경)
  */
 package com.goodjob.company.dto;
 
@@ -39,14 +42,16 @@ public class CompanyDTO {
     //DTO 클래스에서는 조인컬럼이라도 필드 다 String이나 Long으로 받아야 함.
     @Size(min = 3, max = 15, message = "ID는 3~15자 사이여야 합니다.")
     @NotBlank(message = "사용자 ID는 필수항목입니다.")
-    private String comLoginId;
+    //ho - 22.10.17 comLoginID -> loginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+    private String loginId;
 
     @Size(min = 3, max = 25, message = "Password는 3~25자 사이여야 합니다.")
-    @NotBlank(message = "비밀번호는 필수항목입니다.")
-    private String comPw1;
+    //@NotBlank(message = "비밀번호는 필수항목입니다.")
+    //ho - 22.10.17 comPw1 -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+    private String pw;
 
     //비밀번호가 일치하지 않으면 넘어가지 않도록 하기 위해 엔티티와는 별개로 DTO에만 comPw2 추가
-    @NotBlank(message = "비밀번호 확인은 필수항목입니다.")
+    //@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
     private  String comPw2;
     @NotBlank
     private String comRegCode;
@@ -83,12 +88,12 @@ public class CompanyDTO {
         Comdiv comdiv = Comdiv.builder()
                 .comdivCode(comComdivCode)
                 .build();
-
+        //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 93,96라인 변경
         Company com = Company.builder()
-                .comLoginId(comLoginId)
+                .comLoginId(loginId)
                 .comRegCode(region)
                 .comComdivCode(comdiv)
-                .comPw(comPw1)
+                .comPw(pw)
                 .comPhone(comPhone)
                 .comEmail(comEmail1+"@"+comEmail2)
                 .comName(comName)

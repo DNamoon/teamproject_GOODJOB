@@ -46,24 +46,27 @@ public class MemberController {
         Long result = memberService.countByMemLoginId(id);
         return result;
     }
+
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
+        //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
-        Member mem =  memberDTO.toEntity();
+        Member mem = memberDTO.toEntity();
         memberService.register(mem);
         return "redirect:/";
 
     }
 
 
-    @RequestMapping(value="/login",method = RequestMethod.POST)
-    public String login( @ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
+        //ho - 22.10.17 getMemLoginId -> getLoginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         Optional<Member> mem = memberService.loginIdCheck(memberDTO.getLoginId());
 
         if (mem.isPresent()) {  // id null 체크
             Member member = mem.get();
-            if (member.getMemLoginId().equals(memberDTO.getLoginId())) {  //회원정보가 있는 id
+            if (member.getMemLoginId().equals(memberDTO.getLoginId())) {  //id 가 있으면
                 String encodePw = member.getMemPw();
                 //암호화된 비밀번호와 로그인 시 입력받은 비밀번호 match 확인
                 if (passwordEncoder.matches(memberDTO.getPw(), encodePw)) {
@@ -98,8 +101,9 @@ public class MemberController {
         return "member/findPw";
     }
     //이메일이 DB에 존재하는지 확인
-    @ResponseBody@PostMapping("/checkEmail")
-    public boolean checkEmail(@RequestParam("memberEmail") String memEmail){
+    @ResponseBody
+    @PostMapping("/checkEmail")
+    public boolean checkEmail(@RequestParam("memberEmail") String memEmail) {
         return memberService.checkEmail(memEmail);
     }
     //임시비밀번호 발급

@@ -1,0 +1,197 @@
+<th:block th:replace="~{/myPageTemplate :: setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-lg-10 mx-auto d-flex justify-content-center flex-column">
+                    <h3 class="text-center">회원정보 (기업회원용)</h3>
+                    <div class="card-body">
+            <span style="float: right; font-size: 14px;"><span
+                    style="color: rgb(244, 54, 54);">(재선택)</span> 은 필수사항 입니다.</span><br/>
+                        <form role="form" id="contact-form" name="frm" method="post" autocomplete="off"
+                              th:action="@{/com/update}">
+
+                            <fieldset id="btn_target" disabled="disabled">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <label th:for="comLoginId">아이디<span
+                                                style="color: rgb(244, 54, 54);">&nbsp;(변경불가) </span></label>
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="ID는 3~15자 사이"
+                                                   th:value="${companyInfo.loginId}"
+                                                   name="loginId" id="loginId" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comName">기업명</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" placeholder="기업명" type="text"
+                                                   th:value="${companyInfo.comName}"
+                                                   name="comName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comBusiNum">사업자번호</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" th:value="${companyInfo.comBusiNum}"
+                                                   name="comBusiNum" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comPhone">전화번호</label>
+                                        <div class="input-group">
+                                            <input type="tel" class="form-control" placeholder="000-0000-0000"
+                                                   name="comPhone"
+                                                   th:value="${companyInfo.comPhone}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>기업 분류<span style="color: rgb(244, 54, 54);">&nbsp;(재선택)</span></label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-select" id="comComdivCode" name="comComdivCode" required>
+                                                <option selected value="">
+                                                    [[${companyInfo.comComdivCode}]] (기본정보)
+                                                </option>
+                                                <option value="Major">대기업</option>
+                                                <option value="Middle">중견기업(300명이상)</option>
+                                                <option value="SMEs">중소기업(300명미만)</option>
+                                                <option value="StartUp">스타트업</option>
+                                                <option value="Foreign">외국계기업</option>
+                                                <option value="Public">국내 공공기관/공기업</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comRegCode">지역 선택<span
+                                                style="color: rgb(244, 54, 54);">&nbsp;(재선택)</span></label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-select" id="comRegCode" name="comRegCode" required>
+                                                <option selected value="">
+                                                    [[${companyInfo.comRegCode}]] (기본정보)
+                                                </option>
+                                                <option value="02">서울특별시</option>
+                                                <option value="031">경기도</option>
+                                                <option value="032">인천광역시</option>
+                                                <option value="033">강원도</option>
+                                                <option value="041">충청남도</option>
+                                                <option value="042">대전광역시</option>
+                                                <option value="043">충청북도</option>
+                                                <option value="044">세종특별시</option>
+                                                <option value="051">부산광역시</option>
+                                                <option value="052">울산광역시</option>
+                                                <option value="053">대구광역시</option>
+                                                <option value="054">경상북도</option>
+                                                <option value="055">경상남도</option>
+                                                <option value="061">전라남도</option>
+                                                <option value="062">광주광역시</option>
+                                                <option value="063">전라북도</option>
+                                                <option value="064">제주도</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md px-0">
+                                    <label th:for="comEmail">이메일</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control w-40" placeholder="goodjob"
+                                               name="comEmail1" th:value="${companyInfo.comEmail1}"
+                                               required> &nbsp;@ &nbsp;&nbsp;
+                                        <select class="form-select" name="comEmail2">
+                                            <option selected th:value="${companyInfo.comEmail2}">
+                                                [[${companyInfo.comEmail2}]] (기본정보)
+                                            </option>
+                                            <option value="naver.com">naver.com</option>
+                                            <option value="daum.net">daum.net</option>
+                                            <option value="gmail.com">gmail.com</option>
+                                        </select>
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div>
+                                    <div class="col-md-6 px-0">
+                                        <label th:for="comAddress">주소</label>
+                                        <div class="input-group mb-4">
+                                            <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
+                                            <input type="text" class="form-control" name="comAddress1"
+                                                   th:value="${companyInfo.comAddress1}"
+                                                   id="sample6_postcode" placeholder="우편번호" readonly required>
+                                        </div>
+                                        <div class="input-group">
+                                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"
+                                                   class="btn bg-gradient-dark w-40 findAddress" style="float:right;">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <input type="text" class="form-control" name="comAddress2"
+                                               th:value="${companyInfo.comAddress2}"
+                                               id="sample6_address" placeholder="주소" readonly required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control" name="comAddress3"
+                                                       id="sample6_detailAddress" th:value="${companyInfo.comAddress3}"
+                                                       placeholder="상세주소" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control"
+                                                       th:value="${companyInfo.comAddress4}"
+                                                       id="sample6_extraAddress" name="comAddress4"
+                                                       placeholder="참고항목">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label th:for="comInfo">회사 소개</label>
+                                    <textarea id="comInfo" name="comInfo" class="form-control"
+                                              th:text="${companyInfo.comInfo}"
+                                              cols="40" rows="8" required></textarea>
+                                </div>
+                            </fieldset>
+
+                            <div class="row">
+                                <div class="col">
+                                    <input type="button" value="정보 수정하기" onclick="btnActive()" id="btn"
+                                           style="display: block" class="btn bg-gradient-dark w-100"> </div>
+                                <div class="col">
+                                    <input type="button" value="이전으로 돌아가기" onclick="btnDisabled()" id="btn_hidden"
+                                           class="btn bg-gradient-dark w-100" hidden></div>
+                                <div class="col">
+                                    <button id="modal_open_btn" data-toggle="modal"
+                                            data-target="#confirmPasswordModal" class="btn bg-gradient-dark w-100" hidden>정보 수정완료</button></div>
+                                <div class="col">
+                                    <button type="submit" class="btn bg-gradient-dark w-100">회원 탈퇴하기</button></div>
+                                </div>
+                        </form>
+                    </div>
+<!--                                    수정 전 비밀번호 확인 모달창-->
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="confirmPasswordModal" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center"> 비밀번호 확인 </h5>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        비밀번호를 입력하세요.<br/>
+                                                        <input id="password_confirm" name="pw" type="text" class="form-control" placeholder="비밀번호"><br/>
+                                                        <button id="confirm" class="btn btn-primary" type="submit" style="float: right">확인</button>
+<!--                                                        <input id="confirm" type="submit" value="확인" style="float: right">-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                    </div>
+                </div>
+            </div>
+    </th:block>
+</th:block>
