@@ -93,7 +93,7 @@ public class MemMyPageController {
         return "success";
     }
 
-    @PostMapping("/myPageResume")
+    @GetMapping("/myPageResume")
     public String myPageResume(){
         return "/member/myPageResumeList";
     }
