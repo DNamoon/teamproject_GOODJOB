@@ -3,7 +3,6 @@
 <!--기업회원가입페이지로 넘어가는 버튼 추가-->
 <!--김도현 22.10.07 수정
     로그인 후 session 확인 및 로그아웃 버튼 추가 -->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -14,24 +13,16 @@
 <h2>메인 페이지</h2>
 <hr/>
 
-    <button th:onclick="|location.href='@{/com/register}'|">회원가입</button> <br/>
-    <button th:onclick="|location.href='@{/com/login}'|">기업회원 로그인</button>
-    로그인 된 회원 아이디 :<span th:text="${session.sessionId}">message</span>
-    <button class="btn btn-outline-light me-1" type="button"
-            th:onclick="|location.href='@{/com/logout}'|">로그아웃</button>
-
-    <h2>메인 페이지</h2>
-    <hr/>
 
 <th:block th:if="${session.sessionId== null}">
     <div>
-    <button th:onclick="|location.href='@{/com/register}'|">기업회원가입</button> &nbsp;
+        <button th:onclick="|location.href='@{/com/register}'|">기업회원가입</button> &nbsp;
     </div>
     <br/>
     <div>
-    <form th:action="@{/member/signUp}">
-        <input type="submit" value="개인회원가입">
-    </form>
+        <form th:action="@{/member/signUp}">
+            <input type="submit" value="개인회원가입">
+        </form>
     </div>
     <br/>
 
@@ -39,21 +30,16 @@
         <input type="submit" value="로그인">
     </form>
 </th:block>
-
 <form name="frmSub" method="get">
     <th:block th:if="${session.sessionId}">
         로그인 된 회원 아이디 : <span th:text="${session.sessionId}">message</span>
-
         <input class="btn btn-outline-light me-1" type="button" value="My Page"
                th:onclick="UserType([[${session.Type}]])"></input>
         <input class="btn btn-outline-light me-1" type="button" value="로그아웃"
                th:onclick="|location.href='@{/member/logout}'|"></input>
     </th:block>
-
 </form>
-
 </body>
-
 <script>
     function UserType(mode) {
         const form = document.frmSub;
