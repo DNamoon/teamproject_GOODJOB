@@ -76,4 +76,10 @@ public class AdminController {
     public String adminMemberPage(){
         return "/admin/adminMemberManage";
     }
+
+
+    @GetMapping("/test")
+    public String test(){
+        return "post/postInsertForm";
+    }
 }
