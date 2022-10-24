@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<th:block th:fragment="setContent(content)">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
-  <title>
-    RESUME STEP1
-  </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
   <!-- Nucleo Icons -->
@@ -22,13 +18,17 @@
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <!-- AJAX CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <title>이력서 작성</title>
 </head>
 <body>
 
+<th:block th:replace="${content}">
 
+</th:block>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="/js/core/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="/js/ResumeJS.js"></script>
 </body>
+</th:block>
 </html>

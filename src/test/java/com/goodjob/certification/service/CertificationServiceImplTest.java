@@ -61,4 +61,14 @@ class CertificationServiceImplTest implements CertificationService{
     public List<CertificateName> findCertiName(String keyword) {
         return null;
     }
+
+    @Override
+    public Long addNullCertiInfo(Long resumeId) {
+        return null;
+    }
+
+    @Override
+    public void deleteCertiInfo(Long certiId) {
+
+    }
 }
