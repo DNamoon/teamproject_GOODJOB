@@ -33,7 +33,6 @@ public class MemberController {
     public String signUpForm(HttpServletRequest request) {
         // 회원가입 시 기존 로그인 상태면 로그아웃 실행
         HttpSession session = request.getSession(false);
-
         if (session != null) {
             session.invalidate();
         }
@@ -42,14 +41,14 @@ public class MemberController {
 
     //ID 중복확인
     @ResponseBody
-    @RequestMapping(value = "/checkId", method = RequestMethod.GET)
+    @RequestMapping(value="/checkId",method = RequestMethod.GET)
     public Long checkIdDuplication(@RequestParam("id") String id) {
         Long result = memberService.countByMemLoginId(id);
         return result;
     }
 
     //회원가입
-    @RequestMapping(value = "/signUp", method = RequestMethod.POST)
+    @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
@@ -57,11 +56,6 @@ public class MemberController {
         memberService.register(mem);
         return "redirect:/";
 
-    }
-
-    @GetMapping("/login")
-    public String loginFrom() {
-        return "login";
     }
 
 
@@ -92,7 +86,7 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request){
 
         HttpSession session = request.getSession(false);
 
@@ -102,19 +96,16 @@ public class MemberController {
 
         return "redirect:/";
     }
-
     @GetMapping("/checkEmail")
-    public String checkEmailForm() {
+    public String checkEmailForm(){
         return "member/findPw";
     }
-
     //이메일이 DB에 존재하는지 확인
     @ResponseBody
     @PostMapping("/checkEmail")
     public boolean checkEmail(@RequestParam("memberEmail") String memEmail) {
         return memberService.checkEmail(memEmail);
     }
-
     //임시비밀번호 발급
     @PostMapping("/sendPw")
     public String sendPwdEmail(@RequestParam("memberEmail") String memberEmail) {
@@ -126,8 +117,9 @@ public class MemberController {
         memberService.updatePassword(tmpPw, memberEmail);
 
         /** 메일 생성 & 전송 **/
-        mailService.sendMail(memberEmail, tmpPw);
+        mailService.sendMail(memberEmail,tmpPw);
 
         return "login";
     }
+
 }

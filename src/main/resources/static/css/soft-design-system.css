@@ -22270,7 +22270,7 @@ hr.horizontal.gray-light {
   transform: translate(0, -50%);
 }
 
-@media (min-width: 992px) {
+@media {
   .virtual-reality .sidenav {
     margin-top: 1.5rem;
     animation-name: fadeInBottom;
