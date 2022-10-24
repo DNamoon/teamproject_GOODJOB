@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * 박채원 22.10.02 작성

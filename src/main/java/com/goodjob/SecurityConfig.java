@@ -31,10 +31,10 @@ public class SecurityConfig  {
                 //                .defaultSuccessUrl("/").and()
                 .authorizeRequests()
                 .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/login").permitAll() // /auth이하의 주소들은 인증 필요x
                 .antMatchers("/css/**","/js/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();
-
         return http.build();
     }
 }

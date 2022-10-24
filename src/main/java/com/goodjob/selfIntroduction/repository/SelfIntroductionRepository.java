@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 public interface SelfIntroductionRepository extends JpaRepository<SelfIntroduction, Long> {
-    @Query("select s from SelfIntroduction s where s.resume.resumeId =:resumeId")
-    SelfIntroduction findSelfIntroInfoByResumeId(Long resumeId);
-    @Query("select s.resume.resumeId from SelfIntroduction s where s.resume.resumeId =:resumeId")
-    Long findByResumeId(Long resumeId);
+//    @Query("select s from SelfIntroduction s where s.resume.resumeId =:resumeId")
+//    SelfIntroduction findSelfIntroInfoByResumeId(Long resumeId);
+
+    SelfIntroduction findByResume_ResumeId(Long resumeId);
 
     @Transactional
     @Modifying
