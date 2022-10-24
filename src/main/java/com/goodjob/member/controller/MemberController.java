@@ -55,10 +55,6 @@ public class MemberController {
         return "redirect:/";
 
     }
-    @GetMapping("/login")
-    public String loginFrom() {
-        return "login";
-    }
 
 
     @RequestMapping(value="/login",method = RequestMethod.POST)
@@ -76,14 +72,13 @@ public class MemberController {
                     session.setAttribute("Type", "member");
                     return "redirect:/"; // 로그인 성공 시 메인페이지
                 } else {
-                    return "redirect:login?error";  //pw가 틀린 경우
+                    return "redirect:/login?error";  //pw가 틀린 경우
                 }
             } else {
-                return "redirect:login?error"; //id가 틀린경우
+                return "redirect:/login?error"; //id가 틀린경우
             }
         } else {
-
-            return "redirect:login?error";  //id가 없는 경우
+            return "redirect:/login?error";  //id가 없는 경우
         }
     }
 

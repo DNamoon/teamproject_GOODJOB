@@ -109,13 +109,13 @@ public class CompanyController {
 
                     return "redirect:/";
                 } else {
-                    return "redirect:login?error";  //pw가 틀린 경우
+                    return "redirect:/login?error";  //pw가 틀린 경우
                 }
             } else {
                 return "member/signup";
             }
         } else {
-            return "redirect:login?error"; //id가 없는 경우
+            return "redirect:/login?error"; //id가 없는 경우
         }
     }
 

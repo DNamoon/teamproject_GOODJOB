@@ -15,19 +15,12 @@
     <hr/>
 
     <button th:onclick="|location.href='@{/com/register}'|">회원가입</button> <br/>
-    <button th:onclick="|location.href='@{/com/login}'|">기업회원 로그인</button>
-    로그인 된 회원 아이디 :<span th:text="${session.sessionId}">message</span>
-    <button class="btn btn-outline-light me-1" type="button"
-            th:onclick="|location.href='@{/com/logout}'|">로그아웃</button>
-
-    <h2>메인 페이지</h2>
-    <hr/>
 
     <th:block th:if="${session.sessionId== null}">
 <form th:action="@{/member/signUp}">
     <input type="submit" value="개인회원가입">
 </form>
-<form th:action="@{/member/login}">
+<form th:action="@{/login}">
     <input type="submit" value="로그인">
 </form>
     </th:block>
