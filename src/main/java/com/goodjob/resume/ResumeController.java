@@ -1,5 +1,6 @@
 package com.goodjob.resume;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goodjob.career.dto.CareerDTO;
@@ -13,10 +14,13 @@ import com.goodjob.education.dto.EducationDTO;
 import com.goodjob.education.service.EducationService;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.service.MemberService;
+import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.02 작성
@@ -43,11 +48,6 @@ public class ResumeController {
     private final CareerService careerService;
     private final CertificationService certificationService;
     private final SelfIntroductionService selfIntroductionService;
-
-    @GetMapping("/myInfo")
-    public String registerButton(){
-        return "/resume/ResumeRegisterButton";
-    }
 
     @ResponseBody
     @GetMapping("/registerResume")
@@ -147,7 +147,7 @@ public class ResumeController {
     @GetMapping("/submitResume")
     public String submitResume(@Valid SelfIntroductionDTO selfIntroductionDTO){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
-        return "redirect:/member/myPage";
+        return "redirect:/member/myPageResume";
     }
 
     @GetMapping("/goPreviousStep1/{resumeId}")
@@ -185,4 +185,25 @@ public class ResumeController {
         careerService.deleteCareerList(careerId);
     }
 
+    @ResponseBody
+    @GetMapping("/deleteResume")
+    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws JsonProcessingException {
+        String resumeIdJson = params.get("resumeId").toString();
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
+
+        resumeService.deleteResume(resumeIdList);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("/changeTitle/{resumeId}")
+    public void changeTitle(@PathVariable("resumeId") Long resumeId, @RequestParam("title") String title){
+        resumeService.changeTitle(resumeId, title);
+    }
+
+//    @PutMapping("/changeTitle/{resumeId}")
+//    public void changeTitle(@RequestBody ResumeListDTO resumeListDTO){
+//        resumeService.changeTitle(resumeListDTO);
+//    }
 }

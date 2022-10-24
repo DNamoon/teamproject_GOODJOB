@@ -6,18 +6,6 @@ $(document).ready(function(){
     for(var i = 1; i < size; i++){
         $("input[name='certificateName']").eq(i).attr("id","certificateName"+i);
     }
-
-    //이력서 등록버튼 눌리면 이력서 번호부터 등록하고 시작
-    $("#registerResume").click(function(){
-        $.ajax({
-            type: "get",
-            url: "/resume/registerResume",
-            dataType: "text",
-            success: function(data){
-                location.href = "/resume/resumeStep1/" + data;
-            }
-        });
-    })
     
     //학교 찾기
     $(".findSchool").click(function(){
@@ -31,7 +19,7 @@ $(document).ready(function(){
             success: function (data){
                 $(".schoolList").empty();
                 for(var i=0; i<data.length; i++){
-                    $(".schoolList").append('<input class="form-check-input" type="radio" name="selectSchoolName" value="' + data[i].schName +'">' + data[i].schName +'<br/>');
+                    $(".schoolList").append('<input class="form-check-input me-1" type="radio" name="selectSchoolName" value="' + data[i].schName +'" style="background-color: #e4e1e4">' + data[i].schName +'<br/>');
                 }
                 $(".doneFindSchool").click(function (){
                     $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
@@ -52,7 +40,7 @@ $(document).ready(function(){
             success: function (data){
                 $(".majorList").empty();
                 for(var i=0; i<data.length; i++){
-                    $(".majorList").append('<input class="form-check-input" type="radio" name="selectMajorName" value="' + data[i].majName +'">' + data[i].majName +'<br/>');
+                    $(".majorList").append('<input class="form-check-input me-1" type="radio" name="selectMajorName" value="' + data[i].majName +'" style="background-color: #e4e1e4">' + data[i].majName +'<br/>');
                 }
                 $(".doneFindMajor").click(function (){
                     $("#majorName").val($("input:radio[name='selectMajorName']:checked").val());
@@ -73,7 +61,7 @@ $(document).ready(function(){
             success: function (data) {
                 $(".certiList").empty();
                 for (var i = 0; i < data.length; i++) {
-                    $(".certiList").append('<input class="form-check-input" type="radio" name="selectCertiName" value="' + data[i].certiName + '">' + data[i].certiName + '<br/>');
+                    $(".certiList").append('<input class="form-check-input me-1" type="radio" name="selectCertiName" value="' + data[i].certiName + '" style="background-color: #e4e1e4">' + data[i].certiName + '<br/>');
                 }
                 $(".doneFindCerti").click(function () {
                     var inputId = $("#modalId").val();
@@ -406,7 +394,7 @@ function addCareerInfo() {
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="" min="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6 my-2 mx-auto" style="width: 24px;">';
+    careerInfo += '<div class="col-md-2">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerInfo(this)"></button>';
     careerInfo += '</div>';
@@ -453,7 +441,7 @@ function addCareerInfoWC(data) {
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 24px;">';
+    careerInfo += '<div class="col-md-2">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<button type="button" id="deleteCareerBtn" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerWC(this,' + data + ')"></button>';
     careerInfo += '</div>';

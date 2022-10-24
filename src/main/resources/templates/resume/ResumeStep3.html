@@ -1,72 +1,68 @@
 <!-- 박채원 22.09.30 작성 -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-    <title>
-        RESUME STEP3
-    </title>
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
-    <!-- Nucleo Icons -->
-    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-</head>
-<body>
-<section>
-    <div class="container py-4 flex-wrap">
-        <div class="row">
-            <div class="col-lg-7 mx-auto" style="width : 1000px">
-                <h3 class="text-center mx-auto">STEP3</h3>
-                &nbsp;
-                <form role="form" id="contact-form" method="get" autocomplete="off">
-                    <input type="hidden" th:value="${resumeId}" name="resumeId">
-                    <div class="card-body">
-                        <h4 class="text-left">| 대외활동</h4>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/resume/ResumeTemplate ::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title>RESUME STEP1</title>
+    </head>
+    <th:block th:fragment="content">
+        <section>
+            <div class="container py-4 flex-wrap">
+                <div class="row">
+                    <div class="col-lg-7 mx-auto" style="width : 1000px">
+                        <h3 class="text-center mx-auto">STEP3</h3>
                         &nbsp;
-                        <div class="row" style="float: inline-start;">
-                            <div class="form-group mb-4">
+                        <form role="form" id="contact-form" method="get" autocomplete="off">
+                            <input type="hidden" th:value="${resumeId}" name="resumeId">
+                            <div class="card-body">
+                                <h4 class="text-left">| 대외활동</h4>
+                                &nbsp;
+                                <div class="row" style="float: inline-start;">
+                                    <div class="form-group mb-4">
                                 <textarea class="form-control"
-                                          placeholder="활동했던 기관/회사/단체명과 활동기간, 활동내용을 활동기간 순으로 작성해 주세요." id="selfInterActivity"
+                                          placeholder="활동했던 기관/회사/단체명과 활동기간, 활동내용을 활동기간 순으로 작성해 주세요."
+                                          id="selfInterActivity"
                                           rows="10" name="selfInterActivity"></textarea>
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
 
 
-                        <div style="height: 30px;"></div>
-                        <div class="card-body">
+                                <div style="height: 30px;"></div>
+                                <div class="card-body">
                             <span style="float: right; font-size: 14px;"><span
                                     style="color: rgb(244, 54, 54);">&nbsp;자기소개서</span> 항목은 필수사항 입니다.</span>
-                            <h4 class="text-left">| 자기소개서</h4>
-                            &nbsp;
-                            <div class="row" style="float: inline-start;">
-                                <div class="form-group mb-4">
+                                    <h4 class="text-left">| 자기소개서</h4>
+                                    &nbsp;
+                                    <div class="row" style="float: inline-start;">
+                                        <div class="form-group mb-4">
                                     <textarea class="form-control"
                                               placeholder="지원하는 회사에 맞는 항목명과 해당 항목에 대한 내용을 작성해 주세요." id="selfLetter"
                                               rows="10" name="selfLetter"></textarea>
-                                </div>
-                                <div style="height: 50px;"></div>
-                                <div class="col-md-6 mx-auto">
-                                    <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resume/goPreviousStep2/{resumeId}(resumeId=${resumeId})}">이전</button>
-                                </div>
-                                <div class="col-md-6 mx-auto">
-                                    <button type="submit" class="btn bg-gradient-dark w-100" th:formaction="@{/resume/submitResume}">최종제출</button>
+                                        </div>
+                                        <div style="height: 50px;"></div>
+                                        <div class="row">
+                                            <div class="col-md-6 mx-auto">
+                                                <button type="submit" class="btn bg-gradient-dark w-100"
+                                                        th:formaction="@{/resume/goPreviousStep2/{resumeId}(resumeId=${resumeId})}">
+                                                    이전
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6 mx-auto">
+                                                <button type="submit" class="btn bg-gradient-dark w-100"
+                                                        th:formaction="@{/resume/submitResume}">최종제출
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-</body>
+        </section>
+    </th:block>
+</th:block>
 </html>

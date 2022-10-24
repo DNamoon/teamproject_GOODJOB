@@ -1,191 +1,185 @@
 <!-- 박채원 22.09.30 작성 -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-    <title>
-        RESUME STEP2
-    </title>
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
-    <!-- Nucleo Icons -->
-    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-    <!-- JQUERY CDN -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <!-- AJAX CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-</head>
-<body>
-<section>
-    <div class="container py-4 flex-wrap">
-        <div class="row">
-            <div class="col-lg-7 mx-auto" style="width : 1000px">
-                <h3 class="text-center mx-auto">STEP2</h3>
-                &nbsp;
-                <form role="form" id="contact-form" method="post" autocomplete="off">
-                    <input type="hidden" th:value="${resumeId}" name="resumeId">
-                    <div class="card-body">
-                        <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
-                        <h4 class="text-left">| 자격증</h4>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/resume/ResumeTemplate ::setContent(~{this::content})}">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title>RESUME STEP1</title>
+    </head>
+    <th:block th:fragment="content">
+        <section>
+            <div class="container py-4 flex-wrap">
+                <div class="row">
+                    <div class="col-lg-7 mx-auto" style="width : 1000px">
+                        <h3 class="text-center mx-auto">STEP2</h3>
                         &nbsp;
-                        <div class="row" style="float: inline-start;" th:each="certiInfo : ${certiInfo}">
-                            <div class="col-md-6" style="width: 400px;">
-                                <label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="certificateName" id="certificateName0"
-                                           th:value="${certiInfo.certificateName}" readonly>
+                        <form role="form" id="contact-form" method="post" autocomplete="off">
+                            <input type="hidden" th:value="${resumeId}" name="resumeId">
+                            <div class="card-body">
+                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
+                                <h4 class="text-left">| 자격증</h4>
+                                &nbsp;
+                                <div class="row" style="float: inline-start;" th:each="certiInfo : ${certiInfo}">
+                                    <div class="col-md-6" style="width: 400px;">
+                                        <label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" name="certificateName"
+                                                   id="certificateName0"
+                                                   th:value="${certiInfo.certificateName}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-left: 0px;">
+                                        <label>&nbsp;</label>
+                                        <button type="button" class="btn bg-gradient-dark w-100" id="findCertiBtn"
+                                                data-bs-toggle="modal" data-bs-target="#findCertiModal"
+                                                onclick="getInputId(this)">자격증찾기
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6" style="width: 200px;">
+                                        <label>취득년월</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control certiGetDate" type="date" name="certiGetDate"
+                                                   th:value="${certiInfo.certiGetDate}" max="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="width: 200px;">
+                                        <label>점수</label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" type="text" name="certiScore"
+                                                   th:value="${certiInfo.certiScore}">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" th:value="${certiInfo.certiId}" name="certiId">
+                                    <div class="col-md-6 mx-auto" style="width: 24px;">
+                                        <label>&nbsp;</label>
+                                        <button type="button" id="deleteCertiBtn" class="btn-close"
+                                                th:certiId="${certiInfo.certiId}"
+                                                style="background-color: #96a2b8;"
+                                                onclick="deleteCertiWC(this,this.getAttribute('certiId'))"></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2" style="margin-left: 0px;">
-                                <label>&nbsp;</label>
-                                <button type="button" class="btn bg-gradient-dark w-100" id="findCertiBtn"
-                                        data-bs-toggle="modal" data-bs-target="#findCertiModal"
-                                        onclick="getInputId(this)">자격증찾기
+                                <div class="addCertiInfoList"></div>
+                                <div class="col-md-6 mx-auto">
+                                <button type="button" class="btn btn-outline-secondary w-100 addCertiInfoWC">자격증 추가
                                 </button>
-                            </div>
-                            <div class="col-md-6" style="width: 200px;">
-                                <label>취득년월</label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control certiGetDate" type="date" name="certiGetDate"
-                                           th:value="${certiInfo.certiGetDate}" max="">
                                 </div>
-                            </div>
-                            <div class="col-md-6" style="width: 200px;">
-                                <label>점수</label>
-                                <div class="input-group mb-4">
-                                    <input class="form-control" type="text" name="certiScore"
-                                           th:value="${certiInfo.certiScore}">
-                                </div>
-                            </div>
-                            <input type="hidden" th:value="${certiInfo.certiId}" name="certiId">
-                            <div class="col-md-6 mx-auto" style="width: 24px;">
-                                <label>&nbsp;</label>
-                                <button type="button" id="deleteCertiBtn" class="btn-close" th:certiId="${certiInfo.certiId}"
-                                        style="background-color: #96a2b8;"
-                                        onclick="deleteCertiWC(this,this.getAttribute('certiId'))"></button>
-                            </div>
-                        </div>
-                        <div class="addCertiInfoList"></div>
-                        <button type="button" class="btn btn-outline-secondary w-50 addCertiInfoWC">자격증 추가</button>
 
 
-                        <div style="height: 30px;"></div>
-                        <div class="card-body">
-                            <h4 class="text-left">| 경력사항</h4>
-                            &nbsp;
-                            <div th:each="careerInfo : ${careerInfo}">
-                                <div>
-                                    <div class="row" style="float: inline-start;">
-                                        <div class="col-md-6" style="width: 400px;">
-                                            <label>회사명</label>
-                                            <div class="input-group mb-4">
-                                                <input class="form-control" type="text" name="careerCompanyName"
-                                                       th:value="${careerInfo.careerCompanyName}">
+                                <div style="height: 30px;"></div>
+                                <div class="card-body">
+                                    <h4 class="text-left">| 경력사항</h4>
+                                    &nbsp;
+                                    <div th:each="careerInfo : ${careerInfo}">
+                                        <div>
+                                            <div class="row" style="float: inline-start;">
+                                                <div class="col-md-6" style="width: 400px;">
+                                                    <label>회사명</label>
+                                                    <div class="input-group mb-4">
+                                                        <input class="form-control" type="text" name="careerCompanyName"
+                                                               th:value="${careerInfo.careerCompanyName}">
+                                                    </div>
+                                                    <input type="hidden" th:value="${careerInfo.careerId}"
+                                                           name="careerId">
+                                                </div>
+                                                <div class="col-md-6" style="width: 200px;">
+                                                    <label>근무기간</label>
+                                                    <div class="input-group mb-4">
+                                                        <input class="form-control" type="date" name="careerJoinedDate"
+                                                               th:value="${careerInfo.careerJoinedDate}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" style="width: 5px;">
+                                                    <label>&nbsp;</label>
+                                                    ~
+                                                </div>
+                                                <div class="col-md-6" style="width: 200px;">
+                                                    <label>&nbsp;</label>
+                                                    <div class="input-group mb-4">
+                                                        <input class="form-control careerRetireDate" type="date"
+                                                               name="careerRetireDate"
+                                                               th:value="${careerInfo.careerRetireDate}" max="" min=""
+                                                               onclick="rangeDate(this)">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>&nbsp;</label>
+                                                    <button type="button" class="btn-close" id="deleteCareerBtn"
+                                                            th:careerId="${careerInfo.careerId}"
+                                                            style="background-color: #96a2b8; display: block;"
+                                                            onclick="deleteCareerWC(this,this.getAttribute('careerId'))"></button>
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <label>주요업무</label>
+                                                    <textarea class="form-control"
+                                                              placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message"
+                                                              rows="3"
+                                                              name="careerTask" th:value="${careerInfo.careerTask}">[[${careerInfo.careerTask}]]</textarea>
+                                                </div>
                                             </div>
-                                            <input type="hidden" th:value="${careerInfo.careerId}" name="careerId">
                                         </div>
-                                        <div class="col-md-6" style="width: 200px;">
-                                            <label>근무기간</label>
-                                            <div class="input-group mb-4">
-                                                <input class="form-control" type="date" name="careerJoinedDate"
-                                                       th:value="${careerInfo.careerJoinedDate}">
-                                            </div>
+                                    </div>
+
+                                    <div class="addCareerInfoList"></div>
+                                    <div class="col-md-6 mx-auto">
+                                    <button type="button" class="btn btn-outline-secondary w-100 addCareerInfoWC">경력사항
+                                        추가
+                                    </button>
+                                    </div>
+                                    <div style="height: 50px;"></div>
+                                    <div class="row">
+                                        <div class="col-md-6 mx-auto">
+                                            <button type="button" class="btn bg-gradient-dark w-100"
+                                                    onclick="getListToPrev()">이전
+                                            </button>
                                         </div>
-                                        <div class="col-md-6" style="width: 5px;">
-                                            <label>&nbsp;</label>
-                                            ~
-                                        </div>
-                                        <div class="col-md-6" style="width: 200px;">
-                                            <label>&nbsp;</label>
-                                            <div class="input-group mb-4">
-                                                <input class="form-control careerRetireDate" type="date"
-                                                       name="careerRetireDate"
-                                                       th:value="${careerInfo.careerRetireDate}" max="" min=""
-                                                       onclick="rangeDate(this)">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" style="width: 24px;">
-                                            <label>&nbsp;</label>
-                                            <button type="button" class="btn-close" id="deleteCareerBtn" th:careerId="${careerInfo.careerId}"
-                                                    style="background-color: #96a2b8; display: block;"
-                                                    onclick="deleteCareerWC(this,this.getAttribute('careerId'))"></button>
-                                        </div>
-                                        <div class="form-group mb-4">
-                                            <label>주요업무</label>
-                                            <textarea class="form-control"
-                                                      placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3"
-                                                      name="careerTask" th:value="${careerInfo.careerTask}">[[${careerInfo.careerTask}]]</textarea>
+                                        <div class="col-md-6 mx-auto">
+                                            <button type="button" class="btn bg-gradient-dark w-100"
+                                                    onclick="getListToNext()">저장 후
+                                                STEP 3로
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="addCareerInfoList"></div>
-                            <button type="button" class="btn btn-outline-secondary w-50 addCareerInfoWC">경력사항
-                                추가
-                            </button>
-                            <div style="height: 50px;"></div>
-                            <div class="col-md-6 mx-auto">
-                                <button type="button" class="btn bg-gradient-dark w-100"
-                                        onclick="getListToNext()">저장 후
-                                    STEP 3로
-                                </button>
-                            </div>
-                            <div class="col-md-6 mx-auto">
-                                <button type="button" class="btn bg-gradient-dark w-100"
-                                        onclick="getListToPrev()">이전
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Find Certification Modal -->
-<div class="modal fade" id="findCertiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <input type="hidden" id="modalId">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">자격증 찾기</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row" style="float: inline-start;">
-                    <div class="col-md-6" style="width: 350px;">
-                        <div class="input-group mb-4">
-                            <input class="form-control findCertiName" type="text" placeholder="자격증명 입력">
-                        </div>
-                    </div>
-                    <div class="col-md-3" style="margin-left: 0px;">
-                        <button type="button" class="btn bg-gradient-dark w-100 findCerti">검색</button>
-                    </div>
-                    <div class="certiList">
-
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn bg-gradient-primary doneFindCerti" data-bs-dismiss="modal">완료</button>
+        </section>
+        <!-- Find Certification Modal -->
+        <div class="modal fade" id="findCertiModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <input type="hidden" id="modalId">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">자격증 찾기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="float: inline-start;">
+                            <div class="col-md-6" style="width: 350px;">
+                                <div class="input-group mb-4">
+                                    <input class="form-control findCertiName" type="text" placeholder="자격증명 입력">
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="margin-left: 0px;">
+                                <button type="button" class="btn bg-gradient-dark w-100 findCerti">검색</button>
+                            </div>
+                            <div class="certiList">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-primary doneFindCerti" data-bs-dismiss="modal">완료
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/core/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/js/ResumeJS.js"></script>
-</body>
+    </th:block>
+</th:block>
 </html>

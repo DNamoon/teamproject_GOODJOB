@@ -38,6 +38,6 @@ public class Career {
     private String careerTask;
 
     @ManyToOne
-    @JoinColumn(name = "careerResumeId", nullable = false, unique = true)
+    @JoinColumn(name = "careerResumeId", nullable = false)
     private Resume resume;
 }
