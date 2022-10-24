@@ -50,9 +50,8 @@
     function UserType(mode) {
         const form = document.frmSub;
         if(mode == "member"){
-            form.action = "/member/myPage";
+            form.action = "/member/myPageResume";
         }else {
-            alert("Mode:"+mode);
              form.action = "/com/mypage";
         }
         form.submit();
