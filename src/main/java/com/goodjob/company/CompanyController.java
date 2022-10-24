@@ -11,6 +11,7 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +56,7 @@ public class CompanyController {
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/register")
     public String comRegister(@Valid CompanyDTO companyDTO, BindingResult result) throws Exception {
+        System.out.println("====================" + companyDTO);
         if(result.hasErrors()){
             return "/company/comRegisterForm";
         }
@@ -155,56 +157,47 @@ public class CompanyController {
         Company com = company.get();
         CompanyDTO companyInfo = companyService.entityToDTO2(com);
         model.addAttribute("companyInfo",companyInfo);
+
+//        log.info(companyInfo.getComRegCode().getRegName());
         return "/company/companyMyPage";
     }
 
     //ho - 22.10.19 기업정보 수정하기(업데이트 버전)
     @PostMapping("/update")
     public String companyInfoUpdate(CompanyDTO companyInfo) {
-
-        log.info("=============" + companyInfo);
-        log.info("=============" + companyInfo.toEntity().getComLoginId());
-        String loginId = companyInfo.getLoginId();
-        Optional<Company> company = companyService.loginIdCheck(loginId);
-        String comPw = company.get().getComPw();  //DB에 있는 암호화된 패스워드
-        log.info("==========DB 암호화 패스워드 : " + comPw);
-        String pw = companyInfo.getPw();  //view 단에서 name이 pw인 창 입력값
-        log.info("=========== pw 입력값 : " + pw);
-
-        if (passwordEncoder.matches(comPw, pw)) {
-            companyService.companyInfoUpdate(companyInfo);
-            return "redirect:/com/myPage";
-        } else {
-            return "/company/error";
-        }
+        companyService.companyInfoUpdate(companyInfo);
+        return "redirect:/com/myPage";
     }
 
         //ho - 22.10.20 기업정보 수정하기 전 비밀번호 확인
     @ResponseBody
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public String passwordConfirm(CompanyDTO companyInfo, HttpSession session,String password) throws Exception {
+    public String passwordConfirm(CompanyDTO companyInfo, HttpSession session, @RequestParam("pw") String password) throws Exception {
         //log.info("===========로그인 아이디 받아오나? : "+companyInfo.getLoginId());
         String comLoginId = (String) session.getAttribute("sessionId");
-        log.info("=========== 세션에 있는 로그인 아이디 받아오나? : "+comLoginId);
+        log.info("=========== 세션에 있는 로그인 아이디 받아오나? : " + comLoginId);
         Optional<Company> company1 = companyService.loginIdCheck(comLoginId);
         log.info("============ DB에 있는 로그인 아이디 : " + company1.get().getComLoginId());
-        company1.get().getComPw();
+        log.info(company1.get().getComPw());
+//
+//        log.info("=============companyInfo에서 로그인 아이디 : "+companyInfo.getLoginId());
+//        Optional<Company> company = companyService.loginIdCheck(companyInfo.getLoginId());
+//        log.info("=============DB에서 가져오는 비밀번호 :"+company.get().getComPw());
+//        log.info("=============입력창에서 받아온 비밀번호 : "+ password);
 
-        log.info("=============companyInfo에서 로그인 아이디 : "+companyInfo.getLoginId());
-        Optional<Company> company = companyService.loginIdCheck(companyInfo.getLoginId());
-        log.info("=============DB에서 가져오는 비밀번호 :"+company.get().getComPw());
-        log.info("=============입력창에서 받아온 비밀번호 : "+ password);
-
-        String password1 = companyInfo.getPw(); //입력한 비밀번호값
+        //String password1 = companyInfo.getPw(); //입력한 비밀번호값
 //        if(passwordEncoder.matches(company1.get().getComPw(),password)) {
 //            return "true";
 //        } else {
 //            return "false";
 //        }
-        if(password1 == null || !passwordEncoder.matches(company1.get().getComPw(),password1)) {
-            return "true";
+        String comPw = company1.get().getComPw();
+
+
+        if(password == null || !passwordEncoder.matches(password,comPw)) {
+            return "0";
         } else {
-            return "false";
+            return "1";
         }
 
     }

@@ -15,6 +15,9 @@
  *
  *  +2022.10.17
  *  로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 창 name 통일. 필드도 loginId,pw 통일(46,51, 93, 96라인 변경)
+ *
+ *  +2022.10.24
+ *  기업분류, 지역분류 타입 변경. (회원정보에서 코드와 이름으로 받아오기 위해서)
  */
 package com.goodjob.company.dto;
 
@@ -52,11 +55,19 @@ public class CompanyDTO {
 
     //비밀번호가 일치하지 않으면 넘어가지 않도록 하기 위해 엔티티와는 별개로 DTO에만 comPw2 추가
     //@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
-    private  String comPw2;
+    private String comPw2;
+//    @NotBlank
+//    private Region comRegCode;
+//    @NotBlank
+//    private Comdiv comComdivCode;
     @NotBlank
     private String comRegCode;
+
+    private String comRegName;
     @NotBlank
     private String comComdivCode;
+
+    private String comComdivName;
     @NotBlank
     private String comPhone;
     @NotBlank

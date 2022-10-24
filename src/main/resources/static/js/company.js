@@ -1,5 +1,28 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+//22.10.24 ho - 회원정보 수정시 비밀번호 확인
+$(document).ready(function(){
+    $('#confirm').click(function (){
+        const password = $("#password_confirm").val();
+        console.log(password);
+
+        $.ajax({
+            type:"post",
+            url:"/com/confirm",
+            data: "pw=" +password,
+            success : function (result) {
+                if(result == 1) {
+                    alert("회원정보를 수정합니다.");
+                    $("#contact-form").submit();
+                } else {
+                    alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
+                }
+            }
+
+        })
+    });
+})
+
 //수정하기 버튼 클릭시 disabled가 false 되며 입력할수 있게 변함.
 function btnActive(){
     //정보 수정할 수 있게 입력창 활성화
@@ -57,30 +80,6 @@ function btnDisabled(){
     const target7 = document.getElementById("modal_open_btn");
     target7.hidden = true;
 }
-
-//회원정보 수정시 비밀번호 확인
-    $('#confirm').click(function (){
-        const password = document.getElementById("password_confirm").value;
-        const pw = {password: password};
-
-        $.ajax({
-            type:"post",
-            url:"/com/confirm",
-            data:pw,
-            success : function (result) {
-                if(result == "true") {
-                    alert("회원정보를 수정합니다.");
-                    $('#confirmPasswordModal').ariaModal.close;
-                    // this.type = "submit";
-                    $("#contact-form").submit();
-                } else {
-                    alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
-                    return;
-                }
-            }
-
-        })
-    });
 
 function password_confirm() {
     const password = document.getElementById("password_confirm");

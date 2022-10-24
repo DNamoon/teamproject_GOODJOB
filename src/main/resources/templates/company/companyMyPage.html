@@ -5,8 +5,6 @@
                 <div class="col-lg-10 mx-auto d-flex justify-content-center flex-column">
                     <h3 class="text-center">회원정보 (기업회원용)</h3>
                     <div class="card-body">
-            <span style="float: right; font-size: 14px;"><span
-                    style="color: rgb(244, 54, 54);">(재선택)</span> 은 필수사항 입니다.</span><br/>
                         <form role="form" id="contact-form" name="frm" method="post" autocomplete="off"
                               th:action="@{/com/update}">
 
@@ -46,11 +44,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>기업 분류<span style="color: rgb(244, 54, 54);">&nbsp;(재선택)</span></label>
+                                        <label>기업 분류</label>
                                         <div class="input-group mb-4">
                                             <select class="form-select" id="comComdivCode" name="comComdivCode" required>
-                                                <option selected value="">
-                                                    [[${companyInfo.comComdivCode}]] (기본정보)
+                                                <option selected th:value="${companyInfo.comComdivCode}">
+                                                    [[${companyInfo.comComdivName}]] (기본정보)
                                                 </option>
                                                 <option value="Major">대기업</option>
                                                 <option value="Middle">중견기업(300명이상)</option>
@@ -62,12 +60,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label th:for="comRegCode">지역 선택<span
-                                                style="color: rgb(244, 54, 54);">&nbsp;(재선택)</span></label>
+                                        <label th:for="comRegCode">지역 선택</label>
                                         <div class="input-group mb-4">
                                             <select class="form-select" id="comRegCode" name="comRegCode" required>
-                                                <option selected value="">
-                                                    [[${companyInfo.comRegCode}]] (기본정보)
+                                                <option selected th:value="${companyInfo.comRegCode}">
+                                                    [[${companyInfo.comRegName}]] (기본정보)
                                                 </option>
                                                 <option value="02">서울특별시</option>
                                                 <option value="031">경기도</option>
@@ -163,7 +160,7 @@
                                     <input type="button" value="이전으로 돌아가기" onclick="btnDisabled()" id="btn_hidden"
                                            class="btn bg-gradient-dark w-100" hidden></div>
                                 <div class="col">
-                                    <button id="modal_open_btn" data-toggle="modal"
+                                    <button type="button" id="modal_open_btn" data-toggle="modal"
                                             data-target="#confirmPasswordModal" class="btn bg-gradient-dark w-100" hidden>정보 수정완료</button></div>
                                 <div class="col">
                                     <button type="submit" class="btn bg-gradient-dark w-100">회원 탈퇴하기</button></div>
@@ -183,9 +180,11 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         비밀번호를 입력하세요.<br/>
-                                                        <input id="password_confirm" name="pw" type="text" class="form-control" placeholder="비밀번호"><br/>
+<!--                                                        <form th:action="@{/com/update}" method="post">-->
+                                                        <input id="password_confirm" name="pw" type="password" class="form-control" placeholder="비밀번호"><br/>
                                                         <button id="confirm" class="btn btn-primary" type="submit" style="float: right">확인</button>
 <!--                                                        <input id="confirm" type="submit" value="확인" style="float: right">-->
+<!--                                                        </form>-->
                                                     </div>
                                                 </div>
                                             </div>

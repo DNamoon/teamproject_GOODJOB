@@ -53,29 +53,29 @@ public class CompanyService {
         return companyRepository.findByComLoginId(comLoginId);
     }
 
-    public CompanyDTO entityToDTO(String comLoginId, String comName, String comBusiNum, String comPhone,
-                                  String comComdivCode, String comRegCode, String comEmail1, String comEmail2,
-                                  String comAddress1, String comAddress2, String comAddress3,
-                                  String comAddress4, String comInfo){
-
-        CompanyDTO dto = CompanyDTO.builder()
-                .loginId(comLoginId)
-                .comName(comName)
-                .comBusiNum(comBusiNum)
-                .comPhone(comPhone)
-                .comComdivCode(comComdivCode)
-                .comRegCode(comRegCode)
-                .comEmail1(comEmail1+"@")
-                .comEmail2(comEmail2)
-                .comAddress1(comAddress1)
-                .comAddress2(comAddress2)
-                .comAddress3(comAddress3)
-                .comAddress4(comAddress4)
-                .comInfo(comInfo)
-                .build();
-
-        return dto;
-    }
+//    public CompanyDTO entityToDTO(String comLoginId, String comName, String comBusiNum, String comPhone,
+//                                  String comComdivCode, String comRegCode, String comEmail1, String comEmail2,
+//                                  String comAddress1, String comAddress2, String comAddress3,
+//                                  String comAddress4, String comInfo){
+//
+//        CompanyDTO dto = CompanyDTO.builder()
+//                .loginId(comLoginId)
+//                .comName(comName)
+//                .comBusiNum(comBusiNum)
+//                .comPhone(comPhone)
+//                .comComdivCode(comComdivCode)
+//                .comRegCode(comRegCode)
+//                .comEmail1(comEmail1+"@")
+//                .comEmail2(comEmail2)
+//                .comAddress1(comAddress1)
+//                .comAddress2(comAddress2)
+//                .comAddress3(comAddress3)
+//                .comAddress4(comAddress4)
+//                .comInfo(comInfo)
+//                .build();
+//
+//        return dto;
+//    }
 
     public CompanyDTO entityToDTO2(Company company){
         String comLoginId = company.getComLoginId();
@@ -98,8 +98,10 @@ public class CompanyService {
                 .comName(comName)
                 .comBusiNum(comBusiNum)
                 .comPhone(comPhone)
-                .comComdivCode(comComdivCode.getComdivName())
-                .comRegCode(comRegCode.getRegName())
+                .comComdivCode(comComdivCode.getComdivCode())
+                .comComdivName(comComdivCode.getComdivName())
+                .comRegCode(comRegCode.getRegCode())
+                .comRegName(comRegCode.getRegName())
                 .comEmail1(email[0])
                 .comEmail2(email[1])
                 .comAddress1(address[0])
