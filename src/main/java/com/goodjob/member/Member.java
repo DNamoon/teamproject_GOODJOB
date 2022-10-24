@@ -43,7 +43,6 @@ public class Member {
     private String memName;
 
     @Column
-    @DateTimeFormat(pattern = "yyyy-mm-DD")
     private Date memBirthDate;
 
     @Column
@@ -55,17 +54,9 @@ public class Member {
     @Column(length = 2)
     private String memTerms;
 
-    public Member(Long memId, String memLoginId, String memPw, String memPhone, String memEmail, String memName, Date memBirthDate, String memAddress, String memGender, String memTerms) {
-        this.memId = memId;
-        this.memLoginId = memLoginId;
-        this.memPw = memPw;
-        this.memPhone = memPhone;
-        this.memEmail = memEmail;
-        this.memName = memName;
-        this.memBirthDate = memBirthDate;
-        this.memAddress = memAddress;
-        this.memGender = memGender;
-        this.memTerms = memTerms;
+    /** 비밀번호 변경 메서드 **/
+    public void updatePassword(String password){
+        System.out.println("++++++++"+password);
+        this.memPw = password;
     }
-
 }

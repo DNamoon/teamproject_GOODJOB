@@ -1,26 +1,7 @@
 
- //mypage sidebar toggle
-    window.addEventListener('DOMContentLoaded', event => {
 
-        // Toggle the side navigation
-        const sidebarToggle = document.body.querySelector('#sidebarToggle');
-        if (sidebarToggle) {
-            // Uncomment Below to persist sidebar toggle between refreshes
-            // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-            //     document.body.classList.toggle('sb-sidenav-toggled');
-            // }
-            sidebarToggle.addEventListener('click', event => {
-                event.preventDefault();
-                document.body.classList.toggle('sb-sidenav-toggled');
-                localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-            });
-        }
-    });
 
- //id 중복검사
- $(function(){
-     $("#id").on('keyup',checkMassage);
- })
+//id 중복 확인
  function checkMassage(){
      var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
      $.ajax({
@@ -88,22 +69,146 @@
      element.checked = true;
      $('#chk').val(element.value) //
  }
-
+//로그인 시 type 확인 후 해당 db조회
  function UserTypeLogin() {
      const form = document.forms['frm'];
      const type = $('#chk').val();
      console.log(type);
 
      if(type=="member"){
-         //alert("Mode:"+type);
          form.action = "/member/login";
          form.submit();
      }else if(type=="none"){
          alert("회원타입을 선택해주세요.")
-     }else if(type=="company"){
-         //alert("Mode:"+type);
+     }else {
          form.action = "/com/login";
          form.submit();
      }
 
  }
+ // 개인정보 수정버튼 function
+$(document).ready(function() {
+    $("#bb").click(function() {
+        $("#dis").removeAttr("disabled");
+        $("#bb").css("display", 'none');
+        $("#realUpdate").append("<button type=\"button\" class=\"btn bg-gradient-dark w-100\" style=\"font-size:15px\" data-target=\"#pwCheck\" data-toggle=\"modal\">수정완료</button>");
+    })
+});
+ //개인정보 수정 시 비밀번호 확인
+$(document).ready(function() {
+    $("#updatebtn").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/member/checkPW",
+            data: "loginId="+$("#id").val()+"&pw="+$('#pw').val(),
+            success: function (data) {
+              if(data=="0"){
+                document.getElementById("formUpdate").submit();
+            }else {
+                alert("비밀번호를 확인해주세요.")
+            }
+        }
+     })
+    })
+});
+//회원삭제 function
+$(document).ready(function() {
+    $("#deletebtn").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/member/delete",
+            data: "memId="+$("#memId").val()+"&loginId="+$("#id").val()+"&deletePw="+$('#deletePw').val(),
+            success: function (data) {
+                if(data=="0"){
+                  location.href="/";
+                }else {
+                    alert("비밀번호를 확인해주세요.")
+                }
+            }
+        })
+    })
+});
+//비밀번호 찾기
+$(document).ready(function() {
+    $('#checkEmail').on('click', function () {
+        checkEmail();
+    })
+});
+function checkEmail(){
+    const email = $('#email').val();
+    console.log(email);
+    if(!email || email.trim() === ""){
+        alert("이메일을 입력하세요.");
+    } else {
+        $.ajax({
+            type: 'post',
+            url: '/member/checkEmail',
+            data: {
+                'memberEmail': email
+            },
+            dataType: "text",
+
+        }).done(function(result){
+            console.log("result :" + result);
+            if (result == "true") {
+                sendEmail();
+                alert('임시비밀번호를 전송 했습니다.');
+                window.location.href="/member/login";
+            } else if (result == "false") {
+                alert('가입되지 않은 이메일입니다.');
+            }
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        })
+    }
+};
+//임시비밀번호 메일발송
+function sendEmail(){
+    const memberEmail = $('#email').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/member/sendPw',
+        data: {
+            'memberEmail' : memberEmail
+        },success: function(result){
+            console.log(result);
+        },
+        error: function(error){
+            alert(JSON.stringify(error)+"ㅇㅇㅇㅇㅇㅇ");
+        }
+    })
+}
+//비밀번호 변경
+// $(document).ready(function() {
+//     $("#change").click(function () {
+//         const form = document.forms['changPwForm'];
+//         const data = $('#pw2').val();
+//             form.action = "/member/changePw";
+//             form.method ="post";
+//             form.submit();
+//     })
+// });
+$(document).ready(function() {
+    $("#ok").click(function () {
+            const pw2 = $('#pw2').val();
+            const memId =$('#memId').val();
+            $.ajax({
+                type: 'POST',
+                url: '/member/changePw',
+                data: {
+                    'pw2' : pw2,
+                    'memId' : memId
+                },success: function (data) {
+                    if(data=="success"){
+                        location.href="/member/myPage";
+                    }else {
+                        alert("비밀번호를 확인해주세요.")
+                    }
+                },
+                error: function(error){
+                    alert(JSON.stringify(error));
+                }
+            })
+    })
+});

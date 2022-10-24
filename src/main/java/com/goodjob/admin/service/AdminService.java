@@ -5,6 +5,9 @@ import com.goodjob.admin.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * 10.4 By. OH
+ */
 @Service
 @RequiredArgsConstructor
 public class AdminService {

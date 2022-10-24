@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="setContent(content)">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
+        <link rel="icon" type="image/png" href="/img/favicon.png">
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <title>회원가입 (기업회원용)</title>
+
+        <!--     Fonts and icons     -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
+        <!-- 한글 폰트 -->
+        <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+        <!-- CSS Files -->
+        <link href="/css/styles.css" rel="stylesheet" />
+        <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
+        <!--modal files-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+
+        <!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+        <!--    slim버전 쓰면 $.ajax()를 사용할 수 없대. 밑에 코드로 변경-->
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="/js/member.js"></script>
+        <script type="text/javascript" src="/js/ResumeListJS.js"></script>
+
+
+
+    </head>
+    <body class="sb-nav-fixed">
+    <!-- Navbar Dark -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-dark z-index-3 py-3">
+        <div class="container">
+            <a class="navbar-brand text-white" href="https://demos.creative-tim.com/soft-ui-design-system/presentation.html" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+                Soft UI Design System
+            </a>
+            <a href="https://www.creative-tim.com/product/soft-ui-design-system-pro#pricingCard" class="btn btn-sm  bg-gradient-primary  btn-round mb-0 ms-auto d-lg-none d-block">Buy Now</a>
+            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+      </span>
+            </button>
+            <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+                <ul class="navbar-nav navbar-nav-hover mx-auto">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                            Pages
+                            <img src="../../assets/img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1">
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-2">
+                        <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                            Account
+                            <img src="../../assets/img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1">
+                        </a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                            Blocks
+                            <img src="../../assets/img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1">
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown dropdown-hover mx-2">
+                        <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button">
+                            Docs
+                            <img src="../../assets/img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+<!--    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">-->
+<!--        &lt;!&ndash; Navbar Brand&ndash;&gt;-->
+<!--        <a class="navbar-brand ps-3" href="index.html">GOOD JOB</a>-->
+<!--        &lt;!&ndash; Navbar Search&ndash;&gt;-->
+<!--        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">-->
+<!--            <div class="input-group">-->
+<!--                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."-->
+<!--                       aria-describedby="btnNavbarSearch"/>-->
+<!--                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--        &lt;!&ndash; Navbar&ndash;&gt;-->
+<!--        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">-->
+<!--            <li class="nav-item dropdown">-->
+<!--                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"-->
+<!--                   aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>-->
+<!--                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">-->
+<!--                    <li><a class="dropdown-item" href="#!">Settings</a></li>-->
+<!--                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>-->
+<!--                    <li>-->
+<!--                        <hr class="dropdown-divider"/>-->
+<!--                    </li>-->
+<!--                    <li><a class="dropdown-item" href="#!">Logout</a></li>-->
+<!--                </ul>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <a class="nav-link" href="#">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            회원정보 수정
+                        </a>
+
+                        <a class="nav-link collapsed" th:href="@{/member/myPageResume}" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            이력서 관리
+                        </a>
+                        <a class="nav-link collapsed"data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            이력서 작성
+                        </a>
+                        <a class="nav-link" href="mypage_list.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            지원현황
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <!-- 내용 -->
+                    <!-- Sidebar Toggle-->
+                    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+
+                    <th:block th:replace="${content}">
+
+                    </th:block>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+
+            const sidebarToggle = document.body.querySelector('#sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', event => {
+                    event.preventDefault();
+                    document.body.classList.toggle('sb-sidenav-toggled');
+                    localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+                });
+            }
+        });
+    </script>
+    </body>
+</th:block>
+</html>
+
