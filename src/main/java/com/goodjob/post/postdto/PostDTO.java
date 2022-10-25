@@ -16,6 +16,7 @@ public class PostDTO {
     private String startDate;
     private String endDate;
     private String gender;
+    // private String region;
 
     private Long occId;
     private String occName;
