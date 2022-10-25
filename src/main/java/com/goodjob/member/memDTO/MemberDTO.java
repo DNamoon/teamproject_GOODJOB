@@ -35,6 +35,12 @@ public class MemberDTO {
     private String memTerms;
 
     public Member toEntity() {
+        if(memAddress.equals("")){
+            memAddress="null";
+        }
+        if(detailAddress.equals("")){
+            detailAddress="null";
+        }
         Member member = Member.builder()
                 .memId(memId)
                 .memLoginId(loginId)

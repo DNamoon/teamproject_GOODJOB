@@ -1,6 +1,4 @@
 
-
-
 //id 중복 확인
  function checkMassage(){
      var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
@@ -84,7 +82,6 @@
          form.action = "/com/login";
          form.submit();
      }
-
  }
  // 개인정보 수정버튼 function
 $(document).ready(function() {
