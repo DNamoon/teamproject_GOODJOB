@@ -45,6 +45,11 @@ public class Post {
     @Column
     private String postGender;
 
+    @Column
+    private String region;
+
+
+
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
     public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender) {
         this.postTitle = postTitle;
