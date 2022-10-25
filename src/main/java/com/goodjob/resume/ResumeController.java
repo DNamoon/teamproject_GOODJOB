@@ -187,11 +187,11 @@ public class ResumeController {
 
     @ResponseBody
     @GetMapping("/deleteResume")
-    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws JsonProcessingException {
+    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws Exception {
         String resumeIdJson = params.get("resumeId").toString();
         ObjectMapper mapper = new ObjectMapper();
-        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
 
+        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
         resumeService.deleteResume(resumeIdList);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
