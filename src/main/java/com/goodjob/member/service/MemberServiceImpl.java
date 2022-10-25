@@ -84,7 +84,6 @@ public class MemberServiceImpl implements MemberService {
     /** 임시 비밀번호로 업데이트 **/
     @Override
     public void updatePassword(String tmpPw, String memberEmail) {
-
         String encryptPassword = passwordEncoder.encode(tmpPw);
         Member member = memberRepository.findByMemEmail(memberEmail);
         member.updatePassword(encryptPassword);
