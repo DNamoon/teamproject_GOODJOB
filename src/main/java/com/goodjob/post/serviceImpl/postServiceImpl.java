@@ -101,7 +101,7 @@ public class postServiceImpl implements PostService {
             conditionBuilder.or(qPost.postOccCode.occName.contains(keyword));
         }
         if(type.contains("r")){
-            conditionBuilder.or(qPost.region.contains(keyword));
+            conditionBuilder.or(qPost.postRegion.regName.contains(keyword));
         }
         booleanBuilder.and(conditionBuilder);
 

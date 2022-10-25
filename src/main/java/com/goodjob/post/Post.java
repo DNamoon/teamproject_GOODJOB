@@ -45,8 +45,9 @@ public class Post {
     @Column
     private String postGender;
 
-    @Column
-    private String region;
+    @ManyToOne
+    @JoinColumn(name = "regCode")
+    private PostRegion postRegion;
 
 
 
