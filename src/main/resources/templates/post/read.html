@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+</head>
+<body>
+<h1 class="mt-4">조회 페이지</h1>
+    <div class="form-group">
+        <label>직종</label>
+        <div class="input-group-pretend">
+            <select class="custom-select" name="occId" disabled>
+                <th:block th:each="occ :${occList}">
+                    <option th:value="${occ.occId}" th:selected="${occ.occId == dto.occId}"> [[${occ.occName}]]</option>
+                </th:block>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>제목</label>
+        <input type="text" class="form-control" name="title" readonly
+               th:value="${dto.title}">
+    </div>
+    <div class="form-group">
+        <label>내용</label>
+        <textarea class="form-control" name="content" readonly>[[${dto.content}]]</textarea>
+    </div>
+    <div class="form-group">
+        <label>모집인원</label>
+        <input type="text" class="form-control" name="recruitNum" readonly
+               th:value="${dto.recruitNum}">
+    </div>
+    <div class="form-group">
+        <label>시작일자</label>
+        <input type="date" class="form-control" name="startDate" readonly
+        th:value="${dto.startDate}">
+    </div>
+    <div class="form-group">
+        <label>종료일자</label>
+        <input type="text" class="form-control" name="endDate" readonly
+        th:value="${dto.endDate}">
+    </div>
+    <div class="form-group">
+        <label>모집성별</label>
+        <input type="text" class="form-control" name="gender" readonly
+               th:value="${dto.gender}">
+    </div>
+<div class="btn-group">
+    <a th:href="@{/p/modify(postId=${dto.id}, page=${pageRequestDTO.page})}">
+        <button type="button" class="btn btn-primary modify-btn">수정</button>
+    </a>
+    <a th:href="@{/p/list(page=${pageRequestDTO.page})}">
+        <button type="button" class="btn btn-primary list-btn">목록</button>
+    </a>
+</div>
+</body>
+</html>

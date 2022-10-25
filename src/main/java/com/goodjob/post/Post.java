@@ -1,10 +1,8 @@
 package com.goodjob.post;
 
 import com.goodjob.company.Company;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.goodjob.post.occupation.Occupation;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -14,6 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString
 @Getter
+@Builder
 public class Post {
 
     @Id
@@ -45,6 +44,12 @@ public class Post {
 
     @Column
     private String postGender;
+
+    @ManyToOne
+    @JoinColumn(name = "regCode")
+    private PostRegion postRegion;
+
+
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
     public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender) {
