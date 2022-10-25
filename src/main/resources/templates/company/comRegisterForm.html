@@ -6,61 +6,24 @@
     -> 2022.10.06 완료-->
 <!--But, 공백이나 특수기호 문제 발생. 정규표현식으로 해결할 수 있을 듯(아직 해결은 안 함)-->
 <!--ho - 22.10.17 로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 창 name 통일. loginId,pw 통일(79, 95라인 변경)-->
-<!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage"
-      xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-
-    <title>회원가입 (기업회원용)</title>
-
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
-    <!-- 한글 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-
-    <!-- Nucleo Icons -->
-    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-    <!--modal files-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
-
-    <!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
-    <!--    slim버전 쓰면 $.ajax()를 사용할 수 없대. 밑에 코드로 변경-->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-
-    <style>
-        /* 중복아이디 존재하지 않는경우 */
-        .id_input_re_1{
-            color : #73b973;
-            display : none;
-        }
-        /* 중복아이디 존재하는 경우 */
-        .id_input_re_2{
-            color : red;
-            display : none;
-        }
-    </style>
-
-</head>
-
-<body class="index-page">
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <style>
+            /* 중복아이디 존재하지 않는경우 */
+            .id_input_re_1{
+                color : #73b973;
+                display : none;
+            }
+            /* 중복아이디 존재하는 경우 */
+            .id_input_re_2{
+                color : red;
+                display : none;
+            }
+        </style>
+<section class="index-page">
 <div class="container py-4">
     <div class="row">
-        <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
+        <div class="col-lg-10 mx-auto d-flex justify-content-center flex-column">
             <h3 class="text-center">회원가입 (기업회원용)</h3>
             <div class="card-body">
             <span style="float: right; font-size: 14px;"><span
@@ -157,13 +120,13 @@
                     </div>
 
                 <!--                    이메일 양식 지정-->
-                <div class="col-md px-0">
+                <div class="col-md-6 px-0">
                     <label th:for="comEmail">이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                     <div class="input-group">
                         <input type="text" class="form-control w-40" th:field="*{comEmail1}" placeholder="goodjob"
                                name="email"
-                               required> &nbsp;@ &nbsp;&nbsp;
-                        <select class="form-control" th:field="*{comEmail2}">
+                               required> &nbsp;@ &nbsp;
+                        <select class="form-control w-40" th:field="*{comEmail2}">
                             <option value="naver.com">naver.com</option>
                             <option value="daum.net">daum.net</option>
                             <option value="gmail.com">gmail.com</option>
@@ -176,13 +139,13 @@
                             <label th:for="comAddress">주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                             <div class="input-group mb-4">
                                 <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
-                                <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" required>
+                                <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" readonly required>
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-150 findAddress">
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" required><br>
+                            <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" readonly required><br>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -259,147 +222,7 @@
         </div>
     </div>
 </div>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/js/company.js"></script>
-</body>
 
-
-<script>
-
-    //비밀번호1,2 일치 여부 보여주는 fuction
-    function passwordConfirm() {
-        var password = document.getElementById('comPw1');
-        var passwordConfirm = document.getElementById('comPw2');
-        var confirmMsg = document.getElementById('confirmMsg')  //확인 메시지
-        var correctColor = "#73b973"; //맞았을 때 출력되는 색깔.
-        var wrongColor = "#ff0000";   //틀렸을 때 출력되는 색깔.
-
-        if(password.value == passwordConfirm.value) {
-            confirmMsg.style.color = correctColor;
-            confirmMsg.innerHTML = "비밀번호 일치";
-        } else {
-            confirmMsg.style.color = wrongColor;
-            confirmMsg.innerHTML = "비밀번호 불일치";
-        }
-    }
-
-
-    //아이디 중복검사
-    //onkeyup이 여기서는 "change keyup"이다!!!
-    $('#id_input').on("change keyup", function(){
-
-        console.log("keyup 테스트");
-        var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
-        var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
-
-        $.ajax({
-            type : "post",
-            url : "/com/check",
-            data : data,
-            success : function(result){
-                if(result != 'fail'){
-                    $('.id_input_re_1').css("display","inline-block");
-                    $('.id_input_re_2').css("display", "none");
-                } else {
-                    $('.id_input_re_2').css("display","inline-block");
-                    $('.id_input_re_1').css("display", "none");
-                }
-
-            }
-        });
-    });
-
-
-    // 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
-    $("#userId").blur(function () {
-        let idError = $("#idError");
-        idError.css("color", "#ff6289");
-
-        ///ajax 조건식//
-        $.ajax({
-            url: '/idCheck',
-            type: 'get',
-            data: {userId : $("#userId").val()},
-            dataType: 'text',
-            success: function (check) {	// 통신 성공 시 "true" 혹은 "false" 반환
-                if (check === "true") { // 아이디가 이미 존재함
-                    //console.log(check);	// 확인용
-                    idError.show().text("중복 아이디입니다.");
-                    return resId=false;
-                } else {	// "false" 일 경우 - 아이디가 존재하지 않을 경우
-                    //console.log(check);	// 확인용
-                    let regExp = /^[a-z0-9_-]{5,20}$/g; //아이디 정규식(영문 소문자, 숫자, 특수문자(-,_) 만 가능)
-                    let id = $("#userId").val();
-
-                    if (id === null || id === "") { //값이 없을 때
-                        idError.show().text("필수 정보입니다.");
-                        return resId=false;
-                    } else if (!regExp.test(id)) { //정규식에 맞지 않을 때
-                        idError.show().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
-                        return resId=false;
-                    } else { //조건에 맞는 아이디일 때 true 반환
-                        idError.css("color", "#77ab59");
-                        idError.show().text("멋진 아이디네요!");
-                        return resId = true;
-                    }
-                }
-            },
-            error: function () {
-                console.log("아이디 체크 오류");
-            }
-        });
-    });
-
-
-    //다른분 아이디 중복체크 - 여기서는 사용 안함.
-    var $id = $("#id");
-    // 아이디 정규식
-    $id.on("keyup", function() { // 키보드에서 손을 땠을 때 실행
-        var regExp = /^[a-z]+[a-z0-9]{5,15}$/g;
-
-        if (!regExp.test($id.val())) { // id 가 공백인 경우 체크
-            idchk = false;
-            $id.html("<span id='check'>사용할 수 없는 아이디입니다.</span>");
-            $("#check").css({
-                "color" : "#FA3E3E",
-                "font-weight" : "bold",
-                "font-size" : "10px"
-            })
-        } else { // 공백아니면 중복체크
-            $.ajax({
-                type : "POST", // http 방식
-                url : "/com/register", // ajax 통신 url
-                data : { // ajax 내용 => 파라미터 : 값 이라고 생각해도 무방
-                    "type" : "user",
-                    "id" : $id.val()
-                },
-                success : function(data) {
-                    if (data == 1) { // 1이면 중복
-                        idchk = false;
-                        $id.html("<span id='check'>이미 존재하는 아이디입니다</span>")
-                        $("#check").css({
-                            "color" : "#FA3E3E",
-                            "font-weight" : "bold",
-                            "font-size" : "10px"
-
-                        })
-                        //console.log("중복아이디");
-                    } else { // 아니면 중복아님
-                        idchk = true;
-                        $id.html("<span id='check'>사용가능한 아이디입니다</span>")
-
-                        $("#check").css({
-                            "color" : "#0D6EFD",
-                            "font-weight" : "bold",
-                            "font-size" : "10px"
-
-                        })
-                        //console.log("중복아닌 아이디");
-                    }
-                }
-            })
-        }
-    });
-
-</script>
-</html>
+</section>
+    </th:block>
+</th:block>

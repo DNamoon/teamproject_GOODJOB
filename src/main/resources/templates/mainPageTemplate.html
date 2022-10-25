@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="setContent(content)">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>
-            GOODJOB
-        </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title>GOODJOB</title>
         <!--     Fonts and icons     -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
         <!-- Nucleo Icons -->
         <link href="/css/nucleo-icons.css" rel="stylesheet"/>
         <link href="/css/nucleo-svg.css" rel="stylesheet"/>
         <!-- Font Awesome Icons -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet"/>
         <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
         <link href="/css/nucleo-svg.css" rel="stylesheet"/>
         <!-- CSS Files -->
         <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="author" content="colorlib.com">
-        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet"/>
         <link href="/css/main.css" rel="stylesheet"/>
+        <!--modal files-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/member.js"></script>
+        <script type="text/javascript" src="/js/ResumeListJS.js"></script>
+        <script src="/js/company.js"></script>
         <style>
             .has-search .form-control-feedback {
                 position: absolute;
@@ -35,35 +39,64 @@
                 pointer-events: none;
                 color: #aaa;
             }
+
+            .dropdown-divider {
+                height: 0;
+                margin: 0.5rem 0;
+                overflow: hidden;
+                border-top: 1px solid rgba(0, 0, 0, 0.15);
+            }
         </style>
     </head>
-
     <body>
-
     <nav class="navbar navbar-expand-lg bg-white fixed-top" style="height: 4rem">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/}">
                 <div class="webTitle"><b>GOODJOB</b></div>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/member/myPage">개인정보수정</a></li>
-                        <li>
-                            <hr class="dropdown-divider"/>
+            <div class="row" style="float: right; height: 4rem">
+                <th:block th:if="${session.sessionId== null}">
+                    <div class="navbar-brand col">
+                        <button class="btn bg-gradient-dark w-100" th:onclick="|location.href='@{/com/register}'|">
+                            기업회원가입
+                        </button> &nbsp;
+                    </div>
+                    <br/>
+                    <div class="navbar-brand col">
+                        <form th:action="@{/member/signUp}">
+                            <input class="btn bg-gradient-dark w-100" type="submit" value="개인회원가입">
+                        </form>
+                    </div>
+                    <br/>
+                    <div class="navbar-brand col">
+                        <form th:action="@{/login}">
+                            <input class="btn bg-gradient-dark w-100" type="submit" value="로그인">
+                        </form>
+                    </div>
+                </th:block>
+            </div>
+            <form class="navbar-brand" name="frmSub" method="get">
+                <th:block th:if="${session.sessionId}">
+                    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" th:onclick="UserType([[${session.Type}]])">이력서 관리</a>
+                                </li>
+                                <li><a class="dropdown-item" href="/member/myPage">개인정보수정</a></li>
+                                <li>
+                                    <hr class="dropdown-divider"/>
+                                </li>
+                                <li><a class="dropdown-item"
+                                       th:onclick="|location.href='@{/member/logout}'|">로그아웃</a>
+                                </li>
+                            </ul>
                         </li>
-                        <li><a class="dropdown-item" href="/member/logout">로그아웃</a></li>
                     </ul>
-                </li>
-            </ul>
+                </th:block>
+            </form>
+        </div>
         </div>
     </nav>
 
@@ -124,6 +157,9 @@
     <script src="/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="/js/datatables-simple-demo.js"></script>
+    <script src="/js/choices.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     </body>
 </th:block>
 </html>
