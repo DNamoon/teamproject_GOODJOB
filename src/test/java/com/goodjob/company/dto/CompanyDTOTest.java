@@ -23,11 +23,11 @@ class CompanyDTOTest {
     //왜 생성되지??? notBlank니까 생성되면 안 되는거 아닌가?
     @Test
     public void notBlankTest() {
-        CompanyDTO companyDTO = CompanyDTO.builder()
-                .comLoginId(" ")
-                .comPw1(" ")
-                .comName("sun")
-                .build();
+//        CompanyDTO companyDTO = CompanyDTO.builder()
+//                .comLoginId(" ")
+//                .comPw1(" ")
+//                .comName("sun")
+//                .build();
 
 //        System.out.println("companyDTO = " + companyDTO.toString());
 //        Set<ConstraintViolation<CompanyDTO>> violations = validator.validate(companyDTO);
