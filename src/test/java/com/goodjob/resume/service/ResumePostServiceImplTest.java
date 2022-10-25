@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ResumeServiceImplTest {
+class ResumePostServiceImplTest {
 
     @Autowired
     private ResumeRepository resumeRepository;

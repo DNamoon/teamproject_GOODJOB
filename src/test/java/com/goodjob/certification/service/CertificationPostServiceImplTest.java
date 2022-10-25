@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class CertificationServiceImplTest implements CertificationService{
+class CertificationPostServiceImplTest implements CertificationService{
 
     @Autowired
     private CertificationRepository certificationRepository;

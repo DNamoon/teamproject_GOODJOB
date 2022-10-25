@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+    <a th:href="@{/p/register}">
+        <button type="button" class="btn btn-outline-primary">REGISTER</button>
+    </a>
+</div>
+    <table>
+        <thead>
+            <tr>
+                <th>회사</th>
+                <th>제목</th>
+                <th>직종</th>
+                <th>시작일</th>
+                <th>종료일</th>
+                <th>모집인원</th>
+                <th>모집성별</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="dto : ${result.getDtoList()}">
+                <th>[[${dto.comName}]]</th>
+                <th><a th:href="@{/p/read(postId=${dto.id}, page=${result.page})}">[[${dto.title}]]</a></th>
+                <th>[[${dto.occName}]]</th>
+                <th>[[${dto.startDate}]]</th>
+                <th>[[${dto.endDate}]]</th>
+                <th>[[${dto.recruitNum}]]</th>
+                <th>[[${dto.gender}]]</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- pagination -->
+    <div>
+        <ul class="pagination h-100 justify-content-center align-content-center">
+            <li class="page-item" th:if="${result.prev}">
+                <a class="page-link" th:href="@{/p/list(page=${page -1})}" tabindex="1">Prev</a>
+            </li>
+
+            <li th:class=" 'page-item' + ${result.page == page?active:''}" th:each="page: ${result.pageList}">
+                <a class="page-item" th:href="@{/p/list(page=${result.page})}">[[${page}]]</a>
+            </li>
+            <li class="page-item" th:if="${result.next}">
+                <a class="page-link" th:href="@{/p/list(page=${page +1})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- register success modal -->
+    <div class="modal" tabindex="1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var msg = [[${msg}]]
+        console.log(msg);
+        if(msg){
+            $(".modal").modal();
+        }
+    </script>
+</body>
+</html>

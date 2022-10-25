@@ -1,10 +1,8 @@
 package com.goodjob.post;
 
 import com.goodjob.company.Company;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.goodjob.post.occupation.Occupation;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -14,6 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString
 @Getter
+@Builder
 public class Post {
 
     @Id
