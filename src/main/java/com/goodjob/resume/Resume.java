@@ -6,7 +6,9 @@ import com.goodjob.education.Education;
 import com.goodjob.member.Member;
 import com.goodjob.selfIntroduction.SelfIntroduction;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,8 +39,8 @@ public class Resume {
     @Column(columnDefinition = "varchar(50) default '이력서'")
     private String resumeTitle;
 
-    @Column(columnDefinition = "default curdate()")
-    @LastModifiedDate
+    @Column
+    @CreationTimestamp
     private Date resumeUpdateDate;
 
     @Column(length = 45)

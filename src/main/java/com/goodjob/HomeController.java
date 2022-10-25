@@ -8,13 +8,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping("/")
+    public String main(){
+        return "mainPage";
+    }
+
+    @GetMapping("/search")
+    public String searchPage(){
+        return "/searchPage";
+    }
+
+    @GetMapping("/home")
     public String home(){
         return "home";
     }
 
     @GetMapping("/login")
     public String login() { return "login";}
-
 
 }
 
