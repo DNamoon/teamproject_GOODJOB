@@ -18,7 +18,11 @@
         <link href="/css/nucleo-svg.css" rel="stylesheet"/>
         <!-- CSS Files -->
         <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="author" content="colorlib.com">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet"/>
         <link href="/css/main.css" rel="stylesheet"/>
         <!--modal files-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
@@ -48,27 +52,30 @@
             }
         </style>
     </head>
+
     <body>
+
     <nav class="navbar navbar-expand-lg bg-white fixed-top" style="height: 4rem">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/}">
                 <div class="webTitle"><b>GOODJOB</b></div>
             </a>
-            <div class="row" style="float: right; height: 4rem">
+            <div style="width: 65rem"></div>
+            <div class="row float-end" style="height: 4rem">
                 <th:block th:if="${session.sessionId== null}">
-                    <div class="navbar-brand col">
+                    <div class="navbar-brand col w-40">
                         <button class="btn bg-gradient-dark w-100" th:onclick="|location.href='@{/com/register}'|">
                             기업회원가입
-                        </button> &nbsp;
+                        </button>
                     </div>
                     <br/>
-                    <div class="navbar-brand col">
+                    <div class="navbar-brand col w-40">
                         <form th:action="@{/member/signUp}">
                             <input class="btn bg-gradient-dark w-100" type="submit" value="개인회원가입">
                         </form>
                     </div>
                     <br/>
-                    <div class="navbar-brand col">
+                    <div class="navbar-brand col w-40">
                         <form th:action="@{/login}">
                             <input class="btn bg-gradient-dark w-100" type="submit" value="로그인">
                         </form>
@@ -82,7 +89,7 @@
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" th:onclick="UserType([[${session.Type}]])">이력서 관리</a>
+                                <li><a class="dropdown-item" th:href="@{member/myPageResume}" th:onclick="UserType([[${session.Type}]])">이력서 관리</a>
                                 </li>
                                 <li><a class="dropdown-item" href="/member/myPage">개인정보수정</a></li>
                                 <li>

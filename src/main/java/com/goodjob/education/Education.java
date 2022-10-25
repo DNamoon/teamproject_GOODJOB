@@ -2,6 +2,7 @@ package com.goodjob.education;
 
 import com.goodjob.resume.Resume;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "resume")
+@DynamicInsert
 @Getter
 @Builder
 public class Education {

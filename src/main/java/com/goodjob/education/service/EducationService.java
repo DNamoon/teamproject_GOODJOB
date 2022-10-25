@@ -15,6 +15,7 @@ import java.util.List;
 public interface EducationService {
 
     void registerSchoolInfo(EducationDTO educationDTO);
+    void temporalSchoolInfo(Long resumeId);
     EducationDTO bringSchoolInfo(Long resumeId);
     
     //학교찾기에 필요한 메소드

@@ -85,4 +85,5 @@ INSERT INTO major_name VALUES('화학공학과');
 INSERT INTO major_name VALUES('화학과');
 INSERT INTO major_name VALUES('원자력공학과');
 INSERT INTO major_name VALUES('없음');
+INSERT INTO major_name VALUES('응답안함');
 
