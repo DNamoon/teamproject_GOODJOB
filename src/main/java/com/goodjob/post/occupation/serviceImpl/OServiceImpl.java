@@ -4,12 +4,11 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.occupation.repository.OccupationRepository;
 import com.goodjob.post.occupation.service.OService;
-import com.goodjob.post.util.ResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +18,9 @@ public class OServiceImpl implements OService {
 
 
     @Override
-    public ResultDto<Occupation, OccupationDto> getAll() {
+    public List<OccupationDto> getAll() {
         List<Occupation> result = occR.findAll();
-        Function<Occupation, OccupationDto> fn = (this::entityToDto);
-        return new ResultDto<>(result,fn);
+        return result.stream().map(this::entityToDto).collect(Collectors.toList());
     }
     @Override
     public OccupationDto get(String occName){

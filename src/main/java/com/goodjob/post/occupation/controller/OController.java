@@ -1,9 +1,8 @@
 package com.goodjob.post.occupation.controller;
 
 import com.goodjob.post.occupation.Occupation;
-import com.goodjob.post.occupation.service.OService;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
-import com.goodjob.post.util.ResultDto;
+import com.goodjob.post.occupation.service.OService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +23,11 @@ public class OController {
     }
 
     // 직종 전체 데이터(id, 직종명)를 가져오는 메소드
-    @GetMapping(value={"/getAll"})
-    @ResponseBody
-    public ResponseEntity<ResultDto<Occupation, OccupationDto>> getAll(){
-       return new ResponseEntity<>(oService.getAll(), HttpStatus.OK);
-    }
+//    @GetMapping(value={"/getAll"})
+//    @ResponseBody
+//    public ResponseEntity<ResultDto<Occupation, OccupationDto>> getAll(){
+//       return new ResponseEntity<>(oService.getAll(), HttpStatus.OK);
+//    }
     // 직종 이름 조회해서 ID 가져오기
     @PostMapping(value={"/get"})
     @ResponseBody

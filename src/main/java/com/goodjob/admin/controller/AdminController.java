@@ -47,7 +47,7 @@ public class AdminController {
         log.info("adminDTO = {}", adminDTO);
 
         if (bindingResult.hasErrors()) {
-            return "admin/adminLoginForm";
+            return "/admin/adminLoginForm";
         }
 
 
@@ -55,7 +55,7 @@ public class AdminController {
 
         if (loginAdmin == null) {
             bindingResult.reject("loginFail", "로그인에 실패하였습니다.");
-            return "admin/adminLoginForm";
+            return "/admin/adminLoginForm";
         }
 
         HttpSession session = request.getSession();
@@ -69,11 +69,11 @@ public class AdminController {
     public String postBbs(@PathVariable Long pageNum,Model model) {
         ArticlePage articlePage = articlePageService.getArticlePage(pageNum);
         model.addAttribute("postPage", articlePage);
-        return "admin/adminPostManage";
+        return "/admin/adminPostManage";
     }
 
     @GetMapping("/memberManage")
     public String adminMemberPage(){
-        return "admin/adminMemberManage";
+        return "/admin/adminMemberManage";
     }
 }

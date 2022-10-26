@@ -1,5 +1,7 @@
 package com.goodjob.admin.postpaging;
 
+import com.goodjob.notice.Notice;
+import com.goodjob.notice.NoticeRepository;
 import com.goodjob.post.Post;
 import com.goodjob.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +22,9 @@ public class ArticlePageService {
 
     public ArticlePage getArticlePage(Long pageNum) {
         long totalCount = postRepository.count();
-//        List<Post> content = postRepository.findAllByPostIdBetweenOrderByPostIdDesc((pageNum - 1) * size, pageNum * size);
         List<Post> content = postRepository.findAllByPostIdBetweenOrderByPostIdDesc
                 (totalCount - (size * pageNum), totalCount - (size * (pageNum - 1)));
         return new ArticlePage(totalCount, pageNum, size, content);
     }
+
 }

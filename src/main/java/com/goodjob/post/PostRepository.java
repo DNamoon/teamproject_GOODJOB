@@ -3,15 +3,15 @@ package com.goodjob.post;
 import com.goodjob.company.Company;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredicateExecutor<Post> {
 
     // 10.7 기간 종료된 공고 개수 조회 by.OH
     Long countAllByPostEndDateBefore(Date Date);
@@ -20,11 +20,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByPostIdBetweenOrderByPostIdDesc(Long starNum, Long endNum);
 
     Page<Post> findAllByPostComId(Company company, Pageable pageable );
-
-//    Slice<Post> findAllByPostComId(Company company, Pageable pageable);
-
-//    @Transactional
-//    @Query(value = "select a from Post a join Company b on a.postComId.comId=b.comId order by a.postId desc")
-//    List<Post> findPostList();
 
 }

@@ -9,9 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -30,12 +35,14 @@ public class MemberController {
     private final MailService mailService;
 
     @GetMapping("/signUp")
-    public String signUpForm(HttpServletRequest request) {
+    public String signUpForm(HttpServletRequest request, Model model, MemberDTO memberDTO) {
         // 회원가입 시 기존 로그인 상태면 로그아웃 실행
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
+
+        model.addAttribute("signUpCheck", memberDTO);
         return "member/signup";
     }
 
@@ -46,28 +53,30 @@ public class MemberController {
         Long result = memberService.countByMemLoginId(id);
         return result;
     }
+
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
-    public String signUp(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO) {
+    public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
+        //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
+        if(result.hasErrors()){
+            return "member/signup";
+        }
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
-        Member mem =  memberDTO.toEntity();
+        Member mem = memberDTO.toEntity();
         memberService.register(mem);
         return "redirect:/";
 
     }
-    @GetMapping("/login")
-    public String loginFrom() {
-        return "login";
-    }
 
 
-    @RequestMapping(value="/login",method = RequestMethod.POST)
-    public String login( @ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
+        //ho - 22.10.17 getMemLoginId -> getLoginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         Optional<Member> mem = memberService.loginIdCheck(memberDTO.getLoginId());
 
         if (mem.isPresent()) {  // id null 체크
             Member member = mem.get();
-            if (member.getMemLoginId().equals(memberDTO.getLoginId())) {  //회원정보가 있는 id
+            if (member.getMemLoginId().equals(memberDTO.getLoginId())) {  //id 가 있으면
                 String encodePw = member.getMemPw();
                 //암호화된 비밀번호와 로그인 시 입력받은 비밀번호 match 확인
                 if (passwordEncoder.matches(memberDTO.getPw(), encodePw)) {
@@ -76,14 +85,13 @@ public class MemberController {
                     session.setAttribute("Type", "member");
                     return "redirect:/"; // 로그인 성공 시 메인페이지
                 } else {
-                    return "redirect:login?error";  //pw가 틀린 경우
+                    return "redirect:/login?error";  //pw가 틀린 경우
                 }
             } else {
-                return "redirect:login?error"; //id가 틀린경우
+                return "redirect:/login?error"; //id가 틀린경우
             }
         } else {
-            System.out.println("<script>alert('존재하지 않는 아이디입니다.')");
-            return "member/signup";  //id가 없는 경우
+            return "redirect:/login?error";  //id가 없는 경우
         }
     }
 
@@ -103,8 +111,9 @@ public class MemberController {
         return "member/findPw";
     }
     //이메일이 DB에 존재하는지 확인
-    @ResponseBody@PostMapping("/checkEmail")
-    public boolean checkEmail(@RequestParam("memberEmail") String memEmail){
+    @ResponseBody
+    @PostMapping("/checkEmail")
+    public boolean checkEmail(@RequestParam("memberEmail") String memEmail) {
         return memberService.checkEmail(memEmail);
     }
     //임시비밀번호 발급

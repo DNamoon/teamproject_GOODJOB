@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="~{/member/myPageTemplate ::setContent(~{this::content})}">
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -8,6 +8,8 @@
 
     </head>
     <th:block th:fragment="content">
+        <div class="container" style="height: 3rem;"></div>
+
         <div class="container py-4">
             <div class="row">
                 <div class="col-lg-10 mx-auto">
@@ -51,7 +53,7 @@
                             </div>
                         </div>
                         <input type="hidden" th:value="${session.sessionId}" id="sessionInput">
-                        <hr style="margin-bottom: 25px">
+                        <hr />
                         <div class="container resumeList">
 
                         </div>

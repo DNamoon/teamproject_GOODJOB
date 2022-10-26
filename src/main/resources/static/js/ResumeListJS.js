@@ -17,7 +17,9 @@ $(document).ready(function () {
                 url: "/resume/registerResume",
                 dataType: "text",
                 success: function (data) {
-                    location.href = "/resume/resumeStep1/" + data;
+                    var openNewWindow = window.open("about:blank");
+                    openNewWindow.location.href = "/resume/resumeStep1/" + data;
+                    getJSONResumeList($("input[id=sessionInput]").val());
                 }
             });
         }
@@ -35,7 +37,7 @@ function getJSONResumeList(memId) {
             list += '</div>';
             list += '<div class="col-8" style="margin-top: 8px">';
             list += '<h5 class="text-bold" name="resumeTitle" onclick="changeTitleForm(this)">' + resume.resumeTitle + '</h5>';
-            list += '<h6 style="color: #bbb8bb">최종수정날짜 | ' + resume.resumeUpdateDate + '</h6>';
+            list += '<h6 style="color: #bbb8bb">이력서 등록날짜 | ' + resume.resumeUpdateDate + '</h6>';
             list += '</div>';
             list += '<div class="col-2">';
             list += '<input id="resumeId" type="hidden" value="' + resume.resumeId + '">'
@@ -53,13 +55,15 @@ function getJSONResumeList(memId) {
 
 //이력서 삭제
 function deleteResume(data) {
+    var resumeIdList = [];
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
+    resumeIdList.push(resumeId);
 
     if (confirm("이력서를 삭제하겠습니까?") == true) {
         $.ajax({
             url: "/resume/deleteResume",
             type: "get",
-            data: {"resumeId" : resumeId},
+            data: {"resumeId" : JSON.stringify(resumeIdList)},
             success: function (result) {
                 if (result === 'success') {
                     alert("이력서가 삭제되었습니다.");
@@ -75,7 +79,8 @@ function deleteResume(data) {
 //이력서 수정
 function updateResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
-    location.href = "/resume/goPreviousStep1/" + resumeId;
+    var openNewWindow = window.open("about:blank");
+    openNewWindow.location.href = "/resume/goPreviousStep1/" + resumeId;
 }
 
 //이력서 제목 수정폼

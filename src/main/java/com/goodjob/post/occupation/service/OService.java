@@ -1,13 +1,16 @@
 package com.goodjob.post.occupation.service;
 
+import com.goodjob.post.EntityDtoMapper;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
-import com.goodjob.post.util.EntityDtoMapper;
-import com.goodjob.post.util.ResultDto;
+
+import java.util.List;
 
 public interface OService extends EntityDtoMapper {
 
-    ResultDto<Occupation, OccupationDto> getAll();
+//    ResultDto<Occupation, OccupationDto> getAll();
+
+    List<OccupationDto> getAll();
 
     OccupationDto get(String occName);
 

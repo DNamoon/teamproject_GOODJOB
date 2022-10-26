@@ -65,12 +65,14 @@ public class MemMyPageController {
     //회원탈퇴 (비밀번호 확인 후 회원 정보 삭제,이력서 정보 같이 삭제)
     @ResponseBody
     @RequestMapping("/delete")
-    public String deleteMember(@Param("deletePw")String deletePw, @Param("id")String loginId, @Param("memId")Long memId) {
+    public String deleteMember(@Param("deletePw")String deletePw, @Param("id")String loginId, @Param("memId")Long memId,HttpServletRequest request) {
         Optional<Member> mem = memberService.loginIdCheck(loginId);
         if (mem.isPresent()) {
             Member member = mem.get();
             if (passwordEncoder.matches(deletePw,member.getMemPw())) {
                 memberService.deleteById(memId);
+                HttpSession session = request.getSession(false);
+                session.invalidate();
                 return "0";
             }
         }
