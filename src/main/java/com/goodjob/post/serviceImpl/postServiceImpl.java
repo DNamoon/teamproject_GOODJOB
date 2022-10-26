@@ -13,6 +13,8 @@ import com.goodjob.post.occupation.repository.OccupationRepository;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
+import com.goodjob.post.salary.Salary;
+import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
