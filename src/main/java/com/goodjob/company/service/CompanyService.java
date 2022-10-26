@@ -16,16 +16,20 @@ import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.member.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log4j2
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
@@ -54,31 +58,31 @@ public class CompanyService {
         return companyRepository.findByComLoginId(comLoginId);
     }
 
-    public CompanyDTO entityToDTO(String comLoginId, String comName, String comBusiNum, String comPhone,
-                                  String comComdivCode, String comRegCode, String comEmail1, String comEmail2,
-                                  String comAddress1, String comAddress2, String comAddress3,
-                                  String comAddress4, String comInfo){
+//    public CompanyDTO entityToDTO(String comLoginId, String comName, String comBusiNum, String comPhone,
+//                                  String comComdivCode, String comRegCode, String comEmail1, String comEmail2,
+//                                  String comAddress1, String comAddress2, String comAddress3,
+//                                  String comAddress4, String comInfo){
+//
+//        CompanyDTO dto = CompanyDTO.builder()
+//                .loginId(comLoginId)
+//                .comName(comName)
+//                .comBusiNum(comBusiNum)
+//                .comPhone(comPhone)
+//                .comComdivCode(comComdivCode)
+//                .comRegCode(comRegCode)
+//                .comEmail1(comEmail1+"@")
+//                .comEmail2(comEmail2)
+//                .comAddress1(comAddress1)
+//                .comAddress2(comAddress2)
+//                .comAddress3(comAddress3)
+//                .comAddress4(comAddress4)
+//                .comInfo(comInfo)
+//                .build();
+//
+//        return dto;
+//    }
 
-        CompanyDTO dto = CompanyDTO.builder()
-                .loginId(comLoginId)
-                .comName(comName)
-                .comBusiNum(comBusiNum)
-                .comPhone(comPhone)
-                .comComdivCode(comComdivCode)
-                .comRegCode(comRegCode)
-                .comEmail1(comEmail1+"@")
-                .comEmail2(comEmail2)
-                .comAddress1(comAddress1)
-                .comAddress2(comAddress2)
-                .comAddress3(comAddress3)
-                .comAddress4(comAddress4)
-                .comInfo(comInfo)
-                .build();
-
-        return dto;
-    }
-
-    public CompanyDTO entityToDTO2(Company company){
+    public CompanyDTO entityToDTO2(Company company) {
         String comLoginId = company.getComLoginId();
         String comName = company.getComName();
         String comBusiNum = company.getComBusiNum();
@@ -92,15 +96,39 @@ public class CompanyService {
         String comAddress = company.getComAddress();
         String[] address = comAddress.split("@");
 
+        /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함. */
+
+        log.info("==============="+address.length);
+
         String comInfo = company.getComInfo();
 
-        CompanyDTO dto2 = CompanyDTO.builder()
+        log.info("================address[3]은 무엇이냐" + address[address.length - 1]);
+
+        if (address.length == 3) {
+            String[] newAddress = Arrays.copyOf(address, address.length + 1);
+            newAddress[address.length] = "null";
+
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, comRegCode, email, comInfo, newAddress);
+
+        } else {
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, comRegCode, email, comInfo, address);
+        }
+
+
+    }
+
+    /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
+     * 메서드 추가 */
+    private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, Region comRegCode, String[] email, String comInfo, String[] address) {
+        CompanyDTO dto = CompanyDTO.builder()
                 .loginId(comLoginId)
                 .comName(comName)
                 .comBusiNum(comBusiNum)
                 .comPhone(comPhone)
-                .comComdivCode(comComdivCode.getComdivName())
-                .comRegCode(comRegCode.getRegName())
+                .comComdivCode(comComdivCode.getComdivCode())
+                .comComdivName(comComdivCode.getComdivName())
+                .comRegCode(comRegCode.getRegCode())
+                .comRegName(comRegCode.getRegName())
                 .comEmail1(email[0])
                 .comEmail2(email[1])
                 .comAddress1(address[0])
@@ -110,8 +138,7 @@ public class CompanyService {
                 .comInfo(comInfo)
                 .build();
 
-        return dto2;
-
+        return dto;
     }
 
     //22.10.18 - ho 기업회원정보 수정하고 DB에 저장.
@@ -123,4 +150,8 @@ public class CompanyService {
 
     }
 
+    //22.10.25 - ho 기업회원 탈퇴
+    public void delete(Long comId) {
+        companyRepository.deleteById(comId);
+    }
 }

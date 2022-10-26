@@ -14,6 +14,8 @@ public interface PostService extends EntityDtoMapper {
     PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO);
 
 
+
+
     PageResultDTO<Post,PostMainCardDTO> getListInMain();
 
     Long register(PostDTO postDTO) throws ParseException;
