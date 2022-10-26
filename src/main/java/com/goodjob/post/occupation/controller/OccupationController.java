@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = {"/occupation"})
-public class OController {
+public class OccupationController {
 
     private final OccupationService occupationService;
 
@@ -46,15 +46,4 @@ public class OController {
         occupationService.delete(occupationDto);
         return "redirect:/occupation";
     }
-
-    // 테스트 용도 겟 메소드
-//    @GetMapping(value = {"/test"})
-//    public String test1(){
-//        return "/post/main/complete";
-//    }
-
-    // 포스트 전체 가져오기
-    // 포스트 개별 가져오기 path variable
-    // 포스트 저장 및 수정
-    // 포스트 삭제
 }

@@ -7,6 +7,7 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.salary.Salary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,6 +73,9 @@ public interface EntityDtoMapper {
                 .gender(post.getPostGender())
                 .regionId(post.getPostRegion().getRegName())
                 .regionName(post.getPostRegion().getRegName())
+                .salaryId(post.getSalary().getSalaryId())
+                .salaryRange(post.getSalary().getSalaryRange())
+                .count(post.getCount())
                 .occId(post.getPostOccCode().getOccId())
                 .occName(post.getPostOccCode().getOccName())
                 .comLoginId(post.getPostComId().getComLoginId())
@@ -89,6 +93,8 @@ public interface EntityDtoMapper {
 //                .endDate(transFormat.format(post.getPostEndDate()))
                 .remainDay(String.valueOf(remainDay))
                 .regionName(post.getPostRegion().getRegName())
+                .salaryId(post.getSalary().getSalaryId())
+                .salaryRange(post.getSalary().getSalaryRange())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
@@ -106,6 +112,7 @@ public interface EntityDtoMapper {
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
                     .postRegion(postRegion)
+                    .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();
@@ -120,6 +127,7 @@ public interface EntityDtoMapper {
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
                     .postRegion(postRegion)
+                    .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();

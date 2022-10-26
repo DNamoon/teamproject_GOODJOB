@@ -11,7 +11,6 @@ import java.sql.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Getter
 @Builder
 public class Post {
@@ -49,6 +48,17 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "regCode")
     private Region postRegion;
+    private PostRegion postRegion;
+
+    @ManyToOne
+    @JoinColumn(name = "salaryId")
+    private Salary salary; // 연봉
+
+    @Column
+    private int count; // 조회수
+
+
+
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
     public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender) {
