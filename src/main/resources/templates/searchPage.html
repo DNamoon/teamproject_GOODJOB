@@ -22,9 +22,20 @@
                                     <div class="row">
                                         <div class="input-field">
                                             <div class="input-select">
+                                                <select data-trigger="">
+                                                    <option placeholder="" value="">직종</option>
+                                                    <th:block th:each="i:${occuAll}">
+                                                        <option>[[${i}]]</option>
+                                                    </th:block>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-field">
+                                            <div class="input-select">
                                                 <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Accessories</option>
-                                                    <option>Subject b</option>
+                                                    <option placeholder="" value="">지역</option>
+                                                    <th:block th:each="">
                                                     <option>Subject c</option>
                                                 </select>
                                             </div>
@@ -32,48 +43,7 @@
                                         <div class="input-field">
                                             <div class="input-select">
                                                 <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Color</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Size</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row second">
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Sale</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Time</option>
-                                                    <option>Last time</option>
-                                                    <option>Today</option>
-                                                    <option>This week</option>
-                                                    <option>This month</option>
-                                                    <option>This year</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Type</option>
+                                                    <option placeholder="" value="">연봉</option>
                                                     <option>Subject b</option>
                                                     <option>Subject c</option>
                                                 </select>
@@ -146,3 +116,40 @@
         </section>
     </th:block>
 </th:block>
+<script>
+    const customSelects = document.querySelectorAll("select");
+    const deleteBtn = document.getElementById('delete')
+    const choices = new Choices('select',
+        {
+            searchEnabled: false,
+            itemSelectText: '',
+            removeItemButton: true,
+        });
+    for (let i = 0; i < customSelects.length; i++)
+    {
+        customSelects[i].addEventListener('addItem', function(event)
+        {
+            if (event.detail.value)
+            {
+                let parent = this.parentNode.parentNode
+                parent.classList.add('valid')
+                parent.classList.remove('invalid')
+            }
+            else
+            {
+                let parent = this.parentNode.parentNode
+                parent.classList.add('invalid')
+                parent.classList.remove('valid')
+            }
+        }, false);
+    }
+    deleteBtn.addEventListener("click", function(e)
+    {
+        e.preventDefault()
+        const deleteAll = document.querySelectorAll('.choices__button')
+        for (let i = 0; i < deleteAll.length; i++)
+        {
+            deleteAll[i].click();
+        }
+    });
+</script>
