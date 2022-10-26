@@ -18,7 +18,7 @@ function getJSONResumeList(memId) {
 
         $.each(arr, function (idx, resume) {
             list += '<div class="row">';
-            list += '<div class="col-2 text-center" style="margin-top: 8px">';
+            list += '<div class="col text-center" style="margin-top: 8px">';
             list += '<input class="form-check-input me-1" type="radio" value="' + resume.resumeId + '" name="selectResumeId" style="background-color: #e4e1e4">'
             list += '</div>';
             list += '<div class="col-8" style="margin-top: 8px">';

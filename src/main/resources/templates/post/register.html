@@ -22,6 +22,17 @@
         </div>
 
         <div class="form-group">
+            <label>지역</label>
+            <div class="input-group-pretend">
+                <select class="custom-select" name="occId">
+                    <th:block th:each="occ :${occList}">
+                        <option th:value="${occ.occId}"> [[${occ.occName}]]</option>
+                    </th:block>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label>모집인원</label>
             <input type="text" class="form-control" name="recruitNum" >
         </div>
