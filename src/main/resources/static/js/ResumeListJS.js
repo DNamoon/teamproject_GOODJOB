@@ -17,7 +17,9 @@ $(document).ready(function () {
                 url: "/resume/registerResume",
                 dataType: "text",
                 success: function (data) {
-                    location.href = "/resume/resumeStep1/" + data;
+                    var openNewWindow = window.open("about:blank");
+                    openNewWindow.location.href = "/resume/resumeStep1/" + data;
+                    getJSONResumeList($("input[id=sessionInput]").val());
                 }
             });
         }
@@ -77,7 +79,8 @@ function deleteResume(data) {
 //이력서 수정
 function updateResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
-    location.href = "/resume/goPreviousStep1/" + resumeId;
+    var openNewWindow = window.open("about:blank");
+    openNewWindow.location.href = "/resume/goPreviousStep1/" + resumeId;
 }
 
 //이력서 제목 수정폼
