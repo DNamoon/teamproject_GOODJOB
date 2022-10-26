@@ -41,6 +41,12 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    public void temporalSchoolInfo(Long resumeId) {
+        EducationDTO educationDTO = EducationDTO.builder().schoolName("응답안함").majorName("응답안함").eduGetCredit("0").eduTotalCredit("/4.5").resumeId(resumeId).build();
+        registerSchoolInfo(educationDTO);
+    }
+
+    @Override
     public EducationDTO bringSchoolInfo(Long resumeId) {
         Education education = educationRepository.findSchoolInfoByResumeId(resumeId);
         String[] credit = education.getEduCredit().split("/");

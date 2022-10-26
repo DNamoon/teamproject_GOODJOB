@@ -304,3 +304,4 @@ INSERT INTO school_name VALUES('두원공과대학교');
 INSERT INTO school_name VALUES('부천대학교');
 INSERT INTO school_name VALUES('고졸이하');
 INSERT INTO school_name VALUES('대학원');
+INSERT INTO school_name VALUES('응답안함');

@@ -1,0 +1,10 @@
+<!--HO - 2022.10.05-->
+<!--오류 메시지 공통 템플릿 (fragment)-->
+<!--${#fields...가 뭘까?-->
+<!--+ 유효성 확인메시지를 보여주기 위한 #fields객체가 있대-->
+<!--https://velog.io/@hongihongi60/thymeleaf3-2-->
+<!--자세한 사항 7~7.5장 읽어보면 도움될 듯 합니다.-->
+<div th:fragment="formErrorsFragment" class="alert alert-danger"
+     role="alert" th:if="${#fields.hasAnyErrors()}">
+  <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+</div>

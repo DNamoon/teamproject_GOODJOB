@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+</head>
+<body>
+    <div>
+        <form action="/post/list" method="get" id="searchForm">
+            <div class="input-group">
+                <input type="hidden" name="page" value="1">
+                <div class="input-group-pretend">
+                    <select class="custom-select" name="type">
+                        <option value="title" th:selected="${pageRequestDTO.type =='title'}"> 제목</option>
+                        <option value="company" th:selected="${pageRequestDTO.type =='company'}"> 회사명</option>
+                        <option value="occupation" th:selected="${pageRequestDTO.type =='occupation'}"> 직종</option>
+                        <option value="region" th:selected="${pageRequestDTO.type =='region'}"> 지역</option>
+                        <option value="titleCompanyName" th:selected="${pageRequestDTO.type =='titleCompanyName'}"> 제목회사명</option>
+
+                    </select>
+                </div>
+            </div>
+            <input class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+            <div class="input-group-append" id="button-addon4">
+                <button class="btn btn-outline-secondary btn-search" type="button">검색</button>
+                <button class="btn btn-outline-secondary btn-clear" type="button">초기화</button>
+            </div>
+        </form>
+
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>회사</th>
+                <th>제목</th>
+                <th>직종</th>
+                <th>시작일</th>
+                <th>종료일</th>
+                <th>모집인원</th>
+                <th>모집성별</th>
+                <th>지역</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="dto : ${result.getDtoList()}">
+                <th>[[${dto.comName}]]</th>
+                <th><a th:href="@{/post/read(postId=${dto.id}, page=${result.page})}">[[${dto.title}]]</a></th>
+                <th>[[${dto.occName}]]</th>
+                <th>[[${dto.startDate}]]</th>
+                <th>[[${dto.endDate}]]</th>
+                <th>[[${dto.recruitNum}]]</th>
+                <th>[[${dto.gender}]]</th>
+                <th>[[${dto.regionName}]]</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- pagination -->
+    <div>
+        <ul class="pagination h-100 justify-content-center align-content-center">
+            <li class="page-item" th:if="${result.prev}">
+                <a class="page-link" th:href="@{/post/list(page=${result.start -1})}" tabindex="1">Prev</a>
+            </li>
+
+            <li th:class=" 'page-item' + ${result.page == page?active:''}" th:each="page: ${result.pageList}">
+                <a class="page-item" th:href="@{/post/list(page=${result.page})}">[[${page}]]</a>
+            </li>
+            <li class="page-item" th:if="${result.next}">
+                <a class="page-link" th:href="@{/post/list(page=${result.start +1})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- register success modal -->
+    <div class="modal" tabindex="1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a th:href="@{/post/register}">
+            <button type="button" class="btn btn-outline-primary">REGISTER</button>
+        </a>
+    </div>
+    <div>
+<!--        <a th:href="@{/post/list(auth=${d})}">-->
+<!--            <button type="button" class="btn btn-outline-primary">REGISTER</button>-->
+<!--        </a>-->
+    </div>
+    <script th:inline="javascript">
+        var msg = [[${msg}]]
+        console.log(msg);
+        if(msg){
+            $(".modal").modal();
+        }
+        let searchForm = $("#searchForm");
+        $(".btn-search").click(function (e){
+            searchForm.submit();
+        })
+        $(".btn-clear").click(function (e){
+            searchForm.empty().submit();
+        })
+    </script>
+</body>
+</html>

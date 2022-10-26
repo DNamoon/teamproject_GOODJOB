@@ -73,10 +73,7 @@ public class MemberServiceImpl implements MemberService {
         Member mem =  memberDTO.toEntity();
         memberRepository.updateInfo(mem);
     }
-    @Override
-    public void deleteById(Long memId) {
-        memberRepository.deleteById(memId);
-    }
+
     @Override
     public boolean checkEmail(String memEmail) {
         return memberRepository.existsByMemEmail(memEmail);
@@ -84,7 +81,6 @@ public class MemberServiceImpl implements MemberService {
     /** 임시 비밀번호로 업데이트 **/
     @Override
     public void updatePassword(String tmpPw, String memberEmail) {
-
         String encryptPassword = passwordEncoder.encode(tmpPw);
         Member member = memberRepository.findByMemEmail(memberEmail);
         member.updatePassword(encryptPassword);
@@ -114,5 +110,10 @@ public class MemberServiceImpl implements MemberService {
         Member member= memberRepository.findByMemId(memId);
         member.updatePassword(encryptPassword);
         memberRepository.save(member);
+    }
+    //회원 탈퇴
+    @Override
+    public void deleteById(Long memId) {
+        memberRepository.deleteById(memId);
     }
 }

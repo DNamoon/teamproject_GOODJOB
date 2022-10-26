@@ -60,6 +60,7 @@ public class ResumeController {
     public String resumeStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
         String id = (String)session.getAttribute("sessionId");
         ResumeMemberDTO resumeMemberDTO = memberService.bringMemInfo(id);
+        educationService.temporalSchoolInfo(resumeId);
 
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("memberInfo", resumeMemberDTO);
@@ -187,11 +188,11 @@ public class ResumeController {
 
     @ResponseBody
     @GetMapping("/deleteResume")
-    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws JsonProcessingException {
+    public ResponseEntity<String> deleteResume(@RequestParam Map params) throws Exception {
         String resumeIdJson = params.get("resumeId").toString();
         ObjectMapper mapper = new ObjectMapper();
-        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
 
+        List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
         resumeService.deleteResume(resumeIdList);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
