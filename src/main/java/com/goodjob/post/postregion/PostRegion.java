@@ -1,4 +1,4 @@
-package com.goodjob.post;
+package com.goodjob.post.postregion;
 import lombok.*;
 
 import javax.persistence.*;

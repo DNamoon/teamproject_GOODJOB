@@ -1,11 +1,8 @@
 package com.goodjob.admin.postpaging;
 
-import com.goodjob.notice.Notice;
-import com.goodjob.notice.NoticeRepository;
 import com.goodjob.post.Post;
-import com.goodjob.post.PostRepository;
+import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
