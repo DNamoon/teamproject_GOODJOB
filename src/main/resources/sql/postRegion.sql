@@ -16,4 +16,4 @@ insert into postRegion(regCode, regName) VALUE ('055','경상남도');
 insert into postRegion(regCode, regName) VALUE ('061','전라남도');
 insert into postRegion(regCode, regName) VALUE ('062','광주광역시');
 insert into postRegion(regCode, regName) VALUE ('063','전라북도');
--- insert into postRegion(regCode, regName) VALUE ('064','제주도');
+insert into postRegion(regCode, regName) VALUE ('064','제주도');

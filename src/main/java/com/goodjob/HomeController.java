@@ -11,7 +11,6 @@ public class HomeController {
     public String main(){
         return "mainPage";
     }
-
     @GetMapping("/search")
     public String searchPage(){
         return "/searchPage";
