@@ -66,7 +66,7 @@
             <span style="float: right; font-size: 14px;"><span
                     style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span><br/>
             <form role="form" id="contact-form" name="frm" method="post" autocomplete="off"
-                  th:action="@{/com/register}" th:object="${companyDTO}">
+                  th:action="@{/com/signup}" th:object="${companyDTO}">
 
                 <!--                에러 메시지 보여주는 위치           -->
                 <div th:replace="/company/formErrors :: formErrorsFragment"></div>
@@ -376,7 +376,7 @@
         } else { // 공백아니면 중복체크
             $.ajax({
                 type : "POST", // http 방식
-                url : "/com/register", // ajax 통신 url
+                url : "/com/signup", // ajax 통신 url
                 data : { // ajax 내용 => 파라미터 : 값 이라고 생각해도 무방
                     "type" : "user",
                     "id" : $id.val()
