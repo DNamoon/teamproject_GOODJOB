@@ -52,8 +52,10 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "salaryId")
-    private Salary salary;
+    private Salary salary; // 연봉
 
+    @Column
+    private int count; // 조회수
 
 
 
