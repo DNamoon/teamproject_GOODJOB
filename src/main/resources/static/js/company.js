@@ -1,10 +1,31 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+// 회원탈퇴
+$(document).ready(function(){
+    $('#delete_confirm').click(function (){
+        const password = $('#delete_password_confirm').val();
+
+        $.ajax({
+            type:"post",
+            url:"/com/delete",
+            data:"pw="+password,
+            success : function (result) {
+                if(result == 1) {
+                    alert("회원을 탈퇴합니다.");
+                    location.replace('/');  //.replace : 뒤로가기 불가능
+                } else {
+                    alert("비밀번호를 확인해주세요");
+                }
+            }
+        });
+    });
+});
+
+
 //22.10.24 ho - 회원정보 수정시 비밀번호 확인
 $(document).ready(function(){
     $('#confirm').click(function (){
         const password = $("#password_confirm").val();
-        console.log(password);
 
         $.ajax({
             type:"post",

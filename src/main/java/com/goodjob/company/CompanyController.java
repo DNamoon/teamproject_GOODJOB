@@ -169,7 +169,7 @@ public class CompanyController {
         return "redirect:/com/myPage";
     }
 
-        //ho - 22.10.20 기업정보 수정하기 전 비밀번호 확인
+    //ho - 22.10.20 기업정보 수정하기 전 비밀번호 확인
     @ResponseBody
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     public String passwordConfirm(CompanyDTO companyInfo, HttpSession session, @RequestParam("pw") String password) throws Exception {
@@ -179,20 +179,8 @@ public class CompanyController {
         Optional<Company> company1 = companyService.loginIdCheck(comLoginId);
         log.info("============ DB에 있는 로그인 아이디 : " + company1.get().getComLoginId());
         log.info(company1.get().getComPw());
-//
-//        log.info("=============companyInfo에서 로그인 아이디 : "+companyInfo.getLoginId());
-//        Optional<Company> company = companyService.loginIdCheck(companyInfo.getLoginId());
-//        log.info("=============DB에서 가져오는 비밀번호 :"+company.get().getComPw());
-//        log.info("=============입력창에서 받아온 비밀번호 : "+ password);
 
-        //String password1 = companyInfo.getPw(); //입력한 비밀번호값
-//        if(passwordEncoder.matches(company1.get().getComPw(),password)) {
-//            return "true";
-//        } else {
-//            return "false";
-//        }
         String comPw = company1.get().getComPw();
-
 
         if(password == null || !passwordEncoder.matches(password,comPw)) {
             return "0";
@@ -202,5 +190,23 @@ public class CompanyController {
 
     }
 
+    //ho - 2022.10.25 회원 탈퇴
+    @ResponseBody
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public int deleteCompany(HttpSession httpSession, @RequestParam("pw") String password) {
+        String comLoginId = (String) httpSession.getAttribute("sessionId");
+        Optional<Company> company = companyService.loginIdCheck(comLoginId);
+        Company com = company.get();
+        Long comId = com.getComId();
+        log.info("==============pk comId 잘 받아오나 : " +comId);
+
+        if(password == null || !passwordEncoder.matches(password,com.getComPw())){
+            return 0;
+        } else {
+            companyService.delete(comId);
+            httpSession.invalidate();  //세션 만료시키기.
+            return 1;
+        }
+    }
 
 }
