@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" >
+<head>
+    <th:block th:replace="~{post/layout/head :: layout_head(~{::meta}, ~{::title}, ~{::link})}"></th:block>
+</head>
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+
+<!--        <div th:replace="~{thyme/layout/navBar :: layout_navBar}"></div>-->
+
+        <div th:replace="~{post/layout/header :: layout_header}"></div>
+
+        <div layout:fragment="layout_content"></div>
+
+        <div th:replace="~{post/layout/footer :: layout_footer}"></div>
+
+    </div>
+</div>
+
+</body>
+</html>
