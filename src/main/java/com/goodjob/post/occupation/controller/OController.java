@@ -1,8 +1,7 @@
 package com.goodjob.post.occupation.controller;
 
-import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
-import com.goodjob.post.occupation.service.OService;
+import com.goodjob.post.occupation.service.OccupationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = {"/o"})
+@RequestMapping(value = {"/occupation"})
 public class OController {
 
-    private final OService oService;
+    private final OccupationService occupationService;
 
     // 메인페이지 이동 겟
     @GetMapping(value = {"/",""})
@@ -33,19 +32,19 @@ public class OController {
     @ResponseBody
     public ResponseEntity<OccupationDto> get(@RequestBody OccupationDto occupationDto){
         System.out.println(occupationDto);
-        return new ResponseEntity<>(oService.get(occupationDto.getOccName()),HttpStatus.OK);
+        return new ResponseEntity<>(occupationService.get(occupationDto.getOccName()),HttpStatus.OK);
     }
     // 직종 저장, 수정용 메소드
     @PostMapping(value = {"/save"})
     public String save(OccupationDto occupationDto){
-        oService.save(occupationDto);
-        return "redirect:/o";
+        occupationService.save(occupationDto);
+        return "redirect:/occupation";
     }
     // 직종 삭제 메소드
     @PostMapping(value = {"/delete"})
     public String delete(OccupationDto occupationDto){
-        oService.delete(occupationDto);
-        return "redirect:/o";
+        occupationService.delete(occupationDto);
+        return "redirect:/occupation";
     }
 
     // 테스트 용도 겟 메소드

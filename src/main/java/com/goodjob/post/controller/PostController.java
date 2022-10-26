@@ -1,15 +1,17 @@
-package com.goodjob.post;
+package com.goodjob.post.controller;
 
-import com.goodjob.post.occupation.service.OService;
+import com.goodjob.post.Post;
+import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.PageRequestDTO;
+import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,11 +22,11 @@ import java.text.ParseException;
 
 @Log4j2
 @Controller
-@RequestMapping(value = {"/p"})
+@RequestMapping(value = {"/post"})
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final OService oService;
+    private final OccupationService occupationService;
 
     @PostMapping(value = {"/register"})
     public String register(PostDTO postDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Model model) throws ParseException {
@@ -33,11 +35,11 @@ public class PostController {
         postDTO.setComLoginId(getAuthId(httpSession,"sessionId"));
         Long postId = postService.register(postDTO);
         redirectAttributes.addFlashAttribute("msg",postId);
-        return "redirect:/p/list";
+        return "redirect:/post/list";
     }
     @GetMapping(value={"/register"})
     public String register(HttpServletRequest httpServletRequest,Model model){
-        model.addAttribute("occList",oService.getAll());
+        model.addAttribute("occList", occupationService.getAll());
         return "/post/register";
     }
     @GetMapping(value = {"/read"})
@@ -45,7 +47,7 @@ public class PostController {
         log.info("controller.......read...."+postId+pageRequestDTO);
         PostDTO dto = postService.read(postId);
         log.info(dto);
-        model.addAttribute("occList",oService.getAll());
+        model.addAttribute("occList", occupationService.getAll());
         model.addAttribute("dto",dto);
         return "/post/read";
     }
@@ -53,7 +55,7 @@ public class PostController {
     public String modify(Long postId, PageRequestDTO pageRequestDTO, Model model){
         log.info("controller.......read...."+postId+ pageRequestDTO);
         PostDTO dto = postService.read(postId);
-        model.addAttribute("occList",oService.getAll());
+        model.addAttribute("occList", occupationService.getAll());
         model.addAttribute("dto",dto);
         return "/post/modify";
     }
@@ -61,23 +63,22 @@ public class PostController {
     public String modify(PostDTO postDTO, PageRequestDTO pageRequestDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) throws ParseException {
         log.info("controller......modify..."+postDTO+pageRequestDTO);
         HttpSession httpSession = httpServletRequest.getSession();
-        postDTO.setComLoginId(getAuthId(httpSession,"sessionId"));
+        String sessionId = getAuthId(httpSession,"sessionId");
+        postDTO.setComLoginId(sessionId);
         postService.register(postDTO);
         redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
         redirectAttributes.addAttribute("postId",postDTO.getId());
-        return "redirect:/p/read";
+        return "redirect:/post/read";
+
+
     }
 
     @GetMapping(value = {"/list"})
     public String list(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
         log.info("Controller......." +pageRequestDTO);
-//        HttpSession httpSession = httpServletRequest.getSession();
-//        log.info(httpSession);
-//        if(!(httpSession.getAttribute("Type").toString()==null)) {
-//            String type = getAuthId(httpSession,"Type");
-//            pageRequestDTO.setAuth(type);
-//        }
-        model.addAttribute("result",postService.getList(pageRequestDTO));
+        PageResultDTO<Post, PostDTO> result = postService.getList(pageRequestDTO);
+        log.info(result);
+        model.addAttribute("result",result);
         return "/post/list";
     }
 
@@ -112,7 +113,7 @@ public class PostController {
         log.info(id);
         postService.remove(id);
         redirectAttributes.addFlashAttribute("msg",id);
-        return "redirect:/p/list";
+        return "redirect:/post/list";
     }
 
 
