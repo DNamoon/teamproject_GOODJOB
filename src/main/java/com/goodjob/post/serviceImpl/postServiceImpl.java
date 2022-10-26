@@ -1,18 +1,17 @@
 package com.goodjob.post.serviceImpl;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.postregion.PostRegion;
+import com.goodjob.post.fileupload.FileService;
+import com.goodjob.post.fileupload.UploadFile;
+import com.goodjob.post.postdto.*;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.repository.OccupationRepository;
-import com.goodjob.post.postdto.PageRequestDTO;
-import com.goodjob.post.postdto.PageResultDTO;
-import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.postregion.PostRegionRepository;
 import com.goodjob.post.service.PostService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -24,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -35,7 +36,8 @@ public class postServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final OccupationRepository occupationRepository;
     private final CompanyRepository companyRepository;
-    private final PostRegionRepository postRegionRepository;
+    private final RegionRepository regionRepository;
+    private final FileService fileService;
 
     @Override
     public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
@@ -60,7 +62,7 @@ public class postServiceImpl implements PostService {
     public Long register(PostDTO postDTO) {
         Optional<Occupation> oOcc = occupationRepository.findById(postDTO.getOccId());
         Optional<Company> com = companyRepository.findByComLoginId(postDTO.getComLoginId());
-        Optional<PostRegion> reg = postRegionRepository.findById(postDTO.getRegionId());
+        Optional<Region> reg = regionRepository.findById(postDTO.getRegionId());
         log.info("service.....register..."+postDTO);
         Post entity = null;
         if(oOcc.isPresent() && com.isPresent() && reg.isPresent()){
@@ -83,6 +85,24 @@ public class postServiceImpl implements PostService {
     @Override
     public void remove(Long postId){
         postRepository.deleteById(postId);
+    }
+
+    @Override
+    public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
+        Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
+        Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
+        Optional<Region> region = regionRepository.findById(postInsertDTO.getRegion());
+        List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
+        log.info("service.....register..."+postInsertDTO);
+        if(occupation.isPresent() && company.isPresent() && region.isPresent()){
+            Post post = new Post(postInsertDTO.getPostTitle(), occupation.get(), company.get(),
+                    postInsertDTO.getPostContent(), postInsertDTO.getPostRecruitNum(),
+                    postInsertDTO.getPostStartDate(), postInsertDTO.getPostEndDate(),
+                    postInsertDTO.getPostGender(),region.get(),uploadFiles,postInsertDTO.getSalary());
+            postRepository.save(post);
+            return post.getPostId();
+        }
+        return null;
     }
 
     private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO){
@@ -122,7 +142,7 @@ public class postServiceImpl implements PostService {
             conditionBuilder.or(qPost.postOccCode.occName.contains(keyword));
         }
         if(type.contains("region")){
-            conditionBuilder.or(qPost.postRegion.regName.contains(keyword));
+            conditionBuilder.or(qPost.region.regName.contains(keyword));
         }
         if(type.contains("titleCompanyName")){
             conditionBuilder.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));

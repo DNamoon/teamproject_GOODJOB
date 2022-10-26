@@ -26,7 +26,7 @@ let postJS = {
                 for(let dto of data.dtoList){
                     console.log(dto);
                     str += `
-                        <a href="/p/read?postId=${dto.id}"><div class="col" style="height:250px; margin-bottom: 10px">
+                        <a href="/post/read?postId=${dto.id}"><div class="col" style="height:250px; margin-bottom: 10px">
                             <div class="card h-100" style="padding-top: 10px">
                                 <div class="card-body">
                                     <h5 class="card-title">${dto.title}</h5>
