@@ -156,3 +156,138 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
+
+//비밀번호1,2 일치 여부 보여주는 fuction
+function passwordConfirm() {
+    var password = document.getElementById('comPw1');
+    var passwordConfirm = document.getElementById('comPw2');
+    var confirmMsg = document.getElementById('confirmMsg')  //확인 메시지
+    var correctColor = "#73b973"; //맞았을 때 출력되는 색깔.
+    var wrongColor = "#ff0000";   //틀렸을 때 출력되는 색깔.
+
+    if(password.value == passwordConfirm.value) {
+        confirmMsg.style.color = correctColor;
+        confirmMsg.innerHTML = "비밀번호 일치";
+    } else {
+        confirmMsg.style.color = wrongColor;
+        confirmMsg.innerHTML = "비밀번호 불일치";
+    }
+}
+
+
+//아이디 중복검사
+//onkeyup이 여기서는 "change keyup"이다!!!
+$('#id_input').on("change keyup", function(){
+
+    console.log("keyup 테스트");
+    var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
+    var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+
+    $.ajax({
+        type : "post",
+        url : "/com/check",
+        data : data,
+        success : function(result){
+            if(result != 'fail'){
+                $('.id_input_re_1').css("display","inline-block");
+                $('.id_input_re_2').css("display", "none");
+            } else {
+                $('.id_input_re_2').css("display","inline-block");
+                $('.id_input_re_1').css("display", "none");
+            }
+
+        }
+    });
+});
+
+
+// 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
+$("#userId").blur(function () {
+    let idError = $("#idError");
+    idError.css("color", "#ff6289");
+
+    ///ajax 조건식//
+    $.ajax({
+        url: '/idCheck',
+        type: 'get',
+        data: {userId : $("#userId").val()},
+        dataType: 'text',
+        success: function (check) {	// 통신 성공 시 "true" 혹은 "false" 반환
+            if (check === "true") { // 아이디가 이미 존재함
+                //console.log(check);	// 확인용
+                idError.show().text("중복 아이디입니다.");
+                return resId=false;
+            } else {	// "false" 일 경우 - 아이디가 존재하지 않을 경우
+                //console.log(check);	// 확인용
+                let regExp = /^[a-z0-9_-]{5,20}$/g; //아이디 정규식(영문 소문자, 숫자, 특수문자(-,_) 만 가능)
+                let id = $("#userId").val();
+
+                if (id === null || id === "") { //값이 없을 때
+                    idError.show().text("필수 정보입니다.");
+                    return resId=false;
+                } else if (!regExp.test(id)) { //정규식에 맞지 않을 때
+                    idError.show().text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
+                    return resId=false;
+                } else { //조건에 맞는 아이디일 때 true 반환
+                    idError.css("color", "#77ab59");
+                    idError.show().text("멋진 아이디네요!");
+                    return resId = true;
+                }
+            }
+        },
+        error: function () {
+            console.log("아이디 체크 오류");
+        }
+    });
+});
+
+
+//다른분 아이디 중복체크 - 여기서는 사용 안함.
+var $id = $("#id");
+// 아이디 정규식
+$id.on("keyup", function() { // 키보드에서 손을 땠을 때 실행
+    var regExp = /^[a-z]+[a-z0-9]{5,15}$/g;
+
+    if (!regExp.test($id.val())) { // id 가 공백인 경우 체크
+        idchk = false;
+        $id.html("<span id='check'>사용할 수 없는 아이디입니다.</span>");
+        $("#check").css({
+            "color" : "#FA3E3E",
+            "font-weight" : "bold",
+            "font-size" : "10px"
+        })
+    } else { // 공백아니면 중복체크
+        $.ajax({
+            type : "POST", // http 방식
+            url : "/com/register", // ajax 통신 url
+            data : { // ajax 내용 => 파라미터 : 값 이라고 생각해도 무방
+                "type" : "user",
+                "id" : $id.val()
+            },
+            success : function(data) {
+                if (data == 1) { // 1이면 중복
+                    idchk = false;
+                    $id.html("<span id='check'>이미 존재하는 아이디입니다</span>")
+                    $("#check").css({
+                        "color" : "#FA3E3E",
+                        "font-weight" : "bold",
+                        "font-size" : "10px"
+
+                    })
+                    //console.log("중복아이디");
+                } else { // 아니면 중복아님
+                    idchk = true;
+                    $id.html("<span id='check'>사용가능한 아이디입니다</span>")
+
+                    $("#check").css({
+                        "color" : "#0D6EFD",
+                        "font-weight" : "bold",
+                        "font-size" : "10px"
+
+                    })
+                    //console.log("중복아닌 아이디");
+                }
+            }
+        })
+    }
+});

@@ -89,7 +89,6 @@
     position:static;
     top: 0px;
     left: 0;
-    height: 80px;
     width: 400px;
     margin: 0 auto;
   }
@@ -133,6 +132,14 @@ h6,
   font-weight: 400;
   line-height: 1.2;
   color: var(--bs-heading-color);
+}
+
+.webTitle{
+  font-size: 25px;
+  background: linear-gradient(to right, #43c6ac, #191654);
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 h1,
@@ -4899,7 +4906,7 @@ fieldset:disabled .btn {
   }
 }
 
-@media (min-width: 992px) {
+@media  {
   .navbar-expand-lg {
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -22270,7 +22277,7 @@ hr.horizontal.gray-light {
   transform: translate(0, -50%);
 }
 
-@media (min-width: 992px) {
+@media {
   .virtual-reality .sidenav {
     margin-top: 1.5rem;
     animation-name: fadeInBottom;

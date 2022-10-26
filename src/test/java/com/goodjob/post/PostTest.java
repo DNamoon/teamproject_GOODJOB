@@ -3,6 +3,8 @@ package com.goodjob.post;
 import com.goodjob.admin.postpaging.ArticlePage;
 import com.goodjob.admin.postpaging.ArticlePageService;
 import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.post.occupation.Occupation;
+import com.goodjob.post.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j

@@ -1,9 +1,8 @@
 package com.goodjob.admin.postpaging;
 
 import com.goodjob.post.Post;
-import com.goodjob.post.PostRepository;
+import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +19,9 @@ public class ArticlePageService {
 
     public ArticlePage getArticlePage(Long pageNum) {
         long totalCount = postRepository.count();
-//        List<Post> content = postRepository.findAllByPostIdBetweenOrderByPostIdDesc((pageNum - 1) * size, pageNum * size);
         List<Post> content = postRepository.findAllByPostIdBetweenOrderByPostIdDesc
                 (totalCount - (size * pageNum), totalCount - (size * (pageNum - 1)));
         return new ArticlePage(totalCount, pageNum, size, content);
     }
+
 }

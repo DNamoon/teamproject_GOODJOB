@@ -1100,7 +1100,7 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
-@media (min-width: 768px) {
+@media  {
   .col-md {
     flex: 1 0 0%;
   }
@@ -1313,7 +1313,7 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
-@media (min-width: 992px) {
+@media  {
   .col-lg {
     flex: 1 0 0%;
   }
@@ -3023,7 +3023,7 @@ textarea.form-control-lg {
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-@media (prefers-reduced-motion: reduce) {
+@media {
   .btn {
     transition: none;
   }

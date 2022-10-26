@@ -5,21 +5,25 @@ import com.goodjob.admin.apexchart.PostStatistics;
 import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
 import com.goodjob.member.repository.MemberRepository;
-import com.goodjob.post.PostRepository;
+import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * 10.6 ApexChart관련 Rest방식을 위한 RestController By.OH
@@ -33,7 +37,8 @@ public class AdminRestController {
     private final MemberRepository memberRepository;
     private final VisitorStatisticsRepository vs;
     private final PostRepository postRepository;
-
+    @Value("${editor.img.save.url}")
+    private String saveUrl;
     @GetMapping("/genderStatistics")
     public GenderDTO countGender() {
         GenderDTO genderDTO = new GenderDTO();
@@ -86,5 +91,27 @@ public class AdminRestController {
         if (session != null) {
             session.invalidate();
         }
+    }
+    @PostMapping(value = "/image", produces = "application/json; charset=utf8")
+    public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        String originalFileName = multipartFile.getOriginalFilename();    //오리지날 파일명
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));    //파일 확장자
+        String savedFileName = UUID.randomUUID() + extension;    //저장될 파일 명
+
+        File targetFile = new File(saveUrl + savedFileName);
+        try {
+            InputStream fileStream = multipartFile.getInputStream();
+            org.apache.commons.io.FileUtils.copyInputStreamToFile(fileStream, targetFile);
+            jsonObject.append("url", saveUrl + savedFileName);// 저장할 내부 폴더명 + 파일명
+            jsonObject.append("responseCode", "success");
+
+        } catch (IOException e) {
+            org.apache.commons.io.FileUtils.deleteQuietly(targetFile);    //저장된 파일 삭제
+            jsonObject.append("responseCode", "error");
+            e.printStackTrace();
+        }
+        String jsonString = jsonObject.toString();
+        return jsonString;
     }
 }

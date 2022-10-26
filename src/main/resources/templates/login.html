@@ -1,65 +1,50 @@
 <!--김도현 22.10.04 작성-->
-<!--ho - 22.10.17 (로그인 폼 기업/개인 통일 위해 36, 39라인 input창 name: loginId,pw로 변경)-->
-<!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-
-    <title>로그인</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <!--javascript Files-->
-    <script src="/js/member.js"></script>
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/css/nucleo-svg.css" rel="stylesheet" />
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet" />
-</head>
-<body class="page-header min-vh-100">
-        <div class="col-md-0">
-            <div class="row">
-                <div class="col-lg-7" style="width : 500px">
-                    <div class="text-center pb-0 text-left">
-                        <h4 class="font-weight-bolder">로그인</h4>
-                    </div>
-                        <form role="form" name="frm" method="post">
-                                <div th:if="${param.error}" role="alert">
-                                    <p class="text-center" style="color: rgb(244, 54, 54);" >아이디 및 비밀번호를 확인해주세요.</p>
-                                </div>
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control form-control-lg" id ="id" placeholder="아이디" name="loginId" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호" name="pw"  style="-webkit-text-security:square;" required >
-                                    </div>
-                                    <div class="col-4 mx-auto">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" value="member" name="type" onclick="checkOnlyOneLogin(this)">
-                                            <label class="form-check-label">개인회원</label>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" value="company" name="type" onclick="checkOnlyOneLogin(this)">
-                                            <label class="form-check-label">기업회원</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="hidden" id="chk" value="none">
-                                        <button type="button" class="btn bg-gradient-dark w-100" onclick="UserTypeLogin()" style="font-size:15px" >로그인</button>
-                                    </div>
-
-                    </form>
-                            <div class="col-md-12 text-center">
-                                <a href ="/member/checkEmail" >비밀번호 찾기</a>
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <section class="page-header min-vh-100">
+                <div class="col-md-0">
+                    <div class="row">
+                        <div class="col-lg-7" style="width : 500px">
+                            <div class="text-center pb-0 text-left">
+                                <h4 class="font-weight-bolder">로그인</h4>
                             </div>
-                 </form>
+                            <form role="form" name="frm" method="post">
+                                <div th:if="${param.error}" role="alert">
+                                    <p class="text-center" style="color: rgb(244, 54, 54);">아이디 및 비밀번호를 확인해주세요.</p>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-lg" id="id" placeholder="아이디"
+                                           name="loginId" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호"
+                                           name="pw" style="-webkit-text-security:square;" required>
+                                </div>
+                                <div class="col-5 mx-auto">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" value="member" name="type" onclick="checkOnlyOneLogin(this)">
+                                        <label class="form-check-label">개인회원</label>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" value="company" name="type" onclick="checkOnlyOneLogin(this)">
+                                        <label class="form-check-label">기업회원</label>
+                                    </div>
+                                </div>
+                                <label>&nbsp;</label>
+                                <div class="col-md-12">
+                                    <input type="hidden" id="chk" value="none">
+                                    <button type="button" class="btn bg-gradient-dark w-100" onclick="UserTypeLogin()"
+                                            style="font-size:15px">로그인
+                                    </button>
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    <a href="/member/checkEmail">비밀번호 찾기</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-</div>
-</body>
-</html>
+        </section>
+    </th:block>
+</th:block>
