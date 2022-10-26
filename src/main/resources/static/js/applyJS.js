@@ -36,16 +36,14 @@ function getJSONResumeList(memId) {
 function doneSelectResume(){
     var selectResumeId = $("input:radio[name='selectResumeId']:checked").val();
     var postId = $("#postId").val();
-
-    console.log(selectResumeId);
-    console.log(postId);
+    
 
     $.ajax({
         url: "/status/applyResume/" + postId,
         type: "post",
         data : {selectResumeId : selectResumeId},
         success: function() {
-
+            //지원완료되면 뭐라해야할지 모르겠어
         }
     })
 }
