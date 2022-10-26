@@ -3,6 +3,7 @@ package com.goodjob.post;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.post.occupation.Occupation;
+import com.goodjob.post.salary.Salary;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,7 +49,6 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "regCode")
     private Region postRegion;
-    private PostRegion postRegion;
 
     @ManyToOne
     @JoinColumn(name = "salaryId")

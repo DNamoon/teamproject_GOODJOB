@@ -13,6 +13,8 @@ import com.goodjob.post.occupation.repository.OccupationRepository;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
+import com.goodjob.post.salary.Salary;
+import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -66,7 +68,6 @@ public class postServiceImpl implements PostService {
         Optional<Occupation> oOcc = occupationRepository.findById(postDTO.getOccId());
         Optional<Company> com = companyRepository.findByComLoginId(postDTO.getComLoginId());
         Optional<Region> reg = regionRepository.findById(postDTO.getRegionId());
-        Optional<PostRegion> reg = postRegionRepository.findById(postDTO.getRegionId());
         Optional<Salary> sal = salaryRepository.findById(postDTO.getSalaryId());
         log.info("service.....register..."+postDTO);
         Post entity = null;
