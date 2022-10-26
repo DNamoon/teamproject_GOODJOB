@@ -4,6 +4,7 @@
 
 $(document).ready(function () {
     getJSONResumeList($("input[id=sessionInput]").val());
+    getResumeData();
 
     //이력서 등록버튼 누르면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function () {
@@ -26,6 +27,12 @@ $(document).ready(function () {
     })
 })
 
+function getResumeData(){
+    var count = $("input[id=resumeCheckBox]").length;
+    console.log(count);
+    $(".resumeCount").text(count);
+}
+
 function getJSONResumeList(memId) {
     $.getJSON('/member/getResumeList/' + memId, function (arr) {
         var list = '';
@@ -33,7 +40,7 @@ function getJSONResumeList(memId) {
         $.each(arr, function (idx, resume) {
             list += '<div class="row">';
             list += '<div class="col-2 text-center" style="margin-top: 8px">';
-            list += '<input class="form-check-input me-1" type="checkbox" value="' + resume.resumeId + '" name="resumeCheckBox" style="background-color: #e4e1e4">'
+            list += '<input class="form-check-input me-1" type="checkbox" id="resumeCheckBox" value="' + resume.resumeId + '" name="resumeCheckBox" style="background-color: #e4e1e4">'
             list += '</div>';
             list += '<div class="col-8" style="margin-top: 8px">';
             list += '<h5 class="text-bold" name="resumeTitle" onclick="changeTitleForm(this)">' + resume.resumeTitle + '</h5>';
@@ -53,7 +60,7 @@ function getJSONResumeList(memId) {
     })
 }
 
-//이력서 삭제
+//이력서 개별 삭제
 function deleteResume(data) {
     var resumeIdList = [];
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
@@ -125,6 +132,7 @@ function changeTitle(data){
     // })
 }
 
+//체크된 이력서들을 삭제함
 function deleteCheckedResume(){
     var checkedList = [];
     var size = $("input:checkbox[name=resumeCheckBox]:checked").length;

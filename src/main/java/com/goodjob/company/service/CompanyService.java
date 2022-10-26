@@ -147,11 +147,11 @@ public class CompanyService {
         System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());
         System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
-
     }
 
     //22.10.25 - ho 기업회원 탈퇴
     public void delete(Long comId) {
         companyRepository.deleteById(comId);
     }
+
 }

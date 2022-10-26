@@ -106,4 +106,9 @@ public class MemMyPageController {
     public ResponseEntity<List<ResumeListDTO>> getResumeList(@PathVariable("loginId") String loginId){
         return new ResponseEntity<>(resumeService.getResumeList(loginId), HttpStatus.OK);
     }
+
+    @GetMapping("/myPageApply")
+    public String myPageApply(){
+        return "/member/myPageApply";
+    }
 }

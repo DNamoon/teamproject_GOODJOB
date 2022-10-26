@@ -40,7 +40,6 @@ public class PostController {
     @GetMapping(value={"/register"})
     public String register(HttpServletRequest httpServletRequest,Model model){
         model.addAttribute("occList", occupationService.getAll());
-        model.addAttribute("regionList", )
         return "/post/register";
     }
     @GetMapping(value = {"/read"})
