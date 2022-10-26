@@ -1,13 +1,11 @@
 package com.goodjob.post;
 
 import com.goodjob.post.postdto.PostBbsDto;
-import com.goodjob.post.service.PService;
 import com.goodjob.post.util.PageRequestDTO;
 import com.goodjob.post.util.PageResultDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 public class PostServiceTest {

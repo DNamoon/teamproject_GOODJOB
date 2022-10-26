@@ -47,7 +47,10 @@ public class postServiceImpl implements PostService {
 
     }
     @Override
-    public PageResultDTO<Post,PostMainCardDTO> getListInMain(){
+    public PageResultDTO<Post,PostMainCardDTO> getListInMain(String properties){
+
+        String keyword = "postId";
+        Sort sort  = Sort.by(Sort.Direction.DESC,keyword);
 
         Pageable pageable = PageRequest.of(0,8,Sort.by(Sort.Direction.DESC, "postId"));
 //        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
