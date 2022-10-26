@@ -761,7 +761,7 @@ legend {
   font-size: 12px;
   padding: 10px;
   border-bottom: 1px solid #f7f7f7;
-  color: gray;
+  color: #4b6cb7;
 }
 
 .choices__button {
@@ -1036,7 +1036,7 @@ legend {
 }
 
 .s010 form .inner-form .advance-search .choices__inner {
-  background: #ccc;
+  background: #4b6cb7;
   border-radius: 20px;
   border: 0;
   border: 0;
@@ -1068,7 +1068,7 @@ legend {
       align-items: center;
   height: 100%;
   opacity: 1;
-  color: #333;
+  color: #fff;
 }
 
 .s010 form .inner-form .advance-search .choices__inner .choices__list--single .choices__item {
@@ -1082,7 +1082,7 @@ legend {
 
 .s010 form .inner-form .advance-search .choices__list.choices__list--dropdown {
   border: 0;
-  background: #333;
+  background: #182848 ;
   padding: 10px 18px 20px 18px;
   margin-top: 3px;
   border-radius: 10px;
@@ -1132,7 +1132,7 @@ legend {
 }
 
 .s010 form .inner-form .advance-search .choices.valid .choices__inner {
-  background: linear-gradient(to right, #2c6dd5 0%, #2c6dd5 28%, #ff4b5a 91%, #ff4b5a 100%);
+  background: linear-gradient(to right, #43c6ac, #191654);
 }
 
 .s010 form .inner-form .advance-search .choices.valid:after {
