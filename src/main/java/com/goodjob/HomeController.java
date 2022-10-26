@@ -14,13 +14,11 @@ public class HomeController {
         return "mainPage";
     }
 
-    @GetMapping("/search")
-    public String searchPage(){
-        return "/searchPage";
-    }
-
     @GetMapping("/login")
     public String login() { return "login";}
+
+    @GetMapping("/search")
+    public String search() { return "searchPage";}
 
 }
 

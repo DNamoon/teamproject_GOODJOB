@@ -27,8 +27,6 @@ public class SecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().disable()			//cors 방지
                 .csrf().disable()			//csrf 방지
-                //                .formLogin().loginPage("/auth/member/login")		//기본 로그인페이지 없애기
-                //                .defaultSuccessUrl("/").and()
                 .authorizeRequests()
                 .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**","/login","/search","/home","/p/**").permitAll() // /auth이하의 주소들은 인증 필요x
                 .antMatchers("/css/**","/js/**").permitAll()
