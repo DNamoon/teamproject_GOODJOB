@@ -101,7 +101,7 @@ public interface EntityDtoMapper {
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, Salary salary) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, PostRegion postRegion, Salary salary) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())

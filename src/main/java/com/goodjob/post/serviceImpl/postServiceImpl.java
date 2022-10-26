@@ -84,8 +84,10 @@ public class postServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public PostDTO read(Long postId){
         Optional<Post> result = postRepository.findById(postId);
+        postRepository.increasePostCount(postId);
         return result.map(this::entityToDto).orElse(null);
     }
     @Override
