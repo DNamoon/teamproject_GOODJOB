@@ -22,5 +22,5 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
     List<Post> findAllByPostIdBetweenOrderByPostIdDesc(Long starNum, Long endNum);
 
     Page<Post> findAllByPostComId(Company company, Pageable pageable );
-
 }
+

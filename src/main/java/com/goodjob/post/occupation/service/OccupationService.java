@@ -16,6 +16,9 @@ public interface OccupationService extends EntityDtoMapper {
     void save(OccupationDto occupationDto);
     void delete(OccupationDto occupationDto);
 
+    //search 드롭박스용
+    List<String> searchOccName();
+
 //    default OccupationDto entityToDto(Occupation occ){
 //        return OccupationDto.builder()
 //            .occId(occ.getOccCode())

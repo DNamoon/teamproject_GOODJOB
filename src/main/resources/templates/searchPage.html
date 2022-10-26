@@ -22,10 +22,12 @@
                                     <div class="row">
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
+                                                <select data-trigger="">
                                                     <option placeholder="" value="">직종</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
+                                                    <th:block th:each="i:${occuAll}">
+                                                        <option>[[${i}]]</option>
+                                                    </th:block>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -33,7 +35,7 @@
                                             <div class="input-select">
                                                 <select data-trigger="" name="choices-single-defaul">
                                                     <option placeholder="" value="">지역</option>
-                                                    <option>Subject b</option>
+                                                    <th:block th:each="">
                                                     <option>Subject c</option>
                                                 </select>
                                             </div>

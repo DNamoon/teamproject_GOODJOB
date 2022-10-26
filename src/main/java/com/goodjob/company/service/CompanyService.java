@@ -14,12 +14,14 @@ import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
+import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,7 @@ public class CompanyService {
 
     //22.10.09 - 비밀번호 암호화를 위해 추가
     private final PasswordEncoder passwordEncoder;
+    private final RegionRepository regionRepository;
 
     //기업회원가입정보 DB에 저장하는 메서드
     @Transactional
@@ -119,7 +122,9 @@ public class CompanyService {
         System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());
         System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
-
+    }
+    public List<String> searchRegName(){
+        return regionRepository.regName();
     }
 
 }

@@ -1,12 +1,12 @@
 package com.goodjob.post.util;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.postregion.PostRegion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,7 +95,7 @@ public interface EntityDtoMapper {
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, PostRegion postRegion) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())

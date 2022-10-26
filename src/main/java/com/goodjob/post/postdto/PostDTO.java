@@ -18,7 +18,6 @@ public class PostDTO {
     private String gender;
     private String regionId;
     private String regionName;
-
     private Long occId;
     private String occName;
     private String comLoginId;
