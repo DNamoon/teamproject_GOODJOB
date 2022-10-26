@@ -31,7 +31,6 @@
         <script type="text/javascript" src="/js/member.js"></script>
         <script type="text/javascript" src="/js/ResumeListJS.js"></script>
         <script type="text/javascript"  src="/js/post.js"></script>
-        <script src="/js/company.js"></script>
         <style>
             .has-search .form-control-feedback {
                 position: absolute;
@@ -55,7 +54,7 @@
             </a>
             <div style="width: 65rem"></div>
             <div class="btn-group" role="group" aria-label="Basic outlined example">
-            <button class="btn bg-gradient-dark" th:onclick="|location.href='@{/com/register}'|">기업회원가입</button>
+            <button class="btn bg-gradient-dark" th:onclick="|location.href='@{/com/signup}'|">기업회원가입</button>
             <button class="btn bg-gradient-dark " th:onclick="|location.href='@{/member/signUp}'|">개인회원가입</button>
             <button class="btn bg-gradient-dark " th:onclick="|location.href='@{/login}'|">로그인</button>
             </div>
@@ -151,6 +150,7 @@
                     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
                     <script src="/js/datatables-simple-demo.js"></script>
                     <script src="/js/choices.js"></script>
+                    <script src="/js/company.js"></script>
                     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
                     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                     </body>

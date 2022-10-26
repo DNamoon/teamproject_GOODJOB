@@ -6,259 +6,243 @@
     -> 2022.10.06 완료-->
 <!--But, 공백이나 특수기호 문제 발생. 정규표현식으로 해결할 수 있을 듯(아직 해결은 안 함)-->
 <!--ho - 22.10.17 로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 창 name 통일. loginId,pw 통일(79, 95라인 변경)-->
-<!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage"
-      xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <style>
+            /* 중복아이디 존재하지 않는경우 */
+            .id_input_re_1 {
+                color: #73b973;
+                display: none;
+            }
 
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/img/favicon.png">
-
-    <title>회원가입 (기업회원용)</title>
-
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
-    <!-- 한글 폰트 -->
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-
-    <!-- Nucleo Icons -->
-    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
-
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-    <!--modal files-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
-
-    <!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
-    <!--    slim버전 쓰면 $.ajax()를 사용할 수 없대. 밑에 코드로 변경-->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-
-    <style>
-        /* 중복아이디 존재하지 않는경우 */
-        .id_input_re_1{
-            color : #73b973;
-            display : none;
-        }
-        /* 중복아이디 존재하는 경우 */
-        .id_input_re_2{
-            color : red;
-            display : none;
-        }
-    </style>
-
-</head>
-
-<body class="index-page">
-<div class="container py-4">
-    <div class="row">
-        <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
-            <h3 class="text-center">회원가입 (기업회원용)</h3>
-            <div class="card-body">
+            /* 중복아이디 존재하는 경우 */
+            .id_input_re_2 {
+                color: red;
+                display: none;
+            }
+        </style>
+        <section class="index-page">
+            <div class="container py-4">
+                <div class="row">
+                    <div class="col-lg-9 mx-auto d-flex justify-content-center flex-column">
+                        <h3 class="text-center">회원가입 (기업회원용)</h3>
+                        <div class="card-body">
             <span style="float: right; font-size: 14px;"><span
                     style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span><br/>
-            <form role="form" id="contact-form" name="frm" method="post" autocomplete="off"
-                  th:action="@{/com/register}" th:object="${companyDTO}">
+                            <form role="form" id="contact-form" name="frm" method="post" autocomplete="off"
+                                  th:action="@{/com/signup}" th:object="${companyDTO}">
 
-                <!--                에러 메시지 보여주는 위치           -->
-                <div th:replace="/company/formErrors :: formErrorsFragment"></div>
+                                <!--                에러 메시지 보여주는 위치           -->
+                                <div th:replace="/company/formErrors :: formErrorsFragment"></div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label th:for="comLoginId">아이디<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group">
-                                <!--     ho - 22.10.17 th:field변경 memloginId -> loginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
-                                <input class="form-control" th:field="*{loginId}" placeholder="ID는 3~15자 사이" type="text"
-                                       name="id_input" id="id_input" required>
-                            </div>
-                            <label class="id_input_re_1">사용 가능한 아이디입니다.</label>
-                            <label class="id_input_re_2">아이디가 이미 존재합니다.</label>
-                        </div>
-                        <div class="col-md-6">
-                            <label th:for="comName">기업명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-4">
-                                <input class="form-control" th:field="*{comName}" placeholder="기업명" type="text" name="name" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label th:for="comPw">비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-4">
-                                <!--                ho - 22.10.17 th:field변경 memPw -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
-                                <input type="password" class="form-control" th:field="*{pw}" id="comPw1" name="comPw1"
-                                       placeholder="Password는 3~25자 사이" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" th:field="*{comPw2}" id="comPw2" name="comPw2"
-                                       placeholder="Password 한번더 입력!" required onkeyup="passwordConfirm()"><br/>
-                            </div>
-                            <label id="confirmMsg"></label>
-                        </div>
-                        <div class="col-md-6">
-                            <label th:for="comBusiNum">사업자번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-4">
-                                <input class="form-control" th:field="*{comBusiNum}" type="text" name="comBusiNum" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label th:for="comPhone">전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group">
-                                <input type="tel" class="form-control" th:field="*{comPhone}" placeholder="000-0000-0000" name="phone"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label th:for="comComdivCode">기업 분류<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-4">
-                                <select class="form-control" th:field="*{comComdivCode}">
-                                    <option value="Major">대기업</option>
-                                    <option value="Middle">중견기업(300명이상)</option>
-                                    <option value="SMEs">중소기업(300명미만)</option>
-                                    <option value="StartUp">스타트업</option>
-                                    <option value="Foreign">외국계기업</option>
-                                    <option value="Public">국내 공공기관/공기업</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label th:for="comRegCode">지역 선택<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-4">
-                                <select class="form-control" th:field="*{comRegCode}">
-                                    <option value="02">서울특별시</option>
-                                    <option value="031">경기도</option>
-                                    <option value="032">인천광역시</option>
-                                    <option value="033">강원도</option>
-                                    <option value="041">충청남도</option>
-                                    <option value="042">대전광역시</option>
-                                    <option value="043">충청북도</option>
-                                    <option value="044">세종특별시</option>
-                                    <option value="051">부산광역시</option>
-                                    <option value="052">울산광역시</option>
-                                    <option value="053">대구광역시</option>
-                                    <option value="054">경상북도</option>
-                                    <option value="055">경상남도</option>
-                                    <option value="061">전라남도</option>
-                                    <option value="062">광주광역시</option>
-                                    <option value="063">전라북도</option>
-                                    <option value="064">제주도</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                <!--                    이메일 양식 지정-->
-                <div class="col-md px-0">
-                    <label th:for="comEmail">이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                    <div class="input-group">
-                        <input type="text" class="form-control w-40" th:field="*{comEmail1}" placeholder="goodjob"
-                               name="email"
-                               required> &nbsp;@ &nbsp;&nbsp;
-                        <select class="form-control" th:field="*{comEmail2}">
-                            <option value="naver.com">naver.com</option>
-                            <option value="daum.net">daum.net</option>
-                            <option value="gmail.com">gmail.com</option>
-                        </select>
-                    </div>
-                </div>
-                <br/>
-                    <div>
-                        <div class="col-md-6 px-0">
-                            <label th:for="comAddress">주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                            <div class="input-group mb-0">
-                                <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
-                                <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" readonly required>
-                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-150 findAddress">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" readonly required><br>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="input-group mb-4">
-                                    <input type="text" class="form-control" th:field="*{comAddress3}" id="sample6_detailAddress"
-                                           placeholder="상세주소" required>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label th:for="comLoginId">아이디<span
+                                                style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group">
+                                            <!--     ho - 22.10.17 th:field변경 memloginId -> loginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
+                                            <input class="form-control" th:field="*{loginId}" placeholder="ID는 3~15자 사이"
+                                                   type="text"
+                                                   name="id_input" id="id_input" required>
+                                        </div>
+                                        <label class="id_input_re_1">사용 가능한 아이디입니다.</label>
+                                        <label class="id_input_re_2">아이디가 이미 존재합니다.</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comName">기업명<span
+                                                style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" th:field="*{comName}" placeholder="기업명"
+                                                   type="text" name="name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comPw">비밀번호<span
+                                                style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <!--                ho - 22.10.17 th:field변경 memPw -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
+                                            <input type="password" class="form-control" th:field="*{pw}" id="comPw1"
+                                                   name="comPw1"
+                                                   placeholder="Password는 3~25자 사이" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" th:field="*{comPw2}" id="comPw2"
+                                                   name="comPw2"
+                                                   placeholder="Password 한번더 입력!" required
+                                                   onkeyup="passwordConfirm()"><br/>
+                                        </div>
+                                        <label id="confirmMsg"></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comBusiNum">사업자번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <input class="form-control" th:field="*{comBusiNum}" type="text"
+                                                   name="comBusiNum" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comPhone">전화번호<span
+                                                style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group">
+                                            <input type="tel" class="form-control" th:field="*{comPhone}"
+                                                   placeholder="000-0000-0000" name="phone"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comComdivCode">기업 분류<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-control" th:field="*{comComdivCode}">
+                                                <option value="Major">대기업</option>
+                                                <option value="Middle">중견기업(300명이상)</option>
+                                                <option value="SMEs">중소기업(300명미만)</option>
+                                                <option value="StartUp">스타트업</option>
+                                                <option value="Foreign">외국계기업</option>
+                                                <option value="Public">국내 공공기관/공기업</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label th:for="comRegCode">지역 선택<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <select class="form-control" th:field="*{comRegCode}">
+                                                <option value="02">서울특별시</option>
+                                                <option value="031">경기도</option>
+                                                <option value="032">인천광역시</option>
+                                                <option value="033">강원도</option>
+                                                <option value="041">충청남도</option>
+                                                <option value="042">대전광역시</option>
+                                                <option value="043">충청북도</option>
+                                                <option value="044">세종특별시</option>
+                                                <option value="051">부산광역시</option>
+                                                <option value="052">울산광역시</option>
+                                                <option value="053">대구광역시</option>
+                                                <option value="054">경상북도</option>
+                                                <option value="055">경상남도</option>
+                                                <option value="061">전라남도</option>
+                                                <option value="062">광주광역시</option>
+                                                <option value="063">전라북도</option>
+                                                <option value="064">제주도</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group mb-4">
-                                    <input type="text" class="form-control" th:field="*{comAddress4}" id="sample6_extraAddress"
-                                           placeholder="참고항목">
+
+                                <!--                    이메일 양식 지정-->
+                                <div class="col-md px-0">
+                                    <label th:for="comEmail">이메일<span
+                                            style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control w-40" th:field="*{comEmail1}"
+                                               placeholder="goodjob"
+                                               name="email"
+                                               required> &nbsp;@ &nbsp;&nbsp;
+                                        <select class="form-control" th:field="*{comEmail2}">
+                                            <option value="naver.com">naver.com</option>
+                                            <option value="daum.net">daum.net</option>
+                                            <option value="gmail.com">gmail.com</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group mb-4">
-                        <label th:for="comInfo">회사 소개<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                        <textarea id="comInfo" name="comInfo" class="form-control" th:field="*{comInfo}" cols="40" rows="8" required></textarea>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-check form-switch mb-4" th:for="comTerms">
-                                <!--                                checked 다음에 1이 true라고 하고 값 Y 넘기기-->
-                                <input class="form-check-input" th:field="*{comTerms}" type="checkbox" id="flexSwitchCheckDefault" value="Y"
-                                       checked="" required>
-                                <label class="form-check-label" for="flexSwitchCheckDefault">
-                                    <a href="#" class="text-dark" id="modal_open_btn" data-toggle="modal"
-                                       data-target="#agreeModal"><u>개인정보 수집 및 이용</u></a>을 동의합니다.<span
-                                        style="color: rgb(244, 54, 54);">&nbsp;&ast;</span>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="agreeModal" tabindex="-1"
-                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">개인정보 수집 및 이용 동의서</h5>
-                                                    <button type="button" class="close" data-dismiss="modal">&times;
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    굿잡 (이하 "회사"라 함)는 이용자의 서비스 이용과 관련하여 아래와 같은 개인정보를 수집, 활용합니다.<br/>
-                                                    목적 수집항목 보유 및 이용기간<br/>
-                                                    회원가입 필수 이메일, 이름, 성별, 생년월일, 휴대전화번호-회원탈퇴 시 까지<br/>
-                                                    선택 신입/경력 여부, 연차, 희망직종, 희망근무지역-회원탈퇴 시 까지<br/>
-                                                    소셜계정<br/>
-                                                    회원가입필수<br/>
-                                                    Payco : 동일인식별번호, 이름, 이메일, 성별, 생년월일<br/>
-                                                    Facebook : 동일인식별번호, 이름, 이메일, 성별, 생년월일<br/>
-                                                    Kakao : 동일인식별번호, 닉네임/프로필사진, 생년월일, 이메일<br/>
-                                                    Google : 동일인식별번호, 이름, 이메일, 성별<br/>
-                                                    Twitter : 동일인식별번호, 이름<br/>
-                                                    Naver : 동일인식별번호, 이름, 이메일, 성별, 닉네임<br/>
-                                                    Apple : 동일인식별번호, 이메일 회원탈퇴 시 까지<br/>
-                                                    본인인증 필수<br/>
-                                                    이름, 생년월일, 휴대전화번호, 본인인증결과값-인증절차 완료 시까지<br/>
-                                                    <br/>
-                                                    이용자는 개인정보의 수집 및 이용 동의를 거부할 권리가 있습니다. 다만 동의 거부 시 굿잡 서비스를 이용할 수 없습니다.
-                                                </div>
+                                <br/>
+                                <div>
+                                    <div class="col-md-6 px-0">
+                                        <label th:for="comAddress">주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <div class="input-group mb-4">
+                                            <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
+                                            <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" readonly required>
+                                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-150 findAddress">
+                                        </div>
+                                    </div>
+                                    <div class="mb-0">
+                                        <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" readonly required><br>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control" th:field="*{comAddress3}" id="sample6_detailAddress"
+                                                       placeholder="상세주소" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control" th:field="*{comAddress4}" id="sample6_extraAddress"
+                                                       placeholder="참고항목">
                                             </div>
                                         </div>
                                     </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <button type="submit" class="btn bg-gradient-dark w-100">회원가입</button>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label th:for="comInfo">회사 소개<span
+                                            style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                    <textarea id="comInfo" name="comInfo" class="form-control" th:field="*{comInfo}"
+                                              cols="40" rows="8" required></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-check form-switch mb-4" th:for="comTerms">
+                                            <!--                                checked 다음에 1이 true라고 하고 값 Y 넘기기-->
+                                            <input class="form-check-input" th:field="*{comTerms}" type="checkbox"
+                                                   id="flexSwitchCheckDefault" value="Y"
+                                                   checked="" required>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">
+                                                <a href="#" class="text-dark" id="modal_open_btn" data-toggle="modal"
+                                                   data-target="#agreeModal"><u>개인정보 수집 및 이용</u></a>을 동의합니다.<span
+                                                    style="color: rgb(244, 54, 54);">&nbsp;&ast;</span>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="agreeModal" tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">개인정보 수집 및
+                                                                    이용 동의서</h5>
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">&times;
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                굿잡 (이하 "회사"라 함)는 이용자의 서비스 이용과 관련하여 아래와 같은 개인정보를 수집,
+                                                                활용합니다.<br/>
+                                                                목적 수집항목 보유 및 이용기간<br/>
+                                                                회원가입 필수 이메일, 이름, 성별, 생년월일, 휴대전화번호-회원탈퇴 시 까지<br/>
+                                                                선택 신입/경력 여부, 연차, 희망직종, 희망근무지역-회원탈퇴 시 까지<br/>
+                                                                소셜계정<br/>
+                                                                회원가입필수<br/>
+                                                                Payco : 동일인식별번호, 이름, 이메일, 성별, 생년월일<br/>
+                                                                Facebook : 동일인식별번호, 이름, 이메일, 성별, 생년월일<br/>
+                                                                Kakao : 동일인식별번호, 닉네임/프로필사진, 생년월일, 이메일<br/>
+                                                                Google : 동일인식별번호, 이름, 이메일, 성별<br/>
+                                                                Twitter : 동일인식별번호, 이름<br/>
+                                                                Naver : 동일인식별번호, 이름, 이메일, 성별, 닉네임<br/>
+                                                                Apple : 동일인식별번호, 이메일 회원탈퇴 시 까지<br/>
+                                                                본인인증 필수<br/>
+                                                                이름, 생년월일, 휴대전화번호, 본인인증결과값-인증절차 완료 시까지<br/>
+                                                                <br/>
+                                                                이용자는 개인정보의 수집 및 이용 동의를 거부할 권리가 있습니다. 다만 동의 거부 시 굿잡 서비스를
+                                                                이용할 수 없습니다.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" id="sign_up" class="btn bg-gradient-dark w-100">회원가입</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
+            </div>
 
-</section>
+        </section>
     </th:block>
 </th:block>

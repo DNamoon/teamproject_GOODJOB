@@ -1,5 +1,13 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+// 22.10.26 회원가입 완료 메시지
+// $(document).ready(function (){
+//     $('#sign_up').click(function (){
+//         alert("회원가입을 축하드립니다.");
+//     })
+// })
+
+
 // 회원탈퇴
 $(document).ready(function(){
     $('#delete_confirm').click(function (){
