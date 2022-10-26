@@ -1,5 +1,4 @@
--- 2022.10.05 - HO
--- region테이블(지역 코드별 분류) 작성 쿼리문
+
 insert into postRegion(regCode, regName) VALUE ('02','서울특별시');
 insert into postRegion(regCode, regName) VALUE ('031','경기도');
 insert into postRegion(regCode, regName) VALUE ('032','인천광역시');

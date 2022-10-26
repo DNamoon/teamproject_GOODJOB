@@ -5,7 +5,7 @@ import com.goodjob.admin.apexchart.PostStatistics;
 import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
 import com.goodjob.member.repository.MemberRepository;
-import com.goodjob.post.PostRepository;
+import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;

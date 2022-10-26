@@ -1,6 +1,8 @@
-package com.goodjob.post;
+package com.goodjob.post.repository;
 
 import com.goodjob.company.Company;
+import com.goodjob.post.Post;
+import com.goodjob.post.postdto.PostMainCardDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,14 +1,16 @@
-package com.goodjob.post;
+package com.goodjob.post.util;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.dto.CompanyDTO;
+import com.goodjob.post.Post;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
+import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postregion.PostRegion;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public interface EntityDtoMapper {
 //    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -58,7 +60,7 @@ public interface EntityDtoMapper {
     // Company -> CompanyDto  <<<<< 채워넣어야한다.
 
 
-    // Post  -> PostDto(list용)
+    // Post  -> PostDto(전체 List 용)
     default PostDTO entityToDto(Post post) {
         return PostDTO.builder()
                 .id(post.getPostId())
@@ -68,14 +70,32 @@ public interface EntityDtoMapper {
                 .startDate(transFormat.format(post.getPostStartDate()))
                 .endDate(transFormat.format(post.getPostEndDate()))
                 .gender(post.getPostGender())
+                .regionId(post.getPostRegion().getRegName())
+                .regionName(post.getPostRegion().getRegName())
                 .occId(post.getPostOccCode().getOccId())
                 .occName(post.getPostOccCode().getOccName())
                 .comLoginId(post.getPostComId().getComLoginId())
                 .comName(post.getPostComId().getComName())
                 .build();
     }
+    default PostMainCardDTO entityToDtoInMain(Post post) {
+
+        long difDay = (post.getPostEndDate().getTime()-post.getPostStartDate().getTime())/1000;
+        long remainDay = difDay/ (24*60*60);
+        return PostMainCardDTO.builder()
+                .id(post.getPostId())
+                .title(post.getPostTitle())
+//                .startDate(transFormat.format(post.getPostStartDate()))
+//                .endDate(transFormat.format(post.getPostEndDate()))
+                .remainDay(String.valueOf(remainDay))
+                .regionName(post.getPostRegion().getRegName())
+                .occName(post.getPostOccCode().getOccName())
+                .comName(post.getPostComId().getComName())
+                .build();
+    }
+
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, PostRegion postRegion) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())
@@ -85,6 +105,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
+                    .postRegion(postRegion)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();
@@ -98,6 +119,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
+                    .postRegion(postRegion)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();

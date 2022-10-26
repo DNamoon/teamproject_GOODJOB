@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1 class="mt-4">수정 페이지</h1>
-<form action="/p/modify" id="modify-form" method="post">
+<form action="/post/modify" id="modify-form" method="post">
     <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
     <input type="hidden" name="id" th:value="${dto.id}">
     <div class="form-group">
@@ -63,14 +63,14 @@
 <script th:inline="javascript">
     var actionForm = $("form");
     $(".remove-btn").click(function (){
-        actionForm.attr("action","/p/remove").attr("method","post")
+        actionForm.attr("action","/post/remove").attr("method","post")
         actionForm.submit();
     })
     $(".list-btn").click(function (){
         var pageInfo = $("input[name='page']");
         actionForm.empty();
         actionForm.append(pageInfo);
-        actionForm.attr("action","/p/list").attr("method","get")
+        actionForm.attr("action","/post/list").attr("method","get")
         console.log(actionForm.html());
         actionForm.submit();
     })
@@ -78,7 +78,7 @@
         if(!confirm("수정하시겠습니까?")){
             return ;
         }
-        actionForm.attr("action","/p/modify").attr("method","post")
+        actionForm.attr("action","/post/modify").attr("method","post")
         actionForm.submit();
     })
 </script>

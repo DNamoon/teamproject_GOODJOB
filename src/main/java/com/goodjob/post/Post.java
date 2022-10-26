@@ -2,6 +2,7 @@ package com.goodjob.post;
 
 import com.goodjob.company.Company;
 import com.goodjob.post.occupation.Occupation;
+import com.goodjob.post.postregion.PostRegion;
 import lombok.*;
 
 import javax.persistence.*;

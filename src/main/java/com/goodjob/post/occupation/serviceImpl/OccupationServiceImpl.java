@@ -3,7 +3,7 @@ package com.goodjob.post.occupation.serviceImpl;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.occupation.repository.OccupationRepository;
-import com.goodjob.post.occupation.service.OService;
+import com.goodjob.post.occupation.service.OccupationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class OServiceImpl implements OService {
+public class OccupationServiceImpl implements OccupationService {
 
     private final OccupationRepository occR;
 
