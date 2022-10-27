@@ -4,7 +4,8 @@
 
 $(document).ready(function () {
     getJSONResumeList($("input[id=sessionInput]").val());
-    getResumeData();
+    getApplyList();
+    getResumeData();  //동작 안됨
 
     //이력서 등록버튼 누르면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function () {
@@ -154,4 +155,23 @@ function deleteCheckedResume(){
             }
         });
     };
+}
+
+//지원현황 리스트
+function getApplyList(){
+    $.getJSON('/status/getApplyList', function (applyArr) {
+        var list = '';
+
+        $.each(applyArr, function (applyIdx, apply) {
+            list += '    <tr>\n' +
+                '      <th scope="row">' + (applyIdx + 1) +'</th>\n' +
+                '      <td><a href="#">' + apply.postName.substr(0,10) + "..." +'</a></td>\n' +
+                '      <td>'+ apply.companyName +'</td>\n' +
+                '      <td><a href="#">' + apply.resumeTitle.substr(0,6) + "..." +'</a></td>\n' +
+                '      <td>' + apply.statApplyDate + '</td>\n' +
+                '    </tr>\n';
+        })
+
+        $(".applyTable").html(list);
+    })
 }

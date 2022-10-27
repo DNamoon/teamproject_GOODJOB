@@ -1,6 +1,9 @@
 package com.goodjob.status;
 
+import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.status.dto.ApplyDTO;
+import com.goodjob.status.dto.ApplyListDTO;
+import com.goodjob.status.repository.StatusRepository;
 import com.goodjob.status.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,7 @@ import java.util.List;
 public class StatusController {
 
    private final StatusService statusService;
+   private final StatusRepository statusRepository;
 
    @ResponseBody
    @PostMapping("/applyResume/{postId}")
@@ -30,9 +34,10 @@ public class StatusController {
    }
 
    @ResponseBody
-   @PostMapping(value = "/getApplyList}", produces = MediaType.APPLICATION_JSON_VALUE)
-   public ResponseEntity<List<ApplyDTO>> getApplyList(HttpSession session){
-      return new ResponseEntity<>(statusService.getApplyList(session.getAttribute("sessionId")), HttpStatus.OK);
+   @GetMapping(value = "/getApplyList", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<List<ApplyListDTO>> getApplyList(HttpSession session){
+      return new ResponseEntity<>(statusService.getApplyList((String) session.getAttribute("sessionId")), HttpStatus.OK);
+//      return new ResponseEntity<>(statusService.getList(applyListDTO, (String) session.getAttribute("sessionId")), HttpStatus.OK);
    }
 
 }

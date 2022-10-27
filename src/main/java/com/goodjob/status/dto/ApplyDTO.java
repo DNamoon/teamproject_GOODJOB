@@ -10,8 +10,6 @@ import java.sql.Date;
 
 @Data
 public class ApplyDTO {
-    private Long statId;
-    private Date statApplyDate;
     private Long statPostId;
     private Long statResumeId;
 }

@@ -3,6 +3,7 @@ package com.goodjob.status.repository;
 import com.goodjob.member.Member;
 import com.goodjob.post.Post;
 import com.goodjob.status.Status;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,5 +13,7 @@ import java.util.List;
  */
 
 public interface StatusRepository extends JpaRepository<Status,Long> {
-    List<Status> getStatusByStatResumeId_ResumeMemId_MemLoginIdOOrderByStatApplyDateDesc(String loginId);
+    List<Status> getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(String loginId);
+    int findByStatResumeId_ResumeMemId(String loginId);
+//    Page<Status> getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(String loginId);
 }
