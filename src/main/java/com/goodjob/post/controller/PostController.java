@@ -31,7 +31,7 @@ public class PostController {
     @PostMapping(value = {"/register"})
     public String register(PostDTO postDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Model model) throws ParseException {
         log.info("controller........register"+postDTO);
-        HttpSession httpSession = httpServletRequest.getSession();
+        HttpSession httpSession = httpServletRequest.getSession(false);
         postDTO.setComLoginId(getAuthId(httpSession,"sessionId"));
         Long postId = postService.register(postDTO);
         redirectAttributes.addFlashAttribute("msg",postId);
@@ -62,7 +62,7 @@ public class PostController {
     @PostMapping(value={"/modify"})
     public String modify(PostDTO postDTO, PageRequestDTO pageRequestDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) throws ParseException {
         log.info("controller......modify..."+postDTO+pageRequestDTO);
-        HttpSession httpSession = httpServletRequest.getSession();
+        HttpSession httpSession = httpServletRequest.getSession(false);
         String sessionId = getAuthId(httpSession,"sessionId");
         postDTO.setComLoginId(sessionId);
         postService.register(postDTO);
@@ -73,19 +73,26 @@ public class PostController {
 
     }
 
+    // "/list?type=title" 종류( title, company, occupation, titleCompanyName )
+    // "/list?sort=new" 종류( new, count, salary, end )
+    // "/list?outOfDateState" 종류( active, beforeStart, afterEnd, beforeAfter, all)
+    // 자세한 설명은 PageRequestDTO 에 있습니다.
     @GetMapping(value = {"/list"})
-    public String list(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
+    public String list(PageRequestDTO pageRequestDTO, Model model){
         log.info("Controller......." +pageRequestDTO);
         PageResultDTO<Post, PostDTO> result = postService.getList(pageRequestDTO);
         log.info(result);
         model.addAttribute("result",result);
         return "/post/list";
     }
-
-    @GetMapping(value = {"/list/com","/list/user"})
+    // "/list/com?type=title" 종류( title, company, occupation, titleCompanyName )
+    // "/list/com?sort=new" 종류( new, count, salary, end )
+    // "/list/com?outOfDateState" 종류( active, beforeStart, afterEnd, beforeAfter, all)
+    // 자세한 설명은 PageRequestDTO 에 있습니다.
+    @GetMapping(value = {"/list/com"})
     public String listComPage(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
         log.info("Controller......." +pageRequestDTO);
-        HttpSession httpSession = httpServletRequest.getSession();
+        HttpSession httpSession = httpServletRequest.getSession(false);
         String type = getAuthId(httpSession,"Type");
         // 세션 타입 체크
         pageRequestDTO.setAuthType(type);

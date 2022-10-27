@@ -24,3 +24,5 @@
 (salaryRange) values ('7500~8000');"
 "INSERT INTO goodjob.salary
 (salaryRange) VALUES('8000~');"
+"INSERT INTO goodjob.salary
+(salaryRange) VALUES('회사내규');"

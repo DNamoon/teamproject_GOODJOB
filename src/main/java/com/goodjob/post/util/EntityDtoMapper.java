@@ -1,17 +1,16 @@
 package com.goodjob.post.util;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.salary.Salary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public interface EntityDtoMapper {
 //    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -71,8 +70,8 @@ public interface EntityDtoMapper {
                 .startDate(transFormat.format(post.getPostStartDate()))
                 .endDate(transFormat.format(post.getPostEndDate()))
                 .gender(post.getPostGender())
-                .regionId(post.getPostRegion().getRegName())
-                .regionName(post.getPostRegion().getRegName())
+                .regionId(post.getRegion().getRegName())
+                .regionName(post.getRegion().getRegName())
                 .salaryId(post.getSalary().getSalaryId())
                 .salaryRange(post.getSalary().getSalaryRange())
                 .count(post.getCount())
@@ -92,7 +91,7 @@ public interface EntityDtoMapper {
 //                .startDate(transFormat.format(post.getPostStartDate()))
 //                .endDate(transFormat.format(post.getPostEndDate()))
                 .remainDay(String.valueOf(remainDay))
-                .regionName(post.getPostRegion().getRegName())
+                .regionName(post.getRegion().getRegName())
                 .salaryId(post.getSalary().getSalaryId())
                 .salaryRange(post.getSalary().getSalaryRange())
                 .occName(post.getPostOccCode().getOccName())
@@ -101,7 +100,7 @@ public interface EntityDtoMapper {
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, PostRegion postRegion, Salary salary) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region region, Salary salary) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())
@@ -111,7 +110,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
-                    .postRegion(postRegion)
+                    .region(region)
                     .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
@@ -126,7 +125,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
-                    .postRegion(postRegion)
+                    .region(region)
                     .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
