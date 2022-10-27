@@ -15,6 +15,8 @@ public class PostMainCardDTO {
 //    private String endDate;
     private String remainDay;
     private String regionName;
+    private Long salaryId;
+    private String salaryRange;
 
     private String occName;
     private String comName;

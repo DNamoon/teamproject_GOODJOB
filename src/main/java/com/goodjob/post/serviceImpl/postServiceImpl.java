@@ -1,10 +1,11 @@
 package com.goodjob.post.serviceImpl;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
@@ -12,7 +13,8 @@ import com.goodjob.post.occupation.repository.OccupationRepository;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.postregion.PostRegionRepository;
+import com.goodjob.post.salary.Salary;
+import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.Optional;
@@ -35,7 +38,8 @@ public class postServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final OccupationRepository occupationRepository;
     private final CompanyRepository companyRepository;
-    private final PostRegionRepository postRegionRepository;
+    private final SalaryRepository salaryRepository;
+    private final RegionRepository regionRepository;
 
     @Override
     public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
@@ -49,6 +53,9 @@ public class postServiceImpl implements PostService {
     @Override
     public PageResultDTO<Post,PostMainCardDTO> getListInMain(){
 
+        String keyword = "postId";
+        Sort sort  = Sort.by(Sort.Direction.DESC,keyword);
+
         Pageable pageable = PageRequest.of(0,8,Sort.by(Sort.Direction.DESC, "postId"));
 //        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
         Page<Post> result = postRepository.findAll(pageable);
@@ -60,12 +67,13 @@ public class postServiceImpl implements PostService {
     public Long register(PostDTO postDTO) {
         Optional<Occupation> oOcc = occupationRepository.findById(postDTO.getOccId());
         Optional<Company> com = companyRepository.findByComLoginId(postDTO.getComLoginId());
-        Optional<PostRegion> reg = postRegionRepository.findById(postDTO.getRegionId());
+        Optional<Region> reg = regionRepository.findById(postDTO.getRegionId());
+        Optional<Salary> sal = salaryRepository.findById(postDTO.getSalaryId());
         log.info("service.....register..."+postDTO);
         Post entity = null;
-        if(oOcc.isPresent() && com.isPresent() && reg.isPresent()){
+        if(oOcc.isPresent() && com.isPresent() && reg.isPresent() && sal.isPresent()){
             try {
-                entity = dtoToEntity(postDTO, oOcc.get(),com.get(),reg.get());
+                entity = dtoToEntity(postDTO, oOcc.get(),com.get(),reg.get(),sal.get());
                 postRepository.save(entity);
                 return entity.getPostId();
             } catch (ParseException e) {
@@ -76,8 +84,10 @@ public class postServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public PostDTO read(Long postId){
         Optional<Post> result = postRepository.findById(postId);
+        postRepository.increasePostCount(postId);
         return result.map(this::entityToDto).orElse(null);
     }
     @Override

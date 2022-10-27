@@ -1,8 +1,9 @@
 package com.goodjob.post;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.post.occupation.Occupation;
-import com.goodjob.post.postregion.PostRegion;
+import com.goodjob.post.salary.Salary;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,6 @@ import java.sql.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Getter
 @Builder
 public class Post {
@@ -48,7 +48,15 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "regCode")
-    private PostRegion postRegion;
+    private Region postRegion;
+
+    @ManyToOne
+    @JoinColumn(name = "salaryId")
+    private Salary salary; // 연봉
+
+    @Column
+    private int count; // 조회수
+
 
 
 
