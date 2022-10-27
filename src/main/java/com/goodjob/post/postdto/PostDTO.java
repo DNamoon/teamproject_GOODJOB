@@ -21,6 +21,7 @@ public class PostDTO {
     private Long salaryId;
     private String salaryRange;
     private int count;
+    private int remainDay;
 
     private Long occId;
     private String occName;

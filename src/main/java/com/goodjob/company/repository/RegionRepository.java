@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RegionRepository extends JpaRepository<Region,String>{
-    
+
     //search 드롭박스용
     @Query("select r.regName from Region r ")
     List<String> regName();
