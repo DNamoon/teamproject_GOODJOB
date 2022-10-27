@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public interface EntityDtoMapper {
-//    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
     //    Date to = transFormat.parse(from);
     //    String to = transFormat.format(from);

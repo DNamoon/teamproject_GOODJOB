@@ -74,7 +74,7 @@ public class PostController {
     }
 
     @GetMapping(value = {"/list"})
-    public String list(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
+    public String list(PageRequestDTO pageRequestDTO, Model model){
         log.info("Controller......." +pageRequestDTO);
         PageResultDTO<Post, PostDTO> result = postService.getList(pageRequestDTO);
         log.info(result);
