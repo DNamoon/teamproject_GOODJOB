@@ -1,4 +1,6 @@
 INSERT INTO goodjob.salary
+(salaryRange) values ('회사내규');
+INSERT INTO goodjob.salary
 (salaryRange) values ('2000~2500');
 INSERT INTO goodjob.salary
 (salaryRange) values ('2500~3000');

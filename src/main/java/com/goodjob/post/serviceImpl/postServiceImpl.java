@@ -218,7 +218,7 @@ public class postServiceImpl implements PostService {
                 booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
             }
             if (!(pageRequestDTO.getFilterSalary().isEmpty() || pageRequestDTO.getFilterSalary().trim().length() == 0)){
-//            booleanBuilderWithFilter.or(qPost..sssalarypostRegionregName.eq(filter[1]));
+                booleanBuilderWithFilter.and(qPost.salary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
             }
             booleanBuilder.and(booleanBuilderWithFilter);
 
