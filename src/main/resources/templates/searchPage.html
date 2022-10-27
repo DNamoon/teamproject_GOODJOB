@@ -4,7 +4,7 @@
             <div class="container py-4 flex-wrap">
                 <div class="row">
                     <div class="s010">
-                        <form>
+                        <form action="/search" method="post">
                             <div class="inner-form">
                                 <div class="basic-search">
                                     <div class="input-field">
@@ -22,12 +22,11 @@
                                     <div class="row">
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="">
+                                                <select data-trigger="" name="occupationDropdown">
                                                     <option placeholder="" value="">직종</option>
-                                                    <th:block th:each="i:${occuAll}">
-                                                        <option>[[${i}]]</option>
+                                                    <th:block th:each="o:${occuAll}">
+                                                        <option th:value="${o}">[[${o}]]</option>
                                                     </th:block>
-
                                                 </select>
                                             </div>
                                         </div>
@@ -35,8 +34,9 @@
                                             <div class="input-select">
                                                 <select data-trigger="" name="choices-single-defaul">
                                                     <option placeholder="" value="">지역</option>
-
-                                                    <option>Subject c</option>
+                                                    <th:block th:each="r:${regName}">
+                                                        <option>[[${r}]]</option>
+                                                    </th:block>
                                                 </select>
                                             </div>
                                         </div>
@@ -44,8 +44,9 @@
                                             <div class="input-select">
                                                 <select data-trigger="" name="choices-single-defaul">
                                                     <option placeholder="" value="">연봉</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
+                                                    <th:block th:each="s:${regName}">
+                                                        <option>[[${r}]]</option>
+                                                    </th:block>
                                                 </select>
                                             </div>
                                         </div>
@@ -57,7 +58,7 @@
                                             </div>
                                             <div class="group-btn">
                                                 <button class="btn-delete" id="delete">RESET</button>
-                                                <button class="btn-search">SEARCH</button>
+                                                <button type="submit" class="btn-search">SEARCH</button>
                                             </div>
                                         </div>
                                     </div>

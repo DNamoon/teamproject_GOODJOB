@@ -85,3 +85,5 @@ const post = async function post(host, path, body, headers ={}){
     const data = await response.json();
     return response.ok ? data : new Error(data);
 }
+
+//공고 검색
