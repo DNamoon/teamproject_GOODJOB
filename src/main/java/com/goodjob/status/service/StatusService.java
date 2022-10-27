@@ -7,6 +7,7 @@ import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
 import com.goodjob.status.dto.ApplyDTO;
 import com.goodjob.status.dto.ApplyListDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ import java.util.List;
 
 public interface StatusService {
     void applyResume(Long postId, Long resumeId);
-    List<ApplyListDTO> getApplyList(String loginId);
-//    PageResultDTO<ApplyListDTO, Status> getList(ApplyListDTO applyListDTO, String loginId);
+    List<ApplyListDTO> getApplyList(String loginId, int pageNum);
+    PageResultDTO<ApplyListDTO, Status> getList(String loginId, int pageNum);
 
     default Status dtoToEntity(Long postId, Long resumeId){
         Post post = Post.builder().postId(postId).build();

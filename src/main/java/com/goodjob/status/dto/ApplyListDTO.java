@@ -17,9 +17,6 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 public class ApplyListDTO {
-    private int page;
-    private int size;
-
     private Long statId;
     private Long statPostId;
     private Long statResumeId;
@@ -27,12 +24,4 @@ public class ApplyListDTO {
     private String postName;
     private String companyName;
     private String resumeTitle;
-
-    public ApplyListDTO(){
-        this.page=1;
-        this.size=10;
-    }
-    public Pageable getPageable(Sort sort){
-        return PageRequest.of(page-1,size, sort);
-    }
 }

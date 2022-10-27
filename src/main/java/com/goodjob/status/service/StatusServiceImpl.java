@@ -8,10 +8,12 @@ import com.goodjob.status.repository.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,17 +32,23 @@ public class StatusServiceImpl implements StatusService{
     }
 
     @Override
-    public List<ApplyListDTO> getApplyList(String loginId) {
-        List<Status> applyList = statusRepository.getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(loginId);
+    public List<ApplyListDTO> getApplyList(String loginId, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum,10);
+        Page<Status> applyList = statusRepository.getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(loginId, pageable);
+        System.out.println("//////////////////////////////////////");
+        System.out.println(applyList.getTotalPages());
+        System.out.println(applyList.getTotalElements());
+        System.out.println(applyList.getNumber());
+        System.out.println(applyList.hasNext());
         return applyList.stream().map(apply -> entityToListDTO(apply)).collect(Collectors.toList());
     }
 
-//    @Override
-//    public PageResultDTO<ApplyListDTO, Status> getList(ApplyListDTO applyListDTO, String loginId) {
-//        Pageable pageable = applyListDTO.getPageable(Sort.by("statApplyDate").descending());
-//        Page<Status> result = statusRepository.findAll(pageable);
-////        Page<Status> result = statusRepository.getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(loginId);
-//        Function<Status, ApplyListDTO> fn = (entity -> entityToListDTO(entity));
-//        return new PageResultDTO(result,fn);
-//    }
+    @Override
+    public PageResultDTO<ApplyListDTO, Status> getList(String loginId, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum,10);
+        Page<Status> applyList = statusRepository.getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(loginId, pageable);
+        Function<Status, ApplyListDTO> fn = (entity -> entityToListDTO(entity));
+        return new PageResultDTO(applyList, fn);
+    }
+
 }

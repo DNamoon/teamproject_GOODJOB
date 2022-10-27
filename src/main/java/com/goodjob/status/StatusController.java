@@ -34,10 +34,10 @@ public class StatusController {
    }
 
    @ResponseBody
-   @GetMapping(value = "/getApplyList", produces = MediaType.APPLICATION_JSON_VALUE)
-   public ResponseEntity<List<ApplyListDTO>> getApplyList(HttpSession session){
-      return new ResponseEntity<>(statusService.getApplyList((String) session.getAttribute("sessionId")), HttpStatus.OK);
-//      return new ResponseEntity<>(statusService.getList(applyListDTO, (String) session.getAttribute("sessionId")), HttpStatus.OK);
+   @GetMapping(value = "/getApplyList/{pageNum}", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<PageResultDTO<ApplyListDTO, Status>> getApplyList(HttpSession session, @PathVariable("pageNum") int pageNum){
+//      return new ResponseEntity<>(statusService.getApplyList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
+      return new ResponseEntity<>(statusService.getList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
    }
 
 }
