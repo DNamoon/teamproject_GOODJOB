@@ -136,11 +136,11 @@
                                     <label th:for="comEmail">이메일<span
                                             style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control w-40" th:field="*{comEmail1}"
+                                        <input type="text" class="form-control w-40 border" th:field="*{comEmail1}"
                                                placeholder="goodjob"
                                                name="email"
                                                required> &nbsp;@ &nbsp;&nbsp;
-                                        <select class="form-control" th:field="*{comEmail2}">
+                                        <select class="form-control border ps-2" th:field="*{comEmail2}">
                                             <option value="naver.com">naver.com</option>
                                             <option value="daum.net">daum.net</option>
                                             <option value="gmail.com">gmail.com</option>
@@ -148,30 +148,36 @@
                                     </div>
                                 </div>
                                 <br/>
-                                <div>
-                                    <div class="col-md-6 px-0">
-                                        <label th:for="comAddress">주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+
+                                <label th:for="comAddress">주소</label>
+                                <div class="input-group mb-4">
+                                    <input type="text" class="form-control col-md-2 my-2 " name="comAddress1"
+                                           th:field="*{comAddress1}"
+                                           id="sample6_postcode" placeholder="우편번호" readonly required>
+
+                                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"
+                                           class="btn bg-gradient-dark col-md-auto m-2 findAddress" style="float:right;">
+
+
+                                    <input type="text" class="form-control col-md-auto my-2 ms-4 ps-2 border" name="comAddress2"
+                                           th:field="*{comAddress2}"
+                                           id="sample6_address" placeholder="주소" readonly required>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
                                         <div class="input-group mb-4">
-                                            <!--              <input type="text" class="form-control" id="address" rows="4" name="address">-->
-                                            <input type="text" class="form-control" th:field="*{comAddress1}" id="sample6_postcode" placeholder="우편번호" readonly required>
-                                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn bg-gradient-dark w-150 findAddress">
+                                            <input type="text" class="form-control" name="comAddress3"
+                                                   id="sample6_detailAddress" th:field="*{comAddress3}"
+                                                   placeholder="상세주소">
                                         </div>
                                     </div>
-                                    <div class="mb-0">
-                                        <input type="text" class="form-control" th:field="*{comAddress2}" id="sample6_address" placeholder="주소" readonly required><br>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-4">
-                                                <input type="text" class="form-control" th:field="*{comAddress3}" id="sample6_detailAddress"
-                                                       placeholder="상세주소" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-4">
-                                                <input type="text" class="form-control" th:field="*{comAddress4}" id="sample6_extraAddress"
-                                                       placeholder="참고항목">
-                                            </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group mb-4">
+                                            <input type="text" class="form-control"
+                                                   th:field="*{comAddress4}"
+                                                   id="sample6_extraAddress" name="comAddress4"
+                                                   placeholder="참고항목">
                                         </div>
                                     </div>
                                 </div>
