@@ -32,7 +32,8 @@ public class PageRequestDTO {
     // "salary"는 연봉 높은 순
     // "end" 종료 날짜가 가까운 순
     private String sort;
-    private String filter; // 연봉 선택 시
+    // 직종, 연봉, 지역 추가 필터링 조건
+    private String[] filter;
     // "active"(기본)은 현재 모집중인 공고 리스트만 가져오는 조건을 추가한다.
     // "beforeStart"은 모집이 아직 시작하지 않은 리스트만 가져오는 조건을 추가한다.
     // "afterEnd"은 모집이 종료된 공고 리스트만 가져오는 조건을 추가한다.

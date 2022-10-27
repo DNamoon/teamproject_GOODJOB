@@ -143,8 +143,14 @@ public class postServiceImpl implements PostService {
 
     private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO){
         log.info("service.......getSearch: "+pageRequestDTO);
+
+
+
         QPost qPost = QPost.post;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+
+
 
         // 세션의 authType = "company" 이라면 로그인한 기업회원의 글만
         // 가져오는 조건 추가.
@@ -172,32 +178,46 @@ public class postServiceImpl implements PostService {
         }
         // 검색 조건으로 type = "title" 인 경우, 공고 제목에 keyword 를 가지는 글만
         // 가져오는 조건 추가
-        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        BooleanBuilder booleanBuilderWithSearch = new BooleanBuilder();
         if(type.contains("title")){
-            conditionBuilder.or(qPost.postTitle.contains(keyword));
+            booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword));
         }
         // 검색 조건으로 type = "company" 인 경우, 기업명으로 keyword 를 가지는 글만
         // 가져오는 조건 추가
         if(type.contains("company")){
-            conditionBuilder.or(qPost.postComId.comName.contains(keyword));
+            booleanBuilderWithSearch.or(qPost.postComId.comName.contains(keyword));
         }
         // 검색 조건으로 type = "occupation" 인 경우, 직종명으로 keyword 를 가지는 글만
         // 가져오는 조건 추가
         if(type.contains("occupation")){
-            conditionBuilder.or(qPost.postOccCode.occName.contains(keyword));
+            booleanBuilderWithSearch.or(qPost.postOccCode.occName.contains(keyword));
         }
         // 검색 조건으로 type = "region" 인 경우, 지역명으로 keyword 를 가지는 글만
         // 가져오는 조건 추가
         if(type.contains("region")){
-            conditionBuilder.or(qPost.postRegion.regName.contains(keyword));
+            booleanBuilderWithSearch.or(qPost.postRegion.regName.contains(keyword));
         }
         // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
         // keyword 를 가지는 글만 가져오는 조건 추가
         if(type.contains("titleCompanyName")){
-            conditionBuilder.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
+            booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
         }
-        booleanBuilder.and(conditionBuilder);
         // 검색 조건 처리 코드 끝
+        String[] filter = {"교육 전문가 및 관련직","서울특별시","2000~2500"};
+
+        BooleanBuilder booleanBuilderWithFilter = new BooleanBuilder();
+        if (!filter[0].isEmpty()){
+            booleanBuilderWithFilter.or(qPost.postOccCode.occName.eq(filter[0]));
+        }
+        if (!filter[1].isEmpty()){
+            booleanBuilderWithFilter.or(qPost.postRegion.regName.eq(filter[1]));
+        }
+        if (!filter[2].isEmpty()){
+//            booleanBuilderWithFilter.or(qPost..sssalarypostRegionregName.eq(filter[1]));
+        }
+
+
+        booleanBuilder.and(booleanBuilderWithSearch).and(booleanBuilderWithFilter);
 
         return booleanBuilder;
     }
