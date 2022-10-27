@@ -32,11 +32,16 @@ public class PostInsertDTO {
 
     private String postGender;
 
-    private String region;
+    private String postRegion;
 
     private List<MultipartFile> postImg;
 
     private String salary;
 
+    private String postAddress;
+
+    private String postDetailAddress;
+
     private String ComLoginId;
+
 }

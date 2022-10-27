@@ -50,7 +50,10 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "regCode")
-    private Region region;
+    private Region postRegion;
+
+    @Column
+    private String postAddress;
 
     @ElementCollection
     @CollectionTable(name = "postImg", joinColumns = @JoinColumn(name = "postImgId", referencedColumnName = "postId"))
@@ -61,7 +64,7 @@ public class Post {
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
 
-    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region region, List<UploadFile> postImg, String salary) {
+    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, String salary) {
         this.postTitle = postTitle;
         this.postOccCode = postOccCode;
         this.postComId = postComId;
@@ -70,7 +73,7 @@ public class Post {
         this.postStartDate = postStartDate;
         this.postEndDate = postEndDate;
         this.postGender = postGender;
-        this.region = region;
+        this.postRegion = postRegion;
         this.postImg = postImg;
         this.salary = salary;
     }

@@ -91,7 +91,7 @@ public class postServiceImpl implements PostService {
     public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
-        Optional<Region> region = regionRepository.findById(postInsertDTO.getRegion());
+        Optional<Region> region = regionRepository.findById(postInsertDTO.getPostRegion());
         List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
         log.info("service.....register..."+postInsertDTO);
         if(occupation.isPresent() && company.isPresent() && region.isPresent()){
@@ -142,7 +142,7 @@ public class postServiceImpl implements PostService {
             conditionBuilder.or(qPost.postOccCode.occName.contains(keyword));
         }
         if(type.contains("region")){
-            conditionBuilder.or(qPost.region.regName.contains(keyword));
+            conditionBuilder.or(qPost.postRegion.regName.contains(keyword));
         }
         if(type.contains("titleCompanyName")){
             conditionBuilder.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));

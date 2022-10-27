@@ -70,8 +70,8 @@ public interface EntityDtoMapper {
                 .startDate(transFormat.format(post.getPostStartDate()))
                 .endDate(transFormat.format(post.getPostEndDate()))
                 .gender(post.getPostGender())
-                .regionId(post.getRegion().getRegName())
-                .regionName(post.getRegion().getRegName())
+                .regionId(post.getPostRegion().getRegName())
+                .regionName(post.getPostRegion().getRegName())
                 .occId(post.getPostOccCode().getOccId())
                 .occName(post.getPostOccCode().getOccName())
                 .comLoginId(post.getPostComId().getComLoginId())
@@ -88,14 +88,14 @@ public interface EntityDtoMapper {
 //                .startDate(transFormat.format(post.getPostStartDate()))
 //                .endDate(transFormat.format(post.getPostEndDate()))
                 .remainDay(String.valueOf(remainDay))
-                .regionName(post.getRegion().getRegName())
+                .regionName(post.getPostRegion().getRegName())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region region) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())
@@ -105,7 +105,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
-                    .region(region)
+                    .postRegion(postRegion)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();
@@ -119,7 +119,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
-                    .region(region)
+                    .postRegion(postRegion)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();
