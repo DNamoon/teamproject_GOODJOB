@@ -1,11 +1,10 @@
 package com.goodjob.post.serviceImpl;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
-import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
@@ -13,6 +12,7 @@ import com.goodjob.post.occupation.repository.OccupationRepository;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
+import com.goodjob.post.postregion.PostRegionRepository;
 import com.goodjob.post.salary.Salary;
 import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
@@ -39,8 +39,9 @@ public class postServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final OccupationRepository occupationRepository;
     private final CompanyRepository companyRepository;
-    private final RegionRepository regionRepository;
+    private final PostRegionRepository postRegionRepository;
     private final SalaryRepository salaryRepository;
+    private final RegionRepository regionRepository;
 
     @Override
     public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
@@ -60,6 +61,7 @@ public class postServiceImpl implements PostService {
         Sort sort  = Sort.by(Sort.Direction.DESC,keyword);
 
         Pageable pageable = PageRequest.of(0,8,Sort.by(Sort.Direction.DESC, "postId"));
+//        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
         Page<Post> result = postRepository.findAll(pageable);
         Function<Post,PostMainCardDTO> fn = (this::entityToDtoInMain);
         return new PageResultDTO<>(result,fn);
@@ -220,5 +222,10 @@ public class postServiceImpl implements PostService {
         booleanBuilder.and(booleanBuilderWithSearch).and(booleanBuilderWithFilter);
 
         return booleanBuilder;
+    }
+
+    @Override
+    public List<String> searchSalaryRange(){
+        return  postRepository.salaryRange();
     }
 }

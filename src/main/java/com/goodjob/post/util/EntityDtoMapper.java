@@ -7,10 +7,12 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.salary.Salary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public interface EntityDtoMapper {
 //    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -100,7 +102,7 @@ public interface EntityDtoMapper {
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region region, Salary salary) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, Salary salary) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())
@@ -110,7 +112,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
-                    .region(region)
+                    .postRegion(postRegion)
                     .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
@@ -125,7 +127,7 @@ public interface EntityDtoMapper {
                     .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
-                    .region(region)
+                    .postRegion(postRegion)
                     .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)

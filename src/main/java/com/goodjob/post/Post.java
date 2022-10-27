@@ -3,6 +3,7 @@ package com.goodjob.post;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.post.occupation.Occupation;
+import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.salary.Salary;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,7 +52,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "regCode")
-    private Region region; // 근무지
+    private Region postRegion;
 
     @ManyToOne
     @JoinColumn(name = "salaryId")

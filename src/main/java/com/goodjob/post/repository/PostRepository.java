@@ -27,4 +27,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
     @Query("update Post p set p.count = p.count + 1 where p.postId = :id")
     void increasePostCount(@Param("id") Long id);
 
+    //search 드롭박스용
+    @Query("select s.salaryRange from Salary s ")
+    List<String> salaryRange();
+
 }
