@@ -35,7 +35,7 @@
                                                 <select data-trigger="" name="choices-single-defaul">
                                                     <option placeholder="" value="">지역</option>
                                                     <th:block th:each="r:${regName}">
-                                                        <option>[[${r}]]</option>
+                                                        <option th:value="${r}">[[${r}]]</option>
                                                     </th:block>
                                                 </select>
                                             </div>
@@ -44,8 +44,8 @@
                                             <div class="input-select">
                                                 <select data-trigger="" name="choices-single-defaul">
                                                     <option placeholder="" value="">연봉</option>
-                                                    <th:block th:each="s:${regName}">
-                                                        <option>[[${r}]]</option>
+                                                    <th:block th:each="s:${salaryRange}">
+                                                        <option th:value="${s}">[[${s}]]</option>
                                                     </th:block>
                                                 </select>
                                             </div>

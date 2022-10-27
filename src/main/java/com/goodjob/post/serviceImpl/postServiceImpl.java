@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -141,5 +142,10 @@ public class postServiceImpl implements PostService {
         // 검색 조건 처리 코드 끝
 
         return booleanBuilder;
+    }
+
+    @Override
+    public List<String> searchSalaryRange(){
+        return  postRepository.salaryRange();
     }
 }
