@@ -91,4 +91,8 @@ public class AdminController {
             log.info("postDTO={}",post);
             return "admin/adminHome";
     }
+    @GetMapping("/test2")
+    public String test3(){
+        return "post/postDetailView";
+    }
 }
