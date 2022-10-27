@@ -6,13 +6,11 @@ import com.goodjob.post.Post;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postdto.PostCardDTO;
 import com.goodjob.post.salary.Salary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 
 public interface EntityDtoMapper {
@@ -84,12 +82,12 @@ public interface EntityDtoMapper {
                 .comName(post.getPostComId().getComName())
                 .build();
     }
-    default PostMainCardDTO entityToDtoInMain(Post post) {
+    default PostCardDTO entityToDtoInMain(Post post) {
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         long remainDay = difDay/ (24*60*60);
         System.out.println(remainDay);
-        return PostMainCardDTO.builder()
+        return PostCardDTO.builder()
                 .id(post.getPostId())
                 .title(post.getPostTitle())
                 .regionName(post.getPostRegion().getRegName())

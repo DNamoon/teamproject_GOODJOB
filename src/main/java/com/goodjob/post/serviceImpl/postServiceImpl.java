@@ -5,7 +5,7 @@ import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postdto.PostCardDTO;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
@@ -28,11 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -46,7 +44,6 @@ public class postServiceImpl implements PostService {
 
     @Override
     public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
-        log.info("service......getList..."+pageRequestDTO);
         Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
         BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
         Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
@@ -56,12 +53,11 @@ public class postServiceImpl implements PostService {
     }
 
     @Override
-    public PageResultDTO<Post,PostMainCardDTO> getListInMain(PageRequestDTO pageRequestDTO){
-        log.info("service......getList..."+pageRequestDTO);
+    public PageResultDTO<Post, PostCardDTO> getPagingPostList(PageRequestDTO pageRequestDTO){
         Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
         BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
         Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
-        Function<Post,PostMainCardDTO> fn = (this::entityToDtoInMain);
+        Function<Post, PostCardDTO> fn = (this::entityToDtoInMain);
         return new PageResultDTO<>(result,fn);
     }
     // pageRequestDTO 의 sort 값에 따라 공고 리스트의 정렬에 필요한 Sort를 리턴해주는 메솓즈

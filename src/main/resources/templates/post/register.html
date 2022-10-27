@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1 class="mt-4">등록페이지</h1>
-    <form th:action="@{/post/register}" th:method="post">
+    <form th:action="@{/mainPage/register}" th:method="mainPage">
         <div class="form-group">
             <label>직종</label>
             <div class="input-group-pretend">
@@ -48,7 +48,7 @@
         </div>
         <div class="btn-group">
             <button type="submit" class="btn btn-primary">Submit</button>
-            <a th:href="@{/post/list}">
+            <a th:href="@{/mainPage/list}">
                 <button type="button" class="btn btn-primary list-btn">목록</button>
             </a>
         </div>

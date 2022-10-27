@@ -3,7 +3,7 @@ import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postdto.PostCardDTO;
 import com.goodjob.post.util.EntityDtoMapper;
 
 import java.text.ParseException;
@@ -17,7 +17,7 @@ public interface PostService extends EntityDtoMapper {
 
 
 
-    PageResultDTO<Post,PostMainCardDTO> getListInMain(PageRequestDTO pageRequestDTO);
+    PageResultDTO<Post, PostCardDTO> getPagingPostList(PageRequestDTO pageRequestDTO);
 
     Long register(PostDTO postDTO) throws ParseException;
 

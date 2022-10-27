@@ -182,7 +182,7 @@ function sendEmail(){
 //         const form = document.forms['changPwForm'];
 //         const data = $('#pw2').val();
 //             form.action = "/member/changePw";
-//             form.method ="post";
+//             form.method ="mainPage";
 //             form.submit();
 //     })
 // });

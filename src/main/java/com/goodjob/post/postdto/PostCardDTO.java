@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class PostMainCardDTO {
+public class PostCardDTO {
 
     private Long id; // 공고 pk
     private String title; // 공고 제목
