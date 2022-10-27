@@ -1,10 +1,11 @@
 package com.goodjob.post.serviceImpl;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
@@ -12,7 +13,6 @@ import com.goodjob.post.occupation.repository.OccupationRepository;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.postregion.PostRegionRepository;
 import com.goodjob.post.salary.Salary;
 import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
@@ -21,7 +21,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -39,7 +41,6 @@ public class postServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final OccupationRepository occupationRepository;
     private final CompanyRepository companyRepository;
-    private final PostRegionRepository postRegionRepository;
     private final SalaryRepository salaryRepository;
     private final RegionRepository regionRepository;
 
@@ -55,14 +56,11 @@ public class postServiceImpl implements PostService {
     }
 
     @Override
-    public PageResultDTO<Post,PostMainCardDTO> getListInMain(){
-
-        String keyword = "postId";
-        Sort sort  = Sort.by(Sort.Direction.DESC,keyword);
-
-        Pageable pageable = PageRequest.of(0,8,Sort.by(Sort.Direction.DESC, "postId"));
-//        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
-        Page<Post> result = postRepository.findAll(pageable);
+    public PageResultDTO<Post,PostMainCardDTO> getListInMain(PageRequestDTO pageRequestDTO){
+        log.info("service......getList..."+pageRequestDTO);
+        Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
+        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
+        Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
         Function<Post,PostMainCardDTO> fn = (this::entityToDtoInMain);
         return new PageResultDTO<>(result,fn);
     }
@@ -204,22 +202,27 @@ public class postServiceImpl implements PostService {
         if(type.contains("titleCompanyName")){
             booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
         }
+        log.info("=======================================1"+booleanBuilderWithSearch);
+//        if(booleanBuilderWithSearch!=null){
+            booleanBuilder.and(booleanBuilderWithSearch);
+//        }
+
         // 검색 조건 처리 코드 끝
-        String[] filter = {"교육 전문가 및 관련직","서울특별시","2000~2500"};
 
         BooleanBuilder booleanBuilderWithFilter = new BooleanBuilder();
-        if (!filter[0].isEmpty()){
-            booleanBuilderWithFilter.or(qPost.postOccCode.occName.eq(filter[0]));
-        }
-        if (!filter[1].isEmpty()){
-            booleanBuilderWithFilter.or(qPost.postRegion.regName.eq(filter[1]));
-        }
-        if (!filter[2].isEmpty()){
+        if(pageRequestDTO.getFilterOccupation()!=null){
+            if (!(pageRequestDTO.getFilterOccupation().isEmpty() || pageRequestDTO.getFilterOccupation().trim().length() == 0)){
+                booleanBuilderWithFilter.and(qPost.postOccCode.occName.eq(pageRequestDTO.getFilterOccupation()));
+            }
+            if (!(pageRequestDTO.getFilterRegion().isEmpty() || pageRequestDTO.getFilterRegion().trim().length() == 0)){
+                booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
+            }
+            if (!(pageRequestDTO.getFilterSalary().isEmpty() || pageRequestDTO.getFilterSalary().trim().length() == 0)){
 //            booleanBuilderWithFilter.or(qPost..sssalarypostRegionregName.eq(filter[1]));
+            }
+            booleanBuilder.and(booleanBuilderWithFilter);
+
         }
-
-
-        booleanBuilder.and(booleanBuilderWithSearch).and(booleanBuilderWithFilter);
 
         return booleanBuilder;
     }

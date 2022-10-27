@@ -1,5 +1,7 @@
 package com.goodjob.post.controller;
 
+import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.company.service.CompanyService;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.PageRequestDTO;
@@ -27,6 +29,7 @@ import java.text.ParseException;
 public class PostController {
     private final PostService postService;
     private final OccupationService occupationService;
+    private final CompanyService companyService;
 
     @PostMapping(value = {"/register"})
     public String register(PostDTO postDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Model model) throws ParseException {
@@ -84,6 +87,7 @@ public class PostController {
         log.info(result);
         model.addAttribute("result",result);
         return "/post/list";
+//        return "/searchPage";
     }
     // "/list/com?type=title" 종류( title, company, occupation, titleCompanyName )
     // "/list/com?sort=new" 종류( new, count, salary, end )
