@@ -41,7 +41,6 @@ public class postServiceImpl implements PostService {
     private final CompanyRepository companyRepository;
     private final SalaryRepository salaryRepository;
     private final RegionRepository regionRepository;
-
     private final FileService fileService;
 
     @Override
