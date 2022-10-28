@@ -36,7 +36,6 @@ public class StatusController {
    @ResponseBody
    @GetMapping(value = "/getApplyList/{pageNum}", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<PageResultDTO<ApplyListDTO, Status>> getApplyList(HttpSession session, @PathVariable("pageNum") int pageNum){
-//      return new ResponseEntity<>(statusService.getApplyList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
       return new ResponseEntity<>(statusService.getList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
    }
 

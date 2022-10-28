@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>이력서 관리</title>
+        <title>공고 관리</title>
     </head>
     <th:block th:fragment="content">
         <div class="container" style="height: 3rem;"></div>
@@ -42,7 +42,7 @@
                     <div class="container">
                         <div class="row" style="height: 40px">
                             <div class="col-7">
-                                <h5 class="text-bold">지원현황</h5>
+                                <h5 class="text-bold">공고관리</h5>
                                 <label style="color: #cbc8cb">공고 제목과 이력서 제목을 클릭하면 해당 페이지로 이동합니다.</label>
                             </div>
                             <input type="hidden" th:value="${session.sessionId}" id="sessionInput">
@@ -58,7 +58,7 @@
                                 <th scope="col">지원날짜</th>
                             </tr>
                             </thead>
-                            <tbody class="applyTable">
+                            <tbody class="postTable">
 
                             </tbody>
                         </table>

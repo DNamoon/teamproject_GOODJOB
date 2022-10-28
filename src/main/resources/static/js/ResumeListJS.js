@@ -169,7 +169,7 @@ function getApplyList(pageNum) {
                 '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
                 '      <td><a href="#">' + apply.postName.substr(0, 10) + "..." + '</a></td>\n' +
                 '      <td>' + apply.companyName + '</td>\n' +
-                '      <td><a href="#">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
+                '      <td><a href="/resume/goPreviousStep1/'+ apply.statResumeId +'">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
                 '      <td>' + apply.statApplyDate + '</td>\n' +
                 '    </tr>\n';
         })
