@@ -1,6 +1,7 @@
 package com.goodjob.post.controller;
 
 import com.goodjob.post.Post;
+import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
 import com.goodjob.post.service.PostService;
@@ -22,8 +23,8 @@ public class PostRestController {
     private final PostService postService;
 
     @GetMapping(value = {"/listInMain"})
-    public ResponseEntity<PageResultDTO<Post,PostMainCardDTO>> getListInMain(){
-        PageResultDTO<Post,PostMainCardDTO>  result = postService.getListInMain();
+    public ResponseEntity<PageResultDTO<Post,PostMainCardDTO>> getListInMain(PageRequestDTO pageRequestDTO){
+        PageResultDTO<Post,PostMainCardDTO>  result = postService.getListInMain(pageRequestDTO);
         log.info("Controller.............getListInMain...."+result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -42,4 +42,8 @@ public class OccupationServiceImpl implements OccupationService {
         }
     }
 
+    @Override
+    public List<String> searchOccName(){
+        return  occR.occuName();
+    }
 }

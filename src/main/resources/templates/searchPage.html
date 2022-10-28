@@ -22,60 +22,31 @@
                                     <div class="row">
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Accessories</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
+                                                <select data-trigger="" name="filterOccupation">
+                                                    <option placeholder="" value="">직종</option>
+                                                    <th:block th:each="o:${occuAll}">
+                                                        <option th:value="${o}" th:selected="${pageRequestDTO.filterOccupation == o}">[[${o}]]</option>
+                                                    </th:block>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Color</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
+                                                <select data-trigger="" name="filterRegion">
+                                                    <option placeholder="" value="">지역</option>
+                                                    <th:block th:each="r:${regName}" >
+                                                        <option th:value="${r}" th:selected="${pageRequestDTO.filterRegion == r}">[[${r}]]</option>
+                                                    </th:block>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Size</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row second">
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Sale</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Time</option>
-                                                    <option>Last time</option>
-                                                    <option>Today</option>
-                                                    <option>This week</option>
-                                                    <option>This month</option>
-                                                    <option>This year</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="" value="">Type</option>
-                                                    <option>Subject b</option>
-                                                    <option>Subject c</option>
+                                                <select data-trigger="" name="filterSalary">
+                                                    <option placeholder="" value="">연봉</option>
+                                                    <th:block th:each="s:${salaryRange}" >
+                                                        <option th:value="${s}" th:selected="${pageRequestDTO.filterSalary == s}">[[${s}]]</option>
+                                                    </th:block>
                                                 </select>
                                             </div>
                                         </div>
@@ -86,8 +57,8 @@
                                                 <span>108 </span>results
                                             </div>
                                             <div class="group-btn">
-                                                <button class="btn-delete" id="delete">RESET</button>
-                                                <button class="btn-search">SEARCH</button>
+                                                <a th:href="@{/search}"><button class="btn-delete" id="delete">RESET</button></a>
+                                                <button type="submit" class="btn-search">SEARCH</button>
                                             </div>
                                         </div>
                                     </div>
@@ -97,51 +68,26 @@
                     </div>
                     <div class="container" style="height: 3rem;"></div>
                     <h4>채용중인 공고</h4>
-                    <div class="row row-cols-1 row-cols-md-4 g-4">
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="img/40.jpg" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">iOS Native 개발자</h5>
-                                    <p class="card-text">아이픽셀(iPIXEL)</p>
-                                    <p class="card-text">연봉 | 3100만원</p>
-                                    <p class="card-text">위치 | 서울</p>
+                    <div class="container text-center ">
+                        <div class="row">
+                            <th:block th:each="dto:${result.dtoList}">
+                                <div class="col">
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="img/40.jpg" class="card-img-top">
+                                        <div class="card-body">
+                                            <h5 class="card-title">[[${dto.title}]]</h5>
+                                            <p class="card-subtitle mb-2 text-muted">[[${dto.comName}]]</p>
+                                            <p class="card-text">연봉 | [[${dto.salaryRange}]]</p>
+                                            <p class="card-text">위치 | [[${dto.regionName}]]</p>
+                                            <p class="card-text">직종 | [[${dto.occName}]]</p>
+                                            <p class="card-text">D-[[${dto.remainDay}]]</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="img/40.jpg" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">ASP.NET 선임 개발자</h5>
-                                    <p class="card-text">This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="img/40.jpg" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">React 프론트엔드 개발자</h5>
-                                    <p class="card-text">This is a longer card with supporting text below as a natural
-                                        lead-in to additional content.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="img/40.jpg" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">퍼블리셔</h5>
-                                    <p class="card-text">This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.</p>
-                                </div>
-                            </div>
+                            </th:block>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </section>
     </th:block>

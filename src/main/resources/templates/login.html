@@ -6,7 +6,7 @@
                     <div class="row">
                         <div class="col-lg-7" style="width : 500px">
                             <div class="text-center pb-0 text-left">
-                                <h4 class="font-weight-bolder">로그인</h4>
+                                <h3 class="font-weight-bolder">로그인</h3>
                             </div>
                             <form role="form" name="frm" method="post">
                                 <div th:if="${param.error}" role="alert">
@@ -17,8 +17,8 @@
                                            name="loginId" required>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="text" class="form-control form-control-lg" id="pw" placeholder="비밀번호"
-                                           name="pw" style="-webkit-text-security:square;" required>
+                                    <input type="password" class="form-control form-control-lg" id="pw" placeholder="비밀번호"
+                                           name="pw" required>
                                 </div>
                                 <div class="col-5 mx-auto">
                                     <div class="form-check form-switch">
@@ -33,7 +33,7 @@
                                 <label>&nbsp;</label>
                                 <div class="col-md-12">
                                     <input type="hidden" id="chk" value="none">
-                                    <button type="button" class="btn bg-gradient-dark w-100" onclick="UserTypeLogin()"
+                                    <button type="button" id="login" class="btn bg-gradient-dark w-100" onclick="UserTypeLogin()"
                                             style="font-size:15px">로그인
                                     </button>
                                 </div>

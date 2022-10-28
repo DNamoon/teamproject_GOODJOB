@@ -7,9 +7,12 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.salary.Salary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 
 public interface EntityDtoMapper {
@@ -72,6 +75,9 @@ public interface EntityDtoMapper {
                 .gender(post.getPostGender())
                 .regionId(post.getPostRegion().getRegName())
                 .regionName(post.getPostRegion().getRegName())
+                .salaryId(post.getSalary().getSalaryId())
+                .salaryRange(post.getSalary().getSalaryRange())
+                .count(post.getCount())
                 .occId(post.getPostOccCode().getOccId())
                 .occName(post.getPostOccCode().getOccName())
                 .comLoginId(post.getPostComId().getComLoginId())
@@ -79,23 +85,23 @@ public interface EntityDtoMapper {
                 .build();
     }
     default PostMainCardDTO entityToDtoInMain(Post post) {
-
-        long difDay = (post.getPostEndDate().getTime()-post.getPostStartDate().getTime())/1000;
+        Date now = new Date();
+        long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         long remainDay = difDay/ (24*60*60);
+        System.out.println(remainDay);
         return PostMainCardDTO.builder()
                 .id(post.getPostId())
                 .title(post.getPostTitle())
-//                .startDate(transFormat.format(post.getPostStartDate()))
-//                .endDate(transFormat.format(post.getPostEndDate()))
-                .remainDay(String.valueOf(remainDay))
                 .regionName(post.getPostRegion().getRegName())
+                .remainDay(String.valueOf(remainDay))
+                .salaryRange(post.getSalary().getSalaryRange())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, Salary salary) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())
@@ -106,6 +112,7 @@ public interface EntityDtoMapper {
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
                     .postRegion(postRegion)
+                    .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();
@@ -120,6 +127,7 @@ public interface EntityDtoMapper {
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
                     .postRegion(postRegion)
+                    .salary(salary)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();

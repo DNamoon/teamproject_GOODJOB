@@ -60,12 +60,12 @@ public class MemberController {
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         if(result.hasErrors()){
             return "member/signup";
-        }
+            }
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem = memberDTO.toEntity();
         memberService.register(mem);
-        return "redirect:/";
 
+        return "redirect:/";
     }
 
 
