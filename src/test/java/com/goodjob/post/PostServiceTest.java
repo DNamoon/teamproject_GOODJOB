@@ -1,11 +1,9 @@
-//package com.goodjob.post;
-//
-//import com.goodjob.post.postdto.PostBbsDto;
-//import com.goodjob.post.util.PageRequestDTO;
-//import com.goodjob.post.util.PageResultDTO;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
+package com.goodjob.post;
+
+import com.goodjob.post.postdto.PostBbsDto;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 //
 //@SpringBootTest
 //public class PostServiceTest {

@@ -1,10 +1,11 @@
 package com.goodjob.post;
 
 import com.goodjob.company.Company;
+import com.goodjob.company.Region;
 import com.goodjob.post.occupation.Occupation;
-import com.goodjob.post.postregion.PostRegion;
 import com.goodjob.post.salary.Salary;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -38,17 +39,19 @@ public class Post {
     private String postRecruitNum;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date postStartDate;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date postEndDate;
 
     @Column
-    private String postGender;
+    private String postGender; // 성별
 
     @ManyToOne
     @JoinColumn(name = "regCode")
-    private PostRegion postRegion;
+    private Region postRegion;
 
     @ManyToOne
     @JoinColumn(name = "salaryId")
