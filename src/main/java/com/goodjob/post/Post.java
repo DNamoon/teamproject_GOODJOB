@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -59,6 +60,10 @@ public class Post {
 
     @Column
     private int count; // 조회수
+
+    @ElementCollection
+    @CollectionTable(name = "postImg", joinColumns = @JoinColumn(name = "postImgId", referencedColumnName = "postId"))
+    private List<UploadFile> postImg;
 
 
 

@@ -5,14 +5,12 @@ import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PostCardDTO;
+import com.goodjob.post.fileupload.UploadFile;
+import com.goodjob.post.postdto.*;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.repository.OccupationRepository;
-import com.goodjob.post.postdto.PageRequestDTO;
-import com.goodjob.post.postdto.PageResultDTO;
-import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.salary.Salary;
 import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
@@ -26,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
@@ -92,6 +91,24 @@ public class postServiceImpl implements PostService {
             } catch (ParseException e) {
                 log.info("Date 객체를 변환하는데 에러가 발생했습니다.");
             }
+        }
+        return null;
+    }
+
+    @Override
+    public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
+        Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
+        Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
+        Optional<Region> region = regionRepository.findById(postInsertDTO.getPostRegion());
+        List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
+        log.info("service.....register..."+postInsertDTO);
+        if(occupation.isPresent() && company.isPresent() && region.isPresent()){
+            Post post = new Post(postInsertDTO.getPostTitle(), occupation.get(), company.get(),
+                    postInsertDTO.getPostContent(), postInsertDTO.getPostRecruitNum(),
+                    postInsertDTO.getPostStartDate(), postInsertDTO.getPostEndDate(),
+                    postInsertDTO.getPostGender(),region.get(),uploadFiles,postInsertDTO.getSalary());
+            postRepository.save(post);
+            return post.getPostId();
         }
         return null;
     }

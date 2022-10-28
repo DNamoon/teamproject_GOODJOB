@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.ParseException;
 
 @Log4j2
@@ -68,6 +69,17 @@ public class PostController {
         redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
         redirectAttributes.addAttribute("postId",postDTO.getId());
         return "redirect:/post/read";
+    }
+    @GetMapping("/save")
+    public String postSaveForm(){
+        return "/post/postInsertForm";
+    }
+
+    @PostMapping("/save")
+    public String postSave(PostInsertDTO postInsertDTO) throws IOException {
+        log.info("postInsertDTO={}",postInsertDTO);
+        postService.savePost(postInsertDTO);
+        return "redirect:/";
     }
 
 
