@@ -2,6 +2,7 @@ package com.goodjob.post;
 
 import com.goodjob.company.Company;
 import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.post.repository.PostRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.List;
 @Transactional
 public class PagingPostTest {
     @Autowired
-    private  PostRepository postRepository;
+    private PostRepository postRepository;
     @Autowired
     private  CompanyRepository companyRepository;
 

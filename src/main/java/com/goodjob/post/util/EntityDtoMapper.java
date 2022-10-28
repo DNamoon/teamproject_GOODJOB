@@ -11,10 +11,12 @@ import com.goodjob.post.salary.Salary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 
 public interface EntityDtoMapper {
-    //    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
     //    Date to = transFormat.parse(from);
     //    String to = transFormat.format(from);
@@ -83,17 +85,15 @@ public interface EntityDtoMapper {
                 .build();
     }
     default PostMainCardDTO entityToDtoInMain(Post post) {
-
-        long difDay = (post.getPostEndDate().getTime()-post.getPostStartDate().getTime())/1000;
+        Date now = new Date();
+        long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         long remainDay = difDay/ (24*60*60);
+        System.out.println(remainDay);
         return PostMainCardDTO.builder()
                 .id(post.getPostId())
                 .title(post.getPostTitle())
-//                .startDate(transFormat.format(post.getPostStartDate()))
-//                .endDate(transFormat.format(post.getPostEndDate()))
-                .remainDay(String.valueOf(remainDay))
                 .regionName(post.getPostRegion().getRegName())
-                .salaryId(post.getSalary().getSalaryId())
+                .remainDay(String.valueOf(remainDay))
                 .salaryRange(post.getSalary().getSalaryRange())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())

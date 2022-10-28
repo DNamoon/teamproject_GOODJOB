@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
 </head>
 <body>
+    <div class="sort-btn-group">
+        <a th:href="@{/post/list(sort='new', outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="newBtn">최신순</button></a>
+        <a th:href="@{/post/list(sort='salary',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="salaryBtn">연봉순</button></a>
+        <a th:href="@{/post/list(sort='count',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="countBtn">인기순(조회수)</button></a>
+        <a th:href="@{/post/list(sort='end',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="endBtn">종료마감 가까운 순</button></a>
+        <a th:href="@{/post/list(outOfDateState='active', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집중</button></a>
+        <a th:href="@{/post/list(outOfDateState='beforeStart', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집시작전</button></a>
+        <a th:href="@{/post/list(outOfDateState='afterEnd', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집종료</button></a>
+        <a th:href="@{/post/list(outOfDateState='beforeAfter', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집시작전 또는 모집종료</button></a>
+        <a th:href="@{/post/list(outOfDateState='all', sort=${pageRequestDTO.sort})}"><button class="activeBtn">전체 공고</button></a>
+
+    </div>
     <div>
         <form action="/post/list" method="get" id="searchForm">
             <div class="input-group">
@@ -34,6 +46,7 @@
     <table>
         <thead>
             <tr>
+                <th>공고번호</th>
                 <th>회사</th>
                 <th>제목</th>
                 <th>직종</th>
@@ -41,14 +54,16 @@
                 <th>종료일</th>
                 <th>모집인원</th>
                 <th>모집성별</th>
-                <th>지역</th>
+                <th>근무처</th>
                 <th>조회수</th>
+                <th>연봉대</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="dto : ${result.getDtoList()}">
+                <th>[[${dto.id}]]</th>
                 <th>[[${dto.comName}]]</th>
-                <th><a th:href="@{/post/read(postId=${dto.id}, page=${result.page})}">[[${dto.title}]]</a></th>
+                <th><a th:href="@{/post/read(postId=${dto.id}, page=${result.page},outOfDateState=${pageRequestDTO.outOfDateState},sort=${pageRequestDTO.sort})}">[[${dto.title}]]</a></th>
                 <th>[[${dto.occName}]]</th>
                 <th>[[${dto.startDate}]]</th>
                 <th>[[${dto.endDate}]]</th>
@@ -56,6 +71,7 @@
                 <th>[[${dto.gender}]]</th>
                 <th>[[${dto.regionName}]]</th>
                 <th>[[${dto.count}]]</th>
+                <th>[[${dto.salaryRange}]]</th>
             </tr>
         </tbody>
     </table>
@@ -64,14 +80,14 @@
     <div>
         <ul class="pagination h-100 justify-content-center align-content-center">
             <li class="page-item" th:if="${result.prev}">
-                <a class="page-link" th:href="@{/post/list(page=${result.start -1})}" tabindex="1">Prev</a>
+                <a class="page-link" th:href="@{/post/list(page=${result.start -1},outOfDateState=${pageRequestDTO.outOfDateState},sort=${pageRequestDTO.sort})}" tabindex="1">Prev</a>
             </li>
 
             <li th:class=" 'page-item' + ${result.page == page?active:''}" th:each="page: ${result.pageList}">
-                <a class="page-item" th:href="@{/post/list(page=${result.page})}">[[${page}]]</a>
+                <a class="page-item" th:href="@{/post/list(page=${page},outOfDateState=${pageRequestDTO.outOfDateState},sort=${pageRequestDTO.sort})}">[[${page}]]</a>
             </li>
             <li class="page-item" th:if="${result.next}">
-                <a class="page-link" th:href="@{/post/list(page=${result.start +1})}">Next</a>
+                <a class="page-link" th:href="@{/post/list(page=${result.start +1},outOfDateState=${pageRequestDTO.outOfDateState},sort=${pageRequestDTO.sort})}">Next</a>
             </li>
         </ul>
     </div>
@@ -123,3 +139,4 @@
     </script>
 </body>
 </html>
+
