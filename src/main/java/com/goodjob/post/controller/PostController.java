@@ -72,8 +72,6 @@ public class PostController {
         redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
         redirectAttributes.addAttribute("postId",postDTO.getId());
         return "redirect:/post/read";
-
-
     }
 
     // "/list?type=title" 종류( title, company, occupation, titleCompanyName )
