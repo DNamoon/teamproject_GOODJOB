@@ -72,12 +72,6 @@ public class Post {
     private String postDetailAddress; // 주소2
 
 
-    @Column
-    private String postAddress;
-
-    @ElementCollection
-    @CollectionTable(name = "postImg", joinColumns = @JoinColumn(name = "postImgId", referencedColumnName = "postId"))
-    private List<UploadFile> postImg;
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
     public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, PostSalary postSalary) {

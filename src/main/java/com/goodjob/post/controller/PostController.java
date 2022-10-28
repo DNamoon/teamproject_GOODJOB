@@ -33,42 +33,7 @@ public class PostController {
     private final OccupationService occupationService;
     private final CompanyService companyService;
 
-    @PostMapping(value = {"/register"})
-    public String register(PostDTO postDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Model model) throws ParseException {
-        postDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
-        Long postId = postService.register(postDTO);
-        redirectAttributes.addFlashAttribute("msg",postId);
-        return "redirect:/post/list";
-    }
-    @GetMapping(value={"/register"})
-    public String register(HttpServletRequest httpServletRequest,Model model){
-        model.addAttribute("occList", occupationService.getAll());
-        return "/post/register";
-    }
-    @GetMapping(value = {"/read"})
-    public String read(Long postId, PageRequestDTO pageRequestDTO, Model model){
-        PostDTO dto = postService.read(postId);
-        model.addAttribute("occList", occupationService.getAll());
-        model.addAttribute("dto",dto);
-//        return "/post/read";
-        return "/post/postDetails";
-    }
-    @GetMapping(value = {"/modify"})
-    public String modify(Long postId, PageRequestDTO pageRequestDTO, Model model){
-        PostDTO dto = postService.read(postId);
-        model.addAttribute("occList", occupationService.getAll());
-        model.addAttribute("dto",dto);
-        return "/post/modify";
-    }
-    @PostMapping(value={"/modify"})
-    public String modify(PostDTO postDTO, PageRequestDTO pageRequestDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) throws ParseException {
-        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
-        postDTO.setComLoginId(sessionId);
-        postService.register(postDTO);
-        redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
-        redirectAttributes.addAttribute("postId",postDTO.getId());
-        return "redirect:/post/read";
-    }
+
 
     //---------------------
     @GetMapping("/savePost")
@@ -127,7 +92,7 @@ public class PostController {
 
 
 
-    // 삭제 예정======================================
+    // 삭제 예정     ================================================
 
     // "/list?type=title" 종류( title, company, occupation, titleCompanyName )
     // "/list?sort=new" 종류( new, count, salary, end )
@@ -153,6 +118,43 @@ public class PostController {
 
         model.addAttribute("result",postService.getList(pageRequestDTO));
         return "/post/list";
+    }
+
+    @PostMapping(value = {"/register"})
+    public String register(PostDTO postDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Model model) throws ParseException {
+        postDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
+        Long postId = postService.register(postDTO);
+        redirectAttributes.addFlashAttribute("msg",postId);
+        return "redirect:/post/list";
+    }
+    @GetMapping(value={"/register"})
+    public String register(HttpServletRequest httpServletRequest,Model model){
+        model.addAttribute("occList", occupationService.getAll());
+        return "/post/register";
+    }
+    @GetMapping(value = {"/read"})
+    public String read(Long postId, PageRequestDTO pageRequestDTO, Model model){
+        PostDTO dto = postService.read(postId);
+        model.addAttribute("occList", occupationService.getAll());
+        model.addAttribute("dto",dto);
+//        return "/post/read";
+        return "/post/postDetails";
+    }
+    @GetMapping(value = {"/modify"})
+    public String modify(Long postId, PageRequestDTO pageRequestDTO, Model model){
+        PostDTO dto = postService.read(postId);
+        model.addAttribute("occList", occupationService.getAll());
+        model.addAttribute("dto",dto);
+        return "/post/modify";
+    }
+    @PostMapping(value={"/modify"})
+    public String modify(PostDTO postDTO, PageRequestDTO pageRequestDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) throws ParseException {
+        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
+        postDTO.setComLoginId(sessionId);
+        postService.register(postDTO);
+        redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("postId",postDTO.getId());
+        return "redirect:/post/read";
     }
 
 
