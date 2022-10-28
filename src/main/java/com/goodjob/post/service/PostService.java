@@ -1,14 +1,17 @@
 package com.goodjob.post.service;
+
+import com.goodjob.post.postdto.*;
+import com.goodjob.post.util.EntityDtoMapper;
 import com.goodjob.post.Post;
+
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.util.EntityDtoMapper;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-
 
 public interface PostService extends EntityDtoMapper {
     PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO);
@@ -24,6 +27,8 @@ public interface PostService extends EntityDtoMapper {
     PostDTO read(Long postId);
 
     void remove(Long postId);
+
+    Long savePost(PostInsertDTO postInsertDTO) throws IOException;
 
     List<String> searchSalaryRange();
 }

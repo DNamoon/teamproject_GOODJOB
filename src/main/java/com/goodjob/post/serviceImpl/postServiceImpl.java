@@ -5,14 +5,11 @@ import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.postdto.*;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.repository.OccupationRepository;
-import com.goodjob.post.postdto.PageRequestDTO;
-import com.goodjob.post.postdto.PageResultDTO;
-import com.goodjob.post.postdto.PostDTO;
 import com.goodjob.post.salary.Salary;
 import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
@@ -26,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -111,6 +109,11 @@ public class postServiceImpl implements PostService {
     @Override
     public void remove(Long postId){
         postRepository.deleteById(postId);
+    }
+
+    @Override
+    public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
+        return null;
     }
 
     // 공고 리스트를 PageRequestDTO의 sort 값에 따라 정렬을 다르게하는 조건을 리턴해주는 메소드.
