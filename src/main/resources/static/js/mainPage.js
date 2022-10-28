@@ -8,6 +8,7 @@ let postJS = {
             size: 8,
             sort : sortType
         }
+        console.log("JS................."+pageRequestDTO)
         post(url,'getPagingPostList',pageRequestDTO)
             .then(data => {
                 console.log("data :" + data);

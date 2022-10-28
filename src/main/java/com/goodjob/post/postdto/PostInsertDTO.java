@@ -34,7 +34,7 @@ public class PostInsertDTO {
 
     private String postDetailAddress; // 주소2
 
-    private String postSalary; // 연봉대
+    private Long postSalaryId; // 연봉대
 
     private String postContent; // 공고 내용
 

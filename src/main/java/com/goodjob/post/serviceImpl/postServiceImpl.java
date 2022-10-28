@@ -68,9 +68,9 @@ public class postServiceImpl implements PostService {
             case "new":
                 return Sort.by("postId").descending();
             case "count":
-                return Sort.by("count").descending();
+                return Sort.by("postReadCount").descending();
             case "salary":
-                return Sort.by("salary").descending();
+                return Sort.by("postSalary").descending();
             case "end":
                 return Sort.by("postEndDate").ascending();
         }
@@ -115,22 +115,11 @@ public class postServiceImpl implements PostService {
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
         Optional<Region> region = regionRepository.findById(postInsertDTO.getPostRegion());
         List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
-        Optional<PostSalary> salary = salaryRepository.findBySalaryRange(postInsertDTO.getPostSalary());
-        log.info("service.....register..."+postInsertDTO);
-
-
-
+        Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && region.isPresent() && salary.isPresent()){
-
-//            Post post = new Post(postInsertDTO.getPostTitle(), occupation.get(), company.get(),
-//                    postInsertDTO.getPostContent(), postInsertDTO.getPostRecruitNum(),
-//                    postInsertDTO.getPostStartDate(), postInsertDTO.getPostEndDate(),
-//                    postInsertDTO.getPostGender(),region.get(),uploadFiles,salary.get());
             Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),region.get(),salary.get(),uploadFiles));
+            log.info("Service.......Post........"+post);
             return post.getPostId();
-//            if(postInsertDTO.getPostImg() == null || postInsertDTO.getPostImg().isEmpty()){
-//
-//            }
         }
         return null;
     }
@@ -237,10 +226,7 @@ public class postServiceImpl implements PostService {
         if(type.contains("titleCompanyName")){
             booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
         }
-        log.info("=======================================1"+booleanBuilderWithSearch);
-//        if(booleanBuilderWithSearch!=null){
             booleanBuilder.and(booleanBuilderWithSearch);
-//        }
 
         // 검색 조건 처리 코드 끝
 

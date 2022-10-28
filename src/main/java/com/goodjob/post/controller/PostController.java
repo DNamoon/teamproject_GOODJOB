@@ -93,6 +93,7 @@ public class PostController {
         log.info("postInsertDTO={}",postInsertDTO);
         postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         postService.savePost(postInsertDTO);
+        log.info(postInsertDTO);
         return "redirect:/";
     }
 
