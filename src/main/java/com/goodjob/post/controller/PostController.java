@@ -49,7 +49,8 @@ public class PostController {
         PostDTO dto = postService.read(postId);
         model.addAttribute("occList", occupationService.getAll());
         model.addAttribute("dto",dto);
-        return "/post/read";
+//        return "/post/read";
+        return "/post/postDetails";
     }
     @GetMapping(value = {"/modify"})
     public String modify(Long postId, PageRequestDTO pageRequestDTO, Model model){
