@@ -1,16 +1,16 @@
 package com.goodjob.post.controller;
 
-import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.company.Company;
 import com.goodjob.company.service.CompanyService;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostDTO;
+import com.goodjob.post.postdto.PostInsertDTO;
 import com.goodjob.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Optional;
 
 @Log4j2
 @Controller
@@ -34,8 +35,7 @@ public class PostController {
 
     @PostMapping(value = {"/register"})
     public String register(PostDTO postDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Model model) throws ParseException {
-        HttpSession httpSession = httpServletRequest.getSession(false);
-        postDTO.setComLoginId(getAuthId(httpSession,"sessionId"));
+        postDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         Long postId = postService.register(postDTO);
         redirectAttributes.addFlashAttribute("msg",postId);
         return "redirect:/post/list";
@@ -62,22 +62,36 @@ public class PostController {
     }
     @PostMapping(value={"/modify"})
     public String modify(PostDTO postDTO, PageRequestDTO pageRequestDTO,HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes) throws ParseException {
-        HttpSession httpSession = httpServletRequest.getSession(false);
-        String sessionId = getAuthId(httpSession,"sessionId");
+        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
         postDTO.setComLoginId(sessionId);
         postService.register(postDTO);
         redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
         redirectAttributes.addAttribute("postId",postDTO.getId());
         return "redirect:/post/read";
     }
-    @GetMapping("/save")
-    public String postSaveForm(){
+
+    //---------------------
+    @GetMapping("/savePost")
+    public String postSaveForm(HttpServletRequest httpServletRequest, Model model){
+        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
+        Optional<Company> optionalCompany = companyService.loginIdCheck(sessionId);
+        Company company;
+        if(optionalCompany.isPresent()){
+            company=optionalCompany.get();
+            model.addAttribute("comName",company.getComName()); // 회사명
+            model.addAttribute("comBusiNum", company.getComBusiNum()); // 사업등록번호
+            model.addAttribute("comDiv", company.getComComdivCode().getComdivName()); // 회사분류
+        }
+        model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
+        model.addAttribute("regionList", postService.getListRegion()); // 지역 리스트
+        model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
         return "/post/postInsertForm";
     }
 
-    @PostMapping("/save")
-    public String postSave(PostInsertDTO postInsertDTO) throws IOException {
+    @PostMapping("/savePost")
+    public String postSave(PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
         log.info("postInsertDTO={}",postInsertDTO);
+        postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         postService.savePost(postInsertDTO);
         return "redirect:/";
     }
@@ -86,7 +100,12 @@ public class PostController {
 
 
 
-    private String getAuthId(HttpSession httpSession, String typeOrSessionId){
+    // HttpServletRequest 에서 두번째 파라미터 값에 따라 Session 정보를 리턴해주는 메소드.
+    // @param typeOrSessionId
+    // "type" -> "user" or "company"
+    // "sessionId" -> 유저나 기업회원 로그인 ID 값
+    private String getSessionInfo(HttpServletRequest httpServletRequest, String typeOrSessionId){
+        HttpSession httpSession = httpServletRequest.getSession(false);
         // 세션 타입 체크
         if (typeOrSessionId.equals("Type")) {
             return httpSession.getAttribute("Type").toString();
@@ -126,11 +145,10 @@ public class PostController {
     // 자세한 설명은 PageRequestDTO 에 있습니다.
     @GetMapping(value = {"/list/com"})
     public String listComPage(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
-        HttpSession httpSession = httpServletRequest.getSession(false);
-        String type = getAuthId(httpSession,"Type");
+        String type = getSessionInfo(httpServletRequest,"Type");
         // 세션 타입 체크
         pageRequestDTO.setAuthType(type);
-        pageRequestDTO.setAuth(getAuthId(httpSession,"sessionId"));
+        pageRequestDTO.setAuth(getSessionInfo(httpServletRequest,"sessionId"));
 
         model.addAttribute("result",postService.getList(pageRequestDTO));
         return "/post/list";

@@ -5,13 +5,14 @@ import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
+import com.goodjob.post.fileupload.FileService;
 import com.goodjob.post.fileupload.UploadFile;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.repository.OccupationRepository;
-import com.goodjob.post.salary.Salary;
+import com.goodjob.post.salary.PostSalary;
 import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
 import com.querydsl.core.BooleanBuilder;
@@ -40,6 +41,8 @@ public class postServiceImpl implements PostService {
     private final CompanyRepository companyRepository;
     private final SalaryRepository salaryRepository;
     private final RegionRepository regionRepository;
+
+    private final FileService fileService;
 
     @Override
     public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
@@ -80,7 +83,7 @@ public class postServiceImpl implements PostService {
         Optional<Occupation> oOcc = occupationRepository.findById(postDTO.getOccId());
         Optional<Company> com = companyRepository.findByComLoginId(postDTO.getComLoginId());
         Optional<Region> reg = regionRepository.findById(postDTO.getRegionId());
-        Optional<Salary> sal = salaryRepository.findById(postDTO.getSalaryId());
+        Optional<PostSalary> sal = salaryRepository.findById(postDTO.getSalaryId());
         log.info("service.....register..."+postDTO);
         Post entity = null;
         if(oOcc.isPresent() && com.isPresent() && reg.isPresent() && sal.isPresent()){
@@ -94,6 +97,18 @@ public class postServiceImpl implements PostService {
         }
         return null;
     }
+    @Override
+    public List<Occupation> getListOccupation(){
+        return occupationRepository.findAll();
+    }
+    @Override
+    public List<Region> getListRegion(){
+        return regionRepository.findAll();
+    }
+    @Override
+    public List<PostSalary> getListSalary(){
+        return salaryRepository.findAll();
+    }
 
     @Override
     public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
@@ -101,14 +116,22 @@ public class postServiceImpl implements PostService {
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
         Optional<Region> region = regionRepository.findById(postInsertDTO.getPostRegion());
         List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
+        Optional<PostSalary> salary = salaryRepository.findBySalaryRange(postInsertDTO.getPostSalary());
         log.info("service.....register..."+postInsertDTO);
-        if(occupation.isPresent() && company.isPresent() && region.isPresent()){
-            Post post = new Post(postInsertDTO.getPostTitle(), occupation.get(), company.get(),
-                    postInsertDTO.getPostContent(), postInsertDTO.getPostRecruitNum(),
-                    postInsertDTO.getPostStartDate(), postInsertDTO.getPostEndDate(),
-                    postInsertDTO.getPostGender(),region.get(),uploadFiles,postInsertDTO.getSalary());
-            postRepository.save(post);
+
+
+
+        if(occupation.isPresent() && company.isPresent() && region.isPresent() && salary.isPresent()){
+
+//            Post post = new Post(postInsertDTO.getPostTitle(), occupation.get(), company.get(),
+//                    postInsertDTO.getPostContent(), postInsertDTO.getPostRecruitNum(),
+//                    postInsertDTO.getPostStartDate(), postInsertDTO.getPostEndDate(),
+//                    postInsertDTO.getPostGender(),region.get(),uploadFiles,salary.get());
+            Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),region.get(),salary.get(),uploadFiles));
             return post.getPostId();
+//            if(postInsertDTO.getPostImg() == null || postInsertDTO.getPostImg().isEmpty()){
+//
+//            }
         }
         return null;
     }
@@ -231,7 +254,7 @@ public class postServiceImpl implements PostService {
                 booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
             }
             if (!(pageRequestDTO.getFilterSalary().isEmpty() || pageRequestDTO.getFilterSalary().trim().length() == 0)){
-                booleanBuilderWithFilter.and(qPost.salary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
+                booleanBuilderWithFilter.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
             }
             booleanBuilder.and(booleanBuilderWithFilter);
 

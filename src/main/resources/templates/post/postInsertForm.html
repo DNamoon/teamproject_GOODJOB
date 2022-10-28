@@ -28,7 +28,7 @@
                   <div class="flex-fill">
                     <label class="m-1" for="companyName">기업명</label>
                     <input type="text" class="flex-fill form-control input-group w-80"
-                           id="companyName">
+                           id="companyName" th:value="${comName}" readonly>
                   </div>
                 </div>
               </div>
@@ -37,7 +37,7 @@
                   <div class="flex-fill">
                     <label class="m-1" for="postComId">기업등록번호</label>
                     <input type="text" class="flex-fill form-control input-group w-80"
-                           id="postComId">
+                           id="postComId" th:value="${comBusiNum}" readonly>
                   </div>
                 </div>
               </div>
@@ -48,28 +48,27 @@
             <div class="d-flex col flex-fill">
               <div class="col-6">
                 <div class="flex-row d-flex">
+
                   <div class="flex-fill">
-                    <label class="m-1" for="comComdivCode">회사분류</label>
-                    <input type="hidden" class="flex-fill input-group" id="comComdivCode">
-                    <select type="input"
-                            class="form-select form-select-sm border-radius-section border-2 w-80"
-                            id="inputGroupSelect01" required>
-                      <option value="" selected>회사분류리스트돌리세요</option>
-                      <option value="test">test</option>
-                    </select>
+                    <label class="m-1" for="postComId">회사분류</label>
+                    <input type="text" class="flex-fill form-control input-group w-80"
+                           id="comBusiNum" th:value="${comDiv}" readonly>
                   </div>
+
                 </div>
               </div>
               <div class="col-6">
                 <div class="flex-row d-flex">
                   <div class="flex-fill">
-                    <label class="m-1" for="postOccCode">업직종</label>
-                    <input type="hidden" class="flex-fill input-group" id="postOccCode">
+                    <label class="m-1" for="inputGroupSelect02">업직종</label>
+<!--                    <input type="hidden" class="flex-fill input-group" id="postOccCode">-->
                     <select type="input" name="postOccCode"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
                             id="inputGroupSelect02" required>
-                      <option value="" selected>업직종리스트돌리세요</option>
-                      <option value="1">test</option>
+                      <th:block th:each="occ : ${occList}">
+                        <option selected>업직종</option>
+                        <option th:value="${occ.occId}">[[${occ.occName}]]</option>
+                      </th:block>
                     </select>
                   </div>
                 </div>
@@ -145,24 +144,10 @@
                     <select type="input" id="postRegion" name="postRegion"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
                             required>
-                      <option selected>Region리스트 뿌리기 or 이대로하기</option>
-                      <option value="02">서울특별시</option>
-                      <option value="031">경기도</option>
-                      <option value="032">인천광역시</option>
-                      <option value="033">강원도</option>
-                      <option value="041">충청남도</option>
-                      <option value="042">대전광역시</option>
-                      <option value="043">충청북도</option>
-                      <option value="044">세종특별시</option>
-                      <option value="051">부산광역시</option>
-                      <option value="052">울산광역시</option>
-                      <option value="053">대구광역시</option>
-                      <option value="054">경상북도</option>
-                      <option value="055">경상남도</option>
-                      <option value="061">전라남도</option>
-                      <option value="062">광주광역시</option>
-                      <option value="063">전라북도</option>
-                      <option value="064">제주도</option>
+                      <th:block th:each="region : ${regionList}">
+                        <option selected>근무지</option>
+                        <option th:value="${region.regCode}">[[${region.regName}]]</option>
+                      </th:block>
                     </select>
                   </div>
                 </div>
@@ -243,12 +228,14 @@
               <div class="col-6">
                 <div class="flex-row d-flex">
                   <div class="flex-fill">
-                    <label class="m-1" for="salary">연봉</label>
-                    <select type="input" id="salary"
+                    <label class="m-1" for="postSalary">연봉</label>
+                    <select type="input" id="postSalary"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
-                            required name="salary">
-                      <option value="" selected>salary리스트돌리기</option>
-                      <option value="test">test</option>
+                            required name="postSalary">
+                      <th:block th:each="postSalary : ${salaryList}">
+                        <option selected>연봉</option>
+                        <option th:value="${postSalary.salaryId}">[[${postSalary.postSalary.salaryRange}]]</option>
+                      </th:block>
                     </select>
                   </div>
                 </div>

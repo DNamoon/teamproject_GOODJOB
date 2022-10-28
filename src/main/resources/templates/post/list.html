@@ -10,7 +10,7 @@
 <body>
     <div class="sort-btn-group">
         <a th:href="@{/mainPage/list(sort='new', outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="newBtn">최신순</button></a>
-        <a th:href="@{/mainPage/list(sort='salary',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="salaryBtn">연봉순</button></a>
+        <a th:href="@{/mainPage/list(sort='postSalary',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="salaryBtn">연봉순</button></a>
         <a th:href="@{/mainPage/list(sort='count',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="countBtn">인기순(조회수)</button></a>
         <a th:href="@{/mainPage/list(sort='end',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="endBtn">종료마감 가까운 순</button></a>
         <a th:href="@{/mainPage/list(outOfDateState='active', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집중</button></a>
