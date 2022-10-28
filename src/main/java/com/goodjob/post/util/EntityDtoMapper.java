@@ -85,13 +85,18 @@ public interface EntityDtoMapper {
     default PostCardDTO entityToDtoInMain(Post post) {
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
-        long remainDay = difDay/ (24*60*60);
+        String remainDay = String.valueOf(difDay/ (24*60*60));
+         if(remainDay.equals("0")){
+             remainDay = "오늘 종료";
+         } else{
+             remainDay = "D - "+remainDay;
+         }
         System.out.println(remainDay);
         return PostCardDTO.builder()
                 .id(post.getPostId())
                 .title(post.getPostTitle())
                 .regionName(post.getPostRegion().getRegName())
-                .remainDay(String.valueOf(remainDay))
+                .remainDay(remainDay)
                 .salaryRange(post.getSalary().getSalaryRange())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())

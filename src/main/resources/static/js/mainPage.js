@@ -1,16 +1,6 @@
-//
-// $(document).ready(function(){
-//     postJS.init();
-//
-// })
-
 const url = "localhost:8080";
 const uri ="post/"
 let postJS = {
-    init:function (){
-        let _this = this;
-        _this.list();
-    },
 
     list:function(sortType){
         const pageRequestDTO = {
@@ -39,8 +29,8 @@ let postJS = {
         // 공고 html 생성 코드
         const postWrapper = document.createElement("div");
         postWrapper.classList.add("mainPage-wrapper");
-        const goToPostDetails = document.createElement("a");
-        goToPostDetails.setAttribute("href",`/mainPage/read?postId=${dto.id}`);
+        // const goToPostDetails = document.createElement("a");
+        // goToPostDetails.setAttribute("href",`/mainPage/read?postId=${dto.id}`);
         const div1 = document.createElement("div");
         div1.classList.add("col", "p-0");
         const div2 = document.createElement("div");
@@ -48,11 +38,11 @@ let postJS = {
 
         const div3 = document.createElement("div");
         div3.classList.add("w-100","p-0","h-50","img-css");
+        div3.setAttribute("onclick",`location.href="/post/read?postId=${dto.id}"`)
         const img = document.createElement("img");
         img.setAttribute("src","https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08");
         img.classList.add("w-100","h-100","card-img-post");
         div3.appendChild(img);
-
         const div4 = document.createElement("div");
         div4.classList.add("h-41", "align-self-auto","pt-3","m-0","card-body-css");
         const p1 = document.createElement("p");
@@ -77,14 +67,15 @@ let postJS = {
         div4.appendChild(p5);
         const p6 = document.createElement("p");
         p6.classList.add("card-dDay-post");
-        p6.innerHTML=`D - ${dto.remainDay}`;
+        p6.innerHTML=`${dto.remainDay}`;
         div4.appendChild(p6);
 
         div2.appendChild(div3);
         div2.appendChild(div4);
         div1.appendChild(div2);
-        goToPostDetails.appendChild(div1);
-        postWrapper.appendChild(goToPostDetails);
+        // goToPostDetails.appendChild(div1);
+        // postWrapper.appendChild(goToPostDetails);
+        postWrapper.appendChild(div1);
         changeContentDiv.appendChild(postWrapper);
 
 

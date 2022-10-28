@@ -24,10 +24,6 @@ public class HomeController {
     private final CompanyService companyService;
     private final PostService postService;
 
-    @GetMapping("/")
-    public String main(){
-        return "mainPage";
-    }
 
     @GetMapping("/login")
     public String login() { return "login";}
@@ -43,7 +39,7 @@ public class HomeController {
         model.addAttribute("result",result);
         return "searchPage";
     }
-    @GetMapping(value = {"/",""})
+    @GetMapping(value = {"/"})
     public String main(PageRequestDTO pageRequestDTO, Model model){
         pageRequestDTO.setSize(8);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);

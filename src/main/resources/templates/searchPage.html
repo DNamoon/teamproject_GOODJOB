@@ -57,7 +57,7 @@
                                     <div class="row third">
                                         <div class="input-field">
                                             <div class="result-count">
-                                                <span>108 </span>results
+                                                <span>[[${result.totalCount}]] </span>results
                                             </div>
                                             <div class="group-btn">
                                                 <button class="btn-delete" id="delete">RESET</button>
@@ -73,9 +73,9 @@
                     <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
                         <th:block th:each="dto:${result.dtoList}">
                             <div class="post-wrapper">
-                                <a th:href="@{/mainPage/read(postId=${dto.id})}">
+<!--                                <a th:href="@{/mainPage/read(postId=${dto.id})}">-->
                                     <div class="col p-0">
-                                        <div class="p-0 m-2 card-css">
+                                        <div class="p-0 m-2 card-css" th:onclick="|location.href='@{/post/read(postId=${dto.id})}'|" >
                                             <div class="w-100 p-0 h-50 img-css" >
                                                 <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
                                             </div>
@@ -86,11 +86,11 @@
                                                 <p class="card-text-post">연봉 | [[${dto.salaryRange}]]</p>
                                                 <p class="card-text-post">위치 | [[${dto.regionName}]]</p>
                                                 <p class="card-text-post">직종 | [[${dto.occName}]]</p>
-                                                <p class="card-dDay-post">D - [[${dto.remainDay}]]</p>
+                                                <p class="card-dDay-post">[[${dto.remainDay}]]</p>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+<!--                                </a>-->
                             </div>
                         </th:block>
                     </div>
@@ -133,5 +133,7 @@
         e.preventDefault()
         location.href="/search";
     });
+
+
 </script>
 

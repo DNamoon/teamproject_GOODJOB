@@ -91,6 +91,9 @@ public class PostController {
         return "redirect:/post/list";
     }
 
+
+
+
     // 삭제 예정======================================
 
     // "/list?type=title" 종류( title, company, occupation, titleCompanyName )

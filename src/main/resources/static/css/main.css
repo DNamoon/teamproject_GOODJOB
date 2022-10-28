@@ -1244,6 +1244,7 @@ text-decoration: none;
   /*transition: 0.3s;*/
   height: 450px;
   border-radius: 7px;
+  cursor:pointer;
 }
 .card-css:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
