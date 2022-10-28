@@ -117,7 +117,13 @@ $(document).ready(function() {
             data: "memId="+$("#memId").val()+"&loginId="+$("#id").val()+"&deletePw="+$('#deletePw').val(),
             success: function (data) {
                 if(data=="0"){
-                  location.href="/";
+                    Swal.fire({
+                        icon: 'success',                         // Alert 타입
+                        title: '회원탈퇴',         // Alert 제목
+                        text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
+                    }).then(function (){
+                        location.href="/";
+                    });
                 }else {
                     alert("비밀번호를 확인해주세요.")
                 }
@@ -176,36 +182,48 @@ function sendEmail(){
         }
     })
 }
-//비밀번호 변경
-// $(document).ready(function() {
-//     $("#change").click(function () {
-//         const form = document.forms['changPwForm'];
-//         const data = $('#pw2').val();
-//             form.action = "/member/changePw";
-//             form.method ="mainPage";
-//             form.submit();
-//     })
-// });
+//비밀번호 변경 비번 check 모달
 $(document).ready(function() {
-    $("#ok").click(function () {
-            const pw2 = $('#pw2').val();
-            const memId =$('#memId').val();
-            $.ajax({
-                type: 'POST',
-                url: '/member/changePw',
-                data: {
-                    'pw2' : pw2,
-                    'memId' : memId
-                },success: function (data) {
-                    if(data=="success"){
-                        location.href="/member/myPage";
-                    }else {
-                        alert("비밀번호를 확인해주세요.")
-                    }
-                },
-                error: function(error){
-                    alert(JSON.stringify(error));
+    $("#changePwCheck").click(function () {
+        $.ajax({
+            type: "post",
+            url: "/member/changePw",
+            data: "loginId=" + $("#id").val() + "&checkPw=" + $('#checkPw').val(),
+            success: function (data) {
+                if (data == "0") {
+                    document.getElementById("changePwForm").submit();
+                } else {
+                    alert("비밀번호를 확인해주세요.")
                 }
-            })
+            }
+        })
     })
 });
+// $(document).ready(function() {
+//     $("#").click(function () {
+//             const pw2 = $('#pw2').val();
+//             const memId =$('#memId').val();
+//             $.ajax({
+//                 type: 'POST',
+//                 url: '/member/changePw',
+//                 data: {
+//                     "memId="+$("#memId").val()+"&loginId="+$("#id").val()+"&deletePw="+$('#deletePw').val(),
+//                 },success: function (data) {
+//                     if(data=="success"){
+//                         Swal.fire({
+//                             icon: 'success',                         // Alert 타입
+//                             title: '비밀번호 변경',         // Alert 제목
+//                             text: '비밀번호 변경이 완료되었습니다.'  // Alert 내용
+//                         }).then(function (){
+//                             location.href="/member/myPage";
+//                         });
+//                     }else {
+//                         alert("비밀번호를 확인해주세요.")
+//                     }
+//                 },
+//                 error: function(error){
+//                     alert(JSON.stringify(error));
+//                 }
+//             })
+//     })
+// });

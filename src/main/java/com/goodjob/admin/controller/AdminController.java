@@ -6,6 +6,9 @@ import com.goodjob.admin.admindto.AdminDTO;
 import com.goodjob.admin.postpaging.ArticlePage;
 import com.goodjob.admin.postpaging.ArticlePageService;
 import com.goodjob.admin.service.AdminService;
+import com.goodjob.post.Post;
+import com.goodjob.post.postdto.PostDTO;
+import com.goodjob.post.postdto.PostInsertDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -75,5 +78,21 @@ public class AdminController {
     @GetMapping("/memberManage")
     public String adminMemberPage(){
         return "/admin/adminMemberManage";
+    }
+
+
+    @GetMapping("/test")
+    public String test(){
+        return "post/postInsertForm";
+    }
+
+    @PostMapping("/test")
+    public String test2(@ModelAttribute PostInsertDTO post){
+            log.info("postDTO={}",post);
+            return "admin/adminHome";
+    }
+    @GetMapping("/test2")
+    public String test3(){
+        return "post/postDetailView";
     }
 }

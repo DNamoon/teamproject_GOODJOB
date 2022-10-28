@@ -26,17 +26,17 @@ class PostTest {
     @Autowired
     private ArticlePageService articlePageService;
 
-    @Test
-    @Commit
-    void savePost() {
-        for (long p = 106; p <= 115; p++) {
-            Date endDate = Date.valueOf(LocalDate.now().plusDays(7));
-            Date startDate = Date.valueOf(LocalDate.now());
-
-            Post post = new Post("title" + p, new Occupation("25", "군인"), companyRepository.findById(1L).get(), "test" + p, "p", startDate, endDate, "M");
-            postRepository.save(post);
-        }
-    }
+//    @Test
+//    @Commit
+//    void savePost() {
+//        for (long p = 106; p <= 115; p++) {
+//            Date endDate = Date.valueOf(LocalDate.now().plusDays(7));
+//            Date startDate = Date.valueOf(LocalDate.now());
+//
+//            Post post = new Post("title" + p, new Occupation("25", "군인"), companyRepository.findById(1L).get(), "test" + p, "p", startDate, endDate, "M");
+//            postRepository.save(post);
+//        }
+//    }
 
     @Test
     void 채용현황테스트() {

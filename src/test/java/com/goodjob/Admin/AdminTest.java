@@ -22,6 +22,8 @@ import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.stream.LongStream;
@@ -85,8 +87,11 @@ public class AdminTest {
     @Test
     @Commit
     void saveNotice(){
-        LongStream.rangeClosed(6,50).forEach(i->{
-            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
-        });
+//        LongStream.rangeClosed(6,50).forEach(i->{
+//            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
+//        });
+        LocalDate buydate = LocalDate.of(2022,10,25);
+        boolean after = LocalDate.now().isAfter(ChronoLocalDate.from(buydate));
+        System.out.println("end = " + after);
     }
 }

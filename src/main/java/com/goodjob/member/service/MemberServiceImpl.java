@@ -83,6 +83,7 @@ public class MemberServiceImpl implements MemberService {
     public void updatePassword(String tmpPw, String memberEmail) {
         String encryptPassword = passwordEncoder.encode(tmpPw);
         Member member = memberRepository.findByMemEmail(memberEmail);
+
         member.updatePassword(encryptPassword);
     }
     /** 임시 비밀번호 생성 **/

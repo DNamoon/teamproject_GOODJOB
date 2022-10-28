@@ -100,6 +100,9 @@
                             </div>
                         </div>
                     </form>
+                    <form id="changePwForm" action="/member/changePassword">
+                        <input  type="hidden" name="loginId" th:value="${session.sessionId}" >
+                    </form>
                     <!--개인정보 수정 Modal -->
                     <div class="modal fade" id="pwCheck" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -136,31 +139,19 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 비밀번호변경 Modal -->
+                    <!-- 비번변경 v2 Modal -->
                     <div class="modal fade" id="change" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">비밀번호 변경</h5>
+                                    <h5 class="modal-title">비밀번호 확인</h5>
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
-                                <div class="text-center">
-                                    <div class="mb-3">
-                                        <span>재설정할 비밀번호를 입력해주세요.</span><br/>
-                                        <input type="text"id="pw1" name="pw1"><br/>
-                                    </div>
-                                    <div class="mb-3">
-                                        <span>비밀번호를 다시 입력해주세요.</span><br/>
-                                        <input type="text" id="pw2" name="pw2" onkeyup="test()" required><br/>
-                                        <label id="confirmMsg"></label>
-                                    </div>
-                                    <div class="row mx-auto">
-                                        <div class="col">
-                                            <button type="submit" id="ok"class="btn bg-gradient-dark" >확인</button>
-                                        </div>
-                                        <div class="col">
-                                            <button type="button" id="return"class="btn bg-gradient-dark" data-dismiss="modal" >취소</button>
-                                        </div>
+                                <div class="modal-body">
+                                    <label text="비밀번호"> </label>
+                                    <input id="checkPw" type="text" name="checkPw" class="form-control">
+                                    <div class="d-flex justify-content-center">
+                                        <button id="changePwCheck" type="button" class="btn bg-gradient-dark mt-3">확인</button>
                                     </div>
                                 </div>
                             </div>

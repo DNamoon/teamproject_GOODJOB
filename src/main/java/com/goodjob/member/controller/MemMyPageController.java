@@ -13,10 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 import java.util.List;
@@ -79,20 +82,41 @@ public class MemMyPageController {
         return "1";
     }
 
-    //비밀번호 변경
-    @GetMapping("/changePw")
-    public String changePwForm(HttpServletRequest session,Model model){
-        String id = (String)session.getAttribute("sessionId");
-        model.addAttribute("memberInfo",memberService.memInfo(id));
-        return "member/changePw";
-    }
-
+    //비밀번호 변경 비번 확인
     @ResponseBody
     @RequestMapping("/changePw")
-    public String changePw(@Param("pw2")String pw2, @Param("memId")Long memId) {
-        System.out.println("8888"+pw2+"+"+memId);
+    public String changePwCheck(@Param("checkPw")String checkPw, @Param("id")String loginId){
+        Optional<Member> mem = memberService.loginIdCheck(loginId);
+        if (mem.isPresent()) {
+            Member member = mem.get();
+//            System.out.println("+++"+checkPw);
+            if (passwordEncoder.matches(checkPw,member.getMemPw())) {
+                return "0";
+            }
+        }
+        return "1";
+    }
+
+    // 비밀번호 변경
+    @GetMapping("/changePassword")
+    public String changePwForm(HttpServletRequest session,Model model,@Param("loginId")String loginId
+            ,@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO){
+        System.out.println("8888"+loginId);
+        model.addAttribute("memberInfo",memberService.memInfo(loginId));
+        memberDTO.setMemId(memberService.memInfo(loginId).getMemId());
+        return "member/memChangePassword";
+    }
+
+    @RequestMapping("/changePassword")
+    public String changePw(@Param("pw2")String pw2, @Param("memId")Long memId, Model model, HttpServletRequest session,
+                           @Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
+        if(result.hasErrors()){
+            return "member/memChangePassword";
+        }
+        memberDTO.setMemId(memId);
         memberService.changePassword(pw2,memId);
-        return "success";
+        model.addAttribute("memberInfo",memberService.memInfo("111"));
+        return "member/myPageInfo";
     }
 
     @GetMapping("/myPageResume")
