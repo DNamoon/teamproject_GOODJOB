@@ -147,11 +147,11 @@
                                 <div class="text-center">
                                     <div class="mb-3">
                                         <span>재설정할 비밀번호를 입력해주세요.</span><br/>
-                                        <input type="text"id="pw1" name="pw1"><br/>
+                                        <input type="password" minlength="3" maxlength="15" required title="3~15글자로 지정하세요" id="pw1" name="pw1"><br/>
                                     </div>
                                     <div class="mb-3">
                                         <span>비밀번호를 다시 입력해주세요.</span><br/>
-                                        <input type="text" id="pw2" name="pw2" onkeyup="test()" required><br/>
+                                        <input type="password" id="pw2" name="pw2" onkeyup="test()" required><br/>
                                         <label id="confirmMsg"></label>
                                     </div>
                                     <div class="row mx-auto">

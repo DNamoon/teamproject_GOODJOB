@@ -158,4 +158,5 @@ public class CompanyService {
     public void delete(Long comId) {
         companyRepository.deleteById(comId);
     }
+
 }

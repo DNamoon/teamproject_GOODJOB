@@ -1,11 +1,41 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
-// 22.10.26 회원가입 완료 메시지
+// 22.10.27 회원가입 완료 메시지 sweetalert2 사용 실패
+
 // $(document).ready(function (){
+//     var loginId = $('#id_input').val();
+//
 //     $('#sign_up').click(function (){
-//         alert("회원가입을 축하드립니다.");
-//     })
-// })
+//         Swal.fire({
+//             icon: 'success',
+//             title: '회원가입 완료',
+//             text: loginId + '님 회원가입을 축하드립니다!'
+//         }).then(function (){
+//             location.href = 'redirect:/';
+//         });
+//     });
+// });
+
+//비밀번호 변경
+$(document).ready(function(){
+    $('#change_confirm').click(function (){
+        const password = $('#change_password_confirm').val();
+
+        $.ajax({
+            type:"post",
+            url:"/com/changePw",
+            data:"pw="+password,
+            success : function (result) {
+                if(result == 1) {
+                    alert("비밀번호 변경 페이지로 이동합니다.");
+                    location.href = "/com/changePassword";
+                } else {
+                    alert("비밀번호를 확인해주세요");
+                }
+            }
+        });
+    });
+});
 
 
 // 회원탈퇴
@@ -52,24 +82,46 @@ $(document).ready(function(){
     });
 })
 
+$(document).ready(function () {
+    $('#btn_modify').click(function () {
+        //입력창 활성화
+        $('#btn_target').attr('disabled', false);
+        //'정보 수정하기'버튼 숨기기
+        $('#btn_modify').css('display', 'none')
+        //'이전으로 돌아가기'버튼 생성
+        //$('#btn_back').append('<input type="button" value="이전으로 돌아가기" onClick="btnDisabled()" id="btn_hidden" class="btn bg-gradient-dark w-100">');
+        //'이전으로 돌아가기'버튼 보이기
+        $('#btn_hidden').removeAttr('hidden');
+        //'회원정보 수정완료'버튼 보이기
+        $('#modal_open_btn').removeAttr('hidden');
+        //'비밀번호 변경하기'버튼 보이기
+        $('#btn_change_pw').removeAttr('hidden');
+    })
+})
+
 //수정하기 버튼 클릭시 disabled가 false 되며 입력할수 있게 변함.
-function btnActive(){
-    //정보 수정할 수 있게 입력창 활성화
-    const target = document.getElementById("btn_target");
-    target.disabled = false;
-
-    //'이전으로 돌아가기'버튼 보이기
-    const target2 = document.getElementById("btn_hidden");
-    target2.hidden = false;
-
-    //'정보 수정하기'버튼 숨기기
-    const target3 = document.getElementById("btn");
-    if(target3.style.display == 'block')
-    target3.style.display = 'none';
-
-    //'정보 수정완료'버튼 보이기
-    const target7 = document.getElementById("modal_open_btn");
-    target7.hidden = false;
+// function btnActive(){
+//     //정보 수정할 수 있게 입력창 활성화
+//     const target = document.getElementById("btn_target");
+//     target.disabled = false;
+//
+//     //'정보 수정하기'버튼 숨기기
+//     const target3 = document.getElementById("btn");
+//     if(target3.style.display == 'block')
+//     target3.style.display = 'none';
+//
+//     //'이전으로 돌아가기'버튼 보이기
+//     const target2 = document.getElementById("btn_hidden");
+//     target2.hidden = false;
+//
+//     const target8 = document.getElementById("btn_change_pw");
+//     const target9 = document.createElement('input');
+//
+//
+//
+//     //'정보 수정완료'버튼 보이기
+//     const target7 = document.getElementById("modal_open_btn");
+//     target7.hidden = false;
     // target7.disabled = true;
 
 
@@ -80,7 +132,7 @@ function btnActive(){
     // target4.disabled = true;
     // target5.disabled = true;
     // target6.disabled = true;
-}
+//}
 
 // $('#comComdivCode').click(function () {
 //     if($('#comComdivCode').value == 0){
@@ -97,7 +149,7 @@ function btnDisabled(){
     target2.hidden = true;
 
     //'정보 수정하기'버튼 보이기
-    const target3 = document.getElementById("btn");
+    const target3 = document.getElementById("btn_modify");
     if(target3.style.display == 'none')
         target3.style.display = 'block';
 
@@ -108,6 +160,11 @@ function btnDisabled(){
     //'정보 수정완료'버튼 숨기기
     const target7 = document.getElementById("modal_open_btn");
     target7.hidden = true;
+
+    const target8 = document.getElementById("btn_change_pw");
+    target8.hidden = true;
+    //$('#btn_change_pw').removeAttr('hidden');
+
 }
 
 function password_confirm() {
