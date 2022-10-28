@@ -73,7 +73,7 @@ public class Post {
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
 
-    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, String salary) {
+    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, Salary salary) {
         this.postTitle = postTitle;
         this.postOccCode = postOccCode;
         this.postComId = postComId;

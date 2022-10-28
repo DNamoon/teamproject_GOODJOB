@@ -11,6 +11,7 @@ import com.goodjob.post.postdto.PostMainCardDTO;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 public interface PostService extends EntityDtoMapper {
     PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO);
