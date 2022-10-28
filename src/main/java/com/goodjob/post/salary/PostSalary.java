@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Salary {
+public class PostSalary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long salaryId;

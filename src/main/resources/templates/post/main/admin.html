@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{post/layout/layout}" >
+      layout:decorate="~{mainPage/layout/layout}" >
 
 <th:block layout:fragment="layout_content">
 
@@ -60,7 +60,7 @@
                     <!-- 업종 저장(Form) -->
                     <div class="mt-5">
                         <h3>기업 업종 저장</h3>
-                        <form th:action="@{/o/save}"  th:method="post">
+                        <form th:action="@{/o/save}"  th:method="mainPage">
                             <div class="row mb-3">
                                 <label for="occCodeInput-save" class="col-sm-2 col-form-label text-center">업종 코드</label>
                                 <div class="col-sm-10">
@@ -80,7 +80,7 @@
                     <!-- 업종 수정(Form) -->
                     <div class="mt-5">
                         <h3>기업 업종 수정</h3>
-                        <form th:action="@{/o/save}" th:method="post">
+                        <form th:action="@{/o/save}" th:method="mainPage">
                             <div class="row mb-3">
 
                                 <label for="occCodeInput-update" class="col-sm-2 col-form-label text-center">업종ID</label>
@@ -102,7 +102,7 @@
                     <!-- 업종 삭제(Form) -->
                     <div class="mt-5">
                         <h3>기업 업종 삭제</h3>
-                        <form th:action="@{/o/delete}" th:method="post">
+                        <form th:action="@{/o/delete}" th:method="mainPage">
                             <div class="row mb-3">
 
                                 <label for="occCodeInput-delete" class="col-sm-2 col-form-label text-center">업종ID</label>
@@ -125,7 +125,7 @@
 
                 <div class="post">
 
-                    <!-- post 조회(FETCH) -->
+                    <!-- mainPage 조회(FETCH) -->
                     <div class="mt-5">
                         <h3>기업 업종 ID 조회</h3>
                         <form>

@@ -7,7 +7,7 @@
         <div class="flex-row d-flex justify-content-center mt-3">
           <h3 class="text-center">채용공고 등록</h3>
         </div>
-        <form th:action="@{/post/savePost}" th:method="post" enctype="multipart/form-data">
+        <form th:action="@{/admin/test}" th:method="post" enctype="multipart/form-data">
           <div class="d-flex flex-row mt-2 px-5">
             <div class="d-flex col flex-row">
               <div class="d-flex flex-fill">
@@ -61,12 +61,12 @@
                 <div class="flex-row d-flex">
                   <div class="flex-fill">
                     <label class="m-1" for="inputGroupSelect02">업직종</label>
-                    <!--                    <input type="hidden" class="flex-fill input-group" id="postOccCode">-->
+<!--                    <input type="hidden" class="flex-fill input-group" id="postOccCode">-->
                     <select type="input" name="postOccCode"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
                             id="inputGroupSelect02" required>
-                      <option selected>업직종</option>
                       <th:block th:each="occ : ${occList}">
+                        <option selected>업직종</option>
                         <option th:value="${occ.occId}">[[${occ.occName}]]</option>
                       </th:block>
                     </select>
@@ -144,8 +144,8 @@
                     <select type="input" id="postRegion" name="postRegion"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
                             required>
-                      <option selected>근무지</option>
                       <th:block th:each="region : ${regionList}">
+                        <option selected>근무지</option>
                         <option th:value="${region.regCode}">[[${region.regName}]]</option>
                       </th:block>
                     </select>
@@ -205,7 +205,7 @@
                     <label class="m-1" for="postComId">참고항목</label>
                     <input type="text" class="form-control flex-fill input-group w-80"
                            id="sample6_extraAddress"
-                           placeholder="참고항목" >
+                           placeholder="참고항목">
                   </div>
                 </div>
               </div>
@@ -231,9 +231,9 @@
                     <label class="m-1" for="postSalary">연봉</label>
                     <select type="input" id="postSalary"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
-                            required name="postSalaryId">
-                      <option selected>연봉</option>
+                            required name="postSalary">
                       <th:block th:each="postSalary : ${salaryList}">
+                        <option selected>연봉</option>
                         <option th:value="${postSalary.salaryId}">[[${postSalary.salaryRange}]]</option>
                       </th:block>
                     </select>
