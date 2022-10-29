@@ -110,7 +110,7 @@
                                 <label th:for="comAddress">주소</label>
                                 <div class="input-group mb-4">
                                             <input type="text" class="form-control col-md-2 my-2 " name="comAddress1"
-                                                   th:value="${companyInfo.comAddress1}"
+                                                   th:value="${companyInfo.comAddress1}" onclick="sample6_execDaumPostcode()"
                                                    id="sample6_postcode" placeholder="우편번호" readonly required>
 
                                             <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"
@@ -118,7 +118,7 @@
 
 
                                         <input type="text" class="form-control col-md-auto my-2 ms-4 ps-2 border" name="comAddress2"
-                                               th:value="${companyInfo.comAddress2}"
+                                               th:value="${companyInfo.comAddress2}" onclick="sample6_execDaumPostcode()"
                                                id="sample6_address" placeholder="주소" readonly required>
 
                                 </div>

@@ -1,5 +1,48 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+//아이디 찾기
+$(document).ready(function() {
+    $('#btn_find_id').on('click', function () {
+        whatId();
+    })
+});
+function whatId() {
+    const id = $('#id').val();
+    const email = $('#email').val();
+    console.log(email);
+
+    if (!id || id.trim() === "") {
+        alert("이름을 입력하세요.");
+    } else {
+        if (!email || email.trim() === "") {
+            alert("이메일을 입력하세요");
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '/com/findId',
+                data: {
+                    'comName': id,
+                    'comEmail' : email
+                },
+                dataType: "text",
+            }).done(function (result) {
+                console.log("result :" + result);
+                if (result == null) {
+                    // sendEmail();
+                    alert('가입된 회원정보를 찾을 수 없습니다.');
+                } else if (result == "false") {
+                    alert('회원님의 아이디는 ['+result+']입니다.');
+                    window.location.href = "/login";
+                }
+            }).fail(function (error) {
+                alert(JSON.stringify(error));
+            })
+        }
+    }
+}
+
+
+
 // 22.10.27 회원가입 완료 메시지 sweetalert2 사용 실패
 
 // $(document).ready(function (){
@@ -82,6 +125,7 @@ $(document).ready(function(){
     });
 })
 
+//수정하기 버튼 클릭시 disabled가 false 되며 입력할수 있게 변함. (jquery로 업데이트 10.27)
 $(document).ready(function () {
     $('#btn_modify').click(function () {
         //입력창 활성화

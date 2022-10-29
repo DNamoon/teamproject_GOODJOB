@@ -159,4 +159,8 @@ public class CompanyService {
         companyRepository.deleteById(comId);
     }
 
+//    public String findId(String comName, String comEmail){
+//        Optional<Company> company = companyRepository.checkNameAndEmail(comName, comEmail);
+//        return company.get().getComLoginId();
+//    }
 }

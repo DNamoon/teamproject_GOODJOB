@@ -15,9 +15,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
+
+    //아이디 찾기
+//    @Query("select c.comLoginId from Company c where c.comName=:comName and c.comEmail=:comEamil")
+//    Optional<Company> checkNameAndEmail(String comName, String comEmail);
 
     @Query("select count(c) from Company c where c.comLoginId =:comLoginId")
     int checkId2(@Param("comLoginId") String comLoginId);

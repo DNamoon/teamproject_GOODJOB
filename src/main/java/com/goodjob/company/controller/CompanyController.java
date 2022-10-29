@@ -39,12 +39,9 @@ public class CompanyController {
 
     @GetMapping("/signup")
     public String companySignUpForm(Model model, HttpServletRequest request) {
-        //22.10.11 세션있으면(로그인 되어있으면) 세션 종료 후 회원 가입 페이지로 넘어가도록 설정.
-        HttpSession session = request.getSession(false);
 
-        if (session != null) {
-            session.invalidate();
-        }
+        //22.10.11 세션있으면(로그인 되어있으면) 세션 종료 후 회원 가입 페이지로 넘어가도록 설정.
+        logout(request);
 
         model.addAttribute("companyDTO", new CompanyDTO());
         return "/company/companySignUpForm";
@@ -161,6 +158,23 @@ public class CompanyController {
 
         return "redirect:/";
     }
+
+    @GetMapping("/findId")
+    public String findLoginId(){
+        return "/findId";
+    }
+
+    //22.10.28 아이디 찾기
+//    @ResponseBody
+//    @PostMapping("/findId")
+//    public String checkEmail(@RequestParam("id") String comName, @RequestParam("email") String comEmail) {
+//        String loginId = companyService.findId(comName, comEmail);
+//        if(loginId.equals(null)){
+//            return loginId;
+//        } else {
+//            return null;
+//        }
+//    }
 
 //    //ho - 22.10.17 마이페이지 세션 넘기기+
 //    @GetMapping("/myPage")
