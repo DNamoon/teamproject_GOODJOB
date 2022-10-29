@@ -1,6 +1,7 @@
 package com.goodjob.status;
 
 import com.goodjob.post.postdto.PageResultDTO;
+import com.goodjob.status.dto.ApplierListDTO;
 import com.goodjob.status.dto.ApplyDTO;
 import com.goodjob.status.dto.ApplyListDTO;
 import com.goodjob.status.repository.StatusRepository;
@@ -25,7 +26,6 @@ import java.util.List;
 public class StatusController {
 
    private final StatusService statusService;
-   private final StatusRepository statusRepository;
 
    @ResponseBody
    @PostMapping("/applyResume/{postId}")
@@ -33,10 +33,17 @@ public class StatusController {
       statusService.applyResume(postId, resumeId);
    }
 
+   //개인 마이페이지에서 지원회사 목록 출력
    @ResponseBody
    @GetMapping(value = "/getApplyList/{pageNum}", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<PageResultDTO<ApplyListDTO, Status>> getApplyList(HttpSession session, @PathVariable("pageNum") int pageNum){
-      return new ResponseEntity<>(statusService.getList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
+      return new ResponseEntity<>(statusService.getApplyList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
    }
 
+   //회사 마이페이지에서 지원자 목록 출력
+   @ResponseBody
+   @GetMapping("/getApplierList/{pageNum}")
+   public ResponseEntity<PageResultDTO<ApplierListDTO, Status>> getApplierList(HttpSession session, @PathVariable("pageNum") int pageNum){
+      return new ResponseEntity<>(statusService.getApplierList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
+   }
 }

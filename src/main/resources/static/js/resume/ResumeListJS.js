@@ -4,7 +4,7 @@
 
 $(document).ready(function () {
     var pageNum = 0;
-    getJSONResumeList($("input[id=sessionInput]").val());
+    getJSONResumeList();
     getApplyList(pageNum);
     getResumeData();  //동작 안됨
 
@@ -35,8 +35,8 @@ function getResumeData() {
     $(".resumeCount").text(count);
 }
 
-function getJSONResumeList(memId) {
-    $.getJSON('/member/getResumeList/' + memId, function (arr) {
+function getJSONResumeList() {
+    $.getJSON('/member/getResumeList', function (arr) {
         var list = '';
 
         $.each(arr, function (idx, resume) {
@@ -116,7 +116,7 @@ function changeTitle(data) {
         type: "get",
         data: {"title": title},
         success: function () {
-            getJSONResumeList($("input[id=sessionInput]").val());
+            getJSONResumeList();
         }
     })
 
@@ -150,7 +150,7 @@ function deleteCheckedResume() {
             success: function (result) {
                 if (result === 'success') {
                     alert("이력서가 삭제되었습니다.");
-                    getJSONResumeList($("input[id=sessionInput]").val());
+                    getJSONResumeList();
                 }
             }
         });
@@ -175,10 +175,6 @@ function getApplyList(pageNum) {
         })
 
         $(".applyTable").html(list);
-
-        var totalPageNum = result.totalPage;
-
-        console.log(totalPageNum);
 
         var pageBtn = '';
 

@@ -16,4 +16,5 @@ import java.util.List;
 public interface StatusRepository extends JpaRepository<Status,Long> {
     int findByStatResumeId_ResumeMemId(String loginId);
     Page<Status> getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(String loginId, Pageable pageable);
+    Page<Status> getStatusByStatPostId_PostComId_ComLoginIdOrderByStatApplyDateDesc(String loginId, Pageable pageable);
 }

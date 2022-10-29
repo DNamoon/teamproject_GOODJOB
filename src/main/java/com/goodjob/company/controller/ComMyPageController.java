@@ -14,4 +14,9 @@ public class ComMyPageController {
     public String myPageForm(){
         return "/company/companyMyPagePostList";
     }
+
+    @GetMapping("/myPageApplier")
+    public String myPageApplierList(){
+        return "/company/companyMyPageApplyList";
+    }
 }
