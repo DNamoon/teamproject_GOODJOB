@@ -9,9 +9,12 @@
  */
 package com.goodjob.company;
 
+import com.goodjob.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -60,6 +63,9 @@ public class Company {
     //22.10.05 ho - 회사 주소 넣기 위해 컬럼 추가
     @Column
     private String comAddress;
+
+    @OneToMany(mappedBy = "postComId", cascade = CascadeType.ALL)
+    private List<Post> memResume = new ArrayList<>();
 
     // 더미데이터 생성을 위한 임시 생성자 by.OH
     public Company(Region comRegCode, Comdiv comComdivCode, String comLoginId, String comPw) {

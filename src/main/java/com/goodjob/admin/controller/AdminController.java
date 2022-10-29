@@ -64,7 +64,7 @@ public class AdminController {
         HttpSession session = request.getSession();
 
         session.setAttribute(AdminConst.ADMIN, loginAdmin);
-        session.setMaxInactiveInterval(60 * 10);
+        session.setMaxInactiveInterval(60 * 100);
         return "redirect:/admin";
     }
 
