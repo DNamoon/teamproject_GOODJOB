@@ -169,7 +169,7 @@ public class CompanyController {
     @PostMapping("/findId")
     public String findLoginId(CompanyDTO companyDTO , HttpServletResponse response){
 
-        String findId = companyService.findId(companyDTO);
+        String findId = companyService.findId2(companyDTO);
 
         if(findId != "fail") {
             try {
@@ -203,6 +203,45 @@ public class CompanyController {
 
 
     }
+
+    //아이디 찾기
+//    @PostMapping("/findId")
+//    public String findLoginId(CompanyDTO companyDTO , HttpServletResponse response){
+//
+//        String findId = companyService.findId(companyDTO);
+//
+//        if(findId != "fail") {
+//            try {
+//                response.setContentType("text/html; charset=utf-8");
+//                PrintWriter w = response.getWriter();
+//                w.write("<script>alert('" + companyDTO.getComName() + "님의 아이디는 [" + findId + "] 입니다!');</script>");
+////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
+////                    ".then(function(){location.href='/';</script>");
+//                w.write("<script>location.href='/login';</script>");
+//                w.flush();
+//                w.close();
+//                return null;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        } else {
+//            try {
+//                response.setContentType("text/html; charset=utf-8");
+//                PrintWriter w = response.getWriter();
+//                w.write("<script>alert('입력한 회원정보가 없습니다. 다시 확인해주세요.');</script>");
+//                w.write("<script>location.href='/com/findId';</script>");
+//                w.flush();
+//                w.close();
+//                return null;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//
+//
+//    }
 
     //22.10.28 아이디 찾기
 //    @ResponseBody

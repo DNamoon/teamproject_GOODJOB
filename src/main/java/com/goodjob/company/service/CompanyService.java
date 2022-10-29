@@ -38,6 +38,21 @@ public class CompanyService {
     private final PasswordEncoder passwordEncoder;
     private final RegionRepository regionRepository;
 
+    public String findId2(CompanyDTO companyDTO) {
+        Company company1 = companyDTO.toEntityForFindId();
+        String name = company1.getComName();
+        String email = company1.getComEmail();
+        Long NumOfName = companyRepository.countByComNameAndComEmail(name,email);
+        log.info("???"+NumOfName);
+        if(NumOfName == 0){
+            return "fail";
+        } else {
+            Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
+            return company.get().getComLoginId();
+        }
+
+    }
+
     //22.10.29 아이디 찾기
     public String findId(CompanyDTO companyDTO){
 
