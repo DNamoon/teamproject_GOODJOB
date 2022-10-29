@@ -70,10 +70,13 @@ $(document).ready(function(){
             data:"pw="+password,
             success : function (result) {
                 if(result == 1) {
-                    alert("비밀번호 변경 페이지로 이동합니다.");
-                    location.href = "/com/changePassword";
+                    Swal.fire("비밀번호 변경페이지로 이동!","","success").then(function (){
+                        location.href = "/com/changePassword";
+                    })
+                    // alert("비밀번호 변경 페이지로 이동합니다.");
+                    // location.href = "/com/changePassword";
                 } else {
-                    alert("비밀번호를 확인해주세요");
+                    Swal.fire("비밀번호를 확인해주세요!","","error");
                 }
             }
         });
@@ -92,10 +95,15 @@ $(document).ready(function(){
             data:"pw="+password,
             success : function (result) {
                 if(result == 1) {
-                    alert("회원을 탈퇴합니다.");
-                    location.replace('/');  //.replace : 뒤로가기 불가능
+                    Swal.fire("회원을 탈퇴합니다!","","success").then(function (){
+                        location.replace('/');  //.replace : 뒤로가기 불가능
+                        //$("#contact-form").submit();
+                        // location.href("/com/myPage");
+                    })
+                    //alert("회원을 탈퇴합니다.");
                 } else {
-                    alert("비밀번호를 확인해주세요");
+                    Swal.fire("비밀번호를 확인해주세요!","","error");
+                    //alert("비밀번호를 확인해주세요");
                 }
             }
         });
@@ -114,10 +122,14 @@ $(document).ready(function(){
             data: "pw=" +password,
             success : function (result) {
                 if(result == 1) {
-                    alert("회원정보를 수정합니다.");
-                    $("#contact-form").submit();
+                    Swal.fire("회원정보를 수정합니다!","","success").then(function (){
+                        $("#contact-form").submit();
+                        // location.href("/com/myPage");
+                    })
+                    //alert("회원정보를 수정합니다.");
                 } else {
-                    alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
+                    Swal.fire("비밀번호를 확인해주세요!","","error");
+                    //alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
                 }
             }
 

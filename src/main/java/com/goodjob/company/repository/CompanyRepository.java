@@ -20,6 +20,12 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
 
+    //아이디 존재여부 확인
+    Long countByComName(String comName);  //주의 countBy메서드 반환타입은 Long!
+
+    //아이디 찾기
+    Optional<Company> findByComName(String comName);
+
     //아이디 찾기
 //    @Query("select c.comLoginId from Company c where c.comName=:comName and c.comEmail=:comEamil")
 //    Optional<Company> checkNameAndEmail(String comName, String comEmail);

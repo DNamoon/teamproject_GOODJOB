@@ -38,6 +38,21 @@ public class CompanyService {
     private final PasswordEncoder passwordEncoder;
     private final RegionRepository regionRepository;
 
+    //22.10.29 아이디 찾기
+    public String findId(CompanyDTO companyDTO){
+
+        Company company1 = companyDTO.toEntityForFindId();
+        Long NumOfName = companyRepository.countByComName(company1.getComName());
+        if(NumOfName == 0) {
+            return "fail";
+        } else {
+            Optional<Company> company = companyRepository.findByComName(company1.getComName());
+            return company.get().getComLoginId();
+        }
+
+    }
+
+
     //기업회원가입정보 DB에 저장하는 메서드
     @Transactional
     public Long createCompanyUser(CompanyDTO companyDTO) {
