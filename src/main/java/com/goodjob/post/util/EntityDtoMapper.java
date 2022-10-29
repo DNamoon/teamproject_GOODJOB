@@ -3,17 +3,18 @@ package com.goodjob.post.util;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.post.Post;
+import com.goodjob.post.fileupload.UploadFile;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.postdto.PostMainCardDTO;
-import com.goodjob.post.salary.Salary;
+import com.goodjob.post.postdto.PostCardDTO;
+import com.goodjob.post.postdto.PostInsertDTO;
+import com.goodjob.post.salary.PostSalary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public interface EntityDtoMapper {
 //    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -75,33 +76,38 @@ public interface EntityDtoMapper {
                 .gender(post.getPostGender())
                 .regionId(post.getPostRegion().getRegName())
                 .regionName(post.getPostRegion().getRegName())
-                .salaryId(post.getSalary().getSalaryId())
-                .salaryRange(post.getSalary().getSalaryRange())
-                .count(post.getCount())
+                .salaryId(post.getPostSalary().getSalaryId())
+                .salaryRange(post.getPostSalary().getSalaryRange())
+                .count(post.getPostReadCount())
                 .occId(post.getPostOccCode().getOccId())
                 .occName(post.getPostOccCode().getOccName())
                 .comLoginId(post.getPostComId().getComLoginId())
                 .comName(post.getPostComId().getComName())
                 .build();
     }
-    default PostMainCardDTO entityToDtoInMain(Post post) {
+    default PostCardDTO entityToDtoInMain(Post post) {
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
-        long remainDay = difDay/ (24*60*60);
+        String remainDay = String.valueOf(difDay/ (24*60*60));
+         if(remainDay.equals("0")){
+             remainDay = "오늘 종료";
+         } else{
+             remainDay = "D - "+remainDay;
+         }
         System.out.println(remainDay);
-        return PostMainCardDTO.builder()
+        return PostCardDTO.builder()
                 .id(post.getPostId())
                 .title(post.getPostTitle())
                 .regionName(post.getPostRegion().getRegName())
-                .remainDay(String.valueOf(remainDay))
-                .salaryRange(post.getSalary().getSalaryRange())
+                .remainDay(remainDay)
+                .salaryRange(post.getPostSalary().getSalaryRange())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
     }
 
     // PostDto -> Post (save or update)
-    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, Salary salary) throws ParseException {
+    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary) throws ParseException {
         if(postDTO.getId() != null){
             return Post.builder()
                     .postId(postDTO.getId())
@@ -112,7 +118,7 @@ public interface EntityDtoMapper {
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
                     .postRegion(postRegion)
-                    .salary(salary)
+                    .postSalary(postSalary)
                     .postOccCode(occ)
                     .postComId(com)
                     .build();
@@ -127,9 +133,52 @@ public interface EntityDtoMapper {
                     .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
                     .postGender(postDTO.getGender())
                     .postRegion(postRegion)
-                    .salary(salary)
+                    .postSalary(postSalary)
                     .postOccCode(occ)
                     .postComId(com)
+                    .build();
+        }
+
+
+
+    }
+    default Post dtoToEntityForInsert(PostInsertDTO postInsertDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary, List<UploadFile> uploadFileList){
+        if(postInsertDTO.getId() != null){
+            return Post.builder()
+                    .postId(postInsertDTO.getId())
+                    .postTitle(postInsertDTO.getPostTitle())
+                    .postContent(postInsertDTO.getPostContent())
+                    .postRecruitNum(postInsertDTO.getPostRecruitNum())
+                    .postStartDate(postInsertDTO.getPostStartDate())
+                    .postEndDate(postInsertDTO.getPostEndDate())
+                    .postGender(postInsertDTO.getPostGender())
+                    .postRegion(postRegion)
+                    .postSalary(postSalary)
+                    .postOccCode(occ)
+                    .postComId(com)
+                    .postReadCount(0)
+                    .postImg(uploadFileList)
+                    .postAddress(postInsertDTO.getPostAddress())
+                    .postDetailAddress(postInsertDTO.getPostDetailAddress())
+                    .build();
+
+        } else {
+
+            return Post.builder()
+                    .postTitle(postInsertDTO.getPostTitle())
+                    .postContent(postInsertDTO.getPostContent())
+                    .postRecruitNum(postInsertDTO.getPostRecruitNum())
+                    .postStartDate(postInsertDTO.getPostStartDate())
+                    .postEndDate(postInsertDTO.getPostEndDate())
+                    .postGender(postInsertDTO.getPostGender())
+                    .postRegion(postRegion)
+                    .postSalary(postSalary)
+                    .postOccCode(occ)
+                    .postComId(com)
+                    .postReadCount(0)
+                    .postImg(uploadFileList)
+                    .postAddress(postInsertDTO.getPostAddress())
+                    .postDetailAddress(postInsertDTO.getPostDetailAddress())
                     .build();
         }
 

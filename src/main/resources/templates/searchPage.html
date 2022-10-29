@@ -4,14 +4,6 @@
             <div class="container py-4 flex-wrap">
                 <div class="row">
                     <div class="s010">
-                        <div class="row">
-                            <div class="input-field">
-                                <a th:href="@{/search(sort='new', outOfDateState=${pageRequestDTO.outOfDateState},filterOccupation=${pageRequestDTO.filterOccupation},filterRegion=${pageRequestDTO.filterRegion},filterSalary=${pageRequestDTO.filterSalary})}"><button class="newBtn">최신순</button></a>
-                                <a th:href="@{/search(sort='salary',outOfDateState=${pageRequestDTO.outOfDateState},filterOccupation=${pageRequestDTO.filterOccupation},filterRegion=${pageRequestDTO.filterRegion},filterSalary=${pageRequestDTO.filterSalary})}"><button class="salaryBtn">연봉순</button></a>
-                                <a th:href="@{/search(sort='count',outOfDateState=${pageRequestDTO.outOfDateState},filterOccupation=${pageRequestDTO.filterOccupation},filterRegion=${pageRequestDTO.filterRegion},filterSalary=${pageRequestDTO.filterSalary})}"><button class="countBtn">인기순(조회수)</button></a>
-                                <a th:href="@{/search(sort='end',outOfDateState=${pageRequestDTO.outOfDateState},filterOccupation=${pageRequestDTO.filterOccupation},filterRegion=${pageRequestDTO.filterRegion},filterSalary=${pageRequestDTO.filterSalary})}"><button class="endBtn">종료마감 가까운 순</button></a>
-                            </div>
-                        </div>
                         <form action="/search" method="get">
                             <div class="inner-form">
                                 <div class="basic-search">
@@ -65,10 +57,10 @@
                                     <div class="row third">
                                         <div class="input-field">
                                             <div class="result-count">
-                                                <span>108 </span>results
+                                                <span>[[${result.totalCount}]] </span>results
                                             </div>
                                             <div class="group-btn">
-                                                <a th:href="@{/search}"><button class="btn-delete" id="delete">RESET</button></a>
+                                                <button class="btn-delete" id="delete">RESET</button>
                                                 <button type="submit" class="btn-search">SEARCH</button>
                                             </div>
                                         </div>
@@ -77,22 +69,28 @@
                             </div>
                         </form>
                     </div>
-                    <div class="container" style="height: 3rem;"></div>
                     <h4>채용중인 공고</h4>
-                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                    <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
                         <th:block th:each="dto:${result.dtoList}">
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/40.jpg" class="card-img-top">
-                                    <div class="card-body">
-                                        <h5 class="card-title">[[${dto.title}]]</h5>
-                                        <p class="card-text">[[${dto.comName}]]</p>
-                                        <p class="card-text">연봉 | [[${dto.salaryRange}]]</p>
-                                        <p class="card-text">위치 | [[${dto.regionName}]]</p>
-                                        <p class="card-text">직종 | [[${dto.occName}]]</p>
-                                        <p class="card-text">D-[[${dto.remainDay}]]</p>
+                            <div class="post-wrapper">
+<!--                                <a th:href="@{/mainPage/read(postId=${dto.id})}">-->
+                                    <div class="col p-0">
+                                        <div class="p-0 m-2 card-css" th:onclick="|location.href='@{/post/read(postId=${dto.id})}'|" >
+                                            <div class="w-100 p-0 h-50 img-css" >
+                                                <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
+                                            </div>
+
+                                            <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+                                                <p class="card-title-post">[[${dto.title}]]</p>
+                                                <p class="card-company-post">[[${dto.comName}]]</p>
+                                                <p class="card-text-post">연봉 | [[${dto.salaryRange}]]</p>
+                                                <p class="card-text-post">위치 | [[${dto.regionName}]]</p>
+                                                <p class="card-text-post">직종 | [[${dto.occName}]]</p>
+                                                <p class="card-dDay-post">[[${dto.remainDay}]]</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+<!--                                </a>-->
                             </div>
                         </th:block>
                     </div>
@@ -133,11 +131,9 @@
     deleteBtn.addEventListener("click", function(e)
     {
         e.preventDefault()
-        const deleteAll = document.querySelectorAll('.choices__button')
-        for (let i = 0; i < deleteAll.length; i++)
-        {
-            deleteAll[i].click();
-        }
+        location.href="/search";
     });
+
+
 </script>
 

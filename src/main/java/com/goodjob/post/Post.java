@@ -2,13 +2,16 @@ package com.goodjob.post;
 
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
+import com.goodjob.post.fileupload.UploadFile;
+import com.goodjob.company.Region;
 import com.goodjob.post.occupation.Occupation;
-import com.goodjob.post.salary.Salary;
+import com.goodjob.post.salary.PostSalary;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -55,16 +58,23 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "salaryId")
-    private Salary salary; // 연봉
+    private PostSalary postSalary; // 연봉
 
     @Column
-    private int count; // 조회수
+    private int postReadCount; // 조회수
 
+    @ElementCollection
+    @CollectionTable(name = "postImg", joinColumns = @JoinColumn(name = "postImgId", referencedColumnName = "postId"))
+    private List<UploadFile> postImg;
+
+    private String postAddress; // 주소1
+
+    private String postDetailAddress; // 주소2
 
 
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
-    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender) {
+    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, PostSalary postSalary) {
         this.postTitle = postTitle;
         this.postOccCode = postOccCode;
         this.postComId = postComId;
@@ -73,5 +83,8 @@ public class Post {
         this.postStartDate = postStartDate;
         this.postEndDate = postEndDate;
         this.postGender = postGender;
+        this.postRegion = postRegion;
+        this.postImg = postImg;
+        this.postSalary = postSalary;
     }
 }
