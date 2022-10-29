@@ -106,9 +106,8 @@ function changeTitle(data) {
     var resumeId = $(data).parent().parent().find("input[id=resumeId]").val();
     var title = $("input[name=changeTitle]").val();
 
-    var resume = {
-        resumeId: resumeId,
-        resumeTitle: title
+    if(title == ''){
+        title = '제목 없음';
     }
 
     $.ajax({
@@ -162,15 +161,15 @@ function deleteCheckedResume() {
 function getApplyList(pageNum) {
     $.getJSON('/status/getApplyList/' + pageNum, function (result) {
         var list = '';
-        console.log(result);
 
         $.each(result.dtoList, function (applyIdx, apply) {
             list += '    <tr>\n' +
                 '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
                 '      <td><a href="#">' + apply.postName.substr(0, 10) + "..." + '</a></td>\n' +
                 '      <td>' + apply.companyName + '</td>\n' +
-                '      <td><a href="/resume/goPreviousStep1/'+ apply.statResumeId +'">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
+                '      <td><a href="/resume/goPreviousStep1/'+ apply.statResumeId +'" target="_blank">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
                 '      <td>' + apply.statApplyDate + '</td>\n' +
+                '      <td>' + apply.statPass + '</td>\n' +
                 '    </tr>\n';
         })
 

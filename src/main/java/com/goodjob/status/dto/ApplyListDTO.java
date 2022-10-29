@@ -20,6 +20,7 @@ public class ApplyListDTO {
     private Long statId;
     private Long statPostId;
     private Long statResumeId;
+    private String statPass;
     private Date statApplyDate;
     private String postName;
     private String companyName;

@@ -6,6 +6,9 @@ import com.goodjob.status.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,4 +20,12 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     int findByStatResumeId_ResumeMemId(String loginId);
     Page<Status> getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(String loginId, Pageable pageable);
     Page<Status> getStatusByStatPostId_PostComId_ComLoginIdOrderByStatApplyDateDesc(String loginId, Pageable pageable);
+    @Transactional
+    @Modifying
+    @Query("update Status s set s.statPass='합격' where s.statId =:statId")
+    void updateStatPass(Long statId);
+    @Transactional
+    @Modifying
+    @Query("update Status s set s.statPass='불합격' where s.statId =:statId")
+    void updateStatUnPass(Long statId);
 }

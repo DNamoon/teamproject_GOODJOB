@@ -36,7 +36,7 @@ public class StatusServiceImpl implements StatusService{
     public PageResultDTO<ApplyListDTO, Status> getApplyList(String loginId, int pageNum) {
         Pageable pageable = PageRequest.of(pageNum,10);
         Page<Status> applyList = statusRepository.getStatusByStatResumeId_ResumeMemId_MemLoginIdOrderByStatApplyDateDesc(loginId, pageable);
-        Function<Status, ApplyListDTO> fn = (entity -> entityToListDTO(entity));
+        Function<Status, ApplyListDTO> fn = (entity -> entityToApplyListDTO(entity));
         return new PageResultDTO(applyList, fn);
     }
 
@@ -44,9 +44,18 @@ public class StatusServiceImpl implements StatusService{
     public PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 9);
         Page<Status> applierList = statusRepository.getStatusByStatPostId_PostComId_ComLoginIdOrderByStatApplyDateDesc(loginId, pageable);
-        ApplierListDTO applierListDTO = null;
-        Function<Status, ApplierListDTO> fn = (entity -> applierListDTO.entityToDTO(entity));
+        Function<Status, ApplierListDTO> fn = (entity -> entityToApplierListDTO(entity));
         return new PageResultDTO(applierList, fn);
+    }
+
+    @Override
+    public void changePass(Long statId) {
+        statusRepository.updateStatPass(statId);
+    }
+
+    @Override
+    public void changeUnPass(Long statId) {
+        statusRepository.updateStatUnPass(statId);
     }
 
 }

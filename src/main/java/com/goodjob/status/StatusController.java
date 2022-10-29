@@ -46,4 +46,16 @@ public class StatusController {
    public ResponseEntity<PageResultDTO<ApplierListDTO, Status>> getApplierList(HttpSession session, @PathVariable("pageNum") int pageNum){
       return new ResponseEntity<>(statusService.getApplierList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
    }
+
+   @ResponseBody
+   @GetMapping("/changePass/{statId}")
+   public void changePass(@PathVariable("statId") Long statId){
+      statusService.changePass(statId);
+   }
+
+   @ResponseBody
+   @GetMapping("/changeUnPass/{statId}")
+   public void changeUnPass(@PathVariable("statId") Long statId){
+      statusService.changeUnPass(statId);
+   }
 }
