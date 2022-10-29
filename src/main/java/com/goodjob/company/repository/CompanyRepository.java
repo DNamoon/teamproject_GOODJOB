@@ -20,6 +20,11 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
 
+    @Modifying
+    @Transactional
+    @Query("update Company c set c.comPw =:comPw where c.comLoginId =:comLoginId")
+    void updatePassword(String comPw, String comLoginId);
+
     Long countByComNameAndComEmail(String comName, String comEmail);
 
     Optional<Company> findByComNameAndComEmail(String comName, String comEmail);

@@ -93,9 +93,15 @@ public class CompanyDTO {
     //22.10.29 - 아이디 찾기 때 사용하는 엔티티 변환 메서드. 기존 toEntity 메서드 if문 때문에 에러 발생.
     public Company toEntityForFindId(){
         return Company.builder()
-               .comName(comName)
-               .comEmail(comEmail1)
-               .build();
+                .comPw(pw)
+                .comName(comName)
+                .comEmail(comEmail1)
+                .build();
+
+//        return Company.builder()
+//               .comName(comName)
+//               .comEmail(comEmail1)
+//               .build();
     }
 
     public Company toEntity() {

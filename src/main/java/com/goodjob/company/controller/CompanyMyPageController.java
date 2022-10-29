@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -79,11 +81,27 @@ public class CompanyMyPageController {
         return matchPassword(session, password);
     }
 
-    //ho - 22.10.28 회원 비밀번호 변경 페이지
-    @GetMapping("/changePassword")
-    public String changePassword(){
 
+    //ho - 22.10.28 회원 비밀번호 변경 페이지
+    @GetMapping("changePassword")
+    public String changePasswordForm(){
         return "/changePassword";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@Valid CompanyDTO companyDTO, BindingResult result, HttpSession session){
+        if(!companyDTO.getPw().equals(companyDTO.getComPw2())){
+            result.rejectValue("comPw2","passwordInCorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+            return "/changePassword";
+        }
+
+        String comLoginId = getSessionLoginId(session).getComLoginId();
+
+        log.info("???: 패스워드 포스트까지는 넘어오나?");
+        companyService.changePw(companyDTO,comLoginId);
+
+        return "redirect:/com/myPage";
     }
 
     //ho 22.10.28 session에서 loginId 받아오는거 반복 되서 메서드로 만듦.

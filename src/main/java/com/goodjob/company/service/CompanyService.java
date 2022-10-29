@@ -38,6 +38,19 @@ public class CompanyService {
     private final PasswordEncoder passwordEncoder;
     private final RegionRepository regionRepository;
 
+
+    public void changePw(CompanyDTO companyDTO,String comLoginId){
+        companyDTO.setPw(passwordEncoder.encode(companyDTO.getPw()));
+        log.info("???: 서비스 changePw에서 암호화하는과정에서 에러일가?");
+        Company company = companyDTO.toEntityForFindId();
+        log.info("???: toEntity에서나는 에러같은데");
+        log.info("???: 로그인 아이디 뭐 받아오는거지" + company.getComLoginId());
+        log.info("???: 로그인 아이디 뭐 받아오는거지" + comLoginId);
+
+        companyRepository.updatePassword(company.getComPw(),comLoginId);
+
+    }
+
     public String findId2(CompanyDTO companyDTO) {
         Company company1 = companyDTO.toEntityForFindId();
         String name = company1.getComName();
@@ -48,6 +61,7 @@ public class CompanyService {
             return "fail";
         } else {
             Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
+            log.info("???: "+ email +"email일부일텐데??? "+ company.get().getComEmail());
             return company.get().getComLoginId();
         }
 
