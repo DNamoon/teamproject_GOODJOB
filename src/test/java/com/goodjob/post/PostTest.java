@@ -54,7 +54,7 @@ class PostTest {
     }
     @Test
     void 관리자페이지공고게시판테스트(){
-        ArticlePage articlePage = articlePageService.getArticlePage(1L);
+        ArticlePage articlePage = articlePageService.getArticlePage(0L);
         log.info("getArticlePage = {}" , articlePage);
     }
 }

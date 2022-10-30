@@ -8,6 +8,8 @@ import com.goodjob.admin.postpaging.ArticlePage;
 import com.goodjob.admin.repository.AdminRepository;
 import com.goodjob.notice.Notice;
 import com.goodjob.notice.NoticeRepository;
+import com.goodjob.post.Post;
+import com.goodjob.post.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +40,8 @@ public class AdminTest {
     VisitorStatisticsRepository visitorStatisticsRepository;
     @Autowired
     NoticeRepository noticeRepository;
+    @Autowired
+    PostRepository postRepository;
 
     @Test
     @Commit
@@ -61,7 +65,7 @@ public class AdminTest {
 
 //        Long longs = visitorStatisticsRepository.sumVisitor();
 //        System.out.println("aLong = " + longs);
-        visitorStatisticsRepository.updateVisitor(LocalDate.now());
+//        visitorStatisticsRepository.updateVisitor(LocalDate.now());
 
 //        LocalDate localDate = LocalDate.now().minusDays(7L);
 //        System.out.println("localDateTime = " + localDate);
@@ -87,11 +91,15 @@ public class AdminTest {
     @Test
     @Commit
     void saveNotice(){
-//        LongStream.rangeClosed(6,50).forEach(i->{
-//            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
-//        });
-        LocalDate buydate = LocalDate.of(2022,10,25);
-        boolean after = LocalDate.now().isAfter(ChronoLocalDate.from(buydate));
-        System.out.println("end = " + after);
+        LongStream.rangeClosed(6,50).forEach(i->{
+            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
+        });
+    }
+
+    @Test
+    void 공고페이지조회(){
+        List<Post> result = postRepository.findAllByPostIdBetweenOrderByPostIdDesc(50L, 60L);
+        int size = result.size();
+        result.forEach(i-> System.out.println("i = " + i.getPostContent()));
     }
 }

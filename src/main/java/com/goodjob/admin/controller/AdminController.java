@@ -71,6 +71,7 @@ public class AdminController {
     @GetMapping("/post/{pageNum}")
     public String postBbs(@PathVariable Long pageNum,Model model) {
         ArticlePage articlePage = articlePageService.getArticlePage(pageNum);
+        log.info("articlePage={}",articlePage);
         model.addAttribute("postPage", articlePage);
         return "/admin/adminPostManage";
     }
