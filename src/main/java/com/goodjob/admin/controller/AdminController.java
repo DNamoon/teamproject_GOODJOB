@@ -5,7 +5,6 @@ import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.admindto.AdminDTO;
 import com.goodjob.admin.postpaging.AdminPostService;
 import com.goodjob.admin.service.AdminService;
-import com.goodjob.notice.Notice;
 import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PostInsertDTO;
 import lombok.RequiredArgsConstructor;
@@ -77,18 +76,20 @@ public class AdminController {
         Pageable pageable = PageRequest.of(pageNum, 10, sort);
         Page<Post> postList = adminPostService.findPostList(pageable);
         model.addAttribute("postPage", postList);
-        return "/admin/adminPostManage";
+        return "/admin/managePage/adminPostManage";
     }
 
     @GetMapping("/memberManage")
     public String adminMemberPage(){
-        return "/admin/adminMemberManage";
+        return "/admin/managePage/adminMemberManage";
     }
 
     @GetMapping("/customerInquiry")
     public String adminCustomerInquiryForm(){
-        return "/admin/adminCustomerInquiryForm";
+        return "admin/customerInquiry/customerInquiryList";
     }
+
+
     /**
      * 22.10.30 이하 테스트메소드 차후 삭제예정.
      * @return

@@ -3,7 +3,12 @@ package com.goodjob.Admin;
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
+import com.goodjob.admin.customerinquiry.CustomerInquiryPost;
+import com.goodjob.admin.customerinquiry.CustomerInquiryPostRepository;
+import com.goodjob.admin.customerinquiry.CustomerInquiryPostType;
 import com.goodjob.admin.repository.AdminRepository;
+import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.notice.Notice;
 import com.goodjob.notice.NoticeRepository;
 import com.goodjob.post.Post;
@@ -18,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.LongStream;
@@ -34,6 +40,12 @@ public class AdminTest {
     NoticeRepository noticeRepository;
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    CustomerInquiryPostRepository customerInquiryPostRepository;
+    @Autowired
+    CompanyRepository companyRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     @Commit
@@ -95,6 +107,21 @@ public class AdminTest {
         Pageable pageable = PageRequest.of(1, 100, sort);
         Page<Post> allByPostId = postRepository.findAll(pageable);
         all.forEach(i-> System.out.println("i = " + i.getPostContent()));
+    }
+
+    @Test
+    @Commit
+    void 고객문의생성테스트(){
+        CustomerInquiryPost build = CustomerInquiryPost.builder().inquiryPostCategory(CustomerInquiryPostType.ETC)
+                .inquiryPostMemberId(memberRepository.findById(2L).get())
+                .inquiryPostContent("content")
+                .inquiryPostId(4L)
+                .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
+                .inquiryPostStatus("0")
+                .inquiryPostTitle("title")
+                .inquiryPostWriter("writer")
+                .build();
+        customerInquiryPostRepository.save(build);
     }
 
 }

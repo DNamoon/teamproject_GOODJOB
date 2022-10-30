@@ -1,5 +1,6 @@
 package com.goodjob.member;
 
+import com.goodjob.admin.customerinquiry.CustomerInquiryPost;
 import com.goodjob.resume.Resume;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,9 @@ public class Member {
 
     @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
     private List<Resume> memResume = new ArrayList<>();
+    // 오성훈 22.10.30
+    @OneToMany(mappedBy = "inquiryPostMemberId", cascade = CascadeType.ALL)
+    private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
 
     @Column
     private String memPw;

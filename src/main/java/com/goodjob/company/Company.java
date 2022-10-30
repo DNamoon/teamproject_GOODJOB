@@ -9,6 +9,7 @@
  */
 package com.goodjob.company;
 
+import com.goodjob.admin.customerinquiry.CustomerInquiryPost;
 import com.goodjob.post.Post;
 import lombok.*;
 
@@ -66,6 +67,9 @@ public class Company {
     // 오성훈 22.10.30 cascade 연관관계 추가 및 cascade 확인완료
     @OneToMany(mappedBy = "postComId", cascade = CascadeType.ALL)
     private List<Post> memResume = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inquiryPostComId", cascade = CascadeType.ALL)
+    private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
 
     // 더미데이터 생성을 위한 임시 생성자 by.OH
     public Company(Region comRegCode, Comdiv comComdivCode, String comLoginId, String comPw) {
