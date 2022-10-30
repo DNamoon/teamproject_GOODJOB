@@ -2,6 +2,32 @@ $(document).ready(function(){
     maxDate();
     isXBtnDisabled();
 
+    //뒤로가기 방지
+    $(document).keydown(function(e){
+        if(e.target.nodeName != "INPUT" && e.target.nodeName != "TEXTAREA"){
+            if(e.keyCode === 8){
+                return false;
+            }
+        }
+    });
+
+    window.history.forward(0);
+    
+
+    // history.pushState(null,null, location.href);
+    // window.onpopstate = function(event){
+    //     if (confirm("이전버튼을 누르면 현재 작성중인 내용이 모두 사라집니다.\n그래도 이동하시겠습니까?")) {
+    //         history.go(-1);
+    //     }
+    // }
+    // window.history.forward(1);
+
+    // window.onbeforeunload = function(e) {
+    //     if (confirm("이전버튼을 누르면 현재 작성중인 내용이 모두 사라집니다.\n그래도 이동하시겠습니까?")) {
+    //         history.go(-1);
+    //     }
+    // };
+
     var size = $("input[name='certificateName']").length;
     for(var i = 1; i < size; i++){
         $("input[name='certificateName']").eq(i).attr("id","certificateName"+i);
@@ -17,12 +43,13 @@ $(document).ready(function(){
             dataType: "json",
             async: false,
             success: function (data){
-                $(".schoolList").empty();
                 for(var i=0; i<data.length; i++){
                     $(".schoolList").append('<input class="form-check-input me-1" type="radio" name="selectSchoolName" value="' + data[i].schName +'" style="background-color: #e4e1e4">' + data[i].schName +'<br/>');
                 }
                 $(".doneFindSchool").click(function (){
                     $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
+                    $(".schoolList").empty();
+                    $(".findSchoolName").empty();
                 });
             }
         });
@@ -38,12 +65,13 @@ $(document).ready(function(){
             dataType: "json",
             async: false,
             success: function (data){
-                $(".majorList").empty();
                 for(var i=0; i<data.length; i++){
                     $(".majorList").append('<input class="form-check-input me-1" type="radio" name="selectMajorName" value="' + data[i].majName +'" style="background-color: #e4e1e4">' + data[i].majName +'<br/>');
                 }
                 $(".doneFindMajor").click(function (){
                     $("#majorName").val($("input:radio[name='selectMajorName']:checked").val());
+                    $(".majorList").empty();
+                    $(".findMajorName").empty();
                 });
             }
         });
@@ -59,7 +87,6 @@ $(document).ready(function(){
             dataType: "json",
             async: false,
             success: function (data) {
-                $(".certiList").empty();
                 for (var i = 0; i < data.length; i++) {
                     $(".certiList").append('<input class="form-check-input me-1" type="radio" name="selectCertiName" value="' + data[i].certiName + '" style="background-color: #e4e1e4">' + data[i].certiName + '<br/>');
                 }
@@ -67,6 +94,8 @@ $(document).ready(function(){
                     var inputId = $("#modalId").val();
                     // $("#" + inputId).val($("input:radio[name='selectCertiName']:checked").val());
                     $("#" + inputId).attr("value", $("input:radio[name='selectCertiName']:checked").val());
+                    $(".certiList").empty();
+                    $(".findCertiName").empty();
                 });
             }
         });
@@ -499,20 +528,23 @@ function maxDate(){
 function isFourNumber(phoneNum){
     var exp = /\d\d\d\d/;
     if(phoneNum.value.match(exp)){
+        $("#phoneNumVeriDiv").replaceWith('<label id="phoneNumVeriDiv"></label>');
         return true;
     } else {
-        $("#phoneNumVeriDiv").append("4자리 숫자로 입력해주세요");
-
+        $("#phoneNumVeriDiv").replaceWith('<label id="phoneNumVeriDiv">4자리 숫자로 입력해주세요</label>');
         phoneNum.focus();
         return false;
     }
 }
 
-//학점 - 실
+//학점 - 입력한 값이 총점보다 크지 않도록 검증
 function rangeCredit(){
-    if(Number($("#eduGetCredit").val()) > Number($("#eduTotalCredit").val())){
+    if(Number($("#eduGetCredit").val()) > Number($('#eduTotalCredit').val().substr(1))){
+        alert("입력한 값이 총점보다 클 수 없습니다.\n학점을 다시 확인해 주세요.")
         $("#eduGetCredit").val($('#eduTotalCredit').val().replace('/',''));
     }else{
         $("#eduGetCredit").val($('#eduGetCredit').val());
     }
 }
+
+
