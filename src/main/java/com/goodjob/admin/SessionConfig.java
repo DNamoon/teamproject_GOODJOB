@@ -28,14 +28,11 @@ public class SessionConfig implements HttpSessionListener, HttpSessionAttributeL
     @Override
     public void sessionCreated(HttpSessionEvent se) {
 
-        log.info("리스너 시작");
-
         boolean existsByToday = vs.existsByX(LocalDate.now());
         if (existsByToday == false) {
             VisitorStatistics visitorStatistics = new VisitorStatistics(LocalDate.now(), 1L);
             vs.save(visitorStatistics);
         } else {
-            log.info("else 시작");
             vs.updateVisitor(LocalDate.now());
         }
     }
@@ -43,13 +40,10 @@ public class SessionConfig implements HttpSessionListener, HttpSessionAttributeL
     // 세션이 지워지면 호출
     @Override
     public void attributeRemoved(HttpSessionBindingEvent se) {
-
     }
 
     // 세션이 만료되면 호출
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-
-
     }
 }

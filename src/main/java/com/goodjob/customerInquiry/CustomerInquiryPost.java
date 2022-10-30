@@ -10,7 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-
+/**
+ * 22.10.30 오성훈
+ */
 @Entity
 @Builder
 @AllArgsConstructor

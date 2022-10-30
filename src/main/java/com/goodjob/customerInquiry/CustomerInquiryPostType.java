@@ -1,5 +1,7 @@
 package com.goodjob.customerInquiry;
-
+/**
+ * 22.10.30 오성훈
+ */
 public enum CustomerInquiryPostType {
 
     GENERAL("일반문의"),

@@ -69,7 +69,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/post/{pageNum}")
+    @GetMapping("/postManage/{pageNum}")
     public String postListForm(@PathVariable int pageNum, Model model) {
         pageNum = (pageNum == 0) ? 0 : (pageNum - 1);
         Sort sort = Sort.by("PostId").descending();
@@ -91,8 +91,7 @@ public class AdminController {
 
 
     /**
-     * 22.10.30 이하 테스트메소드 차후 삭제예정.
-     * @return
+     * 22.10.30 오성훈 이하 테스트메소드 차후 삭제예정.
      */
     @GetMapping("/test")
     public String test(){
