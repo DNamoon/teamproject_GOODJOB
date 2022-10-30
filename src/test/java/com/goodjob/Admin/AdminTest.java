@@ -2,9 +2,7 @@ package com.goodjob.Admin;
 
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
-import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
-import com.goodjob.admin.postpaging.ArticlePage;
 import com.goodjob.admin.repository.AdminRepository;
 import com.goodjob.notice.Notice;
 import com.goodjob.notice.NoticeRepository;
@@ -20,13 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -98,8 +90,11 @@ public class AdminTest {
 
     @Test
     void 공고페이지조회(){
-        List<Post> result = postRepository.findAllByPostIdBetweenOrderByPostIdDesc(50L, 60L);
-        int size = result.size();
-        result.forEach(i-> System.out.println("i = " + i.getPostContent()));
+        Sort sort = Sort.by("PostId").descending();
+        List<Post> all = postRepository.findAll();
+        Pageable pageable = PageRequest.of(1, 100, sort);
+        Page<Post> allByPostId = postRepository.findAll(pageable);
+        all.forEach(i-> System.out.println("i = " + i.getPostContent()));
     }
+
 }

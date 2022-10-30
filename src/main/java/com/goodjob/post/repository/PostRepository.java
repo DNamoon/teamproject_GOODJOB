@@ -19,9 +19,10 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
     Long countAllByPostEndDateBefore(Date Date);
 
     // 10.7 By.OH
-    List<Post> findAllByPostIdBetweenOrderByPostIdDesc(Long starNum, Long endNum);
+//    List<Post> findAllByPostIdBetweenOrderByPostIdDesc(Long starNum, Long endNum);
+    Page<Post> findAll(Pageable pageable);
 
-    Page<Post> findAllByPostComId(Company company, Pageable pageable );
+    Page<Post> findAllByPostComId(Company company, Pageable pageable);
 
     @Modifying
     @Query("update Post p set p.postReadCount = p.postReadCount + 1 where p.postId = :id")

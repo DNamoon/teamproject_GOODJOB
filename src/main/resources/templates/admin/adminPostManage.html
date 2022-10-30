@@ -39,7 +39,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:object="${postPage}" th:each="post : ${postPage.postContent}">
+                                    <tr th:object="${postPage}" th:each="post : ${postPage.content}">
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div>
@@ -54,7 +54,6 @@
                                         </td>
                                         <td>
                                             <h6 th:text="${post.postTitle}" class="m-lg-2 text-sm"/>
-                                            <p th:text="${post.postContent}" class="text-xxs text-secondary m-lg-2"></p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             <th:block th:if="${#dates.createNow().after(post.postEndDate)}">
@@ -80,23 +79,24 @@
 
                                     </tbody>
                                 </table>
-                                <div class="d-flex flex-row justify-content-center">
-                                    <th:block th:if="${postPage.hasArticles()}">
-                                        <th:block th:if="${postPage.startPage > 5}">
-                                            <a class="m-lg-1 fs-5"
-                                               th:href="@{/admin/post/{pageNum}(pageNum=${postPage.getStartPage()-5})}">&lt;&lt;</a>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <th:block th:if="${postPage.hasContent()}">
+                                            <th:block th:if="${postPage.getNumber() > 4}">
+                                                <a class="m-lg-1 fs-5"
+                                                   th:href="@{/admin/post/{pageNum}(pageNum=${postPage.getNumber()-4})}">&lt;&lt;</a>
+                                            </th:block>
+                                            <th:block
+                                                    th:each="num : ${#numbers.sequence(postPage.getNumber(),postPage.getNumber()+5)}">
+                                                <a class="m-lg-1 fs-5" th:text="${num}" th:if="${num>0 && num<postPage.getTotalPages()+1}"
+                                                   th:href="@{/admin/post/{pageNum}(pageNum=${num})}"></a>
+                                            </th:block>
+                                            <th:block th:if="${postPage.getNumber() < postPage.totalPages-5 && !postPage.isLast()}">
+                                                <a class="m-lg-1 fs-5"
+                                                   th:href="@{/admin/post/{pageNum}(pageNum=${postPage.getNumber()+6})}">&gt;&gt;</a>
+                                            </th:block>
                                         </th:block>
-                                        <th:block
-                                                th:each="num : ${#numbers.sequence(postPage.startPage,postPage.endPage)}">
-                                            <a class="m-lg-1 fs-5" th:text="${num}"
-                                               th:href="@{/admin/post/{pageNum}(pageNum=${num})}"></a>
-                                        </th:block>
-                                        <th:block th:if="${postPage.endPage < postPage.totalPage}">
-                                            <a class="m-lg-1 fs-5"
-                                               th:href="@{/admin/post/{pageNum}(pageNum=${postPage.getStartPage()+5})}">&gt;&gt;</a>
-                                        </th:block>
-                                    </th:block>
-                                </div>
+                                    </div>
+
                             </div>
                         </div>
                     </div>
