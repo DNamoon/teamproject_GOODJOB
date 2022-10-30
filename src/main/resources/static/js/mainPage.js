@@ -1,5 +1,5 @@
-const url = "localhost:8080";
-const uri ="post/"
+
+// comMyPagePost.html 에서 쓰이는 JS
 let postJS = {
 
     list:function(sortType){
@@ -9,7 +9,7 @@ let postJS = {
             sort : sortType
         }
         console.log("JS................."+pageRequestDTO)
-        post(url,'getPagingPostList',pageRequestDTO)
+        fetchJs.post(fetchJs.url,'getPagingPostList',pageRequestDTO)
             .then(data => {
                 console.log("data :" + data);
 
@@ -74,51 +74,100 @@ let postJS = {
         div2.appendChild(div3);
         div2.appendChild(div4);
         div1.appendChild(div2);
-        // goToPostDetails.appendChild(div1);
-        // postWrapper.appendChild(goToPostDetails);
         postWrapper.appendChild(div1);
         changeContentDiv.appendChild(postWrapper);
-
-
-
     }
 
 }
-// ======================== FETCH FUNCTION(custom) ==========================================
+// comMyPagePost.html 에서 쓰이는 JS
+let comMyPagePost = {
+    getPostListMapping: "comMyPagePost",
+    getFormDom : function(){
+        return document.querySelector(".comMyPage-post-search-form");
+    },
 
-// GET FETCH
-const get = async function get(host, path, body, headers ={}){
-    const url = `http://${host}/${path}`;
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...headers,
-        },
-        body: JSON.stringify(body), // 객체를 Json 형식으로 변환한다.
-    };
-    const response = await fetch(url, options); // Response {status: 200, ok: true, redirected: false, type: "cors", url: "url", …}
-    const data = await response.json();
-    console.log("response =============")
-    console.log(response);
-    console.log("data =============")
-    console.log(data);
-    return response.ok ? data : new Error(response); // Error: [object Response]
+    formSubmit:function (){
+        this.getFormDom().submit();
+    },
+    formSubmitChangeSize:function (size){
+        const changeSizeInput = document.querySelector(".changeSizeInput");
+        changeSizeInput.value=size;
+        this.getFormDom().submit();
+    },
+    formSubmitChangeOutOfDateState:function (outOfDateState){
+        const changeOutOfDateStateInput = document.querySelector(".changeOutOfDateStateInput");
+        changeOutOfDateStateInput.value=outOfDateState;
+        this.getFormDom().submit();
+    },
+    formSubmitChangePage:function (page){
+        const changePageInput = document.querySelector(".changePageInput");
+        changePageInput.value=page;
+        this.getFormDom().submit();
+    },
+    deleteByPostIdWithAjax:function (postId){
+        const deleteMapping = "deletePost"
+        fetchJs.delete(fetchJs.url,`${fetchJs.uri}${deleteMapping}/${postId}`)
+            .then(data => {
+                console.log("data :" + data);
+                this.formSubmit();
+            })
+        .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
+    },
+    readPost:function (postId){
+        console.log(postId);
+        location.href=`/post/readPost/${postId}`;
+    }
+
 }
-// GET FETCH HTML
 
-// POST FETCH
-const post = async function post(host, path, body, headers ={}){
-    const url = `http://${host}/${path}`;
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...headers,
-        },
-        body: JSON.stringify(body),
-    };
-    const response = await fetch(url, options); // Response {type: "cors", url: "url", redirected: false, status: 201, ok: true, …}
-    const data = await response.json();
-    return response.ok ? data : new Error(data);
+// fetch api 사용을 위한 공용 JS
+const fetchJs = {
+    // ======================== FETCH FUNCTION(custom) ==========================================
+    url : "localhost:8080",
+    uri :"post/",
+    // GET FETCH
+    get : async function get(host, path, headers ={}){
+        const url = `http://${host}/${path}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            }
+        };
+        const response = await fetch(url, options); // Response {status: 200, ok: true, redirected: false, type: "cors", url: "url", …}
+        const data = await response.json();
+        const message = 'Error with Status Code: ' + response.status;
+        console.log("response =============")
+        console.log(response);
+        console.log("data =============")
+        console.log(data);
+        return response.ok ? data : new Error(message); // Error: [object Response]
+    },
+
+    // POST FETCH
+    post : async function post(host, path, body, headers ={}){
+        const url = `http://${host}/${path}`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            body: JSON.stringify(body),
+        };
+        const response = await fetch(url, options); // Response {type: "cors", url: "url", redirected: false, status: 201, ok: true, …}
+        const data = await response.json();
+        return response.ok ? data : new Error(data);
+    },
+    // DELETE FETCH
+    delete : async function deleteById(host,path){
+        const url = `http://${host}/${path}`;
+        const options = {
+            method: 'DELETE'
+        };
+        const response = await fetch(url, options); // Response {type: "cors", url: "url", redirected: false, status: 201, ok: true, …}
+        const message = 'Error with Status Code: ' + response.status;
+        return response.ok ? response : new Error(message);
+    }
 }

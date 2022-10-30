@@ -23,7 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -61,6 +60,14 @@ public class postServiceImpl implements PostService {
         Function<Post, PostCardDTO> fn = (this::entityToDtoInMain);
         return new PageResultDTO<>(result,fn);
     }
+    @Override
+    public PageResultDTO<Post, PostComMyPageDTO> getPagingPostListInComMyPage(PageRequestDTO pageRequestDTO){
+        Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
+        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
+        Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
+        Function<Post, PostComMyPageDTO> fn = (this::entityToDtoInComMyPage);
+        return new PageResultDTO<>(result,fn);
+    }
     // pageRequestDTO 의 sort 값에 따라 공고 리스트의 정렬에 필요한 Sort를 리턴해주는 메솓즈
     // getList()와 getListInMain() 에 사용한다.
     private Sort decideSort(PageRequestDTO pageRequestDTO){
@@ -75,26 +82,6 @@ public class postServiceImpl implements PostService {
                 return Sort.by("postEndDate").ascending();
         }
         return  null;
-    }
-
-    @Override
-    public Long register(PostDTO postDTO) {
-        Optional<Occupation> oOcc = occupationRepository.findById(postDTO.getOccId());
-        Optional<Company> com = companyRepository.findByComLoginId(postDTO.getComLoginId());
-        Optional<Region> reg = regionRepository.findById(postDTO.getRegionId());
-        Optional<PostSalary> sal = salaryRepository.findById(postDTO.getSalaryId());
-        log.info("service.....register..."+postDTO);
-        Post entity = null;
-        if(oOcc.isPresent() && com.isPresent() && reg.isPresent() && sal.isPresent()){
-            try {
-                entity = dtoToEntity(postDTO, oOcc.get(),com.get(),reg.get(),sal.get());
-                postRepository.save(entity);
-                return entity.getPostId();
-            } catch (ParseException e) {
-                log.info("Date 객체를 변환하는데 에러가 발생했습니다.");
-            }
-        }
-        return null;
     }
     @Override
     public List<Occupation> getListOccupation(){
@@ -118,22 +105,19 @@ public class postServiceImpl implements PostService {
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && region.isPresent() && salary.isPresent()){
             Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),region.get(),salary.get(),uploadFiles));
-            log.info("Service.......Post........"+post);
             return post.getPostId();
         }
         return null;
     }
-
     @Override
-    @Transactional
-    public PostDTO read(Long postId){
+    public PostDetailsDTO readPost(Long postId){
         Optional<Post> result = postRepository.findById(postId);
         // 게시글 조회 후 조회수를 +1 한다.
         postRepository.increasePostCount(postId);
-        return result.map(this::entityToDto).orElse(null);
+        return result.map(this::entityToDtoForRead).orElse(null);
     }
     @Override
-    public void remove(Long postId){
+    public void deletePost(Long postId){
         postRepository.deleteById(postId);
     }
 
@@ -166,16 +150,8 @@ public class postServiceImpl implements PostService {
     }
 
     private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO){
-        log.info("service.......getSearch: "+pageRequestDTO);
-
-
-
         QPost qPost = QPost.post;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-
-
-
         // 세션의 authType = "company" 이라면 로그인한 기업회원의 글만
         // 가져오는 조건 추가.
         if(pageRequestDTO.getAuthType()!=null){
