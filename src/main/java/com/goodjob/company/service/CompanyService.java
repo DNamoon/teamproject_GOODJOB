@@ -54,9 +54,12 @@ public class CompanyService {
     public String findId2(CompanyDTO companyDTO) {
         Company company1 = companyDTO.toEntityForFindId();
         String name = company1.getComName();
+        log.info("??? name 받아오는 값: " + name);
         String email = company1.getComEmail();
+        log.info("??? email 받아오는 값: " + email);
+
         Long NumOfName = companyRepository.countByComNameAndComEmail(name,email);
-        log.info("???"+NumOfName);
+        log.info("??? name과 emial로 찾아온 갯수 : "+NumOfName);
         if(NumOfName == 0){
             return "fail";
         } else {

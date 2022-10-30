@@ -200,33 +200,29 @@ $(document).ready(function () {
 
 //'이전으로 돌아가기'버튼 클릭시
 function btnDisabled(){
-    //'이전으로 돌아가기'버튼 숨기기
-    const target2 = document.getElementById("btn_hidden");
-    target2.hidden = true;
+    // //'이전으로 돌아가기'버튼 숨기기
+    // const target2 = document.getElementById("btn_hidden");
+    // target2.hidden = true;
+    //
+    // //'정보 수정하기'버튼 보이기
+    // const target3 = document.getElementById("btn_modify");
+    // if(target3.style.display == 'none')
+    //     target3.style.display = 'block';
+    //
+    // //정보 수정 못 하게 입력창 막기
+    // const target = document.getElementById("btn_target");
+    // target.disabled = true;
+    //
+    // //'정보 수정완료'버튼 숨기기
+    // const target7 = document.getElementById("modal_open_btn");
+    // target7.hidden = true;
+    //
+    // const target8 = document.getElementById("btn_change_pw");
+    // target8.hidden = true;
+    // //$('#btn_change_pw').removeAttr('hidden');
 
-    //'정보 수정하기'버튼 보이기
-    const target3 = document.getElementById("btn_modify");
-    if(target3.style.display == 'none')
-        target3.style.display = 'block';
+    //location.href = "/com/myPage";
 
-    //정보 수정 못 하게 입력창 막기
-    const target = document.getElementById("btn_target");
-    target.disabled = true;
-
-    //'정보 수정완료'버튼 숨기기
-    const target7 = document.getElementById("modal_open_btn");
-    target7.hidden = true;
-
-    const target8 = document.getElementById("btn_change_pw");
-    target8.hidden = true;
-    //$('#btn_change_pw').removeAttr('hidden');
-
-}
-
-function password_confirm() {
-    const password = document.getElementById("password_confirm");
-
-    $.ajax("/confirm")
 }
 
 //Daum 주소 찾기API function
@@ -278,21 +274,54 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
-//비밀번호1,2 일치 여부 보여주는 fuction
+$('#email').blur(function (){
+    let email = $('#email').val();
+    let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
+    let emailError = $('#email_error');
+    emailError.css("color","#ff0000");
+
+    if(!regExp.test(email)) {
+        emailError.show().text("올바른 이메일 양식이 아닙니다!")
+    } else {
+        emailError.show().text("");
+    }
+})
+
+
+//비밀번호1,2 일치 여부 보여주는 function
 function passwordConfirm() {
     var password = document.getElementById('comPw1');
     var passwordConfirm = document.getElementById('comPw2');
     var confirmMsg = document.getElementById('confirmMsg')  //확인 메시지
-    var correctColor = "#73b973"; //맞았을 때 출력되는 색깔.
+
+    var passwordError = document.getElementById('password_error');
+
+    var correctColor = "#54b254"; //맞았을 때 출력되는 색깔.
     var wrongColor = "#ff0000";   //틀렸을 때 출력되는 색깔.
 
-    if(password.value == passwordConfirm.value) {
-        confirmMsg.style.color = correctColor;
-        confirmMsg.innerHTML = "비밀번호 일치";
-    } else {
+    var regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+//                ^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$
+
+    if(!regExp.test(password.value)){
+        passwordError.style.color = wrongColor;
+        passwordError.innerHTML = "비번은 3~25자로 최소 하나의 문자, 숫자, 특수문자가 들어가야 합니다."
         confirmMsg.style.color = wrongColor;
-        confirmMsg.innerHTML = "비밀번호 불일치";
+        confirmMsg.innerHTML = "올바른 비밀번호를 입력해주세요."
+    } else {
+        if(password.value == passwordConfirm.value) {
+            passwordError.style.color = correctColor;
+            passwordError.innerHTML = ""
+            confirmMsg.style.color = correctColor;
+            confirmMsg.innerHTML = "비밀번호 일치";
+        } else {
+            passwordError.style.color = correctColor;
+            passwordError.innerHTML = ""
+            confirmMsg.style.color = wrongColor;
+            confirmMsg.innerHTML = "비밀번호 불일치";
+        }
+
     }
+
 }
 
 
@@ -303,18 +332,36 @@ $('#id_input').on("change keyup", function(){
     console.log("keyup 테스트");
     var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
     var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+    var idError = $('.id_error');
+    idError.css("color", "#ff0000");
+
 
     $.ajax({
         type : "post",
         url : "/com/check",
         data : data,
         success : function(result){
-            if(result != 'fail'){
-                $('.id_input_re_1').css("display","inline-block");
-                $('.id_input_re_2').css("display", "none");
-            } else {
-                $('.id_input_re_2').css("display","inline-block");
-                $('.id_input_re_1').css("display", "none");
+            if(result != 'fail'){  //중복되는 아이디가 없을 때
+                let regExp = /^[a-z0-9_-]{3,15}$/g; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+                let id = $("#userId").val();
+                if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
+                    idError.show().text("필수 입력값입니다. 아이디를 입력해주세요.");
+                } else {
+                    if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+                        idError.show().text("아이디는 3~15자의 영문 소문자와 숫자,특수기호(_),(-)만 사용 가능합니다.")
+                        // $('.id_input_re_2').css("display","inline-block");
+                        // $('.id_input_re_1').css("display", "none");
+                    } else { //아이디 중복도 없고 정규식도 올바를 때
+                        idError.css("color","#54b254");
+                        idError.show().text("사용할 수 있는 아이디입니다!");
+                        // $('.id_input_re_1').css("display","inline-block");
+                        // $('.id_input_re_2').css("display", "none");
+                    }
+                }
+            } else {  //중복되는 아이디가 있을 경우
+                idError.show().text("이미 존재하는 아이디입니다.");
+                // $('.id_input_re_2').css("display","inline-block");
+                // $('.id_input_re_1').css("display", "none");
             }
 
         }

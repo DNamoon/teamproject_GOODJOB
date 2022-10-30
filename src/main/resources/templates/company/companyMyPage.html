@@ -92,7 +92,7 @@
                                     <label th:for="comEmail">이메일</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control w-40" placeholder="goodjob"
-                                               name="comEmail1" th:value="${companyInfo.comEmail1}"
+                                               name="comEmail1" id="email" th:value="${companyInfo.comEmail1}"
                                                required> &nbsp;@ &nbsp;&nbsp;
                                         <select class="form-select" name="comEmail2">
                                             <option selected th:value="${companyInfo.comEmail2}">
@@ -105,6 +105,7 @@
                                         <span></span>
                                     </div>
                                 </div>
+                                <label id="email_error"></label>
                                 <br/>
 
                                 <label th:for="comAddress">주소</label>
@@ -156,7 +157,7 @@
                                            style="display: block" class="btn bg-gradient-dark w-100"></div>
                                 <div class="col">
 <!--                                    이전으로 돌아가기 위치-->
-                                    <input type="button" value="이전으로 돌아가기" onClick="btnDisabled()" id="btn_hidden" class="btn bg-gradient-dark w-100" hidden>
+                                    <input type="button" value="이전으로 돌아가기" onClick="location.href='/com/myPage'" id="btn_hidden" class="btn bg-gradient-dark w-100" hidden>
                                 </div>
 
                                 <div class="col">

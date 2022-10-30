@@ -38,20 +38,23 @@ public class CompanyController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/signup")
-    public String companySignUpForm(Model model, HttpServletRequest request) {
+    public String companySignUpForm(Model model, HttpServletRequest request, CompanyDTO companyDTO) {
 
         //22.10.11 세션있으면(로그인 되어있으면) 세션 종료 후 회원 가입 페이지로 넘어가도록 설정.
         logout(request);
 
-        model.addAttribute("companyDTO", new CompanyDTO());
+        model.addAttribute("companyDTO", companyDTO);
+//        model.addAttribute("comdivCode",companyDTO.getComComdivCode());
+//        model.addAttribute("comdivName",companyDTO.getComComdivName());
         return "/company/companySignUpForm";
     }
 
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/signup")
-    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, HttpServletResponse response) throws Exception {
+    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, HttpServletResponse response, Model model) throws Exception {
         System.out.println("====================" + companyDTO);
         if(result.hasErrors()){
+            model.addAttribute("companyDTO",companyDTO);
             return "/company/companySignUpForm";
         }
         //회원가입시 비밀번호, 비밀번호확인이 동일하지 않을시 회원가입버튼을 눌러도 회원가입이 되지 않도록 하는 코드
