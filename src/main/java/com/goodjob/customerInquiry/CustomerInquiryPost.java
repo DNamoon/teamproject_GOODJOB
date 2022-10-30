@@ -1,4 +1,4 @@
-package com.goodjob.admin.customerinquiry;
+package com.goodjob.customerInquiry;
 
 
 import com.goodjob.company.Company;

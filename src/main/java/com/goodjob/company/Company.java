@@ -9,7 +9,7 @@
  */
 package com.goodjob.company;
 
-import com.goodjob.admin.customerinquiry.CustomerInquiryPost;
+import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.post.Post;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.goodjob.admin.customerinquiry;
+package com.goodjob.customerInquiry;
 
 public enum CustomerInquiryPostType {
 

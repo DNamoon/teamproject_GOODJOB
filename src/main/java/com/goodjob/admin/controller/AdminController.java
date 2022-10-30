@@ -85,7 +85,7 @@ public class AdminController {
     }
 
     @GetMapping("/customerInquiry")
-    public String adminCustomerInquiryForm(){
+    public String adminCustomerInquiryList(){
         return "admin/customerInquiry/customerInquiryList";
     }
 
