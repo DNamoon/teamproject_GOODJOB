@@ -53,6 +53,10 @@ $(document).ready(function(){
                 });
             }
         });
+        $(".close").click(function(){
+            $(".schoolList").empty();
+            $(".findSchoolName").empty();
+        })
     });
 
     //전공 찾기
@@ -75,6 +79,10 @@ $(document).ready(function(){
                 });
             }
         });
+        $(".close").click(function(){
+            $(".majorList").empty();
+            $(".findMajorName").empty();
+        })
     });
 
     //자격증 찾기
@@ -92,13 +100,32 @@ $(document).ready(function(){
                 }
                 $(".doneFindCerti").click(function () {
                     var inputId = $("#modalId").val();
-                    // $("#" + inputId).val($("input:radio[name='selectCertiName']:checked").val());
-                    $("#" + inputId).attr("value", $("input:radio[name='selectCertiName']:checked").val());
-                    $(".certiList").empty();
-                    $(".findCertiName").empty();
+                    console.log(inputId);
+                    var checkCerti = [];
+                    for(var i = 0; i < size; i++){
+                        if($("input:radio[name='selectCertiName']:checked").val() !== $("input[name='certificateName']").eq(i).val()){
+                            checkCerti.push('같지않음');
+                        }else{
+                            checkCerti.push('같음');
+                        }
+                    }
+                    if(checkCerti.includes('같음')){
+                        alert("이미 작성한 자격증입니다.");
+                        deleteAddInfo($("#" + inputId).parent());
+                        $(".certiList").empty();
+                        $(".findCertiName").empty();
+                    }else{
+                        $("#" + inputId).attr("value", $("input:radio[name='selectCertiName']:checked").val());
+                        $(".certiList").empty();
+                        $(".findCertiName").empty();
+                    }
                 });
             }
         });
+        $(".close").click(function(){
+            $(".certiList").empty();
+            $(".findCertiName").empty();
+        })
     });
 
     //자격증 항목 추가
@@ -142,6 +169,14 @@ $(document).ready(function(){
                 isXBtnDisabled();
             }
         })
+    });
+
+    //입력 검증하고 step2로 이동
+    $("#submitStep1").click(function(){
+        if(confirmValidStep1()){
+            $("#step1Form").attr("action", "/resume/resumeStep2/" + $("#resumeId").val());
+            $("#step1Form").submit();
+        }
     });
 });
 
@@ -524,17 +559,34 @@ function maxDate(){
     $(".certiGetDate").attr("max", today);
 }
 
-//휴대폰 번호 - 실
+//휴대폰 번호
 function isFourNumber(phoneNum){
-    var exp = /\d\d\d\d/;
+    var exp = /([0-9]{4})/;
     if(phoneNum.value.match(exp)){
-        $("#phoneNumVeriDiv").replaceWith('<label id="phoneNumVeriDiv"></label>');
+        $("#phoneNumValiDiv").replaceWith('<label id="phoneNumValiDiv"></label>');
         return true;
     } else {
-        $("#phoneNumVeriDiv").replaceWith('<label id="phoneNumVeriDiv">4자리 숫자로 입력해주세요</label>');
+        $("#phoneNumValiDiv").replaceWith('<label id="phoneNumValiDiv" style="color: red;">4자리 숫자로 입력해주세요</label>');
         phoneNum.focus();
         return false;
     }
+}
+
+function confirmValidStep1(){
+    if($("#schoolName").val() == ''){
+        $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv" style="color: red;">학교명을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv"></label>');
+    }
+
+    if($("#majorName").val() == '') {
+        $("#schoolNameValiDiv").replaceWith('<label id="majorNameValiDiv" style="color: red;">전공을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#schoolNameValiDiv").replaceWith('<label id="majorNameValiDiv"></label>');
+    }
+    return true;
 }
 
 //학점 - 입력한 값이 총점보다 크지 않도록 검증

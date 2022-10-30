@@ -55,6 +55,7 @@
                                                 <option value="070">070</option>
                                             </select>
                                         </div>
+                                        <label id="phoneNumValiDiv"></label>
                                     </div>
                                     <div class="col-mb-6" style="width: 5px;">
                                         <label>&nbsp;</label>
@@ -200,7 +201,7 @@
                                         <label>학점</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" name="eduGetCredit"
-                                                   th:value="${schoolInfo.eduGetCredit}">
+                                                   th:value="${schoolInfo.eduGetCredit}" onchange="rangeCredit()">
                                         </div>
                                     </div>
                                     <div class="col-mb-6" style="width: 5px;">
@@ -210,7 +211,7 @@
                                     <div class="col-md-6" style="width: 150px;">
                                         <label>&nbsp;</label>
                                         <div class="input-group mb-4">
-                                            <select class="form-select" id="eduTotalCredit" name="eduTotalCredit">
+                                            <select class="form-select" id="eduTotalCredit" name="eduTotalCredit" onchange="rangeCredit()">
                                                 <option th:value="'/' + ${schoolInfo.eduTotalCredit}">
                                                     [[${schoolInfo.eduTotalCredit}]] (기본정보)
                                                 </option>
@@ -256,7 +257,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
                         <button type="button" class="btn bg-gradient-primary doneFindSchool" data-bs-dismiss="modal">
                             완료
                         </button>
@@ -289,7 +290,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
                         <button type="button" class="btn bg-gradient-primary doneFindMajor" data-bs-dismiss="modal">완료
                         </button>
                     </div>
