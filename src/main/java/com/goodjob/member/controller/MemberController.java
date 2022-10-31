@@ -1,7 +1,6 @@
 package com.goodjob.member.controller;
 
 import com.goodjob.member.Member;
-import com.goodjob.member.memDTO.MailDTO;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.service.MailService;
 import com.goodjob.member.service.MemberService;
@@ -61,7 +60,6 @@ public class MemberController {
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
-        //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         if(result.hasErrors()){
             return "member/signup";
             }
@@ -111,13 +109,10 @@ public class MemberController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
-
         HttpSession session = request.getSession(false);
-
         if (session != null) {
             session.invalidate();
         }
-
         return "redirect:/";
     }
     @GetMapping("/checkEmail")
@@ -136,10 +131,8 @@ public class MemberController {
     public String sendPwdEmail(@RequestParam("memberEmail") String memberEmail,@RequestParam("mailType")String mailType) {
        // 임시 비밀번호 생성
         String tmpPw = memberService.getTmpPassword();
-
         // 임시 비밀번호 저장
         memberService.updatePassword(tmpPw, memberEmail,mailType);
-
         // 메일 생성 & 전송
         mailService.sendMail(memberEmail,tmpPw);
         return "login";
