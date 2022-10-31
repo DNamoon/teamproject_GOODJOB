@@ -34,9 +34,6 @@ public class Member {
     @OneToMany(mappedBy = "inquiryPostMemberId", cascade = CascadeType.ALL)
     private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "statMemId", cascade = CascadeType.REMOVE)
-    private List<Status> memStatus = new ArrayList<>();
-
     @Column
     private String memPw;
 

@@ -46,8 +46,4 @@ public class Status {
     @JoinColumn(name = "statResumeId")
     private Resume statResumeId;
 
-    @ManyToOne
-    @JoinColumn(name = "statMemId")
-    private Member statMemId;
-
 }

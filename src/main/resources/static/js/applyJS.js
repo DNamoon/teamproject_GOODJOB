@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
     $(".applyBtn").click(function(){
-        getJSONResumeList($("input[id=sessionInput]").val());
+        getJSONResumeList();
     });
 
     $(".doneSelectResume").click(function(){
@@ -12,8 +12,9 @@ $(document).ready(function(){
     });
 });
 
-function getJSONResumeList(memId) {
-    $.getJSON('/member/getResumeList/' + memId, function (arr) {
+//작성한 이력서 리스트 출력
+function getJSONResumeList() {
+    $.getJSON('/member/getResumeList', function (arr) {
         var list = '';
 
         $.each(arr, function (idx, resume) {
