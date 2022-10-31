@@ -15,9 +15,9 @@
                         <h3 class="text-center mx-auto">STEP1</h3>
                         &nbsp;
                         <!-- 인적사항  get으로 바꿈 -->
-                        <form role="form" id="contact-form" th:method="get" autocomplete="off"
-                              th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
+                        <form role="form" id="step1Form" th:method="get" autocomplete="off">
                             <input type="hidden" th:value="${memberInfo.memId}" name="memId">
+                            <input type="hidden" id="resumeId" th:value="${resumeId}">
                             <div class="card-body">
                         <span style="float: right; font-size: 14px;"><span
                                 style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span>
@@ -43,7 +43,7 @@
                                 <div class="row" style="float: inline-start;">
                                     <div class="col-md-6" style="width: 200px;">
                                         <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group">
                                             <select class="form-select" id="startPhoneNum" name="memFirstPhoneNum"
                                                     required>
                                                 <option th:value="${memberInfo.memFirstPhoneNum}">
@@ -54,6 +54,7 @@
                                                 <option value="070">070</option>
                                             </select>
                                         </div>
+                                        <label id="phoneNumValiDiv"></label>
                                     </div>
                                     <div class="col-mb-6" style="width: 5px;">
                                         <label>&nbsp;</label>
@@ -66,7 +67,7 @@
                                                    th:value="${memberInfo.getMemMiddlePhoneNum()}"
                                                    id="memMiddlePhoneNum"
                                                    name="memMiddlePhoneNum"
-                                                   onkeyup="isFourNumber(document.getElementById('memMiddlePhoneNum'))"
+                                                   onfocusout="isFourNumber(document.getElementById('memMiddlePhoneNum'))"
                                                    required>
                                         </div>
                                     </div>
@@ -80,7 +81,7 @@
                                             <input class="form-control" placeholder="마지막 자리" type="text"
                                                    th:value="${memberInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
                                                    name="memLastPhoneNum"
-                                                   onkeyup="isFourNumber(document.getElementById('memLastPhoneNum'))"
+                                                   onfocusout="isFourNumber(document.getElementById('memLastPhoneNum'))"
                                                    required>
                                         </div>
                                     </div>
@@ -163,10 +164,11 @@
                                 <div class="row" style="float: inline-start;">
                                     <div class="col-md-6" style="width: 400px;">
                                         <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group">
                                             <input class="form-control" type="text" name="schoolName" id="schoolName"
-                                                   readonly required>
+                                                   readonly>
                                         </div>
+                                        <label id="schoolNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -178,18 +180,18 @@
                                         <label>졸업년월<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD"
-                                                   type="date"
-                                                   name="eduGraduationDate" max="" required>
+                                                   type="date" name="eduGraduationDate" max="" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row" style="float: inline-start;">
                                     <div class="col-md-6" style="width: 400px;">
                                         <label>전공<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group">
                                             <input class="form-control" type="text" name="majorName" id="majorName"
-                                                   required readonly>
+                                                   readonly>
                                         </div>
+                                        <label id="majorNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -201,8 +203,7 @@
                                         <label>학점</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="eduGetCredit"
-                                                   name="eduGetCredit"
-                                                   onmouseout="rangeCredit()">
+                                                   name="eduGetCredit" onchange="rangeCredit()">
                                         </div>
                                     </div>
                                     <div class="col-mb-6" style="width: 5px;">
@@ -212,7 +213,7 @@
                                     <div class="col-md-6" style="width: 150px;">
                                         <label>&nbsp;</label>
                                         <div class="input-group mb-4">
-                                            <select class="form-select" id="eduTotalCredit" name="eduTotalCredit">
+                                            <select class="form-select" id="eduTotalCredit" name="eduTotalCredit" onchange="rangeCredit()">
                                                 <option value="/4.5">4.5</option>
                                                 <option value="/4.3">4.3</option>
                                                 <option value="/4.0">4.0</option>
@@ -222,7 +223,7 @@
                                 </div>
                                 <div style="height: 50px;"></div>
                                 <div class="col-md-6 mx-auto">
-                                    <button type="submit" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
+                                    <button type="button" id="submitStep1" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
                                 </div>
                             </div>
                         </form>
@@ -255,7 +256,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
                         <button type="button" class="btn bg-gradient-primary doneFindSchool" data-bs-dismiss="modal">
                             완료
                         </button>
@@ -288,7 +289,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
                         <button type="button" class="btn bg-gradient-primary doneFindMajor" data-bs-dismiss="modal">완료
                         </button>
                     </div>

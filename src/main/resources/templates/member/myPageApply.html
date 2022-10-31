@@ -42,25 +42,31 @@
                     <div class="container">
                         <div class="row" style="height: 40px">
                             <div class="col-7">
-                                <h5 class="text-bold">내 이력서</h5>
-                                <label style="color: #cbc8cb">제목을 클릭하면 제목을 변경할 수 있습니다.</label>
+                                <h5 class="text-bold">지원현황</h5>
+                                <label style="color: #cbc8cb">공고 제목과 이력서 제목을 클릭하면 해당 페이지로 이동합니다.</label>
                             </div>
-                            <div class="col-5">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <button class="btn btn-outline-primary me-md-2 btn-sm" type="button"
-                                            id="registerResume">새 이력서 등록
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm" type="button"
-                                            onclick="deleteCheckedResume()">선택삭제
-                                    </button>
-                                </div>
-                            </div>
+                            <input type="hidden" th:value="${session.sessionId}" id="sessionInput">
                         </div>
-                        <div class="container border-bottom" style="height: 2rem;"></div>
                         <div class="container" style="height: 2rem;"></div>
-                        <input type="hidden" th:value="${session.sessionId}" id="sessionInput">
-                        <div class="container resumeList">
-                        </div>
+                        <table class="table text-center">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">공고명</th>
+                                <th scope="col">회사명</th>
+                                <th scope="col">이력서제목</th>
+                                <th scope="col">지원날짜</th>
+                                <th scope="col">결과</th>
+                            </tr>
+                            </thead>
+                            <tbody class="applyTable">
+
+                            </tbody>
+                        </table>
+                        <ul class="pagination justify-content-center align-items-center">
+                            <ul class="pagination">
+                            </ul>
+                        </ul>
                     </div>
                 </div>
             </div>
