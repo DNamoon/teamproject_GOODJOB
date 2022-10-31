@@ -1,6 +1,7 @@
 package com.goodjob.member;
 
 import com.goodjob.resume.Resume;
+import com.goodjob.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class Member {
 
     @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
     private List<Resume> memResume = new ArrayList<>();
+
+    @OneToMany(mappedBy = "statMemId", cascade = CascadeType.REMOVE)
+    private List<Status> memStatus = new ArrayList<>();
 
     @Column
     private String memPw;

@@ -211,7 +211,7 @@ function addCertiInfo() {
 
     certiInfo += '<div class="row" style="float: inline-start;">';
     certiInfo += '<div class="col-md-6" style="width: 400px;">';
-    certiInfo += '<label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>';
+    certiInfo += '<label>자격증명</label>';
     certiInfo += '<div class="input-group mb-4">';
     certiInfo += '<input class="form-control" type="text" name="certificateName" id="certificateName" readonly>';
     certiInfo += '</div>';
@@ -253,7 +253,7 @@ function addCertiInfoWC(data) {
 
     certiInfo += '<div class="row" style="float: inline-start;">';
     certiInfo += '<div class="col-md-6" style="width: 400px;">';
-    certiInfo += '<label>자격증명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>';
+    certiInfo += '<label>자격증명</label>';
     certiInfo += '<div class="input-group mb-4">';
     certiInfo += '<input class="form-control" type="text" name="certificateName" id="certificateName" readonly>';
     certiInfo += '</div>';
@@ -600,10 +600,10 @@ function confirmValidStep1(){
     }
 
     if($("#majorName").val() == '') {
-        $("#schoolNameValiDiv").replaceWith('<label id="majorNameValiDiv" style="color: red;">전공을 입력해주세요.</label>');
+        $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv" style="color: red;">전공을 입력해주세요.</label>');
         return false;
     }else{
-        $("#schoolNameValiDiv").replaceWith('<label id="majorNameValiDiv"></label>');
+        $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv"></label>');
     }
     return true;
 }

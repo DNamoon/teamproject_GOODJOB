@@ -1,5 +1,6 @@
 package com.goodjob.status;
 
+import com.goodjob.member.Member;
 import com.goodjob.post.Post;
 import com.goodjob.resume.Resume;
 import lombok.AllArgsConstructor;
@@ -44,5 +45,9 @@ public class Status {
     @ManyToOne
     @JoinColumn(name = "statResumeId")
     private Resume statResumeId;
+
+    @ManyToOne
+    @JoinColumn(name = "statMemId")
+    private Member statMemId;
 
 }
