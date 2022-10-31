@@ -24,11 +24,11 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
     Page<Post> findAllByPostComId(Company company, Pageable pageable );
 
     @Modifying
-    @Query("update Post p set p.count = p.count + 1 where p.postId = :id")
+    @Query("update Post p set p.postReadCount = p.postReadCount + 1 where p.postId = :id")
     void increasePostCount(@Param("id") Long id);
 
     //search 드롭박스용
-    @Query("select s.salaryRange from Salary s ")
+    @Query("select s.salaryRange from PostSalary s ")
     List<String> salaryRange();
 
 }

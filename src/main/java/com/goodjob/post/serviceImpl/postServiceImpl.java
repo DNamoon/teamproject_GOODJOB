@@ -5,15 +5,14 @@ import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PostMainCardDTO;
+import com.goodjob.post.fileupload.FileService;
+import com.goodjob.post.fileupload.UploadFile;
+import com.goodjob.post.postdto.*;
 import com.goodjob.post.repository.PostRepository;
 import com.goodjob.post.QPost;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.repository.OccupationRepository;
-import com.goodjob.post.postdto.PageRequestDTO;
-import com.goodjob.post.postdto.PageResultDTO;
-import com.goodjob.post.postdto.PostDTO;
-import com.goodjob.post.salary.Salary;
+import com.goodjob.post.salary.PostSalary;
 import com.goodjob.post.salary.SalaryRepository;
 import com.goodjob.post.service.PostService;
 import com.querydsl.core.BooleanBuilder;
@@ -24,15 +23,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -43,10 +40,10 @@ public class postServiceImpl implements PostService {
     private final CompanyRepository companyRepository;
     private final SalaryRepository salaryRepository;
     private final RegionRepository regionRepository;
+    private final FileService fileService;
 
     @Override
     public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
-        log.info("service......getList..."+pageRequestDTO);
         Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
         BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
         Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
@@ -56,12 +53,19 @@ public class postServiceImpl implements PostService {
     }
 
     @Override
-    public PageResultDTO<Post,PostMainCardDTO> getListInMain(PageRequestDTO pageRequestDTO){
-        log.info("service......getList..."+pageRequestDTO);
+    public PageResultDTO<Post, PostCardDTO> getPagingPostList(PageRequestDTO pageRequestDTO){
         Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
         BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
         Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
-        Function<Post,PostMainCardDTO> fn = (this::entityToDtoInMain);
+        Function<Post, PostCardDTO> fn = (this::entityToDtoInMain);
+        return new PageResultDTO<>(result,fn);
+    }
+    @Override
+    public PageResultDTO<Post, PostComMyPageDTO> getPagingPostListInComMyPage(PageRequestDTO pageRequestDTO){
+        Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
+        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
+        Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
+        Function<Post, PostComMyPageDTO> fn = (this::entityToDtoInComMyPage);
         return new PageResultDTO<>(result,fn);
     }
     // pageRequestDTO 의 sort 값에 따라 공고 리스트의 정렬에 필요한 Sort를 리턴해주는 메솓즈
@@ -71,45 +75,49 @@ public class postServiceImpl implements PostService {
             case "new":
                 return Sort.by("postId").descending();
             case "count":
-                return Sort.by("count").descending();
+                return Sort.by("postReadCount").descending();
             case "salary":
-                return Sort.by("salary").descending();
+                return Sort.by("postSalary").descending();
             case "end":
                 return Sort.by("postEndDate").ascending();
         }
         return  null;
     }
+    @Override
+    public List<Occupation> getListOccupation(){
+        return occupationRepository.findAll();
+    }
+    @Override
+    public List<Region> getListRegion(){
+        return regionRepository.findAll();
+    }
+    @Override
+    public List<PostSalary> getListSalary(){
+        return salaryRepository.findAll();
+    }
 
     @Override
-    public Long register(PostDTO postDTO) {
-        Optional<Occupation> oOcc = occupationRepository.findById(postDTO.getOccId());
-        Optional<Company> com = companyRepository.findByComLoginId(postDTO.getComLoginId());
-        Optional<Region> reg = regionRepository.findById(postDTO.getRegionId());
-        Optional<Salary> sal = salaryRepository.findById(postDTO.getSalaryId());
-        log.info("service.....register..."+postDTO);
-        Post entity = null;
-        if(oOcc.isPresent() && com.isPresent() && reg.isPresent() && sal.isPresent()){
-            try {
-                entity = dtoToEntity(postDTO, oOcc.get(),com.get(),reg.get(),sal.get());
-                postRepository.save(entity);
-                return entity.getPostId();
-            } catch (ParseException e) {
-                log.info("Date 객체를 변환하는데 에러가 발생했습니다.");
-            }
+    public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
+        Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
+        Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
+        Optional<Region> region = regionRepository.findById(postInsertDTO.getPostRegion());
+        List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
+        Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
+        if(occupation.isPresent() && company.isPresent() && region.isPresent() && salary.isPresent()){
+            Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),region.get(),salary.get(),uploadFiles));
+            return post.getPostId();
         }
         return null;
     }
-
     @Override
-    @Transactional
-    public PostDTO read(Long postId){
+    public PostDetailsDTO readPost(Long postId){
         Optional<Post> result = postRepository.findById(postId);
         // 게시글 조회 후 조회수를 +1 한다.
         postRepository.increasePostCount(postId);
-        return result.map(this::entityToDto).orElse(null);
+        return result.map(this::entityToDtoForRead).orElse(null);
     }
     @Override
-    public void remove(Long postId){
+    public void deletePost(Long postId){
         postRepository.deleteById(postId);
     }
 
@@ -142,16 +150,8 @@ public class postServiceImpl implements PostService {
     }
 
     private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO){
-        log.info("service.......getSearch: "+pageRequestDTO);
-
-
-
         QPost qPost = QPost.post;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-
-
-
-
         // 세션의 authType = "company" 이라면 로그인한 기업회원의 글만
         // 가져오는 조건 추가.
         if(pageRequestDTO.getAuthType()!=null){
@@ -202,10 +202,7 @@ public class postServiceImpl implements PostService {
         if(type.contains("titleCompanyName")){
             booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
         }
-        log.info("=======================================1"+booleanBuilderWithSearch);
-//        if(booleanBuilderWithSearch!=null){
             booleanBuilder.and(booleanBuilderWithSearch);
-//        }
 
         // 검색 조건 처리 코드 끝
 
@@ -218,7 +215,7 @@ public class postServiceImpl implements PostService {
                 booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
             }
             if (!(pageRequestDTO.getFilterSalary().isEmpty() || pageRequestDTO.getFilterSalary().trim().length() == 0)){
-//            booleanBuilderWithFilter.or(qPost..sssalarypostRegionregName.eq(filter[1]));
+                booleanBuilderWithFilter.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
             }
             booleanBuilder.and(booleanBuilderWithFilter);
 

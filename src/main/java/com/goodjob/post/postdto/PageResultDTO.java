@@ -26,6 +26,8 @@ public class PageResultDTO<EN,DTO> {
     private  int size;
     // 시작 페이지 번호, 끝 페이지 번호
     private int start, end;
+    // 조회된 총 데이터 수
+    private Long totalCount;
 
     // 이전, 다음
     private boolean prev, next;
@@ -33,9 +35,12 @@ public class PageResultDTO<EN,DTO> {
     private List<Integer> pageList;
 
 
+
+
     public PageResultDTO(Page<EN> result, Function<EN,DTO> fn){
         dtoList = result.stream().map(fn).collect(Collectors.toList());
         totalPage = result.getTotalPages();
+        totalCount = result.getTotalElements();
         makePageList(result.getPageable());
 
     }

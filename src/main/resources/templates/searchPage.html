@@ -4,11 +4,12 @@
             <div class="container py-4 flex-wrap">
                 <div class="row">
                     <div class="s010">
-                        <form>
+                        <form action="/search" method="get">
                             <div class="inner-form">
                                 <div class="basic-search">
                                     <div class="input-field">
-                                        <input id="search" type="text" placeholder="Type Keywords"/>
+                                        <input type="hidden" name="type" value="titleCompanyName">
+                                        <input id="search" name="keyword" type="text" placeholder="검색어를 입력해주세요." th:value="${pageRequestDTO.keyword}"/>
                                         <div class="icon-wrap">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24">
@@ -18,7 +19,9 @@
                                     </div>
                                 </div>
                                 <div class="advance-search">
+
                                     <span class="desc">ADVANCED SEARCH</span>
+
                                     <div class="row">
                                         <div class="input-field">
                                             <div class="input-select">
@@ -54,10 +57,10 @@
                                     <div class="row third">
                                         <div class="input-field">
                                             <div class="result-count">
-                                                <span>108 </span>results
+                                                <span>[[${result.totalCount}]] </span>results
                                             </div>
                                             <div class="group-btn">
-                                                <a th:href="@{/search}"><button class="btn-delete" id="delete">RESET</button></a>
+                                                <button class="btn-delete" id="delete">RESET</button>
                                                 <button type="submit" class="btn-search">SEARCH</button>
                                             </div>
                                         </div>
@@ -66,29 +69,71 @@
                             </div>
                         </form>
                     </div>
-                    <div class="container" style="height: 3rem;"></div>
                     <h4>채용중인 공고</h4>
-                    <div class="container text-center ">
-                        <div class="row">
-                            <th:block th:each="dto:${result.dtoList}">
-                                <div class="col">
-                                    <div class="card" style="width: 18rem;">
-                                        <img src="img/40.jpg" class="card-img-top">
-                                        <div class="card-body">
-                                            <h5 class="card-title">[[${dto.title}]]</h5>
-                                            <p class="card-subtitle mb-2 text-muted">[[${dto.comName}]]</p>
-                                            <p class="card-text">연봉 | [[${dto.salaryRange}]]</p>
-                                            <p class="card-text">위치 | [[${dto.regionName}]]</p>
-                                            <p class="card-text">직종 | [[${dto.occName}]]</p>
-                                            <p class="card-text">D-[[${dto.remainDay}]]</p>
+                    <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
+                        <th:block th:each="dto:${result.dtoList}">
+                            <div class="post-wrapper">
+<!--                                <a th:href="@{/mainPage/read(postId=${dto.id})}">-->
+                                    <div class="col p-0">
+                                        <div class="p-0 m-2 card-css" th:onclick="|location.href='@{/post/read(postId=${dto.id})}'|" >
+                                            <div class="w-100 p-0 h-50 img-css" >
+                                                <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
+                                            </div>
+
+                                            <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+                                                <p class="card-title-post">[[${dto.title}]]</p>
+                                                <p class="card-company-post">[[${dto.comName}]]</p>
+                                                <p class="card-text-post">연봉 | [[${dto.salaryRange}]]</p>
+                                                <p class="card-text-post">위치 | [[${dto.regionName}]]</p>
+                                                <p class="card-text-post">직종 | [[${dto.occName}]]</p>
+                                                <p class="card-dDay-post">[[${dto.remainDay}]]</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </th:block>
-                        </div>
+<!--                                </a>-->
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
+            </div>
         </section>
+
     </th:block>
 </th:block>
+<script>
+    const customSelects = document.querySelectorAll("select");
+    const deleteBtn = document.getElementById('delete')
+    const choices = new Choices('select',
+        {
+            searchEnabled: false,
+            itemSelectText: '',
+            removeItemButton: true,
+        });
+    for (let i = 0; i < customSelects.length; i++)
+    {
+        customSelects[i].addEventListener('addItem', function(event)
+        {
+            if (event.detail.value)
+            {
+                let parent = this.parentNode.parentNode
+                parent.classList.add('valid')
+                parent.classList.remove('invalid')
+            }
+            else
+            {
+                let parent = this.parentNode.parentNode
+                parent.classList.add('invalid')
+                parent.classList.remove('valid')
+            }
+        }, false);
+    }
+    deleteBtn.addEventListener("click", function(e)
+    {
+        e.preventDefault()
+        location.href="/search";
+    });
+
+
+</script>
+

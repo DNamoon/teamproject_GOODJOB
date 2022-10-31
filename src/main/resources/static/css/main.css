@@ -1169,12 +1169,3 @@ legend {
 }
 
 /*# sourceMappingURL=Searchs_010.css.map */
-
-/*메인화면 공고리스트 높이 조절용  css*/
-.row-eq-height {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-/*메인화면 공고리스트 높이 조절용 끝 css*/
