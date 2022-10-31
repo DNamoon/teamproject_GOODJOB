@@ -13,6 +13,7 @@
         <a th:href="@{/mainPage/list(sort='postSalary',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="salaryBtn">연봉순</button></a>
         <a th:href="@{/mainPage/list(sort='count',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="countBtn">인기순(조회수)</button></a>
         <a th:href="@{/mainPage/list(sort='end',outOfDateState=${pageRequestDTO.outOfDateState})}"><button class="endBtn">종료마감 가까운 순</button></a>
+
         <a th:href="@{/mainPage/list(outOfDateState='active', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집중</button></a>
         <a th:href="@{/mainPage/list(outOfDateState='beforeStart', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집시작전</button></a>
         <a th:href="@{/mainPage/list(outOfDateState='afterEnd', sort=${pageRequestDTO.sort})}"><button class="activeBtn">모집종료</button></a>

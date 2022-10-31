@@ -52,10 +52,8 @@ public class HomeController {
     @PostMapping(value = {"/getPagingPostList"})
     @ResponseBody
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
-        log.info(pageRequestDTO);
         pageRequestDTO.setSize(8);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
-        log.info("!!!!!!!!!!!!!!!!!!"+result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

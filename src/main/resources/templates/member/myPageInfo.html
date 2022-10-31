@@ -100,9 +100,6 @@
                             </div>
                         </div>
                     </form>
-                    <form id="changePwForm" action="/member/changePassword">
-                        <input  type="hidden" name="loginId" th:value="${session.sessionId}" >
-                    </form>
                     <!--개인정보 수정 Modal -->
                     <div class="modal fade" id="pwCheck" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -113,7 +110,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <label text="비밀번호"> </label>
-                                    <input id="pw" type="text" name="pw" class="form-control">
+                                    <input id="pw" type="password" name="pw" class="form-control">
                                     <div class="d-flex justify-content-center">
                                         <button id="updatebtn" type="button" class="btn bg-gradient-dark mt-3">확인</button>
                                     </div>
@@ -148,11 +145,14 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 <div class="modal-body">
+                                    <form id="changePwForm" action="/member/changePassword">
+                                        <input id="loginId" type="hidden" name="loginId" th:value="${session.sessionId}" >
                                     <label text="비밀번호"> </label>
-                                    <input id="checkPw" type="text" name="checkPw" class="form-control">
+                                    <input id="checkPw" type="password" name="checkPw" class="form-control">
                                     <div class="d-flex justify-content-center">
-                                        <button id="changePwCheck" type="button" class="btn bg-gradient-dark mt-3">확인</button>
+                                        <button id="changePwCheck" type="submit" class="btn bg-gradient-dark mt-3">확인</button>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

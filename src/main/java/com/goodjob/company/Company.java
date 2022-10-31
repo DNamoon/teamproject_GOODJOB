@@ -42,7 +42,7 @@ public class Company {
     @Column
     private String comPhone;
 
-    @Column
+    @Column(unique = true)
     private String comEmail;
 
     @Column
@@ -78,4 +78,11 @@ public class Company {
         this.comLoginId = comLoginId;
         this.comPw = comPw;
     }
+    /** 22.10.29 김도현 추가
+     * 비밀번호 변경
+     * **/
+    public void updatePassword(String password){
+        this.comPw = password;
+    }
+
 }
