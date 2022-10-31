@@ -79,6 +79,7 @@ public interface EntityDtoMapper {
                 .startDate(post.getPostStartDate().toString())
                 .endDate(post.getPostStartDate().toString())
                 .remainDay(remainDay)
+                .salary(post.getPostSalary().getSalaryRange())
                 .postAddress(post.getPostAddress())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
@@ -140,42 +141,6 @@ public interface EntityDtoMapper {
                 .build();
     }
 
-    // PostDto -> Post (save or update)
-//    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary) throws ParseException {
-//        if(postDTO.getId() != null){
-//            return Post.builder()
-//                    .postId(postDTO.getId())
-//                    .postTitle(postDTO.getTitle())
-//                    .postContent(postDTO.getContent())
-//                    .postRecruitNum(postDTO.getRecruitNum())
-//                    .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
-//                    .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
-//                    .postGender(postDTO.getGender())
-//                    .postRegion(postRegion)
-//                    .postSalary(postSalary)
-//                    .postOccCode(occ)
-//                    .postComId(com)
-//                    .build();
-//
-//        } else {
-//
-//            return Post.builder()
-//                    .postTitle(postDTO.getTitle())
-//                    .postContent(postDTO.getContent())
-//                    .postRecruitNum(postDTO.getRecruitNum())
-//                    .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
-//                    .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
-//                    .postGender(postDTO.getGender())
-//                    .postRegion(postRegion)
-//                    .postSalary(postSalary)
-//                    .postOccCode(occ)
-//                    .postComId(com)
-//                    .build();
-//        }
-//
-//
-//
-//    }
     default Post dtoToEntityForInsert(PostInsertDTO postInsertDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary, List<UploadFile> uploadFileList){
         if(postInsertDTO.getId() != null){
             return Post.builder()
