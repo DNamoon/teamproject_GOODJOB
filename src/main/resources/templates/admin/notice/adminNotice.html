@@ -37,6 +37,10 @@
                                             상태
                                         </th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 10%">
+                                            상태변경
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
                                             style="width: 20%">
                                             등록일
                                         </th>
@@ -59,16 +63,26 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a th:href="@{/admin/notice/{noticeId}/details(noticeId=${notice.noticeId})}"><h6 th:text="${notice.noticeTitle}" class="m-lg-2 text-sm"/></a>
+                                            <a th:href="@{/admin/notice/{noticeId}/details(noticeId=${notice.noticeId})}">
+                                                <h6 th:text="${notice.noticeTitle}" class="m-lg-2 text-sm"/></a>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             <th:block>
-                                                <span class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
+                                                <span th:if="${notice.noticeStatus eq '0'}" class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
                                             </th:block>
                                             <th:block>
-                                                <span class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
+                                                <span th:if="${notice.noticeStatus eq '1'}" class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
                                             </th:block>
                                         </td>
+
+                                        <td class="align-middle text-center text-sm">
+                                            <span th:id="${notice.noticeId}"
+                                                  th:onclick="updateNoticeStatus(this.getAttribute('id'))"
+                                                  class="badge badge-sm bg-gradient-primary rounded-pill" role="button">
+                                                변경
+                                            </span>
+                                        </td>
+
                                         <td class="align-middle text-center">
                                             <span th:text="${notice.noticeDate}"
                                                   class="text-secondary text-xs font-weight-bold"></span>
@@ -125,6 +139,19 @@
                 data: {noticeId: noticeId},
                 success: function () {
                     alert("삭제되었습니다");
+                    location.href = "/admin/notice/1";
+                }
+            })
+        }
+    }
+
+    function updateNoticeStatus(noticeId) {
+        if (confirm("상태를 변경하시겠습니까?") == true) {
+            $.ajax({
+                url: "/admin/notice/changeStatus",
+                type: "post",
+                data: {noticeId: noticeId},
+                success: function () {
                     location.href = "/admin/notice/1";
                 }
             })

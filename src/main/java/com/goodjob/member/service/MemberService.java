@@ -66,9 +66,9 @@ public interface MemberService {
 
     void deleteById(Long memId);
 
-    boolean checkEmail(String memEmail);
+    String checkEmail(String memEmail);
 
-    void updatePassword(String tmpPw, String memberEmail);
+    void updatePassword(String tmpPw, String memberEmail,String type);
 
     String getTmpPassword();
 

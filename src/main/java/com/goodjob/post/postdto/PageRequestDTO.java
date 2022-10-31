@@ -14,8 +14,8 @@ import org.springframework.data.domain.Sort;
 public class PageRequestDTO {
 
     private int page; // 요청하는 현재 페이지 번호. 기본 1
+//    private int size; // 페이지 당 게시글 숫자. 기본 10
     private int size; // 페이지 당 게시글 숫자. 기본 10
-
     // "company"은 session 에서 Type 값이 company 인 경우
     // "user"은 session 에서 Type 값이 user 인 경우
     private String authType;

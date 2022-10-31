@@ -1,12 +1,12 @@
 package com.goodjob.member;
 
+import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -30,6 +30,9 @@ public class Member {
 
     @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
     private List<Resume> memResume = new ArrayList<>();
+    // 오성훈 22.10.30
+    @OneToMany(mappedBy = "inquiryPostMemberId", cascade = CascadeType.ALL)
+    private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "statMemId", cascade = CascadeType.REMOVE)
     private List<Status> memStatus = new ArrayList<>();
@@ -40,7 +43,7 @@ public class Member {
     @Column
     private String memPhone;
 
-    @Column
+    @Column(unique = true)
     private String memEmail;
 
     @Column
@@ -60,7 +63,7 @@ public class Member {
 
     /** 비밀번호 변경 **/
     public void updatePassword(String password){
-        System.out.println("++++++++"+password);
         this.memPw = password;
     }
+
 }
