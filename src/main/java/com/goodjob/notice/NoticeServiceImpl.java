@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
  * 22.10.19 By.OH
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
 
@@ -40,5 +42,10 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void deleteNotice(Long id) {
         noticeRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateNoticeStatus(Long id) {
+        noticeRepository.updateStatus(id);
     }
 }

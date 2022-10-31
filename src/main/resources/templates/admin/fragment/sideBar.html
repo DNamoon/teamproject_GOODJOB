@@ -24,7 +24,7 @@
                 </a>
             </li>
             <li>
-                <a th:href="@{/admin/mainPage/{pageNum}(pageNum=1)}" class="nav-link text-white">
+                <a th:href="@{/admin/postManage/{pageNum}(pageNum=1)}" class="nav-link text-white">
                     <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#speedometer2"></use>
                     </svg>
@@ -45,6 +45,14 @@
                         <use xlink:href="#grid"></use>
                     </svg>
                     공지사항
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/customerInquiry}" class="nav-link text-white">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                    </svg>
+                    고객문의
                 </a>
             </li>
             <li>

@@ -1,370 +1,373 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
-  <th:block th:fragment="content">
-    <div class="container">
-      <div class="px-5">
+    <th:block th:fragment="content">
+        <div class="container">
+            <div class="px-5">
 
-        <div class="flex-row d-flex justify-content-center mt-3">
-          <h3 class="text-center">채용공고 등록</h3>
-        </div>
-        <form th:action="@{/post/savePost}" th:method="post" enctype="multipart/form-data">
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-row">
-              <div class="d-flex flex-fill">
-                <div class="col-12 flex-fill">
-                  <label class="m-1" for="postTitle">공고제목</label>
-                  <input type="text" class="flex-fill form-control input-group w-90"
-                         id="postTitle" name="postTitle" required>
+                <div class="flex-row d-flex justify-content-center mt-3">
+                    <h3 class="text-center">채용공고 등록</h3>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex flex-row mt-2 px-5">
-
-            <div class="d-flex col flex-fill">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="companyName">기업명</label>
-                    <input type="text" class="flex-fill form-control input-group w-80"
-                           id="companyName" th:value="${comName}" readonly>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="postComId">기업등록번호</label>
-                    <input type="text" class="flex-fill form-control input-group w-80"
-                           id="postComId" th:value="${comBusiNum}" readonly>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-
-                  <div class="flex-fill">
-                    <label class="m-1" for="postComId">회사분류</label>
-                    <input type="text" class="flex-fill form-control input-group w-80"
-                           id="comBusiNum" th:value="${comDiv}" readonly>
-                  </div>
-
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="inputGroupSelect02">업직종</label>
-                    <!--                    <input type="hidden" class="flex-fill input-group" id="postOccCode">-->
-                    <select type="input" name="postOccCode"
-                            class="form-select form-select-sm border-radius-section border-2 w-80"
-                            id="inputGroupSelect02" required>
-                      <option value="" selected>업직종</option>
-                      <th:block th:each="occ : ${occList}">
-                        <option th:value="${occ.occId}">[[${occ.occName}]]</option>
-                      </th:block>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill col-6 p-0">
-                    <label class="m-1" for="postRecruitNum">모집인원</label>
-                    <input type="text" class="flex-fill form-control input-group"
-                           id="postRecruitNum" name="postRecruitNum">
-                  </div>
-                  <div class="col-4 p-0">
-                    <select type="input" style="margin-top: 1.8rem" name="postGender"
-                            class="form-select form-select-sm border-radius-section border-2 w-90"
-                            required>
-                      <option value="성별무관" selected>성별무관</option>
-                      <option value="남자">남자</option>
-                      <option value="여자">여자</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1">채용일정</label>
-                    <div class="d-flex flex-row mt-1">
-                      <div class="col-5 p-0">
-                        <div class="d-flex flex-row">
-                          <div class="col-3 p-0">
-                            <label class="m-1" for="postStartDate">시작일</label>
-                          </div>
-                          <div class="col-9 p-0">
-                            <input type="date"
-                                   class="form-control flex-fill input-group w-90"
-                                   id="postStartDate" name="postStartDate">
-                          </div>
+                <form th:action="@{/post/savePost}" th:method="post" enctype="multipart/form-data">
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12 flex-fill">
+                                    <label class="m-1" for="postTitle">공고제목</label>
+                                    <input type="text" class="flex-fill form-control input-group w-90"
+                                           id="postTitle" name="postTitle">
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="col-5 p-0">
-                        <div class="d-flex flex-row">
-                          <div class="col-3 p-0">
-                            <label class="m-1" for="postEndDate">마감일</label>
-                          </div>
-                          <div class="col-9 p-0">
-                            <input type="date"
-                                   class="form-control flex-fill input-group w-90"
-                                   id="postEndDate" name="postEndDate">
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+
+                    <div class="d-flex flex-row mt-2 px-5">
+
+                        <div class="d-flex col flex-fill">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="companyName">기업명</label>
+                                        <input type="text" class="flex-fill form-control input-group w-80"
+                                               id="companyName" th:value="${comName}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postComId">기업등록번호</label>
+                                        <input type="text" class="flex-fill form-control input-group w-80"
+                                               id="postComId" th:value="${comBusiNum}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postComId">회사분류</label>
+                                        <input type="text" class="flex-fill form-control input-group w-80"
+                                               id="comBusiNum" th:value="${comDiv}" readonly>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="inputGroupSelect02">업직종</label>
+                                        <!--                    <input type="hidden" class="flex-fill input-group" id="postOccCode">-->
+                                        <select type="input" name="postOccCode"
+                                                class="form-select form-select-sm border-radius-section border-2 w-80"
+                                                id="inputGroupSelect02" required>
+                                            <option selected>업직종</option>
+                                            <th:block th:each="occ : ${occList}">
+                                                <option th:value="${occ.occId}">[[${occ.occName}]]</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill col-6 p-0">
+                                        <label class="m-1" for="postRecruitNum">모집인원</label>
+                                        <input type="text" class="flex-fill form-control input-group"
+                                               id="postRecruitNum" name="postRecruitNum">
+                                    </div>
+                                    <div class="col-4 p-0">
+                                        <select type="input" style="margin-top: 1.8rem" name="postGender"
+                                                class="form-select form-select-sm border-radius-section border-2 w-90"
+                                                required>
+                                            <option value="성별무관" selected>성별무관</option>
+                                            <option value="남자">남자</option>
+                                            <option value="여자">여자</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1">채용일정</label>
+                                        <div class="d-flex flex-row mt-1">
+                                            <div class="col-5 p-0">
+                                                <div class="d-flex flex-row">
+                                                    <div class="col-3 p-0">
+                                                        <label class="m-1" for="postStartDate">시작일</label>
+                                                    </div>
+                                                    <div class="col-9 p-0">
+                                                        <input type="date"
+                                                               class="form-control flex-fill input-group w-90"
+                                                               id="postStartDate" name="postStartDate">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-5 p-0">
+                                                <div class="d-flex flex-row">
+                                                    <div class="col-3 p-0">
+                                                        <label class="m-1" for="postEndDate">마감일</label>
+                                                    </div>
+                                                    <div class="col-9 p-0">
+                                                        <input type="date"
+                                                               class="form-control flex-fill input-group w-90"
+                                                               id="postEndDate" name="postEndDate">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-            </div>
-          </div>
+                        </div>
+                    </div>
 
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="postRegion">근무지</label>
-                    <input type="hidden" class="flex-fill input-group">
-                    <select type="input" id="postRegion" name="postRegion"
-                            class="form-select form-select-sm border-radius-section border-2 w-80"
-                            required>
-                      <option value="" selected>근무지</option>
-                      <th:block th:each="region : ${regionList}">
-                        <option th:value="${region.regCode}">[[${region.regName}]]</option>
-                      </th:block>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="postImg">파일첨부</label>
-                    <input type="file" id="postImg" name="postImg" multiple
-                           class="flex-fill form-control w-80">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postRegion">근무지</label>
+                                        <input type="hidden" class="flex-fill input-group">
+                                        <select type="input" id="postRegion" name="postRegion"
+                                                class="form-select form-select-sm border-radius-section border-2 w-80"
+                                                required>
+                                            <option selected>근무지</option>
+                                            <th:block th:each="region : ${regionList}">
+                                                <option th:value="${region.regCode}">[[${region.regName}]]</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postImg">파일첨부</label>
+                                        <input type="file" id="postImg" name="postImg" multiple
+                                               class="flex-fill form-control w-80">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col-5">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="companyName">우편번호</label>
-                    <input type="text" class="flex-fill input-group w-100 form-control"
-                           id="sample6_postcode" placeholder="우편번호" required readonly>
-                  </div>
-                  <div class="flex-row d-flex">
-                    <div class="flex-fill">
-                      <input type="button" onclick="sample5_execDaumPostcode()" value="우편번호 찾기"
-                             style="margin-top: 1.7rem;
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col-5">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="companyName">우편번호</label>
+                                        <input type="text" class="flex-fill input-group w-100 form-control"
+                                               id="sample6_postcode" placeholder="우편번호" required readonly>
+                                    </div>
+                                    <div class="flex-row d-flex">
+                                        <div class="flex-fill">
+                                            <input type="button" onclick="sample5_execDaumPostcode()" value="우편번호 찾기"
+                                                   style="margin-top: 1.7rem;
             --bs-btn-padding-y: 0.8rem;
                                                 --bs-btn-font-size: 0.5rem;"
-                             class="btn bg-gradient-dark findAddress btn-sm me-2">
+                                                   class="btn bg-gradient-dark findAddress btn-sm me-2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="companyName">주소</label>
+                                        <input type="text" class="form-control flex-fill input-group w-80"
+                                               id="sample6_address" readonly
+                                               placeholder="상세주소" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postComId">참고항목</label>
+                                        <input type="text" class="form-control flex-fill input-group w-80"
+                                               id="sample6_extraAddress"
+                                               placeholder="참고항목">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="companyName">상세주소</label>
+                                        <input type="text" class="form-control flex-fill input-group w-80"
+                                               id="sample6_detailAddress" name="postDetailAddress"
+                                               placeholder="상세주소" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="postAddress" id="postAddress">
+                            <div class="col-6">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postSalary">연봉</label>
+                                        <select type="input" id="postSalary"
+                                                class="form-select form-select-sm border-radius-section border-2 w-80"
+                                                required name="postSalaryId">
+                                            <option selected>연봉</option>
+                                            <th:block th:each="postSalary : ${salaryList}">
+                                                <option th:value="${postSalary.salaryId}">
+                                                    [[${postSalary.salaryRange}]]
+                                                </option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row mt-2 px-5">
+                        <div class="d-flex col flex-fill">
+                            <div class="col">
+                                <div class="flex-row d-flex">
+                                    <div class="flex-fill">
+                                        <label class="m-1" for="postContent">공고내용</label>
+                                        <textarea type="text" style="resize: none; min-height: 10rem" id="postContent"
+                                                  class="flex-fill form-control input-group w-90"
+                                                  name="postContent"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br class="my-3">
+
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-fill">
+                            <div class="d-flex flex-fill justify-content-center">
+                                <input type="submit" class="btn bg-gradient-dark m-2" value="작성">
+                                <input type="button" class="btn bg-gradient-dark m-2" value="아직미구현">
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="companyName">주소</label>
-                    <input type="text" class="form-control flex-fill input-group w-80"
-                           id="sample6_address" readonly
-                           placeholder="상세주소" required>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="postComId">참고항목</label>
-                    <input type="text" class="form-control flex-fill input-group w-80"
-                           id="sample6_extraAddress"
-                           placeholder="참고항목" >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="companyName">상세주소</label>
-                    <input type="text" class="form-control flex-fill input-group w-80"
-                           id="sample6_detailAddress" name="postDetailAddress"
-                           placeholder="상세주소" required>
-                  </div>
-                </div>
-              </div>
-              <input type="hidden" name="postAddress" id="postAddress">
-              <div class="col-6">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="postSalary">연봉</label>
-                    <select type="input" id="postSalary"
-                            class="form-select form-select-sm border-radius-section border-2 w-80"
-                            required name="postSalaryId">
-                      <option selected>연봉</option>
-                      <th:block th:each="postSalary : ${salaryList}">
-                        <option th:value="${postSalary.salaryId}">[[${postSalary.salaryRange}]]</option>
-                      </th:block>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-flex flex-row mt-2 px-5">
-            <div class="d-flex col flex-fill">
-              <div class="col">
-                <div class="flex-row d-flex">
-                  <div class="flex-fill">
-                    <label class="m-1" for="postContent">공고내용</label>
-                    <textarea type="text" style="resize: none; min-height: 10rem" id="postContent"
-                              class="flex-fill form-control input-group w-90"
-                              name="postContent"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <br class="my-3">
-
-          <div class="d-flex flex-row">
-            <div class="d-flex flex-fill">
-              <div class="d-flex flex-fill justify-content-center">
-                <input type="submit" class="btn bg-gradient-dark m-2" value="작성">
-                <input type="button" class="btn bg-gradient-dark m-2" value="아직미구현">
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
 
 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>
-      $(document).ready(function () {
-        $('#noticeContent').summernote({
-          placeholder: '내용을 작성하세요',
-          minHeight: 500,
-          maxHeight: null,
-          focus: true,
-          callbacks: {
-            onImageUpload: function (files, editor, welEditable) {
-              //             // 파일 업로드(다중업로드를 위해 반복문 사용)
-              for (var i = files.length - 1; i >= 0; i--) {
-                uploadSummernoteImageFile(files[i],
-                        this);
-              }
-            }
-          }
-        })
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#noticeContent').summernote({
+                    placeholder: '내용을 작성하세요',
+                    minHeight: 500,
+                    maxHeight: null,
+                    focus: true,
+                    callbacks: {
+                        onImageUpload: function (files, editor, welEditable) {
+                            //             // 파일 업로드(다중업로드를 위해 반복문 사용)
+                            for (var i = files.length - 1; i >= 0; i--) {
+                                uploadSummernoteImageFile(files[i],
+                                    this);
+                            }
+                        }
+                    }
+                })
 
-      });
+            });
 
-      function uploadSummernoteImageFile(file, el) {
-        data = new FormData();
-        data.append("file", file);
-        $.ajax({
-          data: data,
-          type: "POST",
-          url: "/admin/image",
-          contentType: false,
-          enctype: 'multipart/form-data',
-          processData: false,
-          success: function (data) {
-            console.log(data)
-            $(el).summernote('editor.insertImage', data.url);
-          }
-        });
-      }
-
-      function sample5_execDaumPostcode() {
-        new daum.Postcode({
-          oncomplete: function (data) {
-            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-            var addr = ''; // 주소 변수
-            var extraAddr = ''; // 참고항목 변수
-
-            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-              addr = data.roadAddress;
-            } else { // 사용자가 지번 주소를 선택했을 경우(J)
-              addr = data.jibunAddress;
+            function uploadSummernoteImageFile(file, el) {
+                data = new FormData();
+                data.append("file", file);
+                $.ajax({
+                    data: data,
+                    type: "POST",
+                    url: "/admin/image",
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    success: function (data) {
+                        console.log(data)
+                        $(el).summernote('editor.insertImage', data.url);
+                    }
+                });
             }
 
-            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-            if (data.userSelectedType === 'R') {
-              // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-              // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-              if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
-                extraAddr += data.bname;
-              }
-              // 건물명이 있고, 공동주택일 경우 추가한다.
-              if (data.buildingName !== '' && data.apartment === 'Y') {
-                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-              }
-              // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-              if (extraAddr !== '') {
-                extraAddr = ' (' + extraAddr + ')';
-              }
-              // 조합된 참고항목을 해당 필드에 넣는다.
-              document.getElementById("sample6_extraAddress").value = extraAddr;
+            function sample5_execDaumPostcode() {
+                new daum.Postcode({
+                    oncomplete: function (data) {
+                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-            } else {
-              document.getElementById("sample6_extraAddress").value = '';
+                        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                        var addr = ''; // 주소 변수
+                        var extraAddr = ''; // 참고항목 변수
+
+                        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                        if (data.userSelectedType === 'R') {
+                            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                                extraAddr += data.bname;
+                            }
+                            // 건물명이 있고, 공동주택일 경우 추가한다.
+                            if (data.buildingName !== '' && data.apartment === 'Y') {
+                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                            if (extraAddr !== '') {
+                                extraAddr = ' (' + extraAddr + ')';
+                            }
+                            // 조합된 참고항목을 해당 필드에 넣는다.
+                            document.getElementById("sample6_extraAddress").value = extraAddr;
+
+                        } else {
+                            document.getElementById("sample6_extraAddress").value = '';
+                        }
+
+                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                        let postcode = document.getElementById('sample6_postcode').value = data.zonecode;
+                        let address = document.getElementById("sample6_address").value = addr;
+                        let extraAddress = document.getElementById("sample6_extraAddress").value;
+                        // 커서를 상세주소 필드로 이동한다.
+                        document.getElementById("sample6_detailAddress").focus();
+                        document.getElementById("postAddress").value = address + extraAddress
+                        // document.getElementById("postAddress").value = '(' + postcode + ')' + address + extraAddress
+                    }
+                }).open();
             }
 
-            // 우편번호와 주소 정보를 해당 필드에 넣는다.
-            let postcode = document.getElementById('sample6_postcode').value = data.zonecode;
-            let address = document.getElementById("sample6_address").value = addr;
-            let extraAddress = document.getElementById("sample6_extraAddress").value;
-            // 커서를 상세주소 필드로 이동한다.
-            document.getElementById("sample6_detailAddress").focus();
-            document.getElementById("postAddress").value = postcode + address + extraAddress
-          }
-        }).open();
-      }
-
-    </script>
+        </script>
 
 
-  </th:block>
+    </th:block>
 </th:block>

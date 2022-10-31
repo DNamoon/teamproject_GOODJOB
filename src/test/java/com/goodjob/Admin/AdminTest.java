@@ -2,12 +2,17 @@ package com.goodjob.Admin;
 
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
-import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
-import com.goodjob.admin.postpaging.ArticlePage;
+import com.goodjob.customerInquiry.CustomerInquiryPost;
+import com.goodjob.customerInquiry.repository.CustomerInquiryPostRepository;
+import com.goodjob.customerInquiry.CustomerInquiryPostType;
 import com.goodjob.admin.repository.AdminRepository;
+import com.goodjob.company.repository.CompanyRepository;
+import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.notice.Notice;
 import com.goodjob.notice.NoticeRepository;
+import com.goodjob.post.Post;
+import com.goodjob.post.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +24,7 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -38,6 +38,14 @@ public class AdminTest {
     VisitorStatisticsRepository visitorStatisticsRepository;
     @Autowired
     NoticeRepository noticeRepository;
+    @Autowired
+    PostRepository postRepository;
+    @Autowired
+    CustomerInquiryPostRepository customerInquiryPostRepository;
+    @Autowired
+    CompanyRepository companyRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     @Commit
@@ -61,7 +69,7 @@ public class AdminTest {
 
 //        Long longs = visitorStatisticsRepository.sumVisitor();
 //        System.out.println("aLong = " + longs);
-        visitorStatisticsRepository.updateVisitor(LocalDate.now());
+//        visitorStatisticsRepository.updateVisitor(LocalDate.now());
 
 //        LocalDate localDate = LocalDate.now().minusDays(7L);
 //        System.out.println("localDateTime = " + localDate);
@@ -87,11 +95,33 @@ public class AdminTest {
     @Test
     @Commit
     void saveNotice(){
-//        LongStream.rangeClosed(6,50).forEach(i->{
-//            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
-//        });
-        LocalDate buydate = LocalDate.of(2022,10,25);
-        boolean after = LocalDate.now().isAfter(ChronoLocalDate.from(buydate));
-        System.out.println("end = " + after);
+        LongStream.rangeClosed(6,50).forEach(i->{
+            noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
+        });
     }
+
+    @Test
+    void 공고페이지조회(){
+        Sort sort = Sort.by("PostId").descending();
+        List<Post> all = postRepository.findAll();
+        Pageable pageable = PageRequest.of(1, 100, sort);
+        Page<Post> allByPostId = postRepository.findAll(pageable);
+        all.forEach(i-> System.out.println("i = " + i.getPostContent()));
+    }
+
+    @Test
+    @Commit
+    void 고객문의생성테스트(){
+        CustomerInquiryPost build = CustomerInquiryPost.builder().inquiryPostCategory(CustomerInquiryPostType.ETC)
+                .inquiryPostMemberId(memberRepository.findById(2L).get())
+                .inquiryPostContent("content")
+                .inquiryPostId(4L)
+                .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
+                .inquiryPostStatus("0")
+                .inquiryPostTitle("title")
+                .inquiryPostWriter("writer")
+                .build();
+        customerInquiryPostRepository.save(build);
+    }
+
 }
