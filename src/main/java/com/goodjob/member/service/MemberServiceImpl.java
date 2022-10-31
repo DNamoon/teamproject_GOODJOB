@@ -76,29 +76,31 @@ public class MemberServiceImpl implements MemberService {
         Member mem =  memberDTO.toEntity();
         memberRepository.updateInfo(mem);
     }
-
+    /** 이메일 가입여부 확인 **/
     @Override
     public String checkEmail(String memEmail) {
         Company com = companyRepository.findByComEmail(memEmail);
         Member mem = memberRepository.findByMemEmail(memEmail);
-        if(!com.getComEmail().isEmpty()){
+        if(com!=null){
             return "com";
         }
-        if(!mem.getMemEmail().isEmpty()) {
+        if(mem!=null){
             return "mem";
         }
         return "false";
     }
     /** 임시 비밀번호로 업데이트 **/
     @Override
-    public void updatePassword(String tmpPw, String memberEmail,String type) {
+    public void updatePassword(String tmpPw, String memEmail,String type) {
         String encryptPassword = passwordEncoder.encode(tmpPw);
-        if(type=="mem") {
-            Member member = memberRepository.findByMemEmail(memberEmail);
+        if (type.equals("mem")) {
+            Member member = memberRepository.findByMemEmail(memEmail);
             member.updatePassword(encryptPassword);
+
+        } else {
+            Company company = companyRepository.findByComEmail(memEmail);
+            company.updatePassword(encryptPassword);
         }
-        Company company = companyRepository.findByComEmail(memberEmail);
-        company.updatePassword(encryptPassword);
     }
 
     /** 임시 비밀번호 생성 **/

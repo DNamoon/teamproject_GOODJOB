@@ -6,13 +6,10 @@ import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.service.MailService;
 import com.goodjob.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,6 +48,14 @@ public class MemberController {
     @RequestMapping(value="/checkId",method = RequestMethod.GET)
     public Long checkIdDuplication(@RequestParam("id") String id) {
         Long result = memberService.countByMemLoginId(id);
+        return result;
+    }
+
+    //email 중복확인
+    @ResponseBody
+    @RequestMapping(value="/signupEmail",method = RequestMethod.GET)
+    public String checkEmailDuplication(@RequestParam("email") String email) {
+        String result = memberService.checkEmail(email);
         return result;
     }
 
@@ -110,26 +115,24 @@ public class MemberController {
     public String checkEmailForm(){
         return "member/findPw";
     }
+
     //이메일이 DB에 존재하는지 확인
     @ResponseBody
     @PostMapping("/checkEmail")
     public String checkEmail(@RequestParam("memEmail") String memEmail) {
         return memberService.checkEmail(memEmail);
-
     }
-    //임시비밀번호 발급
+
     @PostMapping("/sendPw")
     public String sendPwdEmail(@RequestParam("memberEmail") String memberEmail,@RequestParam("mailType")String mailType) {
-
-        /** 임시 비밀번호 생성 **/
+       // 임시 비밀번호 생성
         String tmpPw = memberService.getTmpPassword();
 
-        /** 임시 비밀번호 저장 **/
+        // 임시 비밀번호 저장
         memberService.updatePassword(tmpPw, memberEmail,mailType);
 
-        /** 메일 생성 & 전송 **/
+        // 메일 생성 & 전송
         mailService.sendMail(memberEmail,tmpPw);
-
         return "login";
     }
 

@@ -78,14 +78,16 @@
                                         <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control w-40" th:field="*{memEmail1}"
-                                                   placeholder="goodjob"
+                                                   placeholder="goodjob" id="signUpEmail"
                                                    required> &nbsp;@ &nbsp;&nbsp;
-                                            <select class="form-control w-40" th:field="*{memEmail2}">
+                                            <select id="emailSelect" class="form-control w-40" th:field="*{memEmail2}" onchange="emailCheckMassage()">
+                                                <option value="">선택해주세요.</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="daum.net">daum.net</option>
                                                 <option value="gmail.com">gmail.com</option>
                                             </select>
                                         </div>
+                                        <label id="emailCheckMassage"></label>
                                     </div>
 
                                     <label>&nbsp;</label>

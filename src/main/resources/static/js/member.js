@@ -1,7 +1,7 @@
 
 //id 중복 확인
  function checkMassage(){
-     var id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
+     const id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
      $.ajax({
          url:'/member/checkId?id='+id, //Controller에서 요청 받을 주소
          success:function(result){ //컨트롤러에서 값을 받는다
@@ -19,6 +19,27 @@
          }
      });
  };
+//email 중복 확인
+function emailCheckMassage(){
+    const inputEmail = $('#signUpEmail').val();
+    const selectEmail =$('#emailSelect').val();
+    const email =inputEmail+"@"+selectEmail;
+    $.ajax({
+        url:'/member/signupEmail?email='+email ,
+        success:function(result){
+            console.log(result)
+            if(result == "false"){
+                $('#emailCheckMassage').css('color','blue')
+                $('#emailCheckMassage').html("가입 가능한 이메일입니다.")
+                $("#btn").prop('disabled',false);
+            } else {
+                $('#emailCheckMassage').css('color','red')
+                $('#emailCheckMassage').html("이미 가입된 이메일입니다.")
+                $("#btn").prop('disabled',true);
+            }
+        }
+    });
+};
  //주소찾기
  function execPostCode() {
      daum.postcode.load(function () {
