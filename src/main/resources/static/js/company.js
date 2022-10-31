@@ -220,7 +220,7 @@ $(document).ready(function () {
 // })
 
 //'이전으로 돌아가기'버튼 클릭시
-function btnDisabled(){
+//function btnDisabled(){
     // //'이전으로 돌아가기'버튼 숨기기
     // const target2 = document.getElementById("btn_hidden");
     // target2.hidden = true;
@@ -244,7 +244,7 @@ function btnDisabled(){
 
     //location.href = "/com/myPage";
 
-}
+//}
 
 //Daum 주소 찾기API function
 function sample6_execDaumPostcode() {
@@ -295,7 +295,10 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
-//이메일 양식일치 view
+
+
+
+//view - 이메일 양식일치
 $('#email').keyup(function (){
     let email = $('#email').val();
     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
@@ -310,7 +313,7 @@ $('#email').keyup(function (){
 })
 
 
-//비밀번호1,2 일치 view 여부 보여주는 function
+//view - 비밀번호1,2 일치 여부 보여주는 function
 function passwordConfirm() {
     var password = document.getElementById('comPw1');
     var passwordConfirm = document.getElementById('comPw2');
@@ -347,7 +350,7 @@ function passwordConfirm() {
 }
 
 
-//아이디 중복검사 view
+//view - 아이디 중복검사
 //onkeyup이 여기서는 "change keyup"이다!!!
 $('#id_input').on("change keyup", function(){
 
@@ -400,7 +403,8 @@ function btnRexExp() {
     //이메일 정규식 확인
     let result3 = "false";
     if(!regExp3.test(email)) {
-        Swal.fire("이메일 양식을 확인해주세요.","","error");
+        $('#email').focus();
+        //Swal.fire("이메일 양식을 확인해주세요.","","error");
     } else {
         result3 = "true";
     }
@@ -409,7 +413,8 @@ function btnRexExp() {
     var result2 = "false";
     let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
     if (!regExp2.test(password)) {
-        Swal.fire("비밀번호 양식을 확인해주세요.","","error");
+        $('#comPw1').focus();
+        //Swal.fire("비밀번호 양식을 확인해주세요.","","error");
     } else {
         result2 = "true";
     }
@@ -417,12 +422,12 @@ function btnRexExp() {
     //아이디 정규식 확인
     var result1 = "false";
     if (comLoginId === null || comLoginId === "") {  //아이디 입력을 안 했을 때
-        Swal.fire("아이디를 입력해주세요!","","error");
+        //Swal.fire("아이디를 입력해주세요!","","error");
+        $('#id_input').focus();
     } else {
         if (!regExp1.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
-            Swal.fire("아이디 양식을 확인해주세요!","","error");
-            // alert("아이디 양식을 확인해주세요!");
-            // $('#id_input').focus();
+            //Swal.fire("아이디 양식을 확인해주세요!","","error");
+            $('#id_input').focus();
         } else { //아이디 중복도 없고 정규식도 올바를 때
             result1 = "true";
         }
@@ -435,7 +440,7 @@ function btnRexExp() {
     }
 }
 
-//비밀번호 변경 유효성 검사
+//비밀번호 변경 폼 유효성 검사
 function btn_passwordChange() {
 
     //비밀번호 정규식 확인용 변수
@@ -466,7 +471,8 @@ function btn_change_info(){
     //이메일 정규식 확인
     if(!regExp3.test(email)) {
         $('#modal_open_btn').removeAttr("data-toggle");
-        Swal.fire("이메일 양식을 확인해주세요.","","error");
+        //Swal.fire("이메일 양식을 확인해주세요.","","error");
+        $('#email').focus();
     } else {
         //$('#confirmPasswordModal').modal();
         $('#modal_open_btn').attr("data-toggle", "modal");

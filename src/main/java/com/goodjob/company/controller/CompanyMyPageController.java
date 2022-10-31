@@ -85,7 +85,7 @@ public class CompanyMyPageController {
     //ho - 22.10.28 회원 비밀번호 변경 페이지
     @GetMapping("changePassword")
     public String changePasswordForm(){
-        return "/changePassword";
+        return "/company/changePassword";
     }
 
     @PostMapping("/changePassword")
@@ -93,7 +93,7 @@ public class CompanyMyPageController {
         if(!companyDTO.getPw().equals(companyDTO.getComPw2())){
             result.rejectValue("comPw2","passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "/changePassword";
+            return "/company/changePassword";
         }
 
         String comLoginId = getSessionLoginId(session).getComLoginId();
