@@ -113,18 +113,19 @@ public class MemberController {
     //이메일이 DB에 존재하는지 확인
     @ResponseBody
     @PostMapping("/checkEmail")
-    public boolean checkEmail(@RequestParam("memberEmail") String memEmail) {
+    public String checkEmail(@RequestParam("memEmail") String memEmail) {
         return memberService.checkEmail(memEmail);
+
     }
     //임시비밀번호 발급
     @PostMapping("/sendPw")
-    public String sendPwdEmail(@RequestParam("memberEmail") String memberEmail) {
+    public String sendPwdEmail(@RequestParam("memberEmail") String memberEmail,@RequestParam("mailType")String mailType) {
 
         /** 임시 비밀번호 생성 **/
         String tmpPw = memberService.getTmpPassword();
 
         /** 임시 비밀번호 저장 **/
-        memberService.updatePassword(tmpPw, memberEmail);
+        memberService.updatePassword(tmpPw, memberEmail,mailType);
 
         /** 메일 생성 & 전송 **/
         mailService.sendMail(memberEmail,tmpPw);

@@ -9,6 +9,7 @@
 package com.goodjob.company.repository;
 
 import com.goodjob.company.Company;
+import com.goodjob.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -37,4 +38,11 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     @Transactional
     @Query("update Company c set c.comName =:comName where c.comLoginId =:comLoginId")
     void updateInfo2(String comName, String comLoginId);
+
+    /**
+     * 김도현 22.10.29 작성
+     * 비밀번호 찾기에 사용되는 메소드
+     **/
+    Company findByComEmail(String comEmail);
+
 }

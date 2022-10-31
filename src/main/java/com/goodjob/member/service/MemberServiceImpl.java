@@ -1,5 +1,7 @@
 package com.goodjob.member.service;
 
+import com.goodjob.company.Company;
+import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -75,17 +78,29 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkEmail(String memEmail) {
-        return memberRepository.existsByMemEmail(memEmail);
+    public String checkEmail(String memEmail) {
+        Company com = companyRepository.findByComEmail(memEmail);
+        Member mem = memberRepository.findByMemEmail(memEmail);
+        if(!com.getComEmail().isEmpty()){
+            return "com";
+        }
+        if(!mem.getMemEmail().isEmpty()) {
+            return "mem";
+        }
+        return "false";
     }
     /** 임시 비밀번호로 업데이트 **/
     @Override
-    public void updatePassword(String tmpPw, String memberEmail) {
+    public void updatePassword(String tmpPw, String memberEmail,String type) {
         String encryptPassword = passwordEncoder.encode(tmpPw);
-        Member member = memberRepository.findByMemEmail(memberEmail);
-
-        member.updatePassword(encryptPassword);
+        if(type=="mem") {
+            Member member = memberRepository.findByMemEmail(memberEmail);
+            member.updatePassword(encryptPassword);
+        }
+        Company company = companyRepository.findByComEmail(memberEmail);
+        company.updatePassword(encryptPassword);
     }
+
     /** 임시 비밀번호 생성 **/
     @Override
     public String getTmpPassword() {
@@ -106,12 +121,13 @@ public class MemberServiceImpl implements MemberService {
     }
     /** 비밀번호 변경 **/
     @Override
-    public void changePassword(String changePw, Long memId) {
-        String encryptPassword = passwordEncoder.encode(changePw);
-        Member member= memberRepository.findByMemId(memId);
-        member.updatePassword(encryptPassword);
-        memberRepository.save(member);
-    }
+    public void changePassword(String changePw, Long id) {
+         String encryptPassword = passwordEncoder.encode(changePw);
+         Member member = memberRepository.findByMemId(id);
+         member.updatePassword(encryptPassword);
+         memberRepository.save(member);
+        }
+
     //회원 탈퇴
     @Override
     public void deleteById(Long memId) {

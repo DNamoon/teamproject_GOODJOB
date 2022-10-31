@@ -32,6 +32,7 @@
 </th:block>
 <form name="frmSub" method="get">
     <th:block th:if="${session.sessionId}">
+
         로그인 된 회원 아이디 : <span th:text="${session.sessionId}">message</span>
         <input class="btn btn-outline-light me-1" type="button" value="My Page"
                th:onclick="UserType([[${session.Type}]])"></input>
