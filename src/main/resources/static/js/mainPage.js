@@ -1,20 +1,27 @@
+$(document).ready(function (){
+    comMyPagePost.init();
+    // postJS.list("changePostDiv",1,4,"count",document.querySelector(".postDetailOccName").textContent)
 
-// comMyPagePost.html 에서 쓰이는 JS
+})
+
+// mainPage.html 에서 쓰이는 JS
 let postJS = {
 
-    list:function(sortType){
-        const pageRequestDTO = {
-            page:1,
-            size: 8,
-            sort : sortType
-        }
-        console.log("JS................."+pageRequestDTO)
+    list(targetDomClassName,page,size,sort){
+        const _this = this;
+        let pageRequestDTO ={
+            page: page,
+            size: size,
+            sort: sort,
+        };
+        const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
+        console.log(changeContentDiv);
+
+        // console.log(document.querySelector(".postDetailOccName").textContent)
         fetchJs.post(fetchJs.url,'getPagingPostList',pageRequestDTO)
             .then(data => {
                 console.log("data :" + data);
-
                 // ajax 받아오기 전에 자식노드들 삭제
-                const changeContentDiv = document.querySelector(".changeContentDiv");
                 while(changeContentDiv.hasChildNodes()){
                     changeContentDiv.removeChild(changeContentDiv.firstChild);
                 }
@@ -26,7 +33,7 @@ let postJS = {
             })
             .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
-    makePostListHtml:function(dto,changeContentDiv){
+    makePostListHtml(dto,changeContentDiv){
         // 공고 html 생성 코드
         const postWrapper = document.createElement("div");
         postWrapper.classList.add("mainPage-wrapper");
@@ -81,6 +88,10 @@ let postJS = {
 }
 // comMyPagePost.html 에서 쓰이는 JS
 let comMyPagePost = {
+    init(){
+      const _this = this;
+      _this.setClearSearchCondition();
+    },
     getPostListMapping: "comMyPagePost",
     getFormDom : function(){
         return document.querySelector(".comMyPage-post-search-form");
@@ -114,8 +125,16 @@ let comMyPagePost = {
         .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
     readPost:function (postId){
-        console.log(postId);
         location.href=`/post/readPost/${postId}`;
+    },
+    setClearSearchCondition(){
+        const _this = this;
+        const clearBtn = document.querySelector(".comMyPage-post-search-clear_btn");
+        clearBtn.addEventListener("click", function(e)
+        {
+            e.preventDefault()
+            location.href=`/${fetchJs.uri}${_this.getPostListMapping}`
+        });
     }
 
 }

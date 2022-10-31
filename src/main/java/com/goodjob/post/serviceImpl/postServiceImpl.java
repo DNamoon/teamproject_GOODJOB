@@ -125,15 +125,17 @@ public class postServiceImpl implements PostService {
     // getSearch() 메소드에 사용된다.
     private BooleanBuilder getOutOfDateState(PageRequestDTO pageRequestDTO,QPost qPost){
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        LocalDate curDate = LocalDate.now();
+        LocalDate curDateEnd = LocalDate.now().minusDays(1);
+        LocalDate curDateStart = LocalDate.now().plusDays(1);
         // "모집 시작일이 현재 보다 앞이다."라는 조건 즉, 모집 중.
-        BooleanExpression startDateBeforeNow = qPost.postStartDate.before(java.sql.Date.valueOf(curDate));
+        BooleanExpression startDateBeforeNow = qPost.postStartDate.before(java.sql.Date.valueOf(curDateStart));
         // "모집 종료일이 현재 보다 뒤다"라는 조건. 즉, 모집 중.
-        BooleanExpression endDateAfterNow = qPost.postEndDate.after(java.sql.Date.valueOf(curDate));
+        BooleanExpression endDateAfterNow = qPost.postEndDate.after(java.sql.Date.valueOf(curDateEnd));
         // "모집 시작일이 현재 보다 뒤다"라는 조건. 즉, 모집 시작 전.
-        BooleanExpression startDateAfterNow = qPost.postStartDate.after(java.sql.Date.valueOf(curDate));
+        BooleanExpression startDateAfterNow = qPost.postStartDate.after(java.sql.Date.valueOf(curDateStart));
         // "모집 종료일이 현재 보다 앞다"라는 조건. 즉, 모집 종료.
-        BooleanExpression endDateBeforeNow = qPost.postEndDate.before(java.sql.Date.valueOf(curDate));
+        BooleanExpression endDateBeforeNow = qPost.postEndDate.before(java.sql.Date.valueOf(curDateEnd));
+        log.info(java.sql.Date.valueOf(curDateStart)+"=================="+java.sql.Date.valueOf(curDateEnd));
         switch (pageRequestDTO.getOutOfDateState()) {
             case "active":
                 return booleanBuilder.and(startDateBeforeNow).and(endDateAfterNow);

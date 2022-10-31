@@ -11,6 +11,7 @@ import com.goodjob.post.salary.PostSalary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +79,7 @@ public interface EntityDtoMapper {
                 .startDate(post.getPostStartDate().toString())
                 .endDate(post.getPostStartDate().toString())
                 .remainDay(remainDay)
+                .salary(post.getPostSalary().getSalaryRange())
                 .postAddress(post.getPostAddress())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
@@ -101,7 +103,11 @@ public interface EntityDtoMapper {
     }
     default PostComMyPageDTO entityToDtoInComMyPage(Post post) {
         Date now = new Date();
-        long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(post.getPostEndDate());
+        cal.add(Calendar.DATE,1);
+
+        long difDay = (cal.getTime().getTime()-now.getTime())/1000;
         long difDay2 = (now.getTime()-post.getPostStartDate().getTime())/1000;
         String endDateMinusNow = String.valueOf(difDay/ (24*60*60)); // 0보다 크면 모집 종료 전
         String startDateMinusNow = String.valueOf(difDay2/(24*60*60)); // 0보다 작으면 모집 시작전
@@ -135,42 +141,6 @@ public interface EntityDtoMapper {
                 .build();
     }
 
-    // PostDto -> Post (save or update)
-//    default Post dtoToEntity(PostDTO postDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary) throws ParseException {
-//        if(postDTO.getId() != null){
-//            return Post.builder()
-//                    .postId(postDTO.getId())
-//                    .postTitle(postDTO.getTitle())
-//                    .postContent(postDTO.getContent())
-//                    .postRecruitNum(postDTO.getRecruitNum())
-//                    .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
-//                    .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
-//                    .postGender(postDTO.getGender())
-//                    .postRegion(postRegion)
-//                    .postSalary(postSalary)
-//                    .postOccCode(occ)
-//                    .postComId(com)
-//                    .build();
-//
-//        } else {
-//
-//            return Post.builder()
-//                    .postTitle(postDTO.getTitle())
-//                    .postContent(postDTO.getContent())
-//                    .postRecruitNum(postDTO.getRecruitNum())
-//                    .postStartDate(java.sql.Date.valueOf(postDTO.getStartDate()))
-//                    .postEndDate(java.sql.Date.valueOf(postDTO.getEndDate()))
-//                    .postGender(postDTO.getGender())
-//                    .postRegion(postRegion)
-//                    .postSalary(postSalary)
-//                    .postOccCode(occ)
-//                    .postComId(com)
-//                    .build();
-//        }
-//
-//
-//
-//    }
     default Post dtoToEntityForInsert(PostInsertDTO postInsertDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary, List<UploadFile> uploadFileList){
         if(postInsertDTO.getId() != null){
             return Post.builder()
