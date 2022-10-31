@@ -203,6 +203,20 @@ public class ResumeController {
         resumeService.changeTitle(resumeId, title);
     }
 
+    @GetMapping("/resumeRead/{resumeId}")
+    public String resumeReadForm(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+        String id = (String)session.getAttribute("sessionId");
+
+        model.addAttribute("memberInfo", memberService.bringMemInfo(id));
+        model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
+        model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
+        model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
+        model.addAttribute("careerInfo", careerService.bringCareerInfo(resumeId));
+        model.addAttribute("selfIntroInfo", selfIntroductionService.bringSelfIntroInfo(resumeId));
+
+        return "/resume/ResumeRead";
+    }
+
 //    @PutMapping("/changeTitle/{resumeId}")
 //    public void changeTitle(@RequestBody ResumeListDTO resumeListDTO){
 //        resumeService.changeTitle(resumeListDTO);

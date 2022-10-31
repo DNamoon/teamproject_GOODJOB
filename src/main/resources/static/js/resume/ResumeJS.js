@@ -99,6 +99,7 @@ $(document).ready(function(){
                     $(".certiList").append('<input class="form-check-input me-1" type="radio" name="selectCertiName" value="' + data[i].certiName + '" style="background-color: #e4e1e4">' + data[i].certiName + '<br/>');
                 }
                 $(".doneFindCerti").click(function () {
+                    //이미 작성한 자격증인지 확인하고 작성하지 않은 자격증일 경우에만 값이 입력되도록함(중복 방지)
                     var inputId = $("#modalId").val();
                     var checkCerti = [];
                     var inputSize = $("input[name=certificateName]").length;
@@ -534,6 +535,20 @@ function deleteCareerWC(deleteBtn, careerId){
     });
 }
 
+//이력서 열람 페이지 닫기 버튼
+function WinClose() {
+    window.open('','_self').close();
+}
+
+//이력서 열람 페이지 인쇄 버튼
+function WinPrint() {
+    var g_oBeforeBody = document.getElementById('readResumeForm').innerHTML;
+    window.onbeforeprint = function (ev) {
+        document.body.innerHTML = g_oBeforeBody;
+    };
+    window.print();
+}
+
 //입력검증
 //이력서에서 근무기간 선택할 때 두번째 달력의 날짜가 첫번째 날짜보다 적게 입력되는거 방지
 function rangeDate(data){
@@ -575,6 +590,7 @@ function isFourNumber(phoneNum){
     }
 }
 
+//학교명, 전공명 not null 방지
 function confirmValidStep1(){
     if($("#schoolName").val() == ''){
         $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv" style="color: red;">학교명을 입력해주세요.</label>');
@@ -601,5 +617,11 @@ function rangeCredit(){
         $("#eduGetCredit").val($('#eduGetCredit').val());
     }
 }
+
+//자격증명이 있을 때 취득날짜를 선택안한 경우, 회사명이 있을 때 업무,날짜가 없는 경우 방지
+function checkCertiNCareerBlank(){
+}
+
+
 
 

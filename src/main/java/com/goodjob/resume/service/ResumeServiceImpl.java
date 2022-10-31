@@ -82,6 +82,17 @@ public class ResumeServiceImpl implements ResumeService {
         resumeRepository.changeTitle(title, resumeId);
     }
 
+    @Override
+    public ResumeDTO bringResumeInfoWithMemId(String memId, Long resumeId) {
+        Resume resume = resumeRepository.findByResumeMemIdAndAndResumeId(memId, resumeId);
+        String[] phoneNum = resume.getResumeMemPhone().split("-");
+        String[] email = resume.getResumeMemEmail().split("@");
+        String[] address = resume.getResumeMemAddress().split("@");
+
+        ResumeDTO resumeDTO = entityToDTO(resume,phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1]);
+        return resumeDTO;
+    }
+
 //    @Override
 //    public void changeTitle(ResumeListDTO resumeListDTO) {
 //        Resume resume = listDTOToEntity(resumeListDTO);
