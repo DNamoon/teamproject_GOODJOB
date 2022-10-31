@@ -58,6 +58,7 @@ public interface StatusService {
                 .statPass(status.getStatPass())
                 .statApplyDate(status.getStatApplyDate())
                 .resumeTitle(status.getStatResumeId().getResumeTitle())
+                .applierId(status.getStatResumeId().getResumeMemId().getMemLoginId())
                 .applierName(status.getStatResumeId().getResumeMemId().getMemName())
                 .applierGender(status.getStatResumeId().getResumeMemId().getMemGender())
                 .applierAge(LocalDate.now().getYear() - status.getStatResumeId().getResumeMemId().getMemBirthDate().getYear())

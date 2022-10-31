@@ -20,6 +20,7 @@ public class ApplierListDTO {
     private String statPass;
     private Date statApplyDate;
     private String resumeTitle;
+    private String applierId;
     private String applierName;
     private String applierGender;
     private int applierAge;

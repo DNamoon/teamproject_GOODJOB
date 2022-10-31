@@ -18,6 +18,7 @@ $(document).ready(function(){
     // window.onpopstate = function(event){
     //     if (confirm("이전버튼을 누르면 현재 작성중인 내용이 모두 사라집니다.\n그래도 이동하시겠습니까?")) {
     //         history.go(-1);
+    //         history.pushState(null,null, location.href);
     //     }
     // }
     // window.history.forward(1);
@@ -371,7 +372,7 @@ function getListToNext(){
         url: "/resume/insertStep2",
         data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
         success: function(data){
-            location.href = "/resume/resumeStep3/" + resumeId;
+            location.replace("/resume/resumeStep3/" + resumeId);
         }
     });
 }
@@ -429,7 +430,7 @@ function getListToPrev(){
         url: "/resume/insertStep2",
         data: {"certificateList" : JSON.stringify(certificateList), "careerList" : JSON.stringify(careerList)},
         success: function(data) {
-            location.href = "/resume/goPreviousStep1/" + resumeId;
+            location.replace("/resume/goPreviousStep1/" + resumeId);
         }
     });
 }

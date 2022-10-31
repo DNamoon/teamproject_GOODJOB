@@ -21,7 +21,7 @@ function getApplierList(pageNum){
                 '    <h6 class="card-subtitle mb-2 text-muted">'+applier.applierGender + ' / ' + applier.applierAge + '</h6>\n' +
                 '    <p class="card-text">' + applier.postTitle + '</p>\n' +
                 '    <p class="card-text">' + applier.postOccupation + '</p>\n' +
-                '    <a href="/resume/resumeRead/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm btn-info">이력서 열람</button></a>';
+                '    <a href="/resume/resumeRead/'+ applier.applierId +'/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm btn-info">이력서 열람</button></a>';
 
             if(applier.statPass == '합격'){
                 list += '<p class="card-text">합격</p>'+

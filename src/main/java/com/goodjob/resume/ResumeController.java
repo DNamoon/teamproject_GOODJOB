@@ -203,11 +203,10 @@ public class ResumeController {
         resumeService.changeTitle(resumeId, title);
     }
 
-    @GetMapping("/resumeRead/{resumeId}")
-    public String resumeReadForm(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
-        String id = (String)session.getAttribute("sessionId");
+    @GetMapping("/resumeRead/{memId}/{resumeId}")
+    public String resumeReadForm(@PathVariable("memId") String memId, @PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
 
-        model.addAttribute("memberInfo", memberService.bringMemInfo(id));
+        model.addAttribute("memberInfo", memberService.bringMemInfo(memId));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
