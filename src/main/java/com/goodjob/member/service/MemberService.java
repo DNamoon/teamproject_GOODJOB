@@ -53,6 +53,8 @@ public interface MemberService {
     //회원정보 db저장
     Member register(Member member);
 
+    int checkId2(String comLoginId);
+
     //회원가입 시 아이디 중복 여부 확인
     Long countByMemLoginId(String memLoginId);
 

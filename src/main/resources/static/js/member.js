@@ -9,12 +9,10 @@
              if(result != 0){ //cnt가 1이 아니면(=0일 경우) -> 이미 존재하는 아이디
                  $('#checkMassage').css('color','red')
                  $('#checkMassage').html("사용할 수 없는 아이디입니다.")
-                 $("#btn").prop('disabled',true);
 
              } else { // cnt가 1일 경우 -> 사용 가능한 아이디
                  $('#checkMassage').css('color','blue')
                  $('#checkMassage').html("사용할 수 있는 아이디입니다.")
-                 $("#btn").prop('disabled',false);
              }
          }
      });
@@ -31,11 +29,9 @@ function emailCheckMassage(){
             if(result == "false"){
                 $('#emailCheckMassage').css('color','blue')
                 $('#emailCheckMassage').html("가입 가능한 이메일입니다.")
-                $("#btn").prop('disabled',false);
             } else {
                 $('#emailCheckMassage').css('color','red')
                 $('#emailCheckMassage').html("이미 가입된 이메일입니다.")
-                $("#btn").prop('disabled',true);
             }
         }
     });
@@ -66,12 +62,12 @@ function emailCheckMassage(){
      if(p1 != p2){
          $('#confirmMsg').css('color','red')
          $('#confirmMsg').html("비밀번호 불일치")
-         $("#btn").prop('disabled',true);
+         // $("#btn").prop('disabled',true);
 
      } else { // cnt가 1일 경우 -> 사용 가능한 아이디
          $('#confirmMsg').css('color','blue')
          $('#confirmMsg').html("비밀번호 일치")
-         $("#btn").prop('disabled',false);
+         // $("#btn").prop('disabled',false);
      }
 
  }

@@ -45,6 +45,11 @@ public class MemberServiceImpl implements MemberService {
     public Member register(Member member) {
         return memberRepository.save(member);
     }
+
+    @Override
+    public int checkId2(String comLoginId) {
+        return memberRepository.checkId2(comLoginId);
+    }
     @Override
     public Long countByMemLoginId(String memLoginId) {
         Long result = memberRepository.countByMemLoginId(memLoginId);

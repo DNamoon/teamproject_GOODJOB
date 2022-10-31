@@ -38,7 +38,6 @@ public class MemberController {
         if (session != null) {
             session.invalidate();
         }
-
         model.addAttribute("signUpCheck", memberDTO);
         return "member/signup";
     }
@@ -66,17 +65,27 @@ public class MemberController {
         if(result.hasErrors()){
             return "member/signup";
             }
+        // 아이디 중복 시 에러 발생
+        if(memberService.checkId2(memberDTO.getLoginId()) !=0){
+            result.rejectValue("loginId","loginIdDuplicated"
+                    ,"아이디가 중복됩니다. 다른 아이디를 지정하십시오.");
+            return "member/signup";
+        }
+        //비밀번호 일치하지 않을 시 에러 발생
+        if(!memberDTO.getPw().equals(memberDTO.getPw2())){
+            result.rejectValue("pw2","passwordInCorrect",
+                    "입력하신 비밀번호가 일치하지 않습니다.");
+            return "member/signup";
+        }
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem = memberDTO.toEntity();
         memberService.register(mem);
-
         return "redirect:/";
     }
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
-        //ho - 22.10.17 getMemLoginId -> getLoginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
         Optional<Member> mem = memberService.loginIdCheck(memberDTO.getLoginId());
 
         if (mem.isPresent()) {  // id null 체크
