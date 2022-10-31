@@ -100,15 +100,18 @@ $(document).ready(function(){
                 }
                 $(".doneFindCerti").click(function () {
                     var inputId = $("#modalId").val();
-                    console.log(inputId);
                     var checkCerti = [];
-                    for(var i = 0; i < size; i++){
-                        if($("input:radio[name='selectCertiName']:checked").val() !== $("input[name='certificateName']").eq(i).val()){
+                    var inputSize = $("input[name=certificateName]").length;
+
+                    for(var i = 0; i < inputSize; i++){
+                        console.log(i);
+                        if($("input:radio[name=selectCertiName]:checked").val() !== $("input[name=certificateName]").eq(i).val()){
                             checkCerti.push('같지않음');
                         }else{
                             checkCerti.push('같음');
                         }
                     }
+
                     if(checkCerti.includes('같음')){
                         alert("이미 작성한 자격증입니다.");
                         deleteAddInfo($("#" + inputId).parent());
