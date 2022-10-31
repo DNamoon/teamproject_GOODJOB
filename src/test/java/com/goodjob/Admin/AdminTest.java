@@ -123,5 +123,13 @@ public class AdminTest {
                 .build();
         customerInquiryPostRepository.save(build);
     }
-
+    @Test
+    void 멤버로문의조회(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> byCompany = customerInquiryPostRepository.findAllByInquiryPostComId(pageable, "test");
+        Page<CustomerInquiryPost> byMember = customerInquiryPostRepository.findAllByInquiryPostMemberId(pageable, "test");
+        System.out.println("test = " + byCompany.getContent().size());
+        System.out.println("test = " + byMember.getContent().size());
+    }
 }

@@ -17,8 +17,106 @@
                         통합서비스 이용약관
                     </a>
                 </div>
-                <form th:action="@{/customerInquiry/qna}" method="post">
-                    <div class="d-flex flex-fill mt-5">
+                <div class="d-flex flex-row col justify-content-center">
+                    <div class="col-6 justify-content-center">
+                        <h4>1:1 문의 내역</h4>
+                    </div>
+                    <div class="col-6 justify-content-center">
+                        <h6 class="float-end"><a role="button" class="btn bg-gradient-dark btn-sm text-white"
+                                                 onclick="hideListAndShowForm()">새로운 문의 작성</a></h6>
+                    </div>
+                </div>
+                <div>
+                    <th:block th:if="${inquiryPostList.content.size() == 0}">
+                        <div class="d-flex flex-column justify-content-center mt-2">
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="d-flex flex-row">
+                                    <h5>등록된 1:1문의가 없습니다.</h5>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="d-flex flex-row">
+                                    <h5><a role="button" style="text-decoration-line: underline" onclick="showForm()">새로운
+                                        문의 작성</a></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <div id="qna_list">
+                        <th:block th:if="${inquiryPostList ne null}">
+                            <div class="d-flex flex-column justify-content-center mt-2">
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="d-flex flex-fill">
+                                        <div class="d-flex flex-fill justify-content-center">
+                                            <div class="col-12">
+                                                <table class="table align-items-center mb-0">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                                            style="width: 20%">
+                                                            카테고리
+                                                        </th>
+                                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75 ps-2"
+                                                            style="width: 40%">
+                                                            제목
+                                                        </th>
+                                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                                            style="width: 10%">
+                                                            상태
+                                                        </th>
+                                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                                            style="width: 20%">
+                                                            등록일
+                                                        </th>
+                                                        <th class="text-secondary opacity-7"
+                                                            style="width: 10%"></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <th:block th:each="inquiryPost:${inquiryPostList.content}">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex px-2">
+                                                                    <div class="d-flex flex-column justify-content-center">
+                                                                    <span class="text-secondary text-xs font-weight-bold"
+                                                                          th:text="${inquiryPost.inquiryPostCategory.customerInquiryPostCategory}">
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <a>
+                                                                    <h6 class="m-lg-1 text-sm"
+                                                                        th:text="${inquiryPost.inquiryPostTitle}"></h6>
+                                                                </a>
+                                                            </td>
+                                                            <td class="align-middle text-center text-sm">
+                                                                <th:block th:if="${inquiryPost.inquiryPostStatus == '1'}">
+                                                                    <span class="badge rounded-pill badge-sm bg-gradient-success">답변완료</span>
+                                                                </th:block>
+                                                                <th:block th:if="${inquiryPost.inquiryPostStatus == '0'}">
+                                                                    <span class="badge rounded-pill badge-sm bg-gradient-warning">미답변</span>
+                                                                </th:block>
+                                                            </td>
+                                                            <td class="align-middle text-center">
+                                                            <span class="text-secondary text-xs font-weight-bold"
+                                                                  th:text="${#dates.format(inquiryPost.inquiryPostPublishedDate,'yyyy-MM-dd')}"></span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </th:block>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+                <form style="display: none" th:action="@{/customerInquiry/qna}" method="post" id="qna_form">
+                    <div class="d-flex flex-fill">
                         <div class="d-flex flex-fill">
                             <div class="d-flex flex-fill col">
                                 <div class="col-2">
@@ -43,20 +141,35 @@
                     <div class="d-flex flex-fill col">
                         <div class="col-12">
                             <label for="customerInquiryContent">내용</label>
-                        <textarea type="text" id="customerInquiryContent"
-                                  style="resize: none; min-height: 10rem"
-                                  name="inquiryPostContent"
-                                  class="form-control"></textarea>
+                            <textarea type="text" id="customerInquiryContent"
+                                      style="resize: none; min-height: 10rem"
+                                      name="inquiryPostContent"
+                                      class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="d-flex flex-fill col mt-3 justify-content-center">
                         <div class="d-flex col-12 justify-content-center">
                             <button class="btn bg-gradient-dark me-1" type="submit">작성</button>
-                            <button class="btn bg-gradient-dark ms-1" type="button">취소</button>
+                            <button class="btn bg-gradient-dark ms-1" onclick="showList()" type="button">취소</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <script>
+            function showForm() {
+                $('#qna_form').show();
+            }
+
+            function showList() {
+                $('#qna_list').show();
+                $('#qna_form').hide();
+            }
+
+            function hideListAndShowForm() {
+                $('#qna_list').hide();
+                $('#qna_form').show();
+            }
+        </script>
     </th:block>
 </th:block>

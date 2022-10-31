@@ -8,7 +8,11 @@ import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 22.10.30 오성훈 고객문의 컨트롤러 URI는 고민 후 간결하게 변경할 예정
@@ -43,7 +48,10 @@ public class CustomerInquiryController {
     }
 
     @GetMapping("/qna")
-    public String customerInquiryQNA() {
+    public String customerInquiryQNA(Model model, HttpServletRequest request) {
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 5, sort);
+        model.addAttribute("inquiryPostList", customerInquiryService.findInquiryListById(pageable, request));
         return "/customerInquiry/customerInquiryQNA";
     }
 
