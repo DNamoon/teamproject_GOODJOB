@@ -1,26 +1,23 @@
 $(document).ready(function (){
     comMyPagePost.init();
-    postJS.list("changePostDiv",1,4,"count")
+    // postJS.list("changePostDiv",1,4,"count",document.querySelector(".postDetailOccName").textContent)
 
 })
 
 // mainPage.html 에서 쓰이는 JS
 let postJS = {
 
-    list(targetDomClassName,page,size,sort,filterOccupation,filterRegion,filterSalary){
+    list(targetDomClassName,page,size,sort){
         const _this = this;
         let pageRequestDTO ={
             page: page,
             size: size,
             sort: sort,
-            filterOccupation: filterOccupation,
-            filterRegion: filterRegion,
-            filterSalary: filterSalary
         };
         const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
         console.log(changeContentDiv);
 
-        console.log(document.querySelector(".postDetailOccName").textContent)
+        // console.log(document.querySelector(".postDetailOccName").textContent)
         fetchJs.post(fetchJs.url,'getPagingPostList',pageRequestDTO)
             .then(data => {
                 console.log("data :" + data);
