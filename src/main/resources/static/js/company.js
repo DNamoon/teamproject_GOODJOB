@@ -295,8 +295,20 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
+//view - 전화번호 양식 일치(2~3)-(3~4)-4
+$('#phone').keyup(function (){
+    let phone = $('#phone').val();
+    let regExp = /(\\d{2,3})-(\\d{3,4})-(\\d{4})$/;
+    let phone_error = $('#phone_error');
 
-
+    if(!regExp.test(phone)) {
+        phone_error.css("color","#ff0000");
+        phone_error.show().text("전화번호는 반드시 (2~3)-(3~4)-4 의 형식이어야 합니다.")
+    }else {
+        phone_error.css("color","#54b254");
+        phone_error.show().text("올바른 전화형식입니다.");
+    }
+})
 
 //view - 이메일 양식일치
 $('#email').keyup(function (){
@@ -359,7 +371,6 @@ $('#id_input').on("change keyup", function(){
     var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
     var idError = $('.id_error');
     idError.css("color", "#ff0000");
-    var btn = $('#sign_up');
 
     $.ajax({
         type : "post",
@@ -403,8 +414,8 @@ function btnRexExp() {
     //이메일 정규식 확인
     let result3 = "false";
     if(!regExp3.test(email)) {
-        $('#email').focus();
         //Swal.fire("이메일 양식을 확인해주세요.","","error");
+        $('#email').focus();
     } else {
         result3 = "true";
     }
