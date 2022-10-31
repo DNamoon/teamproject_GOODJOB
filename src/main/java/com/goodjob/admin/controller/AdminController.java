@@ -95,7 +95,7 @@ public class AdminController {
      */
     @GetMapping("/test")
     public String test(){
-        return "post/postInsertForm";
+        return "post/postDetailViewWithMap";
     }
 
     @PostMapping("/test")
