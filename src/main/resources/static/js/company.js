@@ -1,5 +1,26 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+
+
+
+//아이디 찾기 기업별, 멤버별 구분
+function UserTypeFindId() {
+    const form = document.forms['frm'];
+    const type = $('#chk').val();
+    console.log(type);
+
+    if(type=="member"){
+        form.action = "/member/findId";
+        form.submit();
+    }else if(type=="none"){
+        alert("회원타입을 선택해주세요.")
+    }else {
+        form.action = "/com/findId";
+        form.submit();
+    }
+}
+
+
 //아이디 찾기
 $(document).ready(function() {
     $('#btn_find_id').on('click', function () {
@@ -274,7 +295,8 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
-$('#email').blur(function (){
+//이메일 양식일치 view
+$('#email').keyup(function (){
     let email = $('#email').val();
     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
     let emailError = $('#email_error');
@@ -288,7 +310,7 @@ $('#email').blur(function (){
 })
 
 
-//비밀번호1,2 일치 여부 보여주는 function
+//비밀번호1,2 일치 view 여부 보여주는 function
 function passwordConfirm() {
     var password = document.getElementById('comPw1');
     var passwordConfirm = document.getElementById('comPw2');
@@ -325,7 +347,7 @@ function passwordConfirm() {
 }
 
 
-//아이디 중복검사
+//아이디 중복검사 view
 //onkeyup이 여기서는 "change keyup"이다!!!
 $('#id_input').on("change keyup", function(){
 
@@ -334,7 +356,7 @@ $('#id_input').on("change keyup", function(){
     var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
     var idError = $('.id_error');
     idError.css("color", "#ff0000");
-
+    var btn = $('#sign_up');
 
     $.ajax({
         type : "post",
@@ -342,33 +364,118 @@ $('#id_input').on("change keyup", function(){
         data : data,
         success : function(result){
             if(result != 'fail'){  //중복되는 아이디가 없을 때
-                let regExp = /^[a-z0-9_-]{3,15}$/g; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
-                let id = $("#userId").val();
+                let regExp = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
                 if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
                     idError.show().text("필수 입력값입니다. 아이디를 입력해주세요.");
                 } else {
                     if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
                         idError.show().text("아이디는 3~15자의 영문 소문자와 숫자,특수기호(_),(-)만 사용 가능합니다.")
-                        // $('.id_input_re_2').css("display","inline-block");
-                        // $('.id_input_re_1').css("display", "none");
                     } else { //아이디 중복도 없고 정규식도 올바를 때
                         idError.css("color","#54b254");
                         idError.show().text("사용할 수 있는 아이디입니다!");
-                        // $('.id_input_re_1').css("display","inline-block");
-                        // $('.id_input_re_2').css("display", "none");
                     }
                 }
             } else {  //중복되는 아이디가 있을 경우
                 idError.show().text("이미 존재하는 아이디입니다.");
-                // $('.id_input_re_2').css("display","inline-block");
-                // $('.id_input_re_1').css("display", "none");
             }
 
         }
     });
 });
 
+//회원가입 유효성 검사
+function btnRexExp() {
 
+    //아이디 정규식 확인용 변수
+    var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
+    let regExp1 = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+
+    //비밀번호 정규식 확인용 변수
+    var password = $('#comPw1').val();
+
+    //이메일 정규식 확인용 변수
+    let email = $('#email').val();
+    let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
+
+    //이메일 정규식 확인
+    let result3 = "false";
+    if(!regExp3.test(email)) {
+        Swal.fire("이메일 양식을 확인해주세요.","","error");
+    } else {
+        result3 = "true";
+    }
+
+    //비밀번호 정규식 확인
+    var result2 = "false";
+    let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+    if (!regExp2.test(password)) {
+        Swal.fire("비밀번호 양식을 확인해주세요.","","error");
+    } else {
+        result2 = "true";
+    }
+
+    //아이디 정규식 확인
+    var result1 = "false";
+    if (comLoginId === null || comLoginId === "") {  //아이디 입력을 안 했을 때
+        Swal.fire("아이디를 입력해주세요!","","error");
+    } else {
+        if (!regExp1.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+            Swal.fire("아이디 양식을 확인해주세요!","","error");
+            // alert("아이디 양식을 확인해주세요!");
+            // $('#id_input').focus();
+        } else { //아이디 중복도 없고 정규식도 올바를 때
+            result1 = "true";
+        }
+    }
+
+    if (result1 == "true" && result2 == "true" && result3 == "true") {
+        console.log(result1 + result2 + result3);
+        $('#contact-form').submit();
+    } else {
+    }
+}
+
+//비밀번호 변경 유효성 검사
+function btn_passwordChange() {
+
+    //비밀번호 정규식 확인용 변수
+    var password = $('#comPw1').val();
+    var passwordConfirm = $('#comPw2').val();
+
+    //비밀번호 정규식 확인
+    let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+    if (!regExp2.test(password)) {
+        Swal.fire("비밀번호 사용 불가!","비밀번호는 3~25자로 최소 하나의 문자, 숫자, 특수문자가 들어가야 합니다.","error");
+        return false;
+    } else {
+        if(password == passwordConfirm){
+            $('#form_change_pw').submit();
+        } else {
+            Swal.fire("비밀번호 불일치!","","error");
+        }
+    }
+
+}
+
+//회원정보 수정 유효성 검사
+function btn_change_info(){
+    //이메일 정규식 확인용 변수
+    let email = $('#email').val();
+    let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
+
+    //이메일 정규식 확인
+    if(!regExp3.test(email)) {
+        $('#modal_open_btn').removeAttr("data-toggle");
+        Swal.fire("이메일 양식을 확인해주세요.","","error");
+    } else {
+        //$('#confirmPasswordModal').modal();
+        $('#modal_open_btn').attr("data-toggle", "modal");
+        $("#confirmPasswordModal").modal();
+    }
+}
+
+
+/////////////////////
 // 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
 $("#userId").blur(function () {
     let idError = $("#idError");
@@ -407,55 +514,4 @@ $("#userId").blur(function () {
             console.log("아이디 체크 오류");
         }
     });
-});
-
-
-//다른분 아이디 중복체크 - 여기서는 사용 안함.
-var $id = $("#id");
-// 아이디 정규식
-$id.on("keyup", function() { // 키보드에서 손을 땠을 때 실행
-    var regExp = /^[a-z]+[a-z0-9]{5,15}$/g;
-
-    if (!regExp.test($id.val())) { // id 가 공백인 경우 체크
-        idchk = false;
-        $id.html("<span id='check'>사용할 수 없는 아이디입니다.</span>");
-        $("#check").css({
-            "color" : "#FA3E3E",
-            "font-weight" : "bold",
-            "font-size" : "10px"
-        })
-    } else { // 공백아니면 중복체크
-        $.ajax({
-            type : "POST", // http 방식
-            url : "/com/register", // ajax 통신 url
-            data : { // ajax 내용 => 파라미터 : 값 이라고 생각해도 무방
-                "type" : "user",
-                "id" : $id.val()
-            },
-            success : function(data) {
-                if (data == 1) { // 1이면 중복
-                    idchk = false;
-                    $id.html("<span id='check'>이미 존재하는 아이디입니다</span>")
-                    $("#check").css({
-                        "color" : "#FA3E3E",
-                        "font-weight" : "bold",
-                        "font-size" : "10px"
-
-                    })
-                    //console.log("중복아이디");
-                } else { // 아니면 중복아님
-                    idchk = true;
-                    $id.html("<span id='check'>사용가능한 아이디입니다</span>")
-
-                    $("#check").css({
-                        "color" : "#0D6EFD",
-                        "font-weight" : "bold",
-                        "font-size" : "10px"
-
-                    })
-                    //console.log("중복아닌 아이디");
-                }
-            }
-        })
-    }
 });
