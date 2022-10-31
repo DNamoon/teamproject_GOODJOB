@@ -20,7 +20,8 @@ public interface PostService extends EntityDtoMapper {
 
     PageResultDTO<Post, PostCardDTO> getPagingPostList(PageRequestDTO pageRequestDTO);
 
-    Long register(PostDTO postDTO) throws ParseException;
+    PageResultDTO<Post, PostComMyPageDTO> getPagingPostListInComMyPage(PageRequestDTO pageRequestDTO);
+
 
     List<Occupation> getListOccupation();
 
@@ -30,9 +31,10 @@ public interface PostService extends EntityDtoMapper {
 
     Long savePost(PostInsertDTO postInsertDTO) throws IOException;
 
-    PostDTO read(Long postId);
 
-    void remove(Long postId);
+    PostDetailsDTO readPost(Long postId);
+
+    void deletePost(Long postId);
 
     List<String> searchSalaryRange();
 }

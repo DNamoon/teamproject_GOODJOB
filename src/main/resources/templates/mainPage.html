@@ -82,7 +82,7 @@
                                 <th:block th:each="dto:${result.dtoList}">
                                     <div class="post-wrapper">
                                         <div class="col p-0">
-                                            <div class="p-0 m-2 card-css" th:onclick="|location.href='@{/post/read(postId=${dto.id})}'|" >
+                                            <div class="p-0 m-2 card-css" th:onclick="|javascript:comMyPagePost.readPost('${dto.id}')|" >
                                                 <div class="w-100 p-0 h-50 img-css" >
                                                     <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
                                                 </div>
