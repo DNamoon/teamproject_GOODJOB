@@ -28,7 +28,7 @@ public class SecurityConfig  {
         http.cors().disable()			//cors 방지
                 .csrf().disable()			//csrf 방지
                 .authorizeRequests()
-                .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**","/login","/getPagingPostList","/search","/home","/post/**","/img/**").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**","/login","/getPagingPostList","/search","/home","/post/**","/img/**","/customerInquiry/**").permitAll() // /auth이하의 주소들은 인증 필요x
                 .antMatchers("/css/**","/js/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();

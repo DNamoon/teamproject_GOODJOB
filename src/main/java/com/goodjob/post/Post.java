@@ -3,7 +3,6 @@ package com.goodjob.post;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.post.fileupload.UploadFile;
-import com.goodjob.company.Region;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.salary.PostSalary;
 import lombok.*;

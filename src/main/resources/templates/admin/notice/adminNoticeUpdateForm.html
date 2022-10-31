@@ -18,15 +18,15 @@
                     </div>
                     <hr>
                     <div class="card-body px-0 pt-0 pb-2">
-                        <form th:action="@{/admin/notice/insert}" method="post">
+                        <form th:action="@{/admin/notice/{noticeId}/update(noticeId=${findNotice.noticeId})}" method="post" th:object="${findNotice}">
                             <div class="d-flex col">
                                 <div class="col-2">
                                     <h6 class="text-center mt-2 mb-0">제목</h6>
                                     <h6 class="text-center mt-2 mb-0">내용</h6>
                                 </div>
                                 <div class="col-8">
-                                    <input type="text" class="d-flex form-text form-control" name="noticeTitle">
-                                    <textarea id="noticeContent"
+                                    <input type="text" th:value="*{noticeTitle}" class="d-flex form-text form-control" name="noticeTitle"/>
+                                    <textarea id="noticeContent" th:text="*{noticeContent}"
                                               name="noticeContent" class=""
                                               style="resize: none;"></textarea>
                                 </div>
@@ -36,7 +36,7 @@
                                 <button type="submit" class="text-white btn"
                                         style="background-color: #344767;">작성</button>
                                 <a role="button" class="text-white btn"
-                                   th:href="@{/admin}"
+                                   th:href="@{/templates/admin}"
                                    style="background-color: #344767;">취소</a>
                             </div>
                             </div>

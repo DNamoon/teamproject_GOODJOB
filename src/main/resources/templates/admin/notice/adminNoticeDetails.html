@@ -20,11 +20,12 @@
                             </div>
                             <div class="d-flex flex-row justify-content-end col-8">
                                 <div class="">
-                                    <button class="text-white btn"
-                                            style="background-color: #344767;">수정
-                                    </button>
                                     <a role="button" class="text-white btn"
-                                       th:href="@{/admin}"
+                                       th:href="@{/admin/notice/{noticeId}/update(noticeId=*{noticeId})}"
+                                            style="background-color: #344767;">수정
+                                    </a>
+                                    <a role="button" class="text-white btn"
+                                       th:href="@{/templates/admin}"
                                        style="background-color: #344767;">취소</a>
                                 </div>
                             </div>
