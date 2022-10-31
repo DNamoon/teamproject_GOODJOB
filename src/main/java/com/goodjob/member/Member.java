@@ -39,7 +39,7 @@ public class Member {
     @Column
     private String memPhone;
 
-    @Column
+    @Column(unique = true)
     private String memEmail;
 
     @Column
@@ -59,7 +59,7 @@ public class Member {
 
     /** 비밀번호 변경 **/
     public void updatePassword(String password){
-        System.out.println("++++++++"+password);
         this.memPw = password;
     }
+
 }
