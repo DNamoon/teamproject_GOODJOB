@@ -14,7 +14,7 @@
                 <div class="col-12 flex-fill">
                   <label class="m-1" for="postTitle">공고제목</label>
                   <input type="text" class="flex-fill form-control input-group w-90"
-                         id="postTitle" name="postTitle">
+                         id="postTitle" name="postTitle" required>
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@
                     <select type="input" name="postOccCode"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
                             id="inputGroupSelect02" required>
-                      <option selected>업직종</option>
+                      <option value="" selected>업직종</option>
                       <th:block th:each="occ : ${occList}">
                         <option th:value="${occ.occId}">[[${occ.occName}]]</option>
                       </th:block>
@@ -144,7 +144,7 @@
                     <select type="input" id="postRegion" name="postRegion"
                             class="form-select form-select-sm border-radius-section border-2 w-80"
                             required>
-                      <option selected>근무지</option>
+                      <option value="" selected>근무지</option>
                       <th:block th:each="region : ${regionList}">
                         <option th:value="${region.regCode}">[[${region.regName}]]</option>
                       </th:block>

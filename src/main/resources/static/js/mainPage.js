@@ -1,3 +1,6 @@
+$(document).ready(function (){
+    comMyPagePost.init();
+})
 
 // comMyPagePost.html 에서 쓰이는 JS
 let postJS = {
@@ -81,6 +84,10 @@ let postJS = {
 }
 // comMyPagePost.html 에서 쓰이는 JS
 let comMyPagePost = {
+    init(){
+      const _this = this;
+      _this.setClearSearchCondition();
+    },
     getPostListMapping: "comMyPagePost",
     getFormDom : function(){
         return document.querySelector(".comMyPage-post-search-form");
@@ -114,8 +121,16 @@ let comMyPagePost = {
         .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
     readPost:function (postId){
-        console.log(postId);
         location.href=`/post/readPost/${postId}`;
+    },
+    setClearSearchCondition(){
+        const _this = this;
+        const clearBtn = document.querySelector(".comMyPage-post-search-clear_btn");
+        clearBtn.addEventListener("click", function(e)
+        {
+            e.preventDefault()
+            location.href=`/${fetchJs.uri}${_this.getPostListMapping}`
+        });
     }
 
 }

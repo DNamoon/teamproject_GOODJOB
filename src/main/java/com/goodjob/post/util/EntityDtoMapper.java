@@ -11,6 +11,7 @@ import com.goodjob.post.salary.PostSalary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -101,7 +102,11 @@ public interface EntityDtoMapper {
     }
     default PostComMyPageDTO entityToDtoInComMyPage(Post post) {
         Date now = new Date();
-        long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(post.getPostEndDate());
+        cal.add(Calendar.DATE,1);
+
+        long difDay = (cal.getTime().getTime()-now.getTime())/1000;
         long difDay2 = (now.getTime()-post.getPostStartDate().getTime())/1000;
         String endDateMinusNow = String.valueOf(difDay/ (24*60*60)); // 0보다 크면 모집 종료 전
         String startDateMinusNow = String.valueOf(difDay2/(24*60*60)); // 0보다 작으면 모집 시작전
