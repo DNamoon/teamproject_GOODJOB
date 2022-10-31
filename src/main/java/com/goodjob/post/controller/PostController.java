@@ -86,7 +86,7 @@ public class PostController {
     public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model){
         log.info("deletePost.........."+postId);
         model.addAttribute("dto",postService.readPost(postId));
-        return "/post/postDetailView";
+        return "/post/postDetailViewWithMap";
     }
 
     // HttpServletRequest 에서 두번째 파라미터 값에 따라 Session 정보를 리턴해주는 메소드.
