@@ -36,8 +36,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             ",m.memEmail =:#{#p.memEmail},m.memGender =:#{#p.memGender},m.memName =:#{#p.memName},m.memPhone =:#{#p.memPhone} where m.memId =:#{#p.memId}")
     void updateInfo(@Param("p") Member member);
 
-    Boolean existsByMemEmail(String memEmail);
-
     Member findByMemEmail(String memEmail);
 
     Member findByMemId(Long memId);

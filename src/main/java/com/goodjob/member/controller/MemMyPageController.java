@@ -6,6 +6,7 @@ import com.goodjob.member.service.MemberService;
 import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import java.util.List;
  * 박채원 22.10.23 수정 - 이력서관리로 이동하는 메소드 추가
  * **/
 @Controller
+@Slf4j
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemMyPageController {
@@ -83,14 +85,25 @@ public class MemMyPageController {
     }
 
     //비밀번호 변경 비번 확인
+//    @ResponseBody
+//    @RequestMapping("/changePw")
+//    public String changePwCheck(@Param("checkPw")String checkPw, @Param("id")String loginId){
+//        Optional<Member> mem = memberService.loginIdCheck(loginId);
+//        if (mem.isPresent()) {
+//            Member member = mem.get();
+//            if (passwordEncoder.matches(checkPw,member.getMemPw())) {
+//                return "0";
+//            }
+//        }
+//        return "";
+//    }
+    @PostMapping("/changePw")
     @ResponseBody
-    @RequestMapping("/changePw")
-    public String changePwCheck(@Param("checkPw")String checkPw, @Param("id")String loginId){
+    public String changePwCheck(@RequestParam("checkPw")String checkPw,@RequestParam("id")String loginId){
         Optional<Member> mem = memberService.loginIdCheck(loginId);
         if (mem.isPresent()) {
             Member member = mem.get();
-//            System.out.println("+++"+checkPw);
-            if (passwordEncoder.matches(checkPw,member.getMemPw())) {
+            if (passwordEncoder.matches(checkPw,member.getMemPw())){
                 return "0";
             }
         }
@@ -99,23 +112,21 @@ public class MemMyPageController {
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
-    public String changePwForm(HttpServletRequest session,Model model,@Param("loginId")String loginId
-            ,@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO){
+    public String changePwForm(@RequestParam("loginId")String loginId,@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO){
         System.out.println("8888"+loginId);
-        model.addAttribute("memberInfo",memberService.memInfo(loginId));
         memberDTO.setMemId(memberService.memInfo(loginId).getMemId());
         return "member/memChangePassword";
     }
 
-    @RequestMapping("/changePassword")
+    @PostMapping("/changePassword")
     public String changePw(@Param("pw2")String pw2, @Param("memId")Long memId, Model model, HttpServletRequest session,
                            @Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
         if(result.hasErrors()){
             return "member/memChangePassword";
         }
-        memberDTO.setMemId(memId);
         memberService.changePassword(pw2,memId);
-        model.addAttribute("memberInfo",memberService.memInfo("111"));
+        String id = (String)session.getAttribute("sessionId");
+        model.addAttribute("memberInfo",memberService.memInfo(id));
         return "member/myPageInfo";
     }
 
