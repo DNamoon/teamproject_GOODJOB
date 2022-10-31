@@ -1,5 +1,6 @@
 package com.goodjob.post.postdto;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * 22.10.26 saveForm 클래스 By.OH
  */
 @Data
+@Builder
 public class PostInsertDTO {
 
     private Long id; // 공고 pk
@@ -42,7 +44,6 @@ public class PostInsertDTO {
 
     //    private String comName; // 회사명
 
-//    private String comBusiNum; // 사업등록번호
 
 
 

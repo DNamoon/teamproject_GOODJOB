@@ -1,24 +1,19 @@
-$(document).ready(function (){
-    comMyPagePost.init();
-    // postJS.list("changePostDiv",1,4,"count",document.querySelector(".postDetailOccName").textContent)
-
-})
-
 // mainPage.html 에서 쓰이는 JS
 let postJS = {
+    pageRequestDTOForMainPage(page,size,sort){
+        return {
+        page: page,
+        size: size,
+        sort: sort
+        }
+    },
 
     list(targetDomClassName,page,size,sort){
         const _this = this;
-        let pageRequestDTO ={
-            page: page,
-            size: size,
-            sort: sort,
-        };
         const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
-        console.log(changeContentDiv);
 
         // console.log(document.querySelector(".postDetailOccName").textContent)
-        fetchJs.post(fetchJs.url,'getPagingPostList',pageRequestDTO)
+        fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort))
             .then(data => {
                 console.log("data :" + data);
                 // ajax 받아오기 전에 자식노드들 삭제
@@ -27,13 +22,13 @@ let postJS = {
                 }
                 for(let dto of data.dtoList){
                     console.log(dto);
-                    this.makePostListHtml(dto,changeContentDiv);
+                    changeContentDiv.appendChild(this.makePostListHtml(dto));
                 }
 
             })
             .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
-    makePostListHtml(dto,changeContentDiv){
+    makePostListHtml(dto){
         // 공고 html 생성 코드
         const postWrapper = document.createElement("div");
         postWrapper.classList.add("mainPage-wrapper");
@@ -82,7 +77,7 @@ let postJS = {
         div2.appendChild(div4);
         div1.appendChild(div2);
         postWrapper.appendChild(div1);
-        changeContentDiv.appendChild(postWrapper);
+        return postWrapper;
     }
 
 }
@@ -119,8 +114,9 @@ let comMyPagePost = {
         const deleteMapping = "deletePost"
         fetchJs.delete(fetchJs.url,`${fetchJs.uri}${deleteMapping}/${postId}`)
             .then(data => {
-                console.log("data :" + data);
-                this.formSubmit();
+                console.log("data :" + data)
+                let result = confirm("삭제하시겠습니다?")
+                result? this.formSubmit(): null;
             })
         .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
@@ -135,9 +131,13 @@ let comMyPagePost = {
             e.preventDefault()
             location.href=`/${fetchJs.uri}${_this.getPostListMapping}`
         });
+    },
+    updatePost(postId){
+        location.href=`/post/updatePost/${postId}`;
     }
 
 }
+
 
 // fetch api 사용을 위한 공용 JS
 const fetchJs = {

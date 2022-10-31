@@ -90,7 +90,6 @@ public interface EntityDtoMapper {
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         String remainDay = String.valueOf(difDay/ (24*60*60));
         remainDay = remainDay.equals("0")? "오늘 종료": "D - "+remainDay;
-        System.out.println(remainDay);
         return PostCardDTO.builder()
                 .id(post.getPostId())
                 .title(post.getPostTitle())
@@ -123,7 +122,6 @@ public interface EntityDtoMapper {
         String startDate = startDateArr[0]+"년 "+startDateArr[1]+"월 "+startDateArr[2]+"일 ";
         String[] endDateArr = post.getPostEndDate().toString().split("-");
         String endDate = endDateArr[0]+"년 "+endDateArr[1]+"월 "+endDateArr[2]+"일"+remainDay;
-        System.out.println(remainDay);
         return PostComMyPageDTO.builder()
                 .postId(post.getPostId())
                 .title(post.getPostTitle())
@@ -141,6 +139,23 @@ public interface EntityDtoMapper {
                 .build();
     }
 
+    default PostInsertDTO entityToDtoForUpdate(Post post){
+        return PostInsertDTO.builder()
+                .id(post.getPostId())
+                .postTitle(post.getPostTitle())
+                .postOccCode(post.getPostOccCode().getOccId())
+                .postRecruitNum(post.getPostRecruitNum())
+                .postGender(post.getPostGender())
+                .postStartDate(post.getPostStartDate())
+                .postEndDate(post.getPostEndDate())
+                .postRegion(post.getPostRegion().getRegCode())
+//                .postImg(post.getPostImg())
+                .postAddress(post.getPostAddress())
+                .postDetailAddress(post.getPostDetailAddress())
+                .postSalaryId(post.getPostSalary().getSalaryId())
+                .postContent(post.getPostContent())
+                .build();
+    }
     default Post dtoToEntityForInsert(PostInsertDTO postInsertDTO, Occupation occ, Company com, Region postRegion, PostSalary postSalary, List<UploadFile> uploadFileList){
         if(postInsertDTO.getId() != null){
             return Post.builder()

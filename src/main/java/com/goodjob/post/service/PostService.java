@@ -34,6 +34,8 @@ public interface PostService extends EntityDtoMapper {
 
     PostDetailsDTO readPost(Long postId);
 
+    PostInsertDTO getPostById(Long postId);
+
     void deletePost(Long postId);
 
     List<String> searchSalaryRange();
