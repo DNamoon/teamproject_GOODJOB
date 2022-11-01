@@ -3,6 +3,7 @@
     <th:block th:fragment="content">
         <div class="container">
             <div class="flex-row d-flex justify-content-center mt-3">
+                <div style="height: 30px;"></div>
                 <h3 class="text-center">채용공고 상세페이지</h3>
             </div>
             <div class="col p-0 d-flex">
@@ -186,8 +187,11 @@
                                                 class="bi bi-bookmark"></i>북마크</a>
                                     </div>
                                     <div class="col-6">
-                                        <a role="button" class="btn"
-                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>
+<!--                                        <a role="button" class="btn"-->
+<!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
+                                        <input type="hidden" th:value="${dto.postId}" id="postId">
+                                        <button type="button" class="btn btn-primary applyBtn" data-bs-toggle="modal"
+                                                data-bs-target="#selectResumeModal" style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</button>
                                     </div>
                                 </div>
                             </div>
@@ -258,11 +262,37 @@
 
 
         </div>
+        <!-- 박채원 22.10.26 추가 - 지원하기 버튼 눌렀을 때 뜨는 이력서 선택 모달 -->
+        <div class="modal fade" id="selectResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">이력서 선택</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="float: inline-start;">
+                            <div class="resumeList">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn bg-gradient-primary doneSelectResume" data-bs-dismiss="modal">
+                            완료
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <script type="text/javascript"
                 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aedf851b3363925087804b263c52a803&libraries=services"></script>
         <script type="text/javascript" src="/js/osh/kakaoMap.js"></script>
+        <script type="text/javascript" src="/js/applyJS.js"></script>
         <script>
             function getURI() {
                 const url = window.location.protocol + "//" + window.location.host + window.location.pathname;

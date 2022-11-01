@@ -2,6 +2,7 @@ package com.goodjob.member;
 
 import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.resume.Resume;
+import com.goodjob.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
