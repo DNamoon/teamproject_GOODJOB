@@ -14,13 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @Controller
@@ -32,30 +30,39 @@ public class PostController {
     private final CompanyService companyService;
 
     @GetMapping("/savePost")
-    public String postSaveForm(HttpServletRequest httpServletRequest, Model model){
+    public String postSaveForm(String redirectedFrom ,HttpServletRequest httpServletRequest, Model model){
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
-        Optional<Company> optionalCompany = companyService.loginIdCheck(sessionId);
-        Company company;
-        if(optionalCompany.isPresent()){
-            company=optionalCompany.get();
-            model.addAttribute("comName",company.getComName()); // 회사명
-            model.addAttribute("comBusiNum", company.getComBusiNum()); // 사업등록번호
-            model.addAttribute("comDiv", company.getComComdivCode().getComdivName()); // 회사분류
-        }
+        model.addAttribute("comInfo",postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
-        model.addAttribute("regionList", postService.getListRegion()); // 지역 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
+        model.addAttribute("redirectedFrom", redirectedFrom);
         return "/post/postInsertForm";
     }
 
+
+
     @PostMapping("/savePost")
     public String postSave(PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
+        log.info("===================="+postInsertDTO);
         postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         postService.savePost(postInsertDTO);
         return "redirect:/post/comMyPagePost";
     }
 
+    @GetMapping(value = {"/updatePost/{postId}"})
+    public String postUpdate(@PathVariable(name="postId")Long postId, HttpServletRequest httpServletRequest, Model model){
+        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
+        PostInsertDTO postInsertDTO = postService.getPostById(postId);
+        model.addAttribute("comInfo",postService.getComInfo(sessionId));
+        model.addAttribute("dto",postInsertDTO);
+        model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
+        model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
+        return "/post/postUpdateForm";
+    }
 
+
+
+    // 기업 마이 페이지 공고관리 처리 메소드
     @GetMapping(value = {"/comMyPagePost"})
     public String comMyPagePost(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
         log.info("............"+pageRequestDTO);
@@ -63,7 +70,6 @@ public class PostController {
         pageRequestDTO.setAuth(getSessionInfo(httpServletRequest,"sessionId"));
         PageResultDTO<Post, PostComMyPageDTO> result = postService.getPagingPostListInComMyPage(pageRequestDTO);
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
-        model.addAttribute("regionList", postService.getListRegion()); // 지역 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
         model.addAttribute("result",result);
         model.addAttribute("sessionLoginId",getSessionInfo(httpServletRequest,"sessionId"));
@@ -76,7 +82,6 @@ public class PostController {
     @ResponseBody
     @Transactional
     public ResponseEntity<String> deletePost(@PathVariable(name = "postId") Long postId){
-        log.info("deletePost.........."+postId);
         postService.deletePost(postId);
         return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
     }
@@ -84,9 +89,14 @@ public class PostController {
     @GetMapping(value = {"/readPost/{postId}"})
     @Transactional
     public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model){
-        log.info("deletePost.........."+postId);
-        model.addAttribute("dto",postService.readPost(postId));
-        return "/post/postDetailView";
+        PostDetailsDTO postDetailsDTO = postService.readPost(postId);
+        model.addAttribute("dto",postDetailsDTO);
+        pageRequestDTO.setPage(1);
+        pageRequestDTO.setSize(4);
+        pageRequestDTO.setSort("count");
+        pageRequestDTO.setFilterOccupation(postDetailsDTO.getOccName());
+        model.addAttribute("result",postService.getPagingPostList(pageRequestDTO));
+        return "/post/postDetailViewWithMap";
     }
 
     // HttpServletRequest 에서 두번째 파라미터 값에 따라 Session 정보를 리턴해주는 메소드.

@@ -1,32 +1,34 @@
-
-// comMyPagePost.html 에서 쓰이는 JS
+// mainPage.html 에서 쓰이는 JS
 let postJS = {
-
-    list:function(sortType){
-        const pageRequestDTO = {
-            page:1,
-            size: 8,
-            sort : sortType
+    pageRequestDTOForMainPage(page,size,sort){
+        return {
+        page: page,
+        size: size,
+        sort: sort
         }
-        console.log("JS................."+pageRequestDTO)
-        fetchJs.post(fetchJs.url,'getPagingPostList',pageRequestDTO)
+    },
+
+    list(targetDomClassName,page,size,sort){
+        const _this = this;
+        const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
+
+        // console.log(document.querySelector(".postDetailOccName").textContent)
+        fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort))
             .then(data => {
                 console.log("data :" + data);
-
                 // ajax 받아오기 전에 자식노드들 삭제
-                const changeContentDiv = document.querySelector(".changeContentDiv");
                 while(changeContentDiv.hasChildNodes()){
                     changeContentDiv.removeChild(changeContentDiv.firstChild);
                 }
                 for(let dto of data.dtoList){
                     console.log(dto);
-                    this.makePostListHtml(dto,changeContentDiv);
+                    changeContentDiv.appendChild(this.makePostListHtml(dto));
                 }
 
             })
             .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
-    makePostListHtml:function(dto,changeContentDiv){
+    makePostListHtml(dto){
         // 공고 html 생성 코드
         const postWrapper = document.createElement("div");
         postWrapper.classList.add("mainPage-wrapper");
@@ -75,12 +77,16 @@ let postJS = {
         div2.appendChild(div4);
         div1.appendChild(div2);
         postWrapper.appendChild(div1);
-        changeContentDiv.appendChild(postWrapper);
+        return postWrapper;
     }
 
 }
 // comMyPagePost.html 에서 쓰이는 JS
 let comMyPagePost = {
+    init(){
+      const _this = this;
+      _this.setClearSearchCondition();
+    },
     getPostListMapping: "comMyPagePost",
     getFormDom : function(){
         return document.querySelector(".comMyPage-post-search-form");
@@ -108,17 +114,46 @@ let comMyPagePost = {
         const deleteMapping = "deletePost"
         fetchJs.delete(fetchJs.url,`${fetchJs.uri}${deleteMapping}/${postId}`)
             .then(data => {
-                console.log("data :" + data);
-                this.formSubmit();
+                console.log("data :" + data)
+                let result = confirm("삭제하시겠습니다?")
+                result? this.formSubmit(): null;
             })
         .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
     readPost:function (postId){
-        console.log(postId);
         location.href=`/post/readPost/${postId}`;
+    },
+    setClearSearchCondition(){
+        const _this = this;
+        const clearBtn = document.querySelector(".comMyPage-post-search-clear_btn");
+        clearBtn.addEventListener("click", function(e)
+        {
+            e.preventDefault()
+            location.href=`/${fetchJs.uri}${_this.getPostListMapping}`
+        });
+    },
+    updatePost(postId){
+        location.href=`/post/updatePost/${postId}`;
     }
 
 }
+let searchPage = {
+    init(){
+        const _this=this;
+
+    },
+    searchPage:"searchPage",
+    redirectToRegisterPage(redirectedFrom){
+        location.href=`${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
+    }
+}
+let postInsertForm ={
+    backToRedirectedFrom(redirectedFrom){
+        console.log(redirectedFrom);
+        location.href=`/post/${redirectedFrom}`;
+    },
+}
+
 
 // fetch api 사용을 위한 공용 JS
 const fetchJs = {

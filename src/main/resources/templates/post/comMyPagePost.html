@@ -3,15 +3,19 @@
         <div class="container py-4 flex-wrap">
             <section class="row comMyPage-post-search">
                 <form th:action="@{/post/comMyPagePost}" class="comMyPage-post-search-form" >
-                <input type="hidden" name="page" th:value="${pageRequestDTO.page}" class="changePageInput">
+                <input type="hidden" name="page" th:value="(${pageRequestDTO.page} ge ${result.totalPage}) ? 1: ${pageRequestDTO.page}" class="changePageInput">
+<!--                <input type="hidden" name="page" th:if="${pageRequestDTO.page} > ${result.totalPage}" value=1 class="changePageInput">-->
+<!--                    [[ ${pageRequestDTO.page}<=${result.totalPage} ]]-->
+<!--                    [[ ${pageRequestDTO.page} < ${result.totalPage} ]]-->
+
 
 
                 <div class=" col-lg-12 row  align-items-center" >
                     <div class="col-lg-12 comMyPage-post-search-title">
-                        <h1> [[${sessionLoginId}]]님의 모집 공고 관리 페이지입니다 </h1><button type="button" onclick="location.href='/post/savePost'">공고 등록</button>
+                        <h1> [[${sessionLoginId}]]님의 모집 공고 관리 페이지입니다 </h1>
+                        <button type="button" class="btn bg-gradient-dark comMyPage-post-search-title-btn" th:onclick="|location.href='@{/post/savePost?redirectedFrom=comMyPagePost}'|">공고 등록</button>
                     </div>
                 </div>
-
                 <div class="col-lg-12 comMyPage-post-search-status_select_box">
                     <span>표시전환 :</span>
                     <ul>
@@ -39,7 +43,8 @@
                     <span> 검색 : </span>
                     <input type="hidden" name="type" value="titleCompanyName">
                     <input class="comMyPage-post-search-search_input" name="keyword" type="text" placeholder="Title or Company Name" th:value="${pageRequestDTO.keyword}">
-                    <input class="comMyPage-post-search-search_submit" type="submit" value="검색">
+                    <input class="comMyPage-post-search-search_submit btn bg-gradient-dark" type="submit" value="검색">
+                    <button class="btn bg-gradient-dark comMyPage-post-search-clear_btn">초기화</button>
                     <span th:if="${result.totalCount}==0">조회된 결과가 없습니다.</span>
                     <span th:if="${result.totalCount}>0">총 [[${result.totalCount}]]건의 결과가 조회되었습니다.</span>
                 </div>
@@ -52,12 +57,7 @@
                             <option th:value="${occupation.occName}" th:selected="${pageRequestDTO.filterOccupation} == ${occupation.occName}"> [[${occupation.occName}]]</option>
                         </th:block>
                     </select>
-                    <select class=" comMyPage-post-select" name="filterRegion" onchange="comMyPagePost.formSubmit()">
-                        <option value="" >근무지</option>
-                        <th:block th:each="region :${regionList}">
-                            <option th:value="${region.regName}" th:selected="${pageRequestDTO.filterRegion} == ${region.regName}"> [[${region.regName}]]</option>
-                        </th:block>
-                    </select>
+                    <input name="filterAddress" type="text" placeholder="주소를 입력하세요" th:value="${pageRequestDTO.filterAddress}">
                     <select class=" comMyPage-post-select" name="filterSalary" onchange="comMyPagePost.formSubmit()">
                         <option value="" >연봉대</option>
                         <th:block th:each="salary :${salaryList}">
@@ -77,17 +77,17 @@
                             <option value="end" th:selected="${pageRequestDTO.sort =='end'}"> 모집종료 임박 순</option>
                         </select>
                     </div>
-                    <div class="col-lg-3 offset-lg-5 d-flex comMyPage-post-search-sort_box-size ">
+                    <div class="col-lg-4 offset-lg-4 d-flex comMyPage-post-search-sort_box-size ">
                         <span>표시 공고 : </span>
-                        <ul class="d-flex comMyPage-post-ul-noDot sort_box-size">
+                        <ul class="d-flex comMyPage-post-ul-noDot sort_box-size align-items-center">
                             <li>
-                                <input type="button" value="10" onclick="comMyPagePost.formSubmitChangeSize(10)">
+                                <input type="button" value="10" class="btn bg-gradient-dark comMyPage-post-search-sort-btn" onclick="comMyPagePost.formSubmitChangeSize(10)">
                             </li>
                             <li>
-                                <input type="button" value="20" onclick="comMyPagePost.formSubmitChangeSize(20)">
+                                <input type="button" value="20" class="btn bg-gradient-dark comMyPage-post-search-sort-btn" onclick="comMyPagePost.formSubmitChangeSize(20)">
                             </li>
                             <li>
-                                <input type="button" value="30" onclick="comMyPagePost.formSubmitChangeSize(30)">
+                                <input type="button" value="30" class="btn bg-gradient-dark comMyPage-post-search-sort-btn" onclick="comMyPagePost.formSubmitChangeSize(30)">
                             </li>
                         </ul>
                         <input type="hidden" name="size" th:value="${pageRequestDTO.size}" class="changeSizeInput">
@@ -101,14 +101,14 @@
                 <table class="row p-0 m-0">
                     <tbody class="col-lg-12">
                     <th:block th:each="dto:${result.dtoList}">
-                        <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
+                        <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" >
                             <td class="col-lg-2 p-2">
                                 <figure>
                                     <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="img-fluid d-block comMypage-post-img">
                                 </figure>
 
                             </td>
-                            <td class="col-lg-6 comMyPage-post-table_row-content p-3" >
+                            <td class="col-lg-6 comMyPage-post-table_row-content p-3" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|" >
                                 <ul class="nav flex-column">
                                     <li class="nav-item mb-2" style="color: #e6721d;font-size:15px">[[${dto.endDate}]]</li>
                                     <li class="nav-item mb-2"><h5>[[${dto.title}]]</h5></li>
@@ -124,10 +124,12 @@
                                     <li class="nav-item mb-2" style="color: #333;font-size:15px">조회수: [[${dto.count}]]</li>
                                 </ul>
                             </td>
-                            <td class="col-lg-1 h-100">
+                            <td class="col-lg-1 h-100 ">
                                 <ul class="nav flex-column  align-items-center justify-content-evenly">
                                     <li><a th:onclick="|javascript:comMyPagePost.deleteByPostIdWithAjax('${dto.postId}')|"><span class="material-symbols-outlined">delete</span></a></li>
-                                    <li><span class="material-symbols-outlined">edit_note</span></li>
+                                    <li><a th:onclick="|javascript:comMyPagePost.updatePost('${dto.postId}')|"><span class="material-symbols-outlined">edit_note</span></a></li>
+                                    <li><span class="material-symbols-outlined">folder_shared</span></li>
+
                                 </ul>
                             </td>
                         </tr>
@@ -150,5 +152,8 @@
             </nav>
 
         </div>
+        <script>
+            comMyPagePost.init();
+        </script>
     </th:block>
 </th:block>

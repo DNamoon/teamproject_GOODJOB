@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main>
+    <div class="d-flex flex-nowrap">
+        <th:block th:replace="~{/admin/fragment/sideBar :: sideBar}"/>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6 class="text-2xl m-lg-1">고객문의</h6>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <a th:text="글쓰기" role="button" class="text-white btn mx-4"
+                               style="background-color: #344767;"></a>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 20%">
+                                            NO
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75 ps-2"
+                                            style="width: 40%">
+                                            제목
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 10%">
+                                            상태
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 20%">
+                                            등록일
+                                        </th>
+                                        <th class="text-secondary opacity-7" style="width: 10%"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    <!--                                                    <h6 th:text="${mainPage.postId}" class="m-lg-1 text-sm"></h6>-->
+                                                    <!--<img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
+                                                              alt="user1">-->
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p class="text-sm font-weight-bold m-lg-1"/>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a><h6 th:text="asd" class="m-lg-2 text-sm"/></a>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <th:block>
+                                                <span class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
+                                            </th:block>
+                                            <th:block>
+                                                <span class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
+                                            </th:block>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span th:text="asd"
+                                                  class="text-secondary text-xs font-weight-bold"></span>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <span class="badge badge-sm bg-gradient-danger rounded-pill" role="button">
+                                                삭제
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
