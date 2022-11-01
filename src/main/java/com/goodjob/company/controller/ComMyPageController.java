@@ -17,6 +17,6 @@ public class ComMyPageController {
 
     @GetMapping("/myPageApplier")
     public String myPageApplierList(){
-        return "/company/companyMyPageApplyList";
+        return "/company/companyMyPageApplyList2";
     }
 }

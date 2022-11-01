@@ -42,7 +42,7 @@ public class StatusServiceImpl implements StatusService{
 
     @Override
     public PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum, 9);
+        Pageable pageable = PageRequest.of(pageNum, 10);
         Page<Status> applierList = statusRepository.getStatusByStatPostId_PostComId_ComLoginIdOrderByStatApplyDateDesc(loginId, pageable);
         Function<Status, ApplierListDTO> fn = (entity -> entityToApplierListDTO(entity));
         return new PageResultDTO(applierList, fn);

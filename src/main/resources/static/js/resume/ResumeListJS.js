@@ -35,6 +35,7 @@ function getResumeData() {
     $(".resumeCount").text(count);
 }
 
+//이력서 리스트 출력
 function getJSONResumeList() {
     $.getJSON('/member/getResumeList', function (arr) {
         var list = '';
