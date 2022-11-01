@@ -20,11 +20,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label th:for="name">기업명</label>
+                                        <label th:for="comName">기업명</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" placeholder="기업명" type="text"
-                                                   th:value="${companyInfo.name}"
-                                                   name="name" required>
+                                                   th:value="${companyInfo.comName}"
+                                                   name="comName" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label th:for="comPhone">전화번호<span id="phone_alert"
-                                                style="color: rgb(244, 54, 54); display: none;">&nbsp; ( - 을 포함하여 입력해주세요.)</span></label>
+                                                                           style="color: rgb(244, 54, 54); display: none;">&nbsp; ( - 을 포함하여 입력해주세요.)</span></label>
                                         <div class="input-group">
                                             <input type="tel" class="form-control" placeholder="000-0000-0000" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"
                                                    name="comPhone" id="phone" maxlength="13"
@@ -95,7 +95,7 @@
                                     <label th:for="comEmail">이메일</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control w-40" placeholder="goodjob"
-                                               name="email" id="email" th:value="${companyInfo.email}"
+                                               name="comEmail1" id="email" th:value="${companyInfo.comEmail1}"
                                                required> &nbsp;@ &nbsp;&nbsp;
                                         <select class="form-select" name="comEmail2">
                                             <option selected th:value="${companyInfo.comEmail2}">
@@ -113,36 +113,36 @@
 
                                 <label th:for="comAddress">주소</label>
                                 <div class="input-group mb-4">
-                                            <input type="text" class="form-control col-md-2 my-2 " name="comAddress1"
-                                                   th:value="${companyInfo.comAddress1}" onclick="sample6_execDaumPostcode()"
-                                                   id="sample6_postcode" placeholder="우편번호" readonly required>
+                                    <input type="text" class="form-control col-md-2 my-2 " name="comAddress1"
+                                           th:value="${companyInfo.comAddress1}" onclick="sample6_execDaumPostcode()"
+                                           id="sample6_postcode" placeholder="우편번호" readonly required>
 
-                                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"
-                                                   class="btn bg-gradient-dark col-md-auto m-2 findAddress" style="float:right;">
+                                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"
+                                           class="btn bg-gradient-dark col-md-auto m-2 findAddress" style="float:right;">
 
 
-                                        <input type="text" class="form-control col-md-auto my-2 ms-4 ps-2 border" name="comAddress2"
-                                               th:value="${companyInfo.comAddress2}" onclick="sample6_execDaumPostcode()"
-                                               id="sample6_address" placeholder="주소" readonly required>
+                                    <input type="text" class="form-control col-md-auto my-2 ms-4 ps-2 border" name="comAddress2"
+                                           th:value="${companyInfo.comAddress2}" onclick="sample6_execDaumPostcode()"
+                                           id="sample6_address" placeholder="주소" readonly required>
 
                                 </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-4">
-                                                <input type="text" class="form-control" name="comAddress3"
-                                                       id="sample6_detailAddress" th:value="${companyInfo.comAddress3}"
-                                                       placeholder="상세주소">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="input-group mb-4">
-                                                <input type="text" class="form-control"
-                                                       th:value="${companyInfo.comAddress4}"
-                                                       id="sample6_extraAddress" name="comAddress4"
-                                                       placeholder="참고항목">
-                                            </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group mb-4">
+                                            <input type="text" class="form-control" name="comAddress3"
+                                                   id="sample6_detailAddress" th:value="${companyInfo.comAddress3}"
+                                                   placeholder="상세주소">
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group mb-4">
+                                            <input type="text" class="form-control"
+                                                   th:value="${companyInfo.comAddress4}"
+                                                   id="sample6_extraAddress" name="comAddress4"
+                                                   placeholder="참고항목">
+                                        </div>
+                                    </div>
+                                </div>
 
 
 
@@ -159,7 +159,7 @@
                                     <input type="button" value="정보 수정하기" id="btn_modify"
                                            style="display: block" class="btn bg-gradient-dark w-100"></div>
                                 <div class="col">
-<!--                                    이전으로 돌아가기 위치-->
+                                    <!--                                    이전으로 돌아가기 위치-->
                                     <input type="button" value="이전으로 돌아가기" onClick="location.href='/com/myPage'" id="btn_hidden" class="btn bg-gradient-dark w-100" hidden>
                                 </div>
 
@@ -228,32 +228,32 @@
                             </div>
                         </div>
                     </div>
-                        <!-- 비밀번호 변경 전 비밀번호 확인 모달창-->
-                        <!-- Modal -->
-                        <div class="modal fade" id="confirmPasswordModal3" tabindex="-1"
-                             aria-labelledby="exampleModalLabel3" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel3" style="justify-content: center"> 비밀번호
-                                            확인 </h5>
-                                        <button type="button" class="close" data-dismiss="modal">&times;
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        비밀번호를 입력하세요.<br/>
-                                        <input id="change_password_confirm" name="pw" type="password" class="form-control mt-3"
-                                               placeholder="비밀번호"><br/>
-                                        <button id="change_confirm" class="btn btn-primary" type="button" style="float: right">확인
-                                        </button>
-                                    </div>
+                    <!-- 비밀번호 변경 전 비밀번호 확인 모달창-->
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmPasswordModal3" tabindex="-1"
+                         aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel3" style="justify-content: center"> 비밀번호
+                                        확인 </h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    비밀번호를 입력하세요.<br/>
+                                    <input id="change_password_confirm" name="pw" type="password" class="form-control mt-3"
+                                           placeholder="비밀번호"><br/>
+                                    <button id="change_confirm" class="btn btn-primary" type="button" style="float: right">확인
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
+        </div>
         </div>
     </th:block>
 </th:block>

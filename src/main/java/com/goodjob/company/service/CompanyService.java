@@ -180,7 +180,7 @@ public class CompanyService {
                 .comComdivName(comComdivCode.getComdivName())
                 .comRegCode(comRegCode.getRegCode())
                 .comRegName(comRegCode.getRegName())
-                .email(email[0])
+                .comEmail1(email[0])
                 .comEmail2(email[1])
                 .comAddress1(address[0])
                 .comAddress2(address[1])

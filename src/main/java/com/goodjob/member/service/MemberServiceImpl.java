@@ -63,7 +63,7 @@ public class MemberServiceImpl implements MemberService {
         Date birth = mem.getMemBirthDate();
         String[] address = mem.getMemAddress().split("@");
         Long pk = mem.getMemId();
-        MemberDTO memberDTO = MemberDTO.builder().memId(pk).name(name).email(email[0]).memEmail2(email[1]).memPhone(phone).memGender(gender)
+        MemberDTO memberDTO = MemberDTO.builder().memId(pk).memName(name).memEmail1(email[0]).memEmail2(email[1]).memPhone(phone).memGender(gender)
                 .memBirthDate(birth).memAddress(address[0]).detailAddress(address[1]).build();
 
         return memberDTO;
