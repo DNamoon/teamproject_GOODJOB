@@ -41,9 +41,15 @@
                                     <h6 class="mt-2" th:text="*{inquiryPostTitle}">asd</h6>
                                 </div>
                                 <div class="d-flex flex-row card">
-                                    <div id="noticeContent" class="card-body flex-fill" style="min-height: 60rem">
-                                        <h6 th:text="*{inquiryPostContent}"></h6>
+                                    <div id="noticeContent" class="card-body flex-fill" style="min-height: 40rem">
+
                                     </div>
+                                    <script th:inline="javascript">
+                                        noticeContent = [[${findInquiry.inquiryPostContent}]];
+                                        createTag = document.createElement('h6');
+                                        createTag.innerHTML = noticeContent;
+                                        document.querySelector('#noticeContent').append(createTag);
+                                    </script>
                                 </div>
                             </div>
                         </div>
