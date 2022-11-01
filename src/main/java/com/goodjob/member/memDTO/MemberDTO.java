@@ -25,9 +25,9 @@ public class MemberDTO {
     private String pw;
     private String pw2;
     private String memPhone;
-    private String memEmail1;
+    private String email;
     private String memEmail2;
-    private String memName;
+    private String name;
     private Date memBirthDate;
     private String memAddress;
     private String detailAddress;
@@ -45,9 +45,9 @@ public class MemberDTO {
                 .memId(memId)
                 .memLoginId(loginId)
                 .memPw(pw)
-                .memName(memName)
+                .memName(name)
                 .memPhone(memPhone)
-                .memEmail(memEmail1+"@"+memEmail2)
+                .memEmail(email+"@"+memEmail2)
                 .memBirthDate(memBirthDate)
                 .memAddress(memAddress +"@"+ detailAddress)
                 .memGender(memGender)
@@ -59,8 +59,8 @@ public class MemberDTO {
     //22.11.01 ho 추가. 아이디 찾기용 엔터티 변환 메서드.
     public Member toEntityForFindId() {
         return Member.builder()
-                .memName(memName)
-                .memEmail(memEmail1)
+                .memName(name)
+                .memEmail(email)
                 .memPw(pw)
                 .build();
     }
