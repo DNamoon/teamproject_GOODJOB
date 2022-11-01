@@ -1,23 +1,19 @@
 package com.goodjob.status.service;
 
-import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.status.Status;
 import com.goodjob.status.dto.ApplierListDTO;
 import com.goodjob.status.dto.ApplyListDTO;
+import com.goodjob.status.dto.SendMailDTO;
 import com.goodjob.status.repository.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -41,9 +37,9 @@ public class StatusServiceImpl implements StatusService{
     }
 
     @Override
-    public PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, int pageNum) {
+    public PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, Long postId, int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 10);
-        Page<Status> applierList = statusRepository.getStatusByStatPostId_PostComId_ComLoginIdOrderByStatApplyDateDesc(loginId, pageable);
+        Page<Status> applierList = statusRepository.getStatusByStatPostId_PostComId_ComLoginIdAndStatPostId_PostIdOrderByStatApplyDateDesc(loginId, postId, pageable);
         Function<Status, ApplierListDTO> fn = (entity -> entityToApplierListDTO(entity));
         return new PageResultDTO(applierList, fn);
     }
@@ -56,6 +52,13 @@ public class StatusServiceImpl implements StatusService{
     @Override
     public void changeUnPass(Long statId) {
         statusRepository.updateStatUnPass(statId);
+    }
+
+    @Override
+    public SendMailDTO getApplierToSendMail(Long statId) {
+        log.info("=========== 메일발송 ===========");  //보안? 그런거때문에 오류남
+        SendMailDTO sendMailDTO = entityToSendMailDTO(statusRepository.findOneApplier(statId));
+        return sendMailDTO;
     }
 
 }

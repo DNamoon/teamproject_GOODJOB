@@ -1,13 +1,14 @@
 $(document).ready(function(){
-    console.log("실행");
     var pageNum = 0;
-    getApplierList(pageNum);
+    var postId = $("#postId").val();
+    getApplierList(postId, pageNum);
 })
 
-function getApplierList(pageNum){
-    $.getJSON('/status/getApplierList/' + pageNum, function (result){
+//지원자 리스트 출력
+function getApplierList(postId, pageNum){
+    $.getJSON('/status/getApplierList/' + postId + '/' + pageNum, function (result){
         var list = '';
-        console.log(result);
+        $(".postTitle").text("공고명 [" + result.dtoList[0].postTitle + "] 의 서류 지원자입니다.");
 
         $.each(result.dtoList, function (applyIdx, applier) {
             list += '    <tr>\n' +
@@ -18,9 +19,9 @@ function getApplierList(pageNum){
                 '      <td>' + applier.statApplyDate + '</td>\n' +
                 '    <td><a href="/resume/resumeRead/'+ applier.applierId +'/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm btn-info">이력서 열람</button></a></td>\n';
 
-            if(applier.statPass === '합격'){
+            if(applier.statPass === '서류합격'){
                 list += '      <td style="color: #0a53be;">' + applier.statPass + '</td>\n';
-            }else if(applier.statPass === '불합격'){
+            }else if(applier.statPass === '서류불합격'){
                 list += '      <td style="color: red;">' + applier.statPass + '</td>\n';
             }
             else{
@@ -51,26 +52,26 @@ function getApplierList(pageNum){
 }
 
 function clickPass(statId){
-    if(confirm("합격처리하시겠습니까?")){
+    if(confirm("서류 합격 처리하시겠습니까?")){
         $.ajax({
             url: "/status/changePass/" + statId,
             type: "get",
             success: function(){
-                alert("합격 처리하였습니다.");
-                $(".passBtn" + statId).replaceWith('<td style="color: #0a53be;">합격</td>');
+                alert("서류 합격 처리하였습니다.");
+                $(".passBtn" + statId).replaceWith('<td style="color: #0a53be;">서류합격</td>');
             }
         })
     }
 }
 
 function clickUnPass(statId){
-    if(confirm("불합격처리하시겠습니까?")){
+    if(confirm("서류 불합격 처리하시겠습니까?")){
         $.ajax({
             url: "/status/changeUnPass/" + statId,
             type: "get",
             success: function(){
-                alert("불합격 처리하였습니다.");
-                $(".passBtn" + statId).replaceWith('<td style="color: red;">불합격</td>');
+                alert("서류 불합격 처리하였습니다.");
+                $(".passBtn" + statId).replaceWith('<td style="color: red;">서류불합격</td>');
             }
         })
     }

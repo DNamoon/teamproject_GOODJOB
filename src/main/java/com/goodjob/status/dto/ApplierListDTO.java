@@ -19,11 +19,8 @@ public class ApplierListDTO {
     private Long statResumeId;
     private String statPass;
     private Date statApplyDate;
-    private String resumeTitle;
     private String applierId;
     private String applierName;
-    private String applierGender;
-    private int applierAge;
     private String postTitle;
     private String postOccupation;
 }

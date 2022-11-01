@@ -1,5 +1,6 @@
 package com.goodjob.status;
 
+import com.goodjob.member.service.MailService;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.status.dto.ApplierListDTO;
 import com.goodjob.status.dto.ApplyDTO;
@@ -26,7 +27,9 @@ import java.util.List;
 public class StatusController {
 
    private final StatusService statusService;
+   private final MailService mailService;
 
+   //이력서 지원
    @ResponseBody
    @PostMapping("/applyResume/{postId}")
    public void applyResume(@PathVariable("postId") Long postId, @RequestParam("selectResumeId") Long resumeId){
@@ -42,20 +45,23 @@ public class StatusController {
 
    //회사 마이페이지에서 지원자 목록 출력
    @ResponseBody
-   @GetMapping("/getApplierList/{pageNum}")
-   public ResponseEntity<PageResultDTO<ApplierListDTO, Status>> getApplierList(HttpSession session, @PathVariable("pageNum") int pageNum){
-      return new ResponseEntity<>(statusService.getApplierList((String) session.getAttribute("sessionId"), pageNum), HttpStatus.OK);
+   @GetMapping("/getApplierList/{postId}/{pageNum}")
+   public ResponseEntity<PageResultDTO<ApplierListDTO, Status>> getApplierList(HttpSession session, @PathVariable("postId") Long postId, @PathVariable("pageNum") int pageNum){
+      return new ResponseEntity<>(statusService.getApplierList((String) session.getAttribute("sessionId"), postId ,pageNum), HttpStatus.OK);
    }
 
+   //합격
    @ResponseBody
    @GetMapping("/changePass/{statId}")
    public void changePass(@PathVariable("statId") Long statId){
       statusService.changePass(statId);
+      mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
    }
 
    @ResponseBody
    @GetMapping("/changeUnPass/{statId}")
    public void changeUnPass(@PathVariable("statId") Long statId){
       statusService.changeUnPass(statId);
+      mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
    }
 }
