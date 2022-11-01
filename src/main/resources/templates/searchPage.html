@@ -35,11 +35,25 @@
                                         </div>
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="filterRegion">
-                                                    <option placeholder="" value="">지역</option>
-                                                    <th:block th:each="r:${regName}" >
-                                                        <option th:value="${r}" th:selected="${pageRequestDTO.filterRegion == r}">[[${r}]]</option>
-                                                    </th:block>
+                                                <select data-trigger="" name="filterAddress">
+                                                    <option  value="">지역</option>
+                                                    <option value="서울" th:selected="${pageRequestDTO.filterRegion == '서울'}">서울특별시</option>
+                                                    <option value="경기" th:selected="${pageRequestDTO.filterRegion == '경기도'}">경기도</option>
+                                                    <option value="인천" th:selected="${pageRequestDTO.filterRegion == '인천'}">인천광역시</option>
+                                                    <option value="강원" th:selected="${pageRequestDTO.filterRegion == '강원'}">강원도</option>
+                                                    <option value="충남" th:selected="${pageRequestDTO.filterRegion == '충남'}">충청남도</option>
+                                                    <option value="대전" th:selected="${pageRequestDTO.filterRegion == '대전'}">대전광역시</option>
+                                                    <option value="충북" th:selected="${pageRequestDTO.filterRegion == '충북'}">충청북도</option>
+                                                    <option value="세종" th:selected="${pageRequestDTO.filterRegion == '세종'}">세종특별시</option>
+                                                    <option value="부산" th:selected="${pageRequestDTO.filterRegion == '부산'}">부산광역시</option>
+                                                    <option value="울산" th:selected="${pageRequestDTO.filterRegion == '울산'}">울산광역시</option>
+                                                    <option value="대구" th:selected="${pageRequestDTO.filterRegion == '대구'}">대구광역시</option>
+                                                    <option value="경북" th:selected="${pageRequestDTO.filterRegion == '경북'}">경상북도</option>
+                                                    <option value="경남" th:selected="${pageRequestDTO.filterRegion == '경남'}">경상남도</option>
+                                                    <option value="전남" th:selected="${pageRequestDTO.filterRegion == '전남'}">전라남도</option>
+                                                    <option value="광주" th:selected="${pageRequestDTO.filterRegion == '광주'}">광주광역시</option>
+                                                    <option value="전북" th:selected="${pageRequestDTO.filterRegion == '전북'}">전라북도</option>
+                                                    <option value="제주" th:selected="${pageRequestDTO.filterRegion == '제주'}">제주도</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -69,13 +83,23 @@
                             </div>
                         </form>
                     </div>
-                    <h4>채용중인 공고</h4>
+                    <th:block th:if="${result.totalCount}==0">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 offset-md-3 row mx-0 text-center" style="height:100px;margin-bottom: 50px">
+                            <h4 class="col-md-12">검색된 결과가 없습니다</h4>
+                            <a href="javascript:void(0);" onclick="searchPage.redirectToRegisterPage(searchPage.searchPage)"><h4 class="col-md-12"> 새로운 공고 작성</h4></a>
+                        </div>
+
+                    </div>
+                    </th:block>
+                    <th:block th:if="${result.totalCount}!=0">
                     <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
+                            <h4 class="col-md-12" style="margin-left: 40px">채용중인 공고</h4>
                         <th:block th:each="dto:${result.dtoList}">
-                            <div class="post-wrapper">
-<!--                                <a th:href="@{/mainPage/read(postId=${dto.id})}">-->
+
+                        <div class="post-wrapper">
                                     <div class="col p-0">
-                                        <div class="p-0 m-2 card-css" th:onclick="|location.href='@{/post/read(postId=${dto.id})}'|" >
+                                        <div class="p-0 m-2 card-css" th:onclick="|javascript:comMyPagePost.readPost('${dto.id}')|" >
                                             <div class="w-100 p-0 h-50 img-css" >
                                                 <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
                                             </div>
@@ -90,12 +114,14 @@
                                             </div>
                                         </div>
                                     </div>
-<!--                                </a>-->
                             </div>
                         </th:block>
                     </div>
+                    </th:block>
+
                 </div>
-            </div>
+
+             </div>
             </div>
         </section>
 
@@ -133,7 +159,6 @@
         e.preventDefault()
         location.href="/search";
     });
-
 
 </script>
 

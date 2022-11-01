@@ -23,18 +23,12 @@
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
                                         <div>
-                                            <div class="col-2 p-0">
+                                            <div class="col-12 p-0">
                                                 <h4> [[${dto.title}]] </h4>
                                             </div>
                                             <div class="d-flex">
                                                 <div class="p-0">
                                                     <h6 class="">[[${dto.comName}]]</h6>
-                                                </div>
-                                                <div class="col-1 text-center">
-                                                    <h6>|</h6>
-                                                </div>
-                                                <div class="p-0">
-                                                    <h6 class="">[[${dto.regionName}]]</h6>
                                                 </div>
                                                 <div class="col-1 text-center">
                                                     <h6>|</h6>
@@ -53,7 +47,8 @@
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
-                                        <div class="" style="min-height: 50rem;">
+<!--                                        <div class="" style="min-height: 50rem;">-->
+                                        <div class="">
                                             [[${dto.content}]]
                                         </div>
                                     </div>
@@ -92,7 +87,7 @@
                                                 <h6 class="text-secondary">근무지역</h6>
                                             </div>
                                             <div class="col-10">
-                                                <h6>[[${dto.postAddress}]]</h6>
+                                                <h6 class="post-details-postAddress">[[${dto.postAddress}]]</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -213,77 +208,30 @@
                             <h4>추천공고</h4>
                         </div>
                     </div>
-                    <div class="d-flex flex-row col changePostDiv">
-<!--                        <div class="col-3 p-0">-->
-<!--                            <div class="p-0 m-2 card-css">-->
-<!--                                <div class="w-100 p-0 h-50 img-css">-->
-<!--                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"-->
-<!--                                         class=" w-100 h-100 card-img-post">-->
-<!--                                </div>-->
+                    <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4" >
+                        <th:block th:each="dto2:${result.dtoList}">
+                        <div class="col-3 p-0" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
+                            <div class="p-0 m-2 card-css ">
 
-<!--                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">-->
-<!--                                    <p class="card-title-post">asd</p>-->
-<!--                                    <p class="card-company-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-dDay-post">ads</p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-3 p-0">-->
-<!--                            <div class="p-0 m-2 card-css">-->
-<!--                                <div class="w-100 p-0 h-50 img-css">-->
-<!--                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"-->
-<!--                                         class=" w-100 h-100 card-img-post">-->
-<!--                                </div>-->
+                                <div class="w-100 p-0 h-50 img-css">
+                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"
+                                         class=" w-100 h-100 card-img-post">
+                                </div>
 
-<!--                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">-->
-<!--                                    <p class="card-title-post">asd</p>-->
-<!--                                    <p class="card-company-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-dDay-post">ads</p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-3 p-0">-->
-<!--                            <div class="p-0 m-2 card-css">-->
-<!--                                <div class="w-100 p-0 h-50 img-css">-->
-<!--                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"-->
-<!--                                         class=" w-100 h-100 card-img-post">-->
-<!--                                </div>-->
+                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+                                    <p class="card-title-post">[[${dto2.title}]]</p>
+                                    <p class="card-company-post">[[${dto2.comName}]]</p>
+                                    <p class="card-text-post">연봉 | [[${dto2.salaryRange}]]</p>
+                                    <p class="card-text-post">위치 | [[${dto2.regionName}]]</p>
+                                    <p class="card-text-post">직종 | [[${dto2.occName}]]</p>
+                                    <p class="card-dDay-post">[[${dto2.remainDay}]]</p>
+                                </div>
+                            </div>
+                        </div>
+                        </th:block>
 
-<!--                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">-->
-<!--                                    <p class="card-title-post">asd</p>-->
-<!--                                    <p class="card-company-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-dDay-post">ads</p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-3 p-0">-->
-<!--                            <div class="p-0 m-2 card-css">-->
-<!--                                <div class="w-100 p-0 h-50 img-css">-->
-<!--                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"-->
-<!--                                         class=" w-100 h-100 card-img-post">-->
-<!--                                </div>-->
-
-<!--                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">-->
-<!--                                    <p class="card-title-post">asd</p>-->
-<!--                                    <p class="card-company-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-text-post">asd</p>-->
-<!--                                    <p class="card-dDay-post">ads</p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
-                </div>
+                 </div>
             </div>
 
 

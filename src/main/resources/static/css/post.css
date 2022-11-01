@@ -242,10 +242,12 @@
     .comMyPage-post-table_row{
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         border-radius: 7px;
-        cursor:pointer;
     }
     .comMyPage-post-table_row:hover {
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .comMyPage-post-table_row-content, .material-symbols-outlined{
+        cursor:pointer;
     }
     .comMyPage-post-img{
         border-radius: 5px;

@@ -3,16 +3,19 @@
         <div class="container py-4 flex-wrap">
             <section class="row comMyPage-post-search">
                 <form th:action="@{/post/comMyPagePost}" class="comMyPage-post-search-form" >
-                <input type="hidden" name="page" th:value="${pageRequestDTO.page}" class="changePageInput">
+                <input type="hidden" name="page" th:value="(${pageRequestDTO.page} ge ${result.totalPage}) ? 1: ${pageRequestDTO.page}" class="changePageInput">
+<!--                <input type="hidden" name="page" th:if="${pageRequestDTO.page} > ${result.totalPage}" value=1 class="changePageInput">-->
+<!--                    [[ ${pageRequestDTO.page}<=${result.totalPage} ]]-->
+<!--                    [[ ${pageRequestDTO.page} < ${result.totalPage} ]]-->
+
 
 
                 <div class=" col-lg-12 row  align-items-center" >
                     <div class="col-lg-12 comMyPage-post-search-title">
                         <h1> [[${sessionLoginId}]]님의 모집 공고 관리 페이지입니다 </h1>
-                        <button type="button" class="btn bg-gradient-dark comMyPage-post-search-title-btn" onclick="location.href='/post/savePost'">공고 등록</button>
+                        <button type="button" class="btn bg-gradient-dark comMyPage-post-search-title-btn" th:onclick="|location.href='@{/post/savePost?redirectedFrom=comMyPagePost}'|">공고 등록</button>
                     </div>
                 </div>
-
                 <div class="col-lg-12 comMyPage-post-search-status_select_box">
                     <span>표시전환 :</span>
                     <ul>
@@ -54,12 +57,7 @@
                             <option th:value="${occupation.occName}" th:selected="${pageRequestDTO.filterOccupation} == ${occupation.occName}"> [[${occupation.occName}]]</option>
                         </th:block>
                     </select>
-                    <select class=" comMyPage-post-select" name="filterRegion" onchange="comMyPagePost.formSubmit()">
-                        <option value="" >근무지</option>
-                        <th:block th:each="region :${regionList}">
-                            <option th:value="${region.regName}" th:selected="${pageRequestDTO.filterRegion} == ${region.regName}"> [[${region.regName}]]</option>
-                        </th:block>
-                    </select>
+                    <input name="filterAddress" type="text" placeholder="주소를 입력하세요" th:value="${pageRequestDTO.filterAddress}">
                     <select class=" comMyPage-post-select" name="filterSalary" onchange="comMyPagePost.formSubmit()">
                         <option value="" >연봉대</option>
                         <th:block th:each="salary :${salaryList}">
@@ -103,14 +101,14 @@
                 <table class="row p-0 m-0">
                     <tbody class="col-lg-12">
                     <th:block th:each="dto:${result.dtoList}">
-                        <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
+                        <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" >
                             <td class="col-lg-2 p-2">
                                 <figure>
                                     <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="img-fluid d-block comMypage-post-img">
                                 </figure>
 
                             </td>
-                            <td class="col-lg-6 comMyPage-post-table_row-content p-3" >
+                            <td class="col-lg-6 comMyPage-post-table_row-content p-3" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|" >
                                 <ul class="nav flex-column">
                                     <li class="nav-item mb-2" style="color: #e6721d;font-size:15px">[[${dto.endDate}]]</li>
                                     <li class="nav-item mb-2"><h5>[[${dto.title}]]</h5></li>
@@ -126,10 +124,12 @@
                                     <li class="nav-item mb-2" style="color: #333;font-size:15px">조회수: [[${dto.count}]]</li>
                                 </ul>
                             </td>
-                            <td class="col-lg-1 h-100">
+                            <td class="col-lg-1 h-100 ">
                                 <ul class="nav flex-column  align-items-center justify-content-evenly">
                                     <li><a th:onclick="|javascript:comMyPagePost.deleteByPostIdWithAjax('${dto.postId}')|"><span class="material-symbols-outlined">delete</span></a></li>
-                                    <li><span class="material-symbols-outlined">edit_note</span></li>
+                                    <li><a th:onclick="|javascript:comMyPagePost.updatePost('${dto.postId}')|"><span class="material-symbols-outlined">edit_note</span></a></li>
+                                    <li><span class="material-symbols-outlined">folder_shared</span></li>
+
                                 </ul>
                             </td>
                         </tr>
@@ -152,5 +152,8 @@
             </nav>
 
         </div>
+        <script>
+            comMyPagePost.init();
+        </script>
     </th:block>
 </th:block>

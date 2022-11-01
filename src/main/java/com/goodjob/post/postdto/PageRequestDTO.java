@@ -35,6 +35,7 @@ public class PageRequestDTO {
     // 직종, 연봉, 지역 추가 필터링 조건
     private String filterOccupation;
     private String filterRegion;
+    private String filterAddress;
     private String filterSalary;
     // "active"(기본)은 현재 모집중인 공고 리스트만 가져오는 조건을 추가한다.
     // "beforeStart"은 모집이 아직 시작하지 않은 리스트만 가져오는 조건을 추가한다.
@@ -50,6 +51,7 @@ public class PageRequestDTO {
         this.outOfDateState="active";
     }
     public Pageable getPageable(Sort sort){
+
         return PageRequest.of(page-1,size, sort);
     }
 
