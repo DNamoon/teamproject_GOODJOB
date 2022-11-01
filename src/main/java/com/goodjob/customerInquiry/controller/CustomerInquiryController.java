@@ -13,15 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -49,9 +47,17 @@ public class CustomerInquiryController {
 
     @GetMapping("/qna")
     public String customerInquiryQNA(Model model, HttpServletRequest request) {
-        Sort sort = Sort.by("inquiryPostId").descending();
-        Pageable pageable = PageRequest.of(0, 5, sort);
-        model.addAttribute("inquiryPostList", customerInquiryService.findInquiryListById(pageable, request));
+        if (request.getSession(false) == null) {
+            log.info("request.getSession(false) is null");
+
+            return "/customerInquiry/customerInquiryQNA";
+        }
+        if (request.getSession(false) != null) {
+            Sort sort = Sort.by("inquiryPostId").descending();
+            Pageable pageable = PageRequest.of(0, 5, sort);
+            model.addAttribute("inquiryPostList", customerInquiryService.findInquiryListById(pageable, request));
+            return "/customerInquiry/customerInquiryQNA";
+        }
         return "/customerInquiry/customerInquiryQNA";
     }
 

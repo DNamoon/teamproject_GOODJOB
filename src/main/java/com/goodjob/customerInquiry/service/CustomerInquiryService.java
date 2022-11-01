@@ -11,5 +11,7 @@ public interface CustomerInquiryService {
 
     Optional<CustomerInquiryPost> saveInquiry(CustomerInquiryPost customerInquiryPost);
 
+    Optional<CustomerInquiryPost> findOne(Long id);
+
     Page<CustomerInquiryPost> findInquiryListById(Pageable pageable, HttpServletRequest request);
 }

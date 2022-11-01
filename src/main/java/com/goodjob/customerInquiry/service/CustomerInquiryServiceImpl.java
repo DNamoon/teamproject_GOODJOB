@@ -27,6 +27,11 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     }
 
     @Override
+    public Optional<CustomerInquiryPost> findOne(Long id) {
+        return customerInquiryPostRepository.findById(id);
+    }
+
+    @Override
     public Page<CustomerInquiryPost> findInquiryListById(Pageable pageable, HttpServletRequest request) {
         HttpSession httpSession = request.getSession(false);
         String loginId = (String) httpSession.getAttribute("sessionId");
