@@ -200,7 +200,7 @@ public class CompanyController {
                 try {
                     response.setContentType("text/html; charset=utf-8");
                     PrintWriter w = response.getWriter();
-                    w.write("<script>alert('회원타입은 개인회원입니다! " + memberDTO.getMemName() + "님의 아이디는 [" + id + "] 입니다!');</script>");
+                    w.write("<script>alert('회원타입은 개인회원입니다! " + memberDTO.getName() + "님의 아이디는 [" + id + "] 입니다!');</script>");
                     w.write("<script>location.href='/login';</script>");
                     w.flush();
                     w.close();

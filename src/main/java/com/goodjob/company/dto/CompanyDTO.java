@@ -86,7 +86,7 @@ public class CompanyDTO {
 
     private String comAddress4;  // 회사주소(참고항목)
     @NotBlank
-    private String comEmail1;
+    private String email;
     private String comEmail2;
 
     //22.10.29 - 아이디 찾기 때 사용하는 엔티티 변환 메서드. 기존 toEntity 메서드 if문 때문에 에러 발생.
@@ -94,7 +94,7 @@ public class CompanyDTO {
         return Company.builder()
                 .comPw(pw)
                 .comName(name)
-                .comEmail(comEmail1)
+                .comEmail(email)
                 .build();
 
 //        return Company.builder()
@@ -125,7 +125,7 @@ public class CompanyDTO {
                 .comComdivCode(comdiv)
                 .comPw(pw)
                 .comPhone(comPhone)
-                .comEmail(comEmail1+"@"+comEmail2)
+                .comEmail(email+"@"+comEmail2)
                 .comName(name)
                 .comBusiNum(comBusiNum)
                 .comInfo(comInfo)

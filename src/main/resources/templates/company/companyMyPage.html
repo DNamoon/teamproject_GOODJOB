@@ -20,11 +20,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label th:for="comName">기업명</label>
+                                        <label th:for="name">기업명</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" placeholder="기업명" type="text"
-                                                   th:value="${companyInfo.comName}"
-                                                   name="comName" required>
+                                                   th:value="${companyInfo.name}"
+                                                   name="name" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -95,7 +95,7 @@
                                     <label th:for="comEmail">이메일</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control w-40" placeholder="goodjob"
-                                               name="comEmail1" id="email" th:value="${companyInfo.comEmail1}"
+                                               name="email" id="email" th:value="${companyInfo.email}"
                                                required> &nbsp;@ &nbsp;&nbsp;
                                         <select class="form-select" name="comEmail2">
                                             <option selected th:value="${companyInfo.comEmail2}">

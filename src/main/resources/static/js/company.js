@@ -3,24 +3,6 @@
 
 
 
-//아이디 찾기 기업별, 멤버별 구분
-function UserTypeFindId() {
-    const form = document.forms['frm'];
-    const type = $('#chk').val();
-    console.log(type);
-
-    if(type=="member"){
-        form.action = "/member/findId";
-        form.submit();
-    }else if(type=="none"){
-        alert("회원타입을 선택해주세요.")
-    }else {
-        form.action = "/com/findId";
-        form.submit();
-    }
-}
-
-
 //아이디 찾기
 $(document).ready(function() {
     $('#btn_find_id').on('click', function () {

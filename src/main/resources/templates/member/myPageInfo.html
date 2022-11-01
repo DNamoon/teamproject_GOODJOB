@@ -34,7 +34,7 @@
                                     <div class="col-md-6">
                                         <label>이름<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
-                                            <input class="form-control" type="text" name="memName" th:value="${memberInfo.memName}" >
+                                            <input class="form-control" type="text" name="name" th:value="${memberInfo.name}" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -52,7 +52,7 @@
                                     <div class="col-md-6">
                                         <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
-                                            <input class="form-control" type="text" th:value="${memberInfo.memEmail1}" name="memEmail1">
+                                            <input class="form-control" type="text" th:value="${memberInfo.email}" name="email">
                                             &nbsp;@&nbsp;
                                             <select class="form-select" name="memEmail2">
                                                 <option th:value="${memberInfo.memEmail2}">[[${memberInfo.memEmail2}]] (기본정보)</option>
