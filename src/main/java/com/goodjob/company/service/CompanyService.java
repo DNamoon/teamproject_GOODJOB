@@ -58,9 +58,9 @@ public class CompanyService {
         String email = company1.getComEmail();
         log.info("??? email 받아오는 값: " + email);
 
-        Long NumOfName = companyRepository.countByComNameAndComEmail(name,email);
-        log.info("??? name과 emial로 찾아온 갯수 : "+NumOfName);
-        if(NumOfName == 0){
+        Long num = companyRepository.countByComNameAndComEmail(name,email);
+        log.info("??? name과 emial로 찾아온 갯수 : "+num);
+        if(num == 0){
             return "fail";
         } else {
             Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
@@ -74,8 +74,8 @@ public class CompanyService {
     public String findId(CompanyDTO companyDTO){
 
         Company company1 = companyDTO.toEntityForFindId();
-        Long NumOfName = companyRepository.countByComName(company1.getComName());
-        if(NumOfName == 0) {
+        Long num = companyRepository.countByComName(company1.getComName());
+        if(num == 0) {
             return "fail";
         } else {
             Optional<Company> company = companyRepository.findByComName(company1.getComName());
@@ -171,7 +171,7 @@ public class CompanyService {
     private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, Region comRegCode, String[] email, String comInfo, String[] address) {
         CompanyDTO dto = CompanyDTO.builder()
                 .loginId(comLoginId)
-                .comName(comName)
+                .name(comName)
                 .comBusiNum(comBusiNum)
                 .comPhone(comPhone)
                 .comComdivCode(comComdivCode.getComdivCode())

@@ -73,4 +73,7 @@ public interface MemberService {
     String getTmpPassword();
 
     void changePassword(String changePw, Long memId);
+
+    //22.11.01 ho 추가. 아이디 찾기
+    String findId(MemberDTO memberDTO);
 }

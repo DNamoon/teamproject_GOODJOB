@@ -1,31 +1,8 @@
 <!--ho 22.10.28 작성-->
-<!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="/favicon.ico">
-
-    <title>아이디 찾기</title>
-    <!--     Fonts and icons     -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
-    <!-- AJAX CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <!--javascript Files-->
-    <script src="/js/company.js"></script>
-    <script src="/js/member.js"></script>
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="/assets/css/nucleo-svg.css" rel="stylesheet"/>
-    <!-- CSS Files -->
-    <link id="pagestyle" href="/css/soft-design-system.css?v=1.0.9" rel="stylesheet"/>
-
-</head>
-<body class="page-header min-vh-100">
-
-    <div class="col-md-0">
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <section class="page-header min-vh-80">
+        <div class="col-md-0">
         <div class="row">
             <div class="col-lg-7" style="width : 500px">
                 <div class="text-center pb-0 text-left">
@@ -36,35 +13,19 @@
                         <p class="text-center" style="color: rgb(244, 54, 54);">이름 및 이메일을 확인해주세요.</p>
                     </div>
                     <div class="mb-3">
-                        <span>이름(회사명)을 입력해주세요.</span><br/>
+                        <span>이름(기업명)을 입력해주세요.</span><br/>
                         <input type="text" class="form-control form-control-lg mt-2" id="name" placeholder="이름"
-                               name="comName" required>
+                               name="name" required>
                     </div>
                     <div class="mb-3">
                         <span>이메일을 입력해주세요.</span><br/>
-                        <input type="text" class="form-control form-control-lg mt-2" id="email" placeholder="이메일"
+                        <input type="text" class="form-control form-control-lg mt-2 mb-4" id="email" placeholder="이메일"
                                name="comEmail1" required>
-                    </div>
-                    <div class="col-5 mx-auto">
-                        <div class="form-check form-switch" style="text-align: center">
-                            <input class="form-check-input" type="checkbox" value="member" name="type" onclick="checkOnlyOneLogin(this)">
-                            <label class="form-check-label">개인회원</label>
-                        </div>
-                        <div class="form-check form-switch" style="text-align: center">
-                            <input class="form-check-input" type="checkbox" value="company" name="type" onclick="checkOnlyOneLogin(this)">
-                            <label class="form-check-label">기업회원</label>
-                        </div>
                     </div>
 
                     <div class="input-gorup">
                         <div class="col-md-12 text-center">
-                            <input type="hidden" id="chk" value="none">
-                            <button type="submit" class="btn bg-gradient-dark w-60 mt-2" onclick="location.href='/login'"
-                                    style="font-size:15px">로그인 페이지가기
-                            </button>
-                        </div>
-                        <div class="col-md-12 text-center">
-                            <button type="submit" class="btn bg-gradient-dark w-60" onclick="UserTypeFindId()"
+                            <button type="submit" class="btn bg-gradient-dark w-60"
                                     style="font-size:15px">아이디 찾기
                             </button>
                         </div>
@@ -74,27 +35,6 @@
         </div>
     </div>
     </div>
-
-<!--    <div class="col-md-0">-->
-<!--        <div class="row mx-auto">-->
-<!--            <div class="col-lg-7 text-center" style="width : 500px">-->
-<!--                <div class=" pb-0 text-left">-->
-<!--                    <h4 class="font-weight-bolder">아이디 찾기</h4>-->
-<!--                </div>-->
-<!--                <form id="contactForm">-->
-<!--                    <div class="mb-3">-->
-<!--                        <span>아이디를 입력해주세요.<br/></span>-->
-<!--                        <input type="text" id="id" name="id">-->
-<!--                    </div>-->
-<!--                    <div class="mb-3">-->
-<!--                        <span>이메일을 입력해주세요.<br/></span>-->
-<!--                        <input type="text" id="email" name="email">-->
-<!--                    </div>-->
-<!--                    <button type="button" id="btn_find_id" class="btn bg-gradient-dark">임시 비밀번호 전송</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-
-</div>
-</body>
-</html>
+        </section>
+    </th:block>
+</th:block>

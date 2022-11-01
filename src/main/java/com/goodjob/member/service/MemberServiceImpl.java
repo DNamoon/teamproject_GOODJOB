@@ -111,9 +111,30 @@ public class MemberServiceImpl implements MemberService {
         member.updatePassword(encryptPassword);
         memberRepository.save(member);
     }
+
+
     //회원 탈퇴
     @Override
     public void deleteById(Long memId) {
         memberRepository.deleteById(memId);
+    }
+
+    //22.11.01 ho 추가. 아이디 찾기
+    @Override
+    public String findId(MemberDTO memberDTO) {
+        Member member = memberDTO.toEntityForFindId();
+        String name = member.getMemName();
+        System.out.println("??? 개인 아이디 찾기 받아오는 name : " + name);
+        String email = member.getMemEmail();
+        System.out.println("??? 개인 아이디 찾기 받아오는 email : " + email);
+
+        Long num = memberRepository.countByMemNameAndMemEmail(name, email);
+        System.out.println("이름과 이메일로 카운트하는 수 num = " + num);
+        if(num == 0) {
+            return "fail";
+        } else {
+            Member mem = memberRepository.findByMemNameAndMemEmail(member.getMemName(), member.getMemEmail());
+            return mem.getMemLoginId();
+        }
     }
 }

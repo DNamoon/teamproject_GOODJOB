@@ -10,6 +10,8 @@ package com.goodjob.company.controller;
 import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
+import com.goodjob.member.memDTO.MemberDTO;
+import com.goodjob.member.service.MemberService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +38,9 @@ public class CompanyController {
     //22.10.10추가
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MemberService memberService;
 
     @GetMapping("/signup")
     public String companySignUpForm(Model model, HttpServletRequest request, CompanyDTO companyDTO) {
@@ -170,15 +175,16 @@ public class CompanyController {
 
     //아이디 찾기
     @PostMapping("/findId")
-    public String findLoginId(CompanyDTO companyDTO , HttpServletResponse response){
+    public String findLoginId(CompanyDTO companyDTO, MemberDTO memberDTO, HttpServletResponse response){
 
         String findId = companyService.findId2(companyDTO);
+        String id = memberService.findId(memberDTO);
 
         if(findId != "fail") {
             try {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter w = response.getWriter();
-                w.write("<script>alert('" + companyDTO.getComName() + "님의 아이디는 [" + findId + "] 입니다!');</script>");
+                w.write("<script>alert('회원타입은 기업회원입니다! " + companyDTO.getName() + "님의 아이디는 [" + findId + "] 입니다!');</script>");
 //            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
 //                    ".then(function(){location.href='/';</script>");
                 w.write("<script>location.href='/login';</script>");
@@ -190,6 +196,20 @@ public class CompanyController {
                 return null;
             }
         } else {
+            if(id != "fail") {
+                try {
+                    response.setContentType("text/html; charset=utf-8");
+                    PrintWriter w = response.getWriter();
+                    w.write("<script>alert('회원타입은 개인회원입니다! " + memberDTO.getMemName() + "님의 아이디는 [" + id + "] 입니다!');</script>");
+                    w.write("<script>location.href='/login';</script>");
+                    w.flush();
+                    w.close();
+                    return null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
             try {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter w = response.getWriter();
@@ -206,136 +226,5 @@ public class CompanyController {
 
 
     }
-
-    //아이디 찾기
-//    @PostMapping("/findId")
-//    public String findLoginId(CompanyDTO companyDTO , HttpServletResponse response){
-//
-//        String findId = companyService.findId(companyDTO);
-//
-//        if(findId != "fail") {
-//            try {
-//                response.setContentType("text/html; charset=utf-8");
-//                PrintWriter w = response.getWriter();
-//                w.write("<script>alert('" + companyDTO.getComName() + "님의 아이디는 [" + findId + "] 입니다!');</script>");
-////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
-////                    ".then(function(){location.href='/';</script>");
-//                w.write("<script>location.href='/login';</script>");
-//                w.flush();
-//                w.close();
-//                return null;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        } else {
-//            try {
-//                response.setContentType("text/html; charset=utf-8");
-//                PrintWriter w = response.getWriter();
-//                w.write("<script>alert('입력한 회원정보가 없습니다. 다시 확인해주세요.');</script>");
-//                w.write("<script>location.href='/com/findId';</script>");
-//                w.flush();
-//                w.close();
-//                return null;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//
-//
-//    }
-
-    //22.10.28 아이디 찾기
-//    @ResponseBody
-//    @PostMapping("/findId")
-//    public String checkEmail(@RequestParam("id") String comName, @RequestParam("email") String comEmail) {
-//        String loginId = companyService.findId(comName, comEmail);
-//        if(loginId.equals(null)){
-//            return loginId;
-//        } else {
-//            return null;
-//        }
-//    }
-
-//    //ho - 22.10.17 마이페이지 세션 넘기기+
-//    @GetMapping("/myPage")
-//    public String companyMyPage(HttpSession httpSession, Model model){
-//        String sessionId = (String) httpSession.getAttribute("sessionId");
-//        Optional<Company> company = companyService.loginIdCheck(sessionId);
-//        Company com = company.get();
-//        CompanyDTO companyInfo = companyService.entityToDTO2(com);
-//        model.addAttribute("companyInfo",companyInfo);
-//
-////        log.info(companyInfo.getComRegCode().getRegName());
-//        return "/company/companyMyPage";
-//    }
-//
-//    //ho - 22.10.19 기업정보 수정하기(업데이트 버전)
-//    @PostMapping("/update")
-//    public String companyInfoUpdate(CompanyDTO companyInfo) {
-//        companyService.companyInfoUpdate(companyInfo);
-//        return "redirect:/com/myPage";
-//    }
-//
-//    //ho - 22.10.20 기업정보 수정하기 전 비밀번호 확인
-//    @ResponseBody
-//    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-//    public String passwordConfirm(CompanyDTO companyInfo, HttpSession session, @RequestParam("pw") String password) throws Exception {
-//        //log.info("===========로그인 아이디 받아오나? : "+companyInfo.getLoginId());
-//        return getSessionLoginId(session, password);
-//
-//    }
-//
-//    //ho - 2022.10.25 회원 탈퇴 ajax
-//    @ResponseBody
-//    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-//    public String deleteCompany(HttpSession session, @RequestParam("pw") String password) {
-//        String comLoginId = (String) session.getAttribute("sessionId");
-//        Optional<Company> company = companyService.loginIdCheck(comLoginId);
-//        Company com = company.get();
-//        Long comId = com.getComId();
-//        log.info("==============pk comId 잘 받아오나 : " +comId);
-//
-//        if(password == null || !passwordEncoder.matches(password,com.getComPw())){
-//            return "0";
-//        } else {
-//            companyService.delete(comId);
-//            session.invalidate();  //세션 만료시키기.
-//            return "1";
-//        }
-//    }
-//
-//    //ho - 22.10.28 - 비밀번호 변경 ajax
-//    @ResponseBody
-//    @RequestMapping(value = "/changePw", method = RequestMethod.POST)
-//    public String passwordChangeConfirm(CompanyDTO companyInfo, HttpSession session, @RequestParam("pw") String password) throws Exception {
-//        //log.info("===========로그인 아이디 받아오나? : "+companyInfo.getLoginId());
-//        return getSessionLoginId(session, password);
-//    }
-//
-//    //ho - 22.10.28 회원 비밀번호 변경 페이지
-//    @GetMapping("/changePassword")
-//    public String changePassword(){
-//        return "/changePassword";
-//    }
-//
-//    //ho 22.10.28 비밀번호 확인 로직 반복 되서 메서드로 만듦.
-//    private String getSessionLoginId(HttpSession session, @RequestParam("pw") String password) {
-//        String comLoginId = (String) session.getAttribute("sessionId");
-//        log.info("=========== 세션에 있는 로그인 아이디 받아오나? : " + comLoginId);
-//        Optional<Company> company1 = companyService.loginIdCheck(comLoginId);
-//        log.info("============ DB에 있는 로그인 아이디 : " + company1.get().getComLoginId());
-//        log.info(company1.get().getComPw());
-//
-//        String comPw = company1.get().getComPw();
-//
-//        if(password == null || !passwordEncoder.matches(password,comPw)) {
-//            return "0";
-//        } else {
-//            return "1";
-//        }
-//    }
-
 
 }
