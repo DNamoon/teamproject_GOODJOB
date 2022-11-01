@@ -14,14 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.Option;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @Controller
@@ -33,24 +30,20 @@ public class PostController {
     private final CompanyService companyService;
 
     @GetMapping("/savePost")
-    public String postSaveForm(HttpServletRequest httpServletRequest, Model model){
+    public String postSaveForm(String redirectedFrom ,HttpServletRequest httpServletRequest, Model model){
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
-        Optional<Company> optionalCompany = companyService.loginIdCheck(sessionId); // 옵셔널 company 를 가져온다.
-        Company company;
-        if(optionalCompany.isPresent()){
-            company=optionalCompany.get();
-            model.addAttribute("comName",company.getComName()); // 회사명
-            model.addAttribute("comBusiNum", company.getComBusiNum()); // 사업등록번호
-            model.addAttribute("comDiv", company.getComComdivCode().getComdivName()); // 회사분류
-        }
+        model.addAttribute("comInfo",postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
-        model.addAttribute("regionList", postService.getListRegion()); // 지역 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
+        model.addAttribute("redirectedFrom", redirectedFrom);
         return "/post/postInsertForm";
     }
 
+
+
     @PostMapping("/savePost")
     public String postSave(PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
+        log.info("===================="+postInsertDTO);
         postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         postService.savePost(postInsertDTO);
         return "redirect:/post/comMyPagePost";
@@ -59,18 +52,10 @@ public class PostController {
     @GetMapping(value = {"/updatePost/{postId}"})
     public String postUpdate(@PathVariable(name="postId")Long postId, HttpServletRequest httpServletRequest, Model model){
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
-        Optional<Company> optionalCompany = companyService.loginIdCheck(sessionId); // 옵셔널 company 를 가져온다.
         PostInsertDTO postInsertDTO = postService.getPostById(postId);
-        Company company;
-        if(optionalCompany.isPresent()){
-            company=optionalCompany.get();
-            model.addAttribute("comName",company.getComName()); // 회사명
-            model.addAttribute("comBusiNum", company.getComBusiNum()); // 사업등록번호
-            model.addAttribute("comDiv", company.getComComdivCode().getComdivName()); // 회사분류
-        }
+        model.addAttribute("comInfo",postService.getComInfo(sessionId));
         model.addAttribute("dto",postInsertDTO);
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
-        model.addAttribute("regionList", postService.getListRegion()); // 지역 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
         return "/post/postUpdateForm";
     }
@@ -85,7 +70,6 @@ public class PostController {
         pageRequestDTO.setAuth(getSessionInfo(httpServletRequest,"sessionId"));
         PageResultDTO<Post, PostComMyPageDTO> result = postService.getPagingPostListInComMyPage(pageRequestDTO);
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
-        model.addAttribute("regionList", postService.getListRegion()); // 지역 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
         model.addAttribute("result",result);
         model.addAttribute("sessionLoginId",getSessionInfo(httpServletRequest,"sessionId"));
@@ -107,17 +91,11 @@ public class PostController {
     public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model){
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         model.addAttribute("dto",postDetailsDTO);
-        System.out.println("테스트a");
         pageRequestDTO.setPage(1);
-        System.out.println("테스트b");
         pageRequestDTO.setSize(4);
-        System.out.println("테스트c");
         pageRequestDTO.setSort("count");
-        System.out.println("테스트d");
         pageRequestDTO.setFilterOccupation(postDetailsDTO.getOccName());
-        System.out.println("테스트e");
         model.addAttribute("result",postService.getPagingPostList(pageRequestDTO));
-        System.out.println("테스트f");
         return "/post/postDetailViewWithMap";
     }
 

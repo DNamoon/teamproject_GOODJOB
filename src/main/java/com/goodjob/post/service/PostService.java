@@ -12,16 +12,12 @@ import java.util.List;
 
 
 public interface PostService extends EntityDtoMapper {
-    PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO);
-
-
-
-
-
     PageResultDTO<Post, PostCardDTO> getPagingPostList(PageRequestDTO pageRequestDTO);
 
     PageResultDTO<Post, PostComMyPageDTO> getPagingPostListInComMyPage(PageRequestDTO pageRequestDTO);
 
+
+    CompanyInfoDTO getComInfo(String sessionId);
 
     List<Occupation> getListOccupation();
 

@@ -28,13 +28,15 @@ public class PostInsertDTO {
 
     private Date postEndDate; // 공고 종료일
 
-    private String postRegion; // 공고 근무지
 
     private List<MultipartFile> postImg;
+    private String postcode; //우편번호
 
     private String postAddress; // 주소1
 
     private String postDetailAddress; // 주소2
+
+    private String etc; // 참고사항
 
     private Long postSalaryId; // 연봉대
 
@@ -42,7 +44,6 @@ public class PostInsertDTO {
 
     private String comLoginId; // 회사 로그인 id
 
-    //    private String comName; // 회사명
 
 
 

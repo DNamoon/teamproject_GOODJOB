@@ -17,7 +17,8 @@ public class PostDetailsDTO {
     private String endDate; // 공고 마감일
     private String remainDay; // d-day
     private String salary; // 공고 연봉대
-    private String postAddress; // 우편 번호 + 주소
+    private String postAddress; // 주소1
+    private String postAddress2; // 주소2
 
     private String occName; // 공고 직종명
     private String comName; // 공고 회사명

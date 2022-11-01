@@ -29,7 +29,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">기업명</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="companyName" th:value="${comName}" readonly>
+                                               id="companyName" th:value="${comInfo.getComName()}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">기업등록번호</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="postComId" th:value="${comBusiNum}" readonly>
+                                               id="postComId" th:value="${comInfo.getCom_business_number()}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">회사분류</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="comBusiNum" th:value="${comDiv}" readonly>
+                                               id="comBusiNum" th:value="${comInfo.getCom_div()}" readonly>
                                     </div>
 
                                 </div>
@@ -141,22 +141,6 @@
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="postRegion">근무지</label>
-                                        <input type="hidden" class="flex-fill input-group">
-                                        <select type="input" id="postRegion" name="postRegion"
-                                                class="form-select form-select-sm border-radius-section border-2 w-80"
-                                                required>
-                                            <option selected>근무지</option>
-                                            <th:block th:each="region : ${regionList}">
-                                                <option th:value="${region.regCode}" th:selected="${region.regCode == dto.postRegion}">[[${region.regName}]]</option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="flex-row d-flex">
-                                    <div class="flex-fill">
                                         <label class="m-1" for="postImg">파일첨부</label>
                                         <input type="file" id="postImg" name="postImg" multiple
                                                class="flex-fill form-control w-80">
@@ -174,7 +158,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">우편번호</label>
                                         <input type="text" class="flex-fill input-group w-100 form-control"
-                                               id="sample6_postcode" placeholder="우편번호" readonly>
+                                               id="sample6_postcode" th:value="${dto.getPostcode()}" placeholder="우편번호" readonly>
                                     </div>
                                     <div class="flex-row d-flex">
                                         <div class="flex-fill">
@@ -206,7 +190,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">참고항목</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_extraAddress"
+                                               id="sample6_extraAddress" th:value="${dto.getEtc()}"
                                                placeholder="참고항목">
                                     </div>
                                 </div>

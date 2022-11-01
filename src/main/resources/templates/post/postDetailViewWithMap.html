@@ -22,18 +22,12 @@
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
                                         <div>
-                                            <div class="col-2 p-0">
+                                            <div class="col-12 p-0">
                                                 <h4> [[${dto.title}]] </h4>
                                             </div>
                                             <div class="d-flex">
                                                 <div class="p-0">
                                                     <h6 class="">[[${dto.comName}]]</h6>
-                                                </div>
-                                                <div class="col-1 text-center">
-                                                    <h6>|</h6>
-                                                </div>
-                                                <div class="p-0">
-                                                    <h6 class="">[[${dto.regionName}]]</h6>
                                                 </div>
                                                 <div class="col-1 text-center">
                                                     <h6>|</h6>
@@ -210,9 +204,9 @@
                             <h4>추천공고</h4>
                         </div>
                     </div>
-                    <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4">
+                    <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4" >
                         <th:block th:each="dto2:${result.dtoList}">
-                        <div class="col-3 p-0">
+                        <div class="col-3 p-0" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
                             <div class="p-0 m-2 card-css ">
 
                                 <div class="w-100 p-0 h-50 img-css">

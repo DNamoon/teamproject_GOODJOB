@@ -137,6 +137,22 @@ let comMyPagePost = {
     }
 
 }
+let searchPage = {
+    init(){
+        const _this=this;
+
+    },
+    searchPage:"searchPage",
+    redirectToRegisterPage(redirectedFrom){
+        location.href=`${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
+    }
+}
+let postInsertForm ={
+    backToRedirectedFrom(redirectedFrom){
+        console.log(redirectedFrom);
+        location.href=`/post/${redirectedFrom}`;
+    },
+}
 
 
 // fetch api 사용을 위한 공용 JS

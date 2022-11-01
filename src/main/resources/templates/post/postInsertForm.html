@@ -28,7 +28,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">기업명</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="companyName" th:value="${comName}" readonly>
+                                               id="companyName" th:value="${comInfo.getComName()}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">기업등록번호</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="postComId" th:value="${comBusiNum}" readonly>
+                                               id="postComId" th:value="${comInfo.getCom_business_number()}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">회사분류</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="comBusiNum" th:value="${comDiv}" readonly>
+                                               id="comBusiNum" th:value="${comInfo.getCom_div()}" readonly>
                                     </div>
 
                                 </div>
@@ -139,22 +139,6 @@
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="postRegion">근무지</label>
-                                        <input type="hidden" class="flex-fill input-group">
-                                        <select type="input" id="postRegion" name="postRegion"
-                                                class="form-select form-select-sm border-radius-section border-2 w-80"
-                                                required>
-                                            <option selected>근무지</option>
-                                            <th:block th:each="region : ${regionList}">
-                                                <option th:value="${region.regCode}">[[${region.regName}]]</option>
-                                            </th:block>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="flex-row d-flex">
-                                    <div class="flex-fill">
                                         <label class="m-1" for="postImg">파일첨부</label>
                                         <input type="file" id="postImg" name="postImg" multiple
                                                class="flex-fill form-control w-80">
@@ -171,8 +155,8 @@
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">우편번호</label>
-                                        <input type="text" class="flex-fill input-group w-100 form-control"
-                                               id="sample6_postcode" placeholder="우편번호" required readonly>
+                                        <input type="text" class="flex-fill input-group w-100 form-control" name="postcode"
+                                               id="sample6_postcode" placeholder="우편번호" th:value="${comInfo.getPostcode()}" required readonly>
                                     </div>
                                     <div class="flex-row d-flex">
                                         <div class="flex-fill">
@@ -194,7 +178,8 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">주소</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_address" readonly
+                                               name="postAddress"
+                                               id="sample6_address" th:value="${comInfo.getAddress_name()}" readonly
                                                placeholder="상세주소" required>
                                     </div>
                                 </div>
@@ -204,7 +189,8 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">참고항목</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_extraAddress"
+                                               id="sample6_extraAddress" th:value="${comInfo.getEtc()}"
+                                               name="etc"
                                                placeholder="참고항목">
                                     </div>
                                 </div>
@@ -219,7 +205,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">상세주소</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_detailAddress" name="postDetailAddress"
+                                               id="sample6_detailAddress" name="postDetailAddress" th:value="${comInfo.getDetail_name()}"
                                                placeholder="상세주소" required>
                                     </div>
                                 </div>
@@ -232,7 +218,7 @@
                                         <select type="input" id="postSalary"
                                                 class="form-select form-select-sm border-radius-section border-2 w-80"
                                                 required name="postSalaryId">
-                                            <option selected>연봉</option>
+                                            <option value=" " selected>연봉</option>
                                             <th:block th:each="postSalary : ${salaryList}">
                                                 <option th:value="${postSalary.salaryId}">
                                                     [[${postSalary.salaryRange}]]
@@ -267,7 +253,12 @@
                             <div class="d-flex flex-fill justify-content-center">
                                 <input type="submit" class="btn bg-gradient-dark m-2" value="작성">
 <!--                                <input type="button" class="btn bg-gradient-dark m-2 post-insertForm-toComMyPost" value="목록">-->
-                                <input type="button" class="btn bg-gradient-dark m-2" th:onclick="|location.href='@{/post/comMyPagePost}'|" value="목록">
+                                <th:block th:if="${redirectedFrom} =='searchPage'" >
+                                    <input type="button" class="btn bg-gradient-dark m-2" th:onclick="|location.href='@{/search}'|"  value="돌아가기">
+                                </th:block>
+                                <th:block th:if="${redirectedFrom} =='comMyPagePost'" >
+                                    <input type="button" class="btn bg-gradient-dark m-2" th:onclick="|location.href='@{/post/comMyPagePost}'|"  value="돌아가기">
+                                </th:block>
 
                             </div>
                         </div>
