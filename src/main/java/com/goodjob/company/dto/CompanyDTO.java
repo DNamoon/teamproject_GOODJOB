@@ -71,7 +71,7 @@ public class CompanyDTO {
     @NotBlank
     private String comPhone;
     @NotBlank
-    private String name;
+    private String comName;
     @NotBlank
     private String comBusiNum; // 사업등록번호
     @NotBlank
@@ -93,7 +93,7 @@ public class CompanyDTO {
     public Company toEntityForFindId(){
         return Company.builder()
                 .comPw(pw)
-                .comName(name)
+                .comName(comName)
                 .comEmail(comEmail1)
                 .build();
 
@@ -126,7 +126,7 @@ public class CompanyDTO {
                 .comPw(pw)
                 .comPhone(comPhone)
                 .comEmail(comEmail1+"@"+comEmail2)
-                .comName(name)
+                .comName(comName)
                 .comBusiNum(comBusiNum)
                 .comInfo(comInfo)
                 .comTerms(comTerms)

@@ -39,6 +39,7 @@ public class CompanyService {
     private final RegionRepository regionRepository;
 
 
+    //비밀번호 변경
     public void changePw(CompanyDTO companyDTO,String comLoginId){
         companyDTO.setPw(passwordEncoder.encode(companyDTO.getPw()));
         log.info("???: 서비스 changePw에서 암호화하는과정에서 에러일가?");
@@ -51,24 +52,25 @@ public class CompanyService {
 
     }
 
-    public String findId2(CompanyDTO companyDTO) {
-        Company company1 = companyDTO.toEntityForFindId();
-        String name = company1.getComName();
-        log.info("??? name 받아오는 값: " + name);
-        String email = company1.getComEmail();
-        log.info("??? email 받아오는 값: " + email);
-
-        Long num = companyRepository.countByComNameAndComEmail(name,email);
-        log.info("??? name과 emial로 찾아온 갯수 : "+num);
-        if(num == 0){
-            return "fail";
-        } else {
-            Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
-            log.info("???: "+ email +"email일부일텐데??? "+ company.get().getComEmail());
-            return company.get().getComLoginId();
-        }
-
-    }
+    //아이디 찾기 10.30일날 한 듯. DTO로 처음부터 받았는데 String으로 name,email 받아서 DTO로 변경하기로 함. 224라인에 새로 메서드 만듦.
+//    public String findId2(CompanyDTO companyDTO) {
+//        Company company1 = companyDTO.toEntityForFindId();
+//        String name = company1.getComName();
+//        log.info("??? name 받아오는 값: " + name);
+//        String email = company1.getComEmail();
+//        log.info("??? email 받아오는 값: " + email);
+//
+//        Long num = companyRepository.countByComNameAndComEmail(name,email);
+//        log.info("??? name과 emial로 찾아온 갯수 : "+num);
+//        if(num == 0){
+//            return "fail";
+//        } else {
+//            Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
+//            log.info("???: "+ email +"email일부일텐데??? "+ company.get().getComEmail());
+//            return company.get().getComLoginId();
+//        }
+//
+//    }
 
     //22.10.29 아이디 찾기
     public String findId(CompanyDTO companyDTO){
@@ -171,7 +173,7 @@ public class CompanyService {
     private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, Region comRegCode, String[] email, String comInfo, String[] address) {
         CompanyDTO dto = CompanyDTO.builder()
                 .loginId(comLoginId)
-                .name(comName)
+                .comName(comName)
                 .comBusiNum(comBusiNum)
                 .comPhone(comPhone)
                 .comComdivCode(comComdivCode.getComdivCode())
@@ -210,4 +212,34 @@ public class CompanyService {
 //        Optional<Company> company = companyRepository.checkNameAndEmail(comName, comEmail);
 //        return company.get().getComLoginId();
 //    }
+
+
+    //22.11.01 ho - 아이디 찾기용 DTO만들기 메서드.
+    public CompanyDTO getCompanyDTOForFindId(String name, String email) {
+        return CompanyDTO.builder()
+                .comName(name)
+                .comEmail1(email)
+                .build();
+    }
+
+    //22.11.01 ho - 아이디 찾기. String 받아서 DTO 만들어서 찾기.
+    public String findId2(String name, String email) {
+        CompanyDTO companyDTO = getCompanyDTOForFindId(name, email);
+        Company company1 = companyDTO.toEntityForFindId();
+        String newName = company1.getComName();
+        log.info("??? name 받아오는 값: " + newName);
+        String newEmail = company1.getComEmail();
+        log.info("??? email 받아오는 값: " + email);
+
+        Long num = companyRepository.countByComNameAndComEmail(newName,newEmail);
+        log.info("??? name과 emial로 찾아온 갯수 : "+num);
+        if(num == 0){
+            return "fail";
+        } else {
+            Optional<Company> company = companyRepository.findByComNameAndComEmail(newName, newEmail);
+            return company.get().getComLoginId();
+        }
+
+    }
+
 }

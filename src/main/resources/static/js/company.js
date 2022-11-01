@@ -1,66 +1,127 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+//22.11.01 ho - 아이디 찾기(이름, 이메일로 찾기)
+$('#btn_findId').click(function (){
+    findId();
+})
 
+function findId() {
+    let name = $('#name').val();
+    let email = $('#email').val();
 
+    // $.ajax({
+    //     type:"post",
+    //     url:"/com/changePw",
+    //     data:"pw="+password,
+    //     success : function (result) {
+    //         if(result == 1) {
+    //             Swal.fire("비밀번호 변경페이지로 이동!","","success").then(function (){
+    //                 location.href = "/com/changePassword";
+    //             })
+    //             // alert("비밀번호 변경 페이지로 이동합니다.");
+    //             // location.href = "/com/changePassword";
+    //         } else {
+    //             Swal.fire("비밀번호를 확인해주세요!","","error");
+    //         }
+    //     }
+    // });
 
-//아이디 찾기 기업별, 멤버별 구분
-function UserTypeFindId() {
-    const form = document.forms['frm'];
-    const type = $('#chk').val();
-    console.log(type);
-
-    if(type=="member"){
-        form.action = "/member/findId";
-        form.submit();
-    }else if(type=="none"){
-        alert("회원타입을 선택해주세요.")
-    }else {
-        form.action = "/com/findId";
-        form.submit();
-    }
-}
-
-
-//아이디 찾기
-$(document).ready(function() {
-    $('#btn_find_id').on('click', function () {
-        whatId();
-    })
-});
-function whatId() {
-    const id = $('#id').val();
-    const email = $('#email').val();
-    console.log(email);
-
-    if (!id || id.trim() === "") {
-        alert("이름을 입력하세요.");
+    if (!email || email.trim() === "") {
+        alert("이메일을 입력하세요.");
     } else {
-        if (!email || email.trim() === "") {
-            alert("이메일을 입력하세요");
+        if (!name || name.trim() === "") {
+            alert("이름(기업명)을 입력하세요.");
         } else {
             $.ajax({
                 type: 'post',
                 url: '/com/findId',
                 data: {
-                    'comName': id,
-                    'comEmail' : email
+                    'email': email,
+                    'name': name
                 },
-                dataType: "text",
-            }).done(function (result) {
-                console.log("result :" + result);
-                if (result == null) {
-                    // sendEmail();
-                    alert('가입된 회원정보를 찾을 수 없습니다.');
-                } else if (result == "false") {
-                    alert('회원님의 아이디는 ['+result+']입니다.');
-                    window.location.href = "/login";
+                success: function (result) {
+                    console.log(result);
+                    if(result[0] == "1"){
+                        Swal.fire("기업회원",result[1]+"님의 아이디는 ["+result[2]+"]입니다.")
+                            .then(function (){
+                                location.href = "/login";
+                            })
+                        // alert("회원타입은 기업회원입니다! "+result[2]+"님의 아이디는 ["+result[1]+"]입니다.");
+                        // location.href = "/login";
+                    } else if(result[0] == "2") {
+                        Swal.fire("개인회원",result[1]+"님의 아이디는 ["+result[2]+"]입니다.")
+                            .then(function (){
+                                location.href = "/login";
+                            })
+                        // alert("회원타입은 개인회원입니다! "+result[2]+"님의 아이디는 ["+result[1]+"]입니다.");
+                        // location.href = "/login";
+                    } else {
+                        Swal.fire("회원정보 없음","찾으시는 회원정보가 없습니다.","error");
+                        //alert("찾으시는 회원정보가 없습니다. 입력정보를 확인해주세요.");
+                    }
                 }
-            }).fail(function (error) {
-                alert(JSON.stringify(error));
+
+                //dataType: "text",
+
+                //
+                // }).done(function(result){
+                //     console.log("result :" + result);
+                //     if (result == "true") {
+                //         alert('ajax alert 통과!!');
+                //         window.location.href="/login";
+                //     } else if (result == "false") {
+                //         alert('가입되지 않은 이메일입니다.');
+                //     }
+                // }).fail(function(error){
+                //     alert(JSON.stringify(error));
+                // })
+                //}
             })
         }
     }
 }
+
+
+// //아이디 찾기  잉??? 언제 해 놓은거지???? 이미 했었네?? 10.30 일요일 아침에 한건가?
+// $(document).ready(function() {
+//     $('#btn_find_id').on('click', function () {
+//         whatId();
+//     })
+// });
+// function whatId() {
+//     const id = $('#id').val();
+//     const email = $('#email').val();
+//     console.log(email);
+//
+//     if (!id || id.trim() === "") {
+//         alert("이름을 입력하세요.");
+//     } else {
+//         if (!email || email.trim() === "") {
+//             alert("이메일을 입력하세요");
+//         } else {
+//             $.ajax({
+//                 type: 'post',
+//                 url: '/com/findId',
+//                 data: {
+//                     'comName': id,
+//                     'comEmail' : email
+//                 },
+//                 dataType: "text",
+//             }).done(function (result) {
+//                 console.log("result :" + result);
+//                 if (result == null) {
+//                     // sendEmail();
+//                     alert('가입된 회원정보를 찾을 수 없습니다.');
+//                 } else if (result == "false") {
+//                     alert('회원님의 아이디는 ['+result+']입니다.');
+//                     window.location.href = "/login";
+//                 }
+//             }).fail(function (error) {
+//                 alert(JSON.stringify(error));
+//             })
+//         }
+//     }
+// }
 
 
 

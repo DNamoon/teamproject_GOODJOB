@@ -42,6 +42,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByMemId(Long memId);
 
+
     //22.11.01 ho 추가. 아이디 찾기(이름, 이메일 일치하는 데이터 존재여부)
     Long countByMemNameAndMemEmail(String memName, String memEmail);
 

@@ -121,20 +121,29 @@ public class MemberServiceImpl implements MemberService {
 
     //22.11.01 ho 추가. 아이디 찾기
     @Override
-    public String findId(MemberDTO memberDTO) {
+    public String findId(String name, String email) {
+        MemberDTO memberDTO = getMemberDTOForFindId(name, email);
         Member member = memberDTO.toEntityForFindId();
-        String name = member.getMemName();
-        System.out.println("??? 개인 아이디 찾기 받아오는 name : " + name);
-        String email = member.getMemEmail();
-        System.out.println("??? 개인 아이디 찾기 받아오는 email : " + email);
+        String newName = member.getMemName();
+        System.out.println("??? 개인 아이디 찾기 받아오는 name : " + newName);
+        String newEmail = member.getMemEmail();
+        System.out.println("??? 개인 아이디 찾기 받아오는 email : " + newEmail);
 
-        Long num = memberRepository.countByMemNameAndMemEmail(name, email);
+        Long num = memberRepository.countByMemNameAndMemEmail(newName, newEmail);
         System.out.println("이름과 이메일로 카운트하는 수 num = " + num);
         if(num == 0) {
             return "fail";
         } else {
-            Member mem = memberRepository.findByMemNameAndMemEmail(member.getMemName(), member.getMemEmail());
+            Member mem = memberRepository.findByMemNameAndMemEmail(newName, newEmail);
             return mem.getMemLoginId();
         }
+    }
+
+    //22.11.01 ho 추가. 아이디 찾기용 MemberDTO 만들기 메서드.
+    private MemberDTO getMemberDTOForFindId(String name, String email){
+        return MemberDTO.builder()
+                .memName(name)
+                .memEmail1(email)
+                .build();
     }
 }
