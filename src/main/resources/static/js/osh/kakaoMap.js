@@ -34,9 +34,10 @@ function zoomOut() {
 
 // 주소-좌표 변환 객체를 생성합니다
 var geocoder = new kakao.maps.services.Geocoder();
+const postAddress = document.querySelector(".post-details-postAddress");
 
 // 주소로 좌표를 검색합니다
-geocoder.addressSearch('서울특별시 구로구 디지털로 26길 38, G-Tower 넷마블, Netmarble Building, 38, Digital-ro 26-gil, Guro-Gu', function (result, status) {
+geocoder.addressSearch(postAddress.textContent, function (result, status) {
 
     // 정상적으로 검색이 완료됐으면
     if (status === kakao.maps.services.Status.OK) {

@@ -1,9 +1,11 @@
 package com.goodjob.post.serviceImpl;
 
+import antlr.StringUtils;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.repository.RegionRepository;
+import com.goodjob.post.Address;
 import com.goodjob.post.Post;
 import com.goodjob.post.fileupload.FileService;
 import com.goodjob.post.fileupload.UploadFile;
@@ -25,10 +27,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.StringTokenizer;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -41,16 +44,6 @@ public class postServiceImpl implements PostService {
     private final SalaryRepository salaryRepository;
     private final RegionRepository regionRepository;
     private final FileService fileService;
-
-    @Override
-    public PageResultDTO<Post, PostDTO> getList(PageRequestDTO pageRequestDTO){
-        Pageable pageable = pageRequestDTO.getPageable(decideSort(pageRequestDTO));
-        BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
-        Page<Post> result = postRepository.findAll(booleanBuilder,pageable);
-        Function<Post,PostDTO> fn = (this::entityToDto);
-        return new PageResultDTO<>(result,fn);
-
-    }
 
     @Override
     public PageResultDTO<Post, PostCardDTO> getPagingPostList(PageRequestDTO pageRequestDTO){
@@ -68,20 +61,23 @@ public class postServiceImpl implements PostService {
         Function<Post, PostComMyPageDTO> fn = (this::entityToDtoInComMyPage);
         return new PageResultDTO<>(result,fn);
     }
-    // pageRequestDTO 의 sort 값에 따라 공고 리스트의 정렬에 필요한 Sort를 리턴해주는 메솓즈
-    // getList()와 getListInMain() 에 사용한다.
-    private Sort decideSort(PageRequestDTO pageRequestDTO){
-        switch (pageRequestDTO.getSort()) {
-            case "new":
-                return Sort.by("postId").descending();
-            case "count":
-                return Sort.by("postReadCount").descending();
-            case "salary":
-                return Sort.by("postSalary").descending();
-            case "end":
-                return Sort.by("postEndDate").ascending();
+
+    // 세션 정보를 사용하여 company에서 필요한 정보를 모아 DTO 생성
+    @Override
+    public CompanyInfoDTO getComInfo(String sessionId){
+
+        Optional<Company> optionalCompany = companyRepository.findByComLoginId(sessionId); // 옵셔널 company 를 가져온다.
+
+        if(optionalCompany.isPresent()){
+            Company company = optionalCompany.get();
+            ArrayList<String> list = new ArrayList<>();
+            StringTokenizer st = new StringTokenizer(company.getComAddress(),"@");
+            while(st.hasMoreTokens()){
+                list.add(st.nextToken());
+            }
+            return new CompanyInfoDTO(list.get(0), list.get(1), list.get(2), list.get(3), company.getComName(),company.getComBusiNum(),company.getComComdivCode().getComdivName());
         }
-        return  null;
+        return null;
     }
     @Override
     public List<Occupation> getListOccupation(){
@@ -98,13 +94,13 @@ public class postServiceImpl implements PostService {
 
     @Override
     public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
+        Address address = new Address(postInsertDTO.getPostcode(), postInsertDTO.getPostAddress(), postInsertDTO.getPostDetailAddress(),postInsertDTO.getEtc());
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
-        Optional<Region> region = regionRepository.findById(postInsertDTO.getPostRegion());
         List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
-        if(occupation.isPresent() && company.isPresent() && region.isPresent() && salary.isPresent()){
-            Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),region.get(),salary.get(),uploadFiles));
+        if(occupation.isPresent() && company.isPresent() && salary.isPresent()){
+            Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),salary.get(),uploadFiles,address));
             return post.getPostId();
         }
         return null;
@@ -117,8 +113,29 @@ public class postServiceImpl implements PostService {
         return result.map(this::entityToDtoForRead).orElse(null);
     }
     @Override
+    public PostInsertDTO getPostById(Long postId){
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        return optionalPost.map(this::entityToDtoForUpdate).orElse(null);
+    }
+    @Override
     public void deletePost(Long postId){
         postRepository.deleteById(postId);
+    }
+
+    // pageRequestDTO 의 sort 값에 따라 공고 리스트의 정렬에 필요한 Sort를 리턴해주는 메솓즈
+    // getList()와 getListInMain() 에 사용한다.
+    private Sort decideSort(PageRequestDTO pageRequestDTO){
+        switch (pageRequestDTO.getSort()) {
+            case "new":
+                return Sort.by("postId").descending();
+            case "count":
+                return Sort.by("postReadCount").descending();
+            case "salary":
+                return Sort.by("postSalary").descending();
+            case "end":
+                return Sort.by("postEndDate").ascending();
+        }
+        return  null;
     }
 
     // 공고 리스트를 PageRequestDTO의 sort 값에 따라 정렬을 다르게하는 조건을 리턴해주는 메소드.
@@ -135,18 +152,21 @@ public class postServiceImpl implements PostService {
         BooleanExpression startDateAfterNow = qPost.postStartDate.after(java.sql.Date.valueOf(curDateStart));
         // "모집 종료일이 현재 보다 앞다"라는 조건. 즉, 모집 종료.
         BooleanExpression endDateBeforeNow = qPost.postEndDate.before(java.sql.Date.valueOf(curDateEnd));
-        log.info(java.sql.Date.valueOf(curDateStart)+"=================="+java.sql.Date.valueOf(curDateEnd));
         switch (pageRequestDTO.getOutOfDateState()) {
             case "active":
-                return booleanBuilder.and(startDateBeforeNow).and(endDateAfterNow);
+                booleanBuilder.and(startDateBeforeNow).and(endDateAfterNow);
+                break;
             case "beforeStart":
-                return booleanBuilder.and(startDateAfterNow);
+                booleanBuilder.and(startDateAfterNow);
+                break;
             case "afterEnd":
-                return booleanBuilder.and(endDateBeforeNow);
+                booleanBuilder.and(endDateBeforeNow);
+                break;
             case "beforeAfter":
-                return booleanBuilder.and(startDateAfterNow.or(endDateBeforeNow));
+                booleanBuilder.and(startDateAfterNow.or(endDateBeforeNow));
+                break;
             case "all":
-                return booleanBuilder;
+                break;
         }
         return null;
     }
@@ -174,55 +194,62 @@ public class postServiceImpl implements PostService {
         booleanBuilder.and(booleanExpression).and(getOutOfDateState(pageRequestDTO,qPost));
 
 
+
+        // ==================         직종, 주소, 연봉 필터링 ============================
+        BooleanBuilder booleanBuilderWithFilter = new BooleanBuilder();
+        if (!(pageRequestDTO.getFilterOccupation()==null||pageRequestDTO.getFilterOccupation().isEmpty())){
+            booleanBuilderWithFilter.and(qPost.postOccCode.occName.eq(pageRequestDTO.getFilterOccupation()));
+        }
+//        if (!(pageRequestDTO.getFilterRegion()==null||pageRequestDTO.getFilterRegion().isEmpty())){
+//            booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
+//        }
+        if (!(pageRequestDTO.getFilterAddress()==null||pageRequestDTO.getFilterAddress().isEmpty())){
+            booleanBuilderWithFilter.and(qPost.address.address1.contains(pageRequestDTO.getFilterAddress()));
+        }
+        if (!(pageRequestDTO.getFilterSalary()==null||pageRequestDTO.getFilterSalary().isEmpty())){
+            booleanBuilderWithFilter.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
+        }
+        booleanBuilder.and(booleanBuilderWithFilter);
+        // ==================         직종, 주소, 연봉 필터링 ============================
+
         // 검색 조건 처리 코드
-        if(type == null || type.trim().length() == 0 ){
+        if((type == null || type.trim().length() == 0 )){
             return booleanBuilder;
-        }
-        // 검색 조건으로 type = "title" 인 경우, 공고 제목에 keyword 를 가지는 글만
-        // 가져오는 조건 추가
-        BooleanBuilder booleanBuilderWithSearch = new BooleanBuilder();
-        if(type.contains("title")){
-            booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword));
-        }
-        // 검색 조건으로 type = "company" 인 경우, 기업명으로 keyword 를 가지는 글만
-        // 가져오는 조건 추가
-        if(type.contains("company")){
-            booleanBuilderWithSearch.or(qPost.postComId.comName.contains(keyword));
-        }
-        // 검색 조건으로 type = "occupation" 인 경우, 직종명으로 keyword 를 가지는 글만
-        // 가져오는 조건 추가
-        if(type.contains("occupation")){
-            booleanBuilderWithSearch.or(qPost.postOccCode.occName.contains(keyword));
-        }
-        // 검색 조건으로 type = "region" 인 경우, 지역명으로 keyword 를 가지는 글만
-        // 가져오는 조건 추가
-        if(type.contains("region")){
-            booleanBuilderWithSearch.or(qPost.postRegion.regName.contains(keyword));
-        }
-        // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
-        // keyword 를 가지는 글만 가져오는 조건 추가
-        if(type.contains("titleCompanyName")){
-            booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
-        }
+        } else if(!(keyword == null || keyword.isEmpty())) {
+            BooleanBuilder booleanBuilderWithSearch = new BooleanBuilder();
+            switch (type) {
+                case "title":
+                    // 검색 조건으로 type = "title" 인 경우, 공고 제목에 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword));
+                    break;
+                case "company":
+                    // 검색 조건으로 type = "company" 인 경우, 기업명으로 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    booleanBuilderWithSearch.or(qPost.postComId.comName.contains(keyword));
+                    break;
+                case "occupation":
+                    // 검색 조건으로 type = "occupation" 인 경우, 직종명으로 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    booleanBuilderWithSearch.or(qPost.postOccCode.occName.contains(keyword));
+                    break;
+                case "region":
+                    // 검색 조건으로 type = "region" 인 경우, 지역명으로 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    booleanBuilderWithSearch.or(qPost.postRegion.regName.contains(keyword));
+                    break;
+                case "titleCompanyName":
+                    // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
+                    // keyword 를 가지는 글만 가져오는 조건 추가
+                    booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
+                    break;
+            }
             booleanBuilder.and(booleanBuilderWithSearch);
+        }
 
         // 검색 조건 처리 코드 끝
 
-        BooleanBuilder booleanBuilderWithFilter = new BooleanBuilder();
-        if(pageRequestDTO.getFilterOccupation()!=null){
-            if (!(pageRequestDTO.getFilterOccupation().isEmpty() || pageRequestDTO.getFilterOccupation().trim().length() == 0)){
-                booleanBuilderWithFilter.and(qPost.postOccCode.occName.eq(pageRequestDTO.getFilterOccupation()));
-            }
-            if (!(pageRequestDTO.getFilterRegion().isEmpty() || pageRequestDTO.getFilterRegion().trim().length() == 0)){
-                booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
-            }
-            if (!(pageRequestDTO.getFilterSalary().isEmpty() || pageRequestDTO.getFilterSalary().trim().length() == 0)){
-                booleanBuilderWithFilter.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
-            }
-            booleanBuilder.and(booleanBuilderWithFilter);
-
-        }
-
+        System.out.println("불리언 빌더============최종 쿼리 조건 : "+booleanBuilder);
         return booleanBuilder;
     }
 

@@ -66,9 +66,16 @@ public class Post {
     @CollectionTable(name = "postImg", joinColumns = @JoinColumn(name = "postImgId", referencedColumnName = "postId"))
     private List<UploadFile> postImg;
 
-    private String postAddress; // 주소1
+    @Embedded
+    @AttributeOverride(name = "zipCode", column = @Column(name = "post_zipCode"))
+    @AttributeOverride(name = "address1", column = @Column(name = "post_address"))
+    @AttributeOverride(name = "address2", column = @Column(name = "post_address2"))
+    @AttributeOverride(name = "etc", column = @Column(name = "post_etc"))
+    private Address address;
 
-    private String postDetailAddress; // 주소2
+//    private String postAddress; // 주소1
+
+//    private String postDetailAddress; // 주소2
 
 
 
