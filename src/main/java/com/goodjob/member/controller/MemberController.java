@@ -33,10 +33,7 @@ public class MemberController {
     @GetMapping("/signUp")
     public String signUpForm(HttpServletRequest request, Model model, MemberDTO memberDTO) {
         // 회원가입 시 기존 로그인 상태면 로그아웃 실행
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+        logout(request);
         model.addAttribute("signUpCheck", memberDTO);
         return "member/signup";
     }
@@ -65,14 +62,20 @@ public class MemberController {
             }
         // 아이디 중복 시 에러 발생
         if(memberService.checkId2(memberDTO.getLoginId()) !=0){
-            result.rejectValue("loginId","loginIdDuplicated"
+            result.rejectValue("","loginIdDuplicated"
                     ,"아이디가 중복됩니다. 다른 아이디를 지정하십시오.");
             return "member/signup";
         }
         //비밀번호 일치하지 않을 시 에러 발생
         if(!memberDTO.getPw().equals(memberDTO.getPw2())){
-            result.rejectValue("pw2","passwordInCorrect",
+            result.rejectValue("","passwordInCorrect",
                     "입력하신 비밀번호가 일치하지 않습니다.");
+            return "member/signup";
+        }
+        //이메일 중복 시 에러 발생
+        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
+            result.rejectValue("","emailInCorrect",
+                    "이미 가입된 이메일입니다.");
             return "member/signup";
         }
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
@@ -80,7 +83,6 @@ public class MemberController {
         memberService.register(mem);
         return "redirect:/";
     }
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {

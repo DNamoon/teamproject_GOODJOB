@@ -64,7 +64,7 @@ public interface MemberService {
     // mypage 개인정보 수정
     MemberDTO memInfo(String loginId);
 
-    void updateMemInfo(MemberDTO memberDTO);
+    void updateMemInfo(MemberDTO memberDTO,String memEmail);
 
     void deleteById(Long memId);
 
