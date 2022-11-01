@@ -90,7 +90,7 @@
                                                 <a class="m-lg-1 fs-5" th:text="${num}" th:if="${num>0 && num<postPage.getTotalPages()+1}"
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${num})}"></a>
                                             </th:block>
-                                            <th:block th:if="${postPage.getNumber() < postPage.totalPages-5 && !postPage.isLast()}">
+                                            <th:block th:if="${postPage.getNumber() < postPage.getTotalPages()-5 && !postPage.isLast()}">
                                                 <a class="m-lg-1 fs-5"
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${postPage.getNumber()+6})}">&gt;&gt;</a>
                                             </th:block>

@@ -5,6 +5,7 @@ import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.admindto.AdminDTO;
 import com.goodjob.admin.postpaging.AdminPostService;
 import com.goodjob.admin.service.AdminService;
+import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PostInsertDTO;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public class AdminController {
 
     private final AdminService adminService;
     private final AdminPostService adminPostService;
+
+    private final CustomerInquiryService customerInquiryService;
 
     @GetMapping
     public String adminHome(@SessionAttribute(name = AdminConst.ADMIN, required = false) Admin admin, Model model) {
@@ -85,10 +88,17 @@ public class AdminController {
     }
 
     @GetMapping("/customerInquiry")
-    public String adminCustomerInquiryList(){
+    public String adminCustomerInquiryList(Model model){
+        Pageable Pageable = PageRequest.of(0, 10, Sort.by("inquiryPostId").descending());
+        model.addAttribute("inquiryPostList",customerInquiryService.findAll(Pageable));
         return "admin/customerInquiry/customerInquiryList";
     }
 
+    @GetMapping("/customerInquiry/{id}")
+    public String inquiryPostView(@PathVariable("id")Long id,Model model){
+        model.addAttribute("findInquiry",customerInquiryService.findOne(id).orElse(null));
+        return "admin/customerInquiry/customerInquiryDetailView";
+    }
 
     /**
      * 22.10.30 오성훈 이하 테스트메소드 차후 삭제예정.

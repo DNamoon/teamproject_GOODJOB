@@ -32,6 +32,16 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     }
 
     @Override
+    public Page<CustomerInquiryPost> findAll(Pageable pageable) {
+        return customerInquiryPostRepository.findAll(pageable);
+    }
+
+    @Override
+    public void deleteByInquiryPostId(Long inquiryPostId) {
+        customerInquiryPostRepository.deleteById(inquiryPostId);
+    }
+
+    @Override
     public Page<CustomerInquiryPost> findInquiryListById(Pageable pageable, HttpServletRequest request) {
         HttpSession httpSession = request.getSession(false);
         String loginId = (String) httpSession.getAttribute("sessionId");

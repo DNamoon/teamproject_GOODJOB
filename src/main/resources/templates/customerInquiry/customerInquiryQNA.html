@@ -26,8 +26,8 @@
                     <div>
                         <div class="d-flex flex-column justify-content-center mt-2">
                             <div class="d-flex flex-row justify-content-center">
-                                <div class="d-flex flex-row">
-                                    <h5>1:1문의는 로그인이 필요합니다.</h5>
+                                <div class="d-flex flex-column align-self-center" style="min-height: 30rem">
+                                    <h5 style="margin-top: 10rem">1:1문의는 로그인이 필요합니다.</h5>
                                 </div>
                             </div>
                         </div>
@@ -45,24 +45,26 @@
                     </div>
                     <div>
                         <th:block th:if="${inquiryPostList.content.size() == 0}">
-                            <div class="d-flex flex-column justify-content-center mt-2">
-                                <div class="d-flex flex-row justify-content-center">
-                                    <div class="d-flex flex-row">
-                                        <h5>등록된 1:1문의가 없습니다.</h5>
+                            <div id="none_data">
+                                <div class="d-flex flex-column justify-content-center mt-2">
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <div class="d-flex flex-row">
+                                            <h5>등록된 1:1문의가 없습니다.</h5>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-center">
-                                    <div class="d-flex flex-row">
-                                        <h5><a role="button" style="text-decoration-line: underline"
-                                               onclick="showForm()">새로운
-                                            문의 작성</a></h5>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <div class="d-flex flex-row">
+                                            <h5><a role="button" style="text-decoration-line: underline"
+                                                   onclick="showForm()">새로운
+                                                문의 작성</a></h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </th:block>
 
                         <div id="qna_list">
-                            <th:block th:if="${inquiryPostList ne null}">
+                            <th:block th:if="${inquiryPostList.hasContent()}">
                                 <div class="d-flex flex-column justify-content-center mt-2" id="osh">
                                     <div class="d-flex flex-row justify-content-center">
                                         <div class="d-flex flex-fill">
@@ -196,7 +198,7 @@
                             </div>
                             <div class="col-10">
                                 <label for="customerInquiryTitle">제목</label>
-                                <input type="text" class="form-control"
+                                <input type="text" class="form-control" required
                                        id="customerInquiryTitle" name="inquiryPostTitle">
                             </div>
                         </div>
@@ -206,7 +208,7 @@
                     <div class="col-12">
                         <label for="customerInquiryContent">내용</label>
                         <textarea id="customerInquiryContent"
-                                  style="resize: none;"
+                                  style="resize: none;" required
                                   name="inquiryPostContent"
                                   class="form-control"></textarea>
                     </div>
@@ -222,9 +224,10 @@
         </div>
 
         <script th:inline="javascript">
-
+            let item = window.sessionStorage.length;
             function showForm() {
                 $('#qna_form').show();
+                $('#none_data').hide();
             }
 
             function showList() {
@@ -233,6 +236,7 @@
             }
 
             function hideListAndShowForm() {
+                $('#none_data').hide();
                 $('#qna_list').hide();
                 $('#qna_form').show();
             }
@@ -242,6 +246,15 @@
             $(document).ready(function () {
                 $('#customerInquiryContent').summernote({
                     tabsize: 2,
+                    fontSizes: ['8','9','10','11','12','14','18','24','36'],
+                    toolbar: [
+                        ['font', ['fontname','fontsize','fontsizeunit']],
+                        ['fontstyle', ['bold','italic','underline','strikethrough','forecolor','backcolor','superscript','subscript','clear']],
+                        ['style', ['style']],
+                        ['paragraph', ['paragraph','height','ul','ol']],
+                        ['insert', ['table','hr','link','picture','video']],
+                        ['codeview'],
+                    ],
                     placeholder: '내용을 작성하세요',
                     codeviewFilter: false,
                     codeviewIframeFilter: true,
@@ -249,10 +262,10 @@
                     maxHeight: null,
                     focus: true,
                 });
+                $('#customerInquiryContent').summernote('fontSize', 14);
             });
 
             var size = $('h6[class = inquiryPostContent]').length;
-            console.log(size);
             var i = 0;
             do {
                 const value = $('#inquiryPostContent' + i).text();

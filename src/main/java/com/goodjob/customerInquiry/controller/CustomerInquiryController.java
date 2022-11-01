@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * 22.10.30 오성훈 고객문의 컨트롤러 URI는 고민 후 간결하게 변경할 예정

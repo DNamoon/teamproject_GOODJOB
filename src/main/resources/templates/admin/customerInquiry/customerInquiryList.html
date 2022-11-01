@@ -26,10 +26,14 @@
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
                                             style="width: 20%">
-                                            NO
+                                            카테고리
                                         </th>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75 ps-2"
-                                            style="width: 40%">
+                                            style="width: 10%">
+                                            구분
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75 ps-2"
+                                            style="width: 30%">
                                             제목
                                         </th>
                                         <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
@@ -44,40 +48,53 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <!--                                                    <h6 th:text="${mainPage.postId}" class="m-lg-1 text-sm"></h6>-->
-                                                    <!--<img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
-                                                              alt="user1">-->
+                                    <th:block th:each="inquiryPost : ${inquiryPostList}">
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div>
+                                                        <!--                                                    <h6 th:text="${mainPage.postId}" class="m-lg-1 text-sm"></h6>-->
+                                                        <!--<img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
+                                                                  alt="user1">-->
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <p class="text-sm font-weight-bold m-lg-1" th:text="${inquiryPost.getInquiryPostCategory().getCustomerInquiryPostCategory()}"/>
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <p class="text-sm font-weight-bold m-lg-1"/>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a><h6 th:text="asd" class="m-lg-2 text-sm"/></a>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <th:block>
-                                                <span class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
-                                            </th:block>
-                                            <th:block>
-                                                <span class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
-                                            </th:block>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span th:text="asd"
+                                            </td>
+                                            <td>
+                                                <th:block th:if="${inquiryPost.inquiryPostMemberId ne null}">
+                                                    <h6 class="m-0 text-xxs">회원</h6>
+                                                </th:block>
+                                                <th:block th:if="${inquiryPost.inquiryPostComId ne null}">
+                                                    <h6 class="m-0 text-xxs">기업</h6>
+                                                </th:block>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{/admin/customerInquiry/{id}(id=${inquiryPost.getInquiryPostId()})}"><h6 th:text="${inquiryPost.inquiryPostTitle}" class="m-lg-2 text-sm"/></a>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <th:block th:if="${inquiryPost.getInquiryPostStatus() == '1'}">
+                                                    <span class="badge rounded-pill badge-sm bg-gradient-success">답변완료</span>
+                                                </th:block>
+                                                <th:block th:if="${inquiryPost.getInquiryPostStatus() == '0'}">
+                                                    <span class="badge rounded-pill badge-sm bg-gradient-warning">답변미완료</span>
+                                                </th:block>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                            <span th:text="${#dates.format(inquiryPost.inquiryPostPublishedDate,'yyyy-MM-dd')}"
                                                   class="text-secondary text-xs font-weight-bold"></span>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-danger rounded-pill" role="button">
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                            <span class="badge badge-sm bg-gradient-danger rounded-pill"
+                                                  th:id="${inquiryPost.inquiryPostId}"
+                                                  onclick="javascript:deleteinquiryPost(this.getAttribute('id'))"
+                                                  role="button">
                                                 삭제
                                             </span>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    </th:block>
                                     </tbody>
                                 </table>
                             </div>
@@ -88,6 +105,19 @@
         </div>
     </div>
 </main>
-
+<script>
+    function deleteinquiryPost(inquiryPostId) {
+        if (confirm("삭제 하시겠습니까?") == true) {
+            $.ajax({
+                url: "/admin/inquiryPost/delete",
+                type: "post",
+                data: {inquiryPostId: inquiryPostId},
+                success: function () {
+                    alert("삭제되었습니다");
+                }
+            })
+        }
+    }
+</script>
 </body>
 </html>

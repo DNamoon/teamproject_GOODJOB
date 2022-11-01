@@ -4,6 +4,7 @@ import com.goodjob.admin.apexchart.GenderDTO;
 import com.goodjob.admin.apexchart.PostStatistics;
 import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
+import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,10 @@ public class AdminRestController {
     private final MemberRepository memberRepository;
     private final VisitorStatisticsRepository vs;
     private final PostRepository postRepository;
+    private final CustomerInquiryService customerInquiryService;
     @Value("${editor.img.save.url}")
     private String saveUrl;
+
     @GetMapping("/genderStatistics")
     public GenderDTO countGender() {
         GenderDTO genderDTO = new GenderDTO();
@@ -82,16 +85,24 @@ public class AdminRestController {
     }
 
     @PostMapping("/deletePost")
-    public void deletePost(@Param("postId")Long postId){
+    public void deletePost(@Param("postId") Long postId) {
         postRepository.deleteById(postId);
+
     }
+
+    @PostMapping("/inquiryPost/delete")
+    public void deleteInquiryPost(@Param("inquiryPostId") Long inquiryPostId) {
+        customerInquiryService.deleteByInquiryPostId(inquiryPostId);
+    }
+
     @PostMapping("/logout")
-    public void adminLogout(HttpServletRequest request){
+    public void adminLogout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
     }
+
     @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
