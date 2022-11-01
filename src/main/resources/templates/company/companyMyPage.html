@@ -28,19 +28,22 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label th:for="comBusiNum">사업자번호</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" type="text" th:value="${companyInfo.comBusiNum}"
-                                                   name="comBusiNum" required>
+                                        <label th:for="comBusiNum">사업자 등록번호<span id="busiNum_alert" style="display:none; color: rgb(244, 54, 54);" >&nbsp ( - 을 넣어 입력해주세요.)</span></label>
+                                        <div class="input-group">
+                                            <input class="form-control" type="tel" th:value="${companyInfo.comBusiNum}" id="comBusiNum" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"
+                                                   name="comBusiNum" placeholder="000-00-00000" maxlength="12" required>
                                         </div>
+                                        <label id="busiNum_error"></label>
                                     </div>
                                     <div class="col-md-6">
-                                        <label th:for="comPhone">전화번호</label>
+                                        <label th:for="comPhone">전화번호<span id="phone_alert"
+                                                style="color: rgb(244, 54, 54); display: none;">&nbsp; ( - 을 포함하여 입력해주세요.)</span></label>
                                         <div class="input-group">
-                                            <input type="tel" class="form-control" placeholder="000-0000-0000"
-                                                   name="comPhone"
+                                            <input type="tel" class="form-control" placeholder="000-0000-0000" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"
+                                                   name="comPhone" id="phone" maxlength="13"
                                                    th:value="${companyInfo.comPhone}" required>
                                         </div>
+                                        <label id="phone_error"></label>
                                     </div>
                                     <div class="col-md-6">
                                         <label>기업 분류</label>

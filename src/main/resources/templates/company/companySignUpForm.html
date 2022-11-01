@@ -29,7 +29,7 @@
                                         <div class="input-group">
                                             <!--     ho - 22.10.17 th:field변경 memloginId -> loginId (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
                                             <input class="form-control" th:field="*{loginId}" placeholder="ID는 3~15자 사이"
-                                                   type="text"
+                                                   type="text" maxlength="15"
                                                    name="id_input" id="id_input" required>
                                         </div>
                                         <label class="id_error"></label>
@@ -48,7 +48,7 @@
                                         <div class="input-group">
                                             <!--                ho - 22.10.17 th:field변경 memPw -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)-->
                                             <input type="text" class="form-control" th:field="*{pw}" id="comPw1"
-                                                   name="comPw1"
+                                                   name="comPw1" maxlength="25"
                                                    placeholder="Password는 3~25자 사이" onkeyup="passwordConfirm()" required>
                                         </div>
                                         <label id="password_error"></label>
@@ -57,25 +57,26 @@
                                         <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" th:field="*{comPw2}" id="comPw2"
-                                                   name="comPw2"
+                                                   name="comPw2" maxlength="25"
                                                    placeholder="Password 한번더 입력!" required
                                                    onkeyup="passwordConfirm()"><br/>
                                         </div>
                                         <label id="confirmMsg"></label>
                                     </div>
                                     <div class="col-md-6">
-                                        <label th:for="comBusiNum">사업자번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" th:field="*{comBusiNum}" type="text"
-                                                   name="comBusiNum" required>
+                                        <label th:for="comBusiNum">사업자 등록번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; ( - 을 포함하여 입력해주세요.)</span></label>
+                                        <div class="input-group">
+                                            <input class="form-control" th:field="*{comBusiNum}" type="tel" id="comBusiNum" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"
+                                                   name="comBusiNum" placeholder="000-00-00000" maxlength="12" required>
                                         </div>
+                                        <label id="busiNum_error"></label>
                                     </div>
                                     <div class="col-md-6">
                                         <label th:for="comPhone">전화번호<span
-                                                style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                                style="color: rgb(244, 54, 54);">&nbsp;&ast; ( - 을 포함하여 입력해주세요.)</span></label>
                                         <div class="input-group">
-                                            <input type="tel" class="form-control" th:field="*{comPhone}"
-                                                   placeholder="000-0000-0000" name="phone" id="phone"
+                                            <input type="tel" class="form-control" th:field="*{comPhone}" maxlength="13"
+                                                   placeholder="000-0000-0000" name="phone" id="phone" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"
                                                    required>
                                         </div>
                                         <label id="phone_error"></label>
@@ -138,8 +139,9 @@
                                     <label id="email_error"></label>
                                 </div>
 
-                                <label th:for="comAddress">주소</label>
-                                <div class="input-group mb-4">
+                                <label th:for="comAddress">주소<span
+                                        style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                <div class="input-group mb-3">
                                     <input type="text" class="form-control col-md-2 my-2 " name="comAddress1"
                                            th:field="*{comAddress1}" onclick="sample6_execDaumPostcode()"
                                            id="sample6_postcode" placeholder="우편번호" readonly required>

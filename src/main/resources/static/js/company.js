@@ -295,18 +295,33 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
+//view - 사업자 등록번호 양식 일치 3-2-5
+$('#comBusiNum').blur(function (){
+    let busiNum = $(this).val();
+    let regExp = /^\d{3}-\d{2}-\d{5}$/;
+    let busiNum_error = $('#busiNum_error');
+
+    if(!regExp.test(busiNum)) {
+        busiNum_error.css("color","#ff0000");
+        busiNum_error.show().text("형식이 맞지 않습니다. 다시 확인해주세요.");
+    }else {
+        busiNum_error.css("color","#54b254");
+        busiNum_error.show().text("올바른 형식입니다.");
+    }
+})
+
 //view - 전화번호 양식 일치(2~3)-(3~4)-4
-$('#phone').keyup(function (){
+$('#phone').blur(function (){
     let phone = $('#phone').val();
-    let regExp = /(\\d{2,3})-(\\d{3,4})-(\\d{4})$/;
+    let regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
     let phone_error = $('#phone_error');
 
     if(!regExp.test(phone)) {
         phone_error.css("color","#ff0000");
-        phone_error.show().text("전화번호는 반드시 (2~3)-(3~4)-4 의 형식이어야 합니다.")
+        phone_error.show().text("형식이 맞지 않습니다. 다시 확인해주세요.");
     }else {
         phone_error.css("color","#54b254");
-        phone_error.show().text("올바른 전화형식입니다.");
+        phone_error.show().text("올바른 형식입니다.");
     }
 })
 
@@ -341,7 +356,7 @@ function passwordConfirm() {
 
     if(!regExp.test(password.value)){
         passwordError.style.color = wrongColor;
-        passwordError.innerHTML = "비번은 3~25자로 최소 하나의 문자, 숫자, 특수문자가 들어가야 합니다."
+        passwordError.innerHTML = "비번은 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다."
         confirmMsg.style.color = wrongColor;
         confirmMsg.innerHTML = "올바른 비밀번호를 입력해주세요."
     } else {
@@ -402,7 +417,7 @@ function btnRexExp() {
 
     //아이디 정규식 확인용 변수
     var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
-    let regExp1 = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+    let regExp1 = /^[a-z0-9_-]{3,15}$/g; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
 
     //비밀번호 정규식 확인용 변수
     var password = $('#comPw1').val();
@@ -410,6 +425,30 @@ function btnRexExp() {
     //이메일 정규식 확인용 변수
     let email = $('#email').val();
     let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
+
+    //사업자 등록번호 확인용 변수
+    let busiNum = $('#comBusiNum').val();
+    let regExp4 = /^\d{3}-\d{2}-\d{5}$/;
+
+    //사업자 등록번호 정규식 확인
+    let result4 = "false";
+    if(!regExp4.test(busiNum)) {
+        $('#comBusiNum').focus();
+    }else {
+        result4 = "true";
+    }
+
+    //전화번호 확인용 변수
+    let phone = $('#phone').val();
+    let regExp5 = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+    //전화번호 정규식 확인
+    let result5 = "false";
+    if(!regExp5.test(phone)) {
+        $('#phone').focus();
+    }else {
+        result5 = "true";
+    }
 
     //이메일 정규식 확인
     let result3 = "false";
@@ -444,9 +483,12 @@ function btnRexExp() {
         }
     }
 
-    if (result1 == "true" && result2 == "true" && result3 == "true") {
-        console.log(result1 + result2 + result3);
-        $('#contact-form').submit();
+    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true") {
+        // $('#contact-form').submit();
+        Swal.fire("회원가입 완료",comLoginId+"님 회원가입을 축하드립니다!","success")
+            .then(function (){  //alert창 확인 누르면 submit
+                $('#contact-form').submit();
+            });
     } else {
     }
 }
@@ -461,7 +503,7 @@ function btn_passwordChange() {
     //비밀번호 정규식 확인
     let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
     if (!regExp2.test(password)) {
-        Swal.fire("비밀번호 사용 불가!","비밀번호는 3~25자로 최소 하나의 문자, 숫자, 특수문자가 들어가야 합니다.","error");
+        Swal.fire("비밀번호 사용 불가!","비밀번호는 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다.","error");
         return false;
     } else {
         if(password == passwordConfirm){
@@ -472,22 +514,71 @@ function btn_passwordChange() {
     }
 
 }
+//
+// function regExpForComBusiNum(){
+//     let busiNum = $('#comBusiNum').val();
+//     let regExp4 = /^\d{3}-\d{2}-\d{5}$/;
+//
+//     //사업자 등록번호 정규식 확인
+//     let result4 = "false";
+//     if(!regExp4.test(busiNum)) {
+//         $('#comBusiNum').focus();
+//     }else{
+//         result4 = "true";
+//     }
+//
+//     return result4;
+// }
 
 //회원정보 수정 유효성 검사
 function btn_change_info(){
+    /** 순서 중요 - 이메일,전화번호,사업자 거꾸로 확인하여 맨 위에 양식 안 맞는 것부터 focus()*/
     //이메일 정규식 확인용 변수
     let email = $('#email').val();
     let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
 
     //이메일 정규식 확인
-    if(!regExp3.test(email)) {
-        $('#modal_open_btn').removeAttr("data-toggle");
-        //Swal.fire("이메일 양식을 확인해주세요.","","error");
+    let result3 = "false";
+    if(!regExp3.test(email)){
         $('#email').focus();
     } else {
-        //$('#confirmPasswordModal').modal();
+        result3 = "true";
+    }
+
+
+    //전화번호 확인용 변수
+    let phone = $('#phone').val();
+    let regExp5 = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+    //전화번호 정규식 확인
+    let result5 = "false";
+    if(!regExp5.test(phone)) {
+        $('#phone_alert').show();
+        $('#phone').focus();
+    }else {
+        $('#phone_alert').hide();
+        result5 = "true";
+    }
+
+    //사업자 등록번호 확인용 변수
+    let busiNum = $('#comBusiNum').val();
+    let regExp4 = /^\d{3}-\d{2}-\d{5}$/;
+
+    //사업자 등록번호 정규식 확인
+    let result4 = "false";
+    if(!regExp4.test(busiNum)) {
+        $('#busiNum_alert').show();
+        $('#comBusiNum').focus();
+    }else {
+        $('#busiNum_alert').hide();
+        result4 = "true";
+    }
+
+    if(result3 != "false" && result4 != "false" && result5 != "false") {
         $('#modal_open_btn').attr("data-toggle", "modal");
         $("#confirmPasswordModal").modal();
+    } else {
+        $('#modal_open_btn').removeAttr("data-toggle");
     }
 }
 
