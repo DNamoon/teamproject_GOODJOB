@@ -40,4 +40,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByMemId(Long memId);
 
+    @Query("select count(m) from Member m where m.memLoginId =:memLoginId")
+    int checkId2(@Param("memLoginId") String memLoginId);
+
 }
