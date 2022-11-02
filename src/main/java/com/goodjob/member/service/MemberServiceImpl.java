@@ -45,6 +45,11 @@ public class MemberServiceImpl implements MemberService {
     public Member register(Member member) {
         return memberRepository.save(member);
     }
+
+    @Override
+    public int checkId2(String comLoginId) {
+        return memberRepository.checkId2(comLoginId);
+    }
     @Override
     public Long countByMemLoginId(String memLoginId) {
         Long result = memberRepository.countByMemLoginId(memLoginId);
@@ -72,7 +77,8 @@ public class MemberServiceImpl implements MemberService {
         return memberDTO;
     }
     @Override
-    public void updateMemInfo(MemberDTO memberDTO) {
+    public void updateMemInfo(MemberDTO memberDTO, String memEmail) {
+        checkEmail(memEmail);
         Member mem =  memberDTO.toEntity();
         memberRepository.updateInfo(mem);
     }
@@ -124,10 +130,11 @@ public class MemberServiceImpl implements MemberService {
     /** 비밀번호 변경 **/
     @Override
     public void changePassword(String changePw, Long id) {
-         String encryptPassword = passwordEncoder.encode(changePw);
-         Member member = memberRepository.findByMemId(id);
-         member.updatePassword(encryptPassword);
-         memberRepository.save(member);
+        System.out.println(changePw+">>>>"+id);
+        String encryptPassword = passwordEncoder.encode(changePw);
+        Member member = memberRepository.findByMemId(id);
+        member.updatePassword(encryptPassword);
+        memberRepository.save(member);
         }
 
     //회원 탈퇴
