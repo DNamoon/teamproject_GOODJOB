@@ -6,6 +6,7 @@ import com.goodjob.post.Post;
 import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.service.PostService;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Controller
@@ -28,6 +30,23 @@ public class PostController {
     private final PostService postService;
     private final OccupationService occupationService;
     private final CompanyService companyService;
+
+
+    @GetMapping("/test")
+    public void test(String str){
+        tokenizerStringToList(str).forEach(e->log.info("list.............."+e));
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        log.info(booleanBuilder.hasValue());
+
+    }
+    private List<String> tokenizerStringToList(String keyword){
+        List<String> list = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(keyword," ");
+        while(st.hasMoreTokens()){
+            list.add(st.nextToken());
+        }
+        return list;
+    }
 
     @GetMapping("/savePost")
     public String postSaveForm(String redirectedFrom ,HttpServletRequest httpServletRequest, Model model){
