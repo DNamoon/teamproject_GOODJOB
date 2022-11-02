@@ -33,7 +33,7 @@ public class SecurityConfig  {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**","/login","/getPagingPostList","/search","/home","/post/**","/img/**","/customerInquiry/**").permitAll() // /auth이하의 주소들은 인증 필요x
+                .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**","/login","/getPagingPostList","/search","/home","/post/**","/img/**","/status/**","/customerInquiry/**").permitAll() // /auth이하의 주소들은 인증 필요x
                 .antMatchers("/css/**","/js/**").permitAll()
                 .anyRequest().authenticated().and()
                 .headers().frameOptions().disable();

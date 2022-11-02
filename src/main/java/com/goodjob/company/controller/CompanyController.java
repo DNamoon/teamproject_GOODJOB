@@ -5,8 +5,9 @@
  *
  * +22.10.26 회원가입 네이밍 변경(register -> signup)
  */
-package com.goodjob.company;
+package com.goodjob.company.controller;
 
+import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
 import lombok.extern.log4j.Log4j2;

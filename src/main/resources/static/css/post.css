@@ -125,6 +125,10 @@
         margin-bottom:10px;
         margin-top:5px;
     }
+    .comMyPage-post-search-title-btn{
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
     .comMyPage-post-search-title>h1{
         display:inline;
     }
@@ -172,6 +176,13 @@
     .comMyPage-post-search-search_input{
         margin-left: 6px;
     }
+    .comMyPage-post-search-search_submit, .comMyPage-post-search-clear_btn{
+        padding: 8px 15px 8px 15px;
+        margin-bottom: 0;
+    }
+    .comMyPage-post-search-clear_btn{
+        margin-right: 10px;
+    }
     /* comMyPage-post-search-search_box(검색 input box 끝 */
 
     /* comMyPage-post-search-option_box (추가설정 box) 시작 */
@@ -214,6 +225,10 @@
     .sort_box-size{
         margin-bottom: 0;
     }
+    .comMyPage-post-search-sort-btn{
+       padding: 8px 15px 8px 15px;
+       margin-bottom: 0;
+    }
 
     /* comMyPage-post-search-sort_box(정렬 box) 끝 */
 
@@ -227,10 +242,12 @@
     .comMyPage-post-table_row{
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         border-radius: 7px;
-        cursor:pointer;
     }
     .comMyPage-post-table_row:hover {
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .comMyPage-post-table_row-content, .material-symbols-outlined{
+        cursor:pointer;
     }
     .comMyPage-post-img{
         border-radius: 5px;

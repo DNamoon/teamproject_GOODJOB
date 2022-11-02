@@ -34,9 +34,9 @@ public class HomeController {
         pageRequestDTO.setSize(12);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
         model.addAttribute("occuAll",occuService.searchOccName());
-        model.addAttribute("regName",companyService.searchRegName());
         model.addAttribute("salaryRange",postService.searchSalaryRange());
         model.addAttribute("result",result);
+        log.info(result);
         return "searchPage";
     }
     @GetMapping(value = {"/"})
@@ -52,7 +52,7 @@ public class HomeController {
     @PostMapping(value = {"/getPagingPostList"})
     @ResponseBody
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
-        pageRequestDTO.setSize(8);
+        log.info("================================="+pageRequestDTO);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

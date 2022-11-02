@@ -1,0 +1,241 @@
+<!-- 박채원 22.10.31 작성 -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/resume/ResumeTemplate ::setContent(~{this::content})}">
+  <th:block th:fragment="content">
+    <section>
+      <div class="container py-4 flex-wrap" id="readResumeForm">
+        <div class="row">
+          <div class="col-lg-7 mx-auto" style="width : 900px">
+            <h3 class="text-center mx-auto">이력서</h3>
+            &nbsp;
+              <div class="card-body">
+                        <span style="float: right; font-size: 14px;"></span>
+                <h4 class="text-left">| 인적사항</h4>
+                &nbsp;
+                <div class="row" style="float: inline-start;">
+                  <div class="col-md-6">
+                    <label>성명</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${memberInfo.memName}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="width:400px">
+                    <label>생년월일</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="date" th:value="${memberInfo.memBirthDate}" readonly>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="float: inline-start;">
+                  <div class="col-md-6" style="width: 200px;">
+                    <label>휴대폰 번호</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${resumeMemInfo.memFirstPhoneNum}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-mb-6" style="width: 5px;">
+                    <label>&nbsp;</label>
+                    -
+                  </div>
+                  <div class="col-md-6" style="width: 200px;">
+                    <label>&nbsp;</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${resumeMemInfo.getMemMiddlePhoneNum()}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-mb-6" style="width: 5px;">
+                    <label>&nbsp;</label>
+                    -
+                  </div>
+                  <div class="col-md-6" style="width: 200px;">
+                    <label>&nbsp;</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${resumeMemInfo.getMemLastPhoneNum()}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="width: 150px; margin-left: 50px;">
+                    <label>성별</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${memberInfo.memGender}" readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="float: inline-start;">
+                  <div class="col-md-6" style="width: 400px;">
+                    <label>이메일</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${resumeMemInfo.memFirstEmail}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-mb-6" style="width: 5px;">
+                    <label>&nbsp;</label>
+                    @
+                  </div>
+                  &nbsp;&nbsp;
+                  <div class="col-md-6" style="width: 215px;">
+                    <label>&nbsp;</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${resumeMemInfo.memLastEmail}" readonly>
+                    </div>
+                  </div>
+                  <div class="row" style="float: inline-start;">
+                    <div class="col-md-6" style="width: 500px;">
+                      <label>주소</label>
+                      <div class="input-group mb-4">
+                        <input class="form-control" type="text" th:value="${resumeMemInfo.memFirstAddress}" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-6" style="width: 370px;">
+                      <label>상세주소</label>
+                      <div class="input-group mb-4">
+                        <input class="form-control" type="text" th:value="${resumeMemInfo.memLastAddress}" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 학적사항 -->
+              <div style="height: 30px;"></div>
+              <div class="card-body">
+                <h4 class="text-left">| 학적</h4>
+                &nbsp;
+                <div class="row" style="float: inline-start;">
+                  <div class="col-md-6" style="width: 250px;">
+                    <label>학교명</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${schoolInfo.schoolName}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="width: 250px;">
+                    <label>전공</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${schoolInfo.majorName}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="width: 180px;">
+                    <label>졸업년월</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control eduGraduationDate"
+                             type="date" th:value="${schoolInfo.eduGraduationDate}" readonly>
+                    </div>
+                  </div>
+                    <div class="col-md-6" style="width: 90px;">
+                      <label>학점</label>
+                      <div class="input-group mb-4">
+                        <input class="form-control" type="text" th:value="${schoolInfo.eduGetCredit}" readonly>
+                      </div>
+                    </div>
+                    <div class="col-mb-6" style="width: 5px;">
+                      <label>&nbsp;</label>
+                      /
+                    </div>
+                    <div class="col-md-6" style="width: 90px;">
+                      <label>&nbsp;</label>
+                      <div class="input-group mb-4">
+                        <input class="form-control" type="text" th:value="${schoolInfo.eduTotalCredit}" readonly>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div style="height: 30px;"></div>
+              <div class="card-body">
+                <h4 class="text-left">| 자격증</h4>
+                &nbsp;
+                <div class="row" style="float: inline-start;" th:each="certiInfo : ${certiInfo}">
+                  <div class="col-md-6" style="width: 480px;">
+                    <label>자격증명</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${certiInfo.certificateName}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="width: 200px;">
+                    <label>취득년월</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control certiGetDate" type="date" th:value="${certiInfo.certiGetDate}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-6" style="width: 200px;">
+                    <label>점수</label>
+                    <div class="input-group mb-4">
+                      <input class="form-control" type="text" th:value="${certiInfo.certiScore}" readonly>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="height: 30px;"></div>
+                <div class="card-body">
+                  <h4 class="text-left">| 경력사항</h4>
+                  &nbsp;
+                  <div th:each="careerInfo : ${careerInfo}">
+                    <div>
+                      <div class="row" style="float: inline-start;">
+                        <div class="col-md-6" style="width: 480px;">
+                          <label>회사명</label>
+                          <div class="input-group mb-4">
+                            <input class="form-control" type="text" th:value="${careerInfo.careerCompanyName}" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-6" style="width: 190px;">
+                          <label>근무기간</label>
+                          <div class="input-group mb-4">
+                            <input class="form-control" type="date" th:value="${careerInfo.careerJoinedDate}" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-6" style="width: 10px;">
+                          <label>&nbsp;</label>
+                          ~
+                        </div>
+                        <div class="col-md-6" style="width: 190px;">
+                          <label>&nbsp;</label>
+                          <div class="input-group mb-4">
+                            <input class="form-control careerRetireDate" type="date" th:value="${careerInfo.careerRetireDate}" readonly>
+                          </div>
+                        </div>
+                        <div class="form-group mb-4">
+                          <label>주요업무</label>
+                          <textarea class="form-control"
+                                    rows="3" th:value="${careerInfo.careerTask}" readonly style="resize: none;">[[${careerInfo.careerTask}]]</textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="height: 30px;"></div>
+                <div class="card-body">
+                  <h4 class="text-left">| 대외활동</h4>
+                  &nbsp;
+
+                  <div class="row" style="float: inline-start;">
+                    <div class="form-group mb-4">
+                      <textarea class="form-control" rows="10"
+                                          th:value="${selfIntroInfo.selfInterActivity}" readonly style="resize: none;">[[${selfIntroInfo.selfInterActivity}]]</textarea>
+                    </div>
+                  </div>
+                  <div style="height: 30px;"></div>
+                  <div class="card-body">
+                    <h4 class="text-left">| 자기소개서</h4>
+                    &nbsp;
+                    <div class="row" style="float: inline-start;">
+                      <div class="form-group mb-4">
+                        <textarea class="form-control" id="selfLetter"
+                                              rows="10" name="selfLetter" th:value="${selfIntroInfo.selfLetter}" readonly style="resize: none;">[[${selfIntroInfo.selfLetter}]]</textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 30px;"></div>
+      <div class="d-grid gap-2 col-4 mx-auto d-md-block" style="text-align: center;">
+        <button class="btn btn-secondary" type="button" onclick="WinPrint()">인쇄</button>
+        <button class="btn btn-danger" type="button" onclick="WinClose()">닫기</button>
+      </div>
+    </section>
+  </th:block>
+</th:block>
+</html>
