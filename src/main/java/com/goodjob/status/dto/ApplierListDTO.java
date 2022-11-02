@@ -23,4 +23,5 @@ public class ApplierListDTO {
     private String applierName;
     private String postTitle;
     private String postOccupation;
+    private Date postEndDate;
 }

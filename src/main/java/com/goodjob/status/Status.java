@@ -1,6 +1,5 @@
 package com.goodjob.status;
 
-import com.goodjob.member.Member;
 import com.goodjob.post.Post;
 import com.goodjob.resume.Resume;
 import lombok.AllArgsConstructor;
@@ -33,6 +32,9 @@ public class Status {
     //boolean 타입으로 합불합을 판단하려고 했는데 디폴트값이 false(불합격)라서 바꿈 - cw
     @Column(columnDefinition = "varchar(20) default '미정'")
     private String statPass;
+
+    @Column(nullable = false)
+    private Short statShow;
     
     @Column
     @CreationTimestamp

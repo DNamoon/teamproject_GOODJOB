@@ -61,4 +61,9 @@ public class StatusServiceImpl implements StatusService{
         return sendMailDTO;
     }
 
+    @Override
+    public int havePass(String loginId) {
+        return statusRepository.findByStatResumeId_ResumeMemId_MemLoginId(loginId);
+    }
+
 }

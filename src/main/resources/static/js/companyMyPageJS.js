@@ -16,8 +16,15 @@ function getApplierList(postId, pageNum){
                 '      <td>' + applier.applierName + '</td>\n' +
                 '      <td>' + applier.postTitle.substr(0, 10) + "..." + '</td>\n' +
                 '      <td>' + applier.postOccupation + '</td>\n' +
-                '      <td>' + applier.statApplyDate + '</td>\n' +
-                '    <td><a href="/resume/resumeRead/'+ applier.applierId +'/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm btn-info">이력서 열람</button></a></td>\n';
+                '      <td>' + applier.statApplyDate + '</td>\n';
+
+            //공고 마감 날짜 + 30일이랑 오늘 날짜 비교해서 이전 날짜이면 이력서 열람 비활성화
+            if(addDay(applier.postEndDate, 30) >= new Date()){
+                list += '    <td><a href="/resume/resumeRead/'+ applier.applierId +'/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm btn-info">이력서 열람</button></a></td>\n';
+            }else{
+                list += '    <td><button class="btn btn-sm btn-info" disabled>이력서 열람</button></td>\n';
+
+            }
 
             if(applier.statPass === '서류합격'){
                 list += '      <td style="color: #0a53be;">' + applier.statPass + '</td>\n';
@@ -75,4 +82,10 @@ function clickUnPass(statId){
             }
         })
     }
+}
+
+function addDay(date, days){
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
 }

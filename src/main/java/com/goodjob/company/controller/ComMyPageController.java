@@ -15,6 +15,6 @@ public class ComMyPageController {
     @GetMapping("/myPageApplier/{postId}")
     public String myPageApplierList(@PathVariable("postId") Long postId, Model model){
         model.addAttribute("postId", postId);
-        return "/company/companyMyPageApplyList2";
+        return "company/companyMyPageApplyList";
     }
 }

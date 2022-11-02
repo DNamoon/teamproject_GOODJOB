@@ -22,7 +22,7 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     @Query("update Resume r set r.resumeMemPhone =:memPhoneNum, r.resumeMemEmail =:memEmail, r.resumeMemAddress =:memAddress where r.resumeId =:resumeId")
     void updateMemberInfo(String memPhoneNum, String memEmail, String memAddress, Long resumeId);
 
-    List<Resume> getResumeByResumeMemId_MemLoginIdOrderByResumeId(String memId);
+    List<Resume> getResumeByResumeMemId_MemLoginIdAndDeletedOrderByResumeId(String memId, boolean deleted);
 
     @Transactional
     void deleteByResumeId(Long resumeId);
@@ -31,4 +31,9 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     @Modifying
     @Query("update Resume r set r.resumeTitle =:title where r.resumeId =:resumeId")
     void changeTitle(String title, Long resumeId);
+
+    @Transactional
+    @Modifying
+    @Query("update Resume r set r.deleted = true where r.resumeId =:resumeId")
+    void setDelete(Long resumeId);
 }

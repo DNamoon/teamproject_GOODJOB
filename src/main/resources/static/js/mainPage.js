@@ -1,3 +1,13 @@
+$(document).ready(function(){
+    havePass();
+})
+
+function havePass(){
+    if($("#havePass").val() > 0){
+        alert("서류 지원 결과가 나왔습니다.\n");
+    }
+}
+
 // mainPage.html 에서 쓰이는 JS
 let postJS = {
     pageRequestDTOForMainPage(page,size,sort){

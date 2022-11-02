@@ -21,6 +21,7 @@ public interface StatusService {
     void changePass(Long statId);
     void changeUnPass(Long statId);
     SendMailDTO getApplierToSendMail(Long statId);
+    int havePass(String loginId);
     default Status dtoToEntity(Long postId, Long resumeId){
         Post post = Post.builder().postId(postId).build();
         Resume resume = Resume.builder().resumeId(resumeId).build();
@@ -28,6 +29,7 @@ public interface StatusService {
         Status status = Status.builder()
                 .statPostId(post)
                 .statResumeId(resume)
+                .statShow((short) 0)
                 .build();
 
         return status;
@@ -59,6 +61,7 @@ public interface StatusService {
                 .applierName(status.getStatResumeId().getResumeMemId().getMemName())
                 .postTitle(status.getStatPostId().getPostTitle())
                 .postOccupation(status.getStatPostId().getPostOccCode().getOccName())
+                .postEndDate(status.getStatPostId().getPostEndDate())
                 .build();
 
         return applierListDTO;

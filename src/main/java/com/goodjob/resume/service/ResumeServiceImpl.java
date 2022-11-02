@@ -7,6 +7,7 @@ import com.goodjob.resume.Resume;
 import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.repository.ResumeRepository;
 import com.goodjob.resume.dto.ResumeDTO;
+import com.goodjob.status.repository.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeRepository resumeRepository;
     private final MemberRepository memberRepository;
+    private final StatusRepository statusRepository;
 
     @Override
     public Long registerResume(String loginId) {
@@ -66,14 +68,21 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public List<ResumeListDTO> getResumeList(String loginId) {
-        List<Resume> resumeList = resumeRepository.getResumeByResumeMemId_MemLoginIdOrderByResumeId(loginId);
+        List<Resume> resumeList = resumeRepository.getResumeByResumeMemId_MemLoginIdAndDeletedOrderByResumeId(loginId, false);
         return resumeList.stream().map(resume -> entityToListDTO(resume)).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteResume(List<String> resumeId) {
+    public void setDeleteResume(List<String> resumeId) {
+        //박채원 22.11.02 추가
+        //사용자가 지원 이력이 있는 이력서를 삭제하면 실제로 DB에서 삭제되는게 아니라 컬럼만 바꾸고 화면에는 보여주지 않음
         for(String id : resumeId){
-            resumeRepository.deleteByResumeId(Long.valueOf(id));
+            if(statusRepository.countStatusByStatResumeId_ResumeId(Long.valueOf(id)) > 0){
+                resumeRepository.setDelete(Long.valueOf(id));
+            }else{
+                //지원 이력이 없는 이력서는 DB에서도 삭제함
+                resumeRepository.deleteByResumeId(Long.valueOf(id));
+            }
         }
     }
 
