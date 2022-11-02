@@ -152,7 +152,7 @@ $(document).ready(function() {
                         title: '회원탈퇴',         // Alert 제목
                         text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
                     }).then(function (){
-                        location.replace('/');
+                        location.replace('/'); //뒤로가기 불가능
                     });
                 }else {
                     Swal.fire("비밀번호를 확인해주세요.")
@@ -184,14 +184,19 @@ function checkEmail(){
             // console.log("result :" + result);
             if (result == "com") {
                 sendEmail("com");
+                // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
+
                 alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             } else if(result == "mem") {
                 sendEmail("mem");
-             alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
+
+                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             }
             else if (result == "false") {
+                // Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
                alert("가입정보가 없는 이메일입니다.")
             }
         }).fail(function(error){
@@ -202,7 +207,6 @@ function checkEmail(){
 //임시비밀번호 메일발송
 function sendEmail(type){
     const memberEmail = $('#email').val();
-
     $.ajax({
         type: 'POST',
         url: '/member/sendPw',
