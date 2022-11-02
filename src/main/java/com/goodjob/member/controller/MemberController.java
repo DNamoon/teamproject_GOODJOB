@@ -108,7 +108,6 @@ public class MemberController {
             return "redirect:/login?error";  //id가 없는 경우
         }
     }
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
         HttpSession session = request.getSession(false);
