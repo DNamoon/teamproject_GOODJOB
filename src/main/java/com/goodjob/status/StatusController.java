@@ -61,4 +61,11 @@ public class StatusController {
       statusService.changeUnPass(statId);
       mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
    }
+
+   @ResponseBody
+   @PostMapping("/changeStatShow")
+   public void changeStatShow(HttpSession session){
+      String id = (String) session.getAttribute("sessionId");
+      statusService.changeStatShow(id);
+   }
 }

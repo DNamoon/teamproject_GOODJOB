@@ -42,18 +42,44 @@ public class HomeController {
         return "searchPage";
     }
     @GetMapping(value = {"/"})
-    public String main(PageRequestDTO pageRequestDTO, Model model, HttpSession session){
-        //박채원 22.11.02 추가 (아래로 4줄) - 합격한 회사가 있는지 확인
-//        String loginId = (String) session.getAttribute("loginId");
-//        Integer havePass = statusService.havePass(loginId);
-//        if(!loginId.equals(null) && havePass != null){
-//            model.addAttribute("havePass",statusService.havePass(loginId));
-//        }
+    public String main(PageRequestDTO pageRequestDTO, Model model, @ModelAttribute("havePass") String havePass){
         pageRequestDTO.setSize(8);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
         model.addAttribute("result",result);
+
+        //박채원 22.11.02 추가 (이하 4줄) - memberController의 login 메소드에서 넘긴 파라미터 값을 받기 위함
+        if(havePass.isBlank()){
+            havePass = "false";
+        }
+        model.addAttribute("havePass", havePass);
         return "mainPage";
     }
+
+//    @GetMapping(value = {"/"})
+//    public String main(PageRequestDTO pageRequestDTO, Model model, HttpSession session){
+//        pageRequestDTO.setSize(8);
+//        PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
+//        model.addAttribute("result",result);
+//
+//        String loginId = (String) session.getAttribute("sessionId");
+//        String type = (String) session.getAttribute("Type");
+//        System.out.println("================================");
+//        System.out.println(!loginId.equals("null"));
+//        System.out.println(statusService.havePass(loginId));
+//        System.out.println(type.equals("member"));
+//        if((!loginId.equals("null")) && statusService.havePass(loginId) && type.equals("member")){
+//            model.addAttribute("havePass",String.valueOf(statusService.havePass(loginId)));
+//        }else{
+//            model.addAttribute("havePass", "false");
+//        }
+//
+////        if(havePass.equals(null)){
+////            havePass = "false";
+////        }
+////        //박채원 22.11.02 추가 - memberController의 login 메소드에서 넘긴 파라미터 값을 받기 위함
+////        model.addAttribute("havePass", havePass);
+//        return "mainPage";
+//    }
 
     // mainPage.html 에서 인기, 최신, 연봉, 마감직전 순으로 정렬 클릭시 ajax로
     // 데이터를 보내주는 메소드

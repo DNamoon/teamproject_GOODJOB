@@ -62,8 +62,13 @@ public class StatusServiceImpl implements StatusService{
     }
 
     @Override
-    public int havePass(String loginId) {
-        return statusRepository.findByStatResumeId_ResumeMemId_MemLoginId(loginId);
+    public boolean havePass(String loginId) {
+        return statusRepository.existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndAndStatShowAndStatPass(loginId, (short) 0, "서류합격");
+    }
+
+    @Override
+    public void changeStatShow(String loginId) {
+        statusRepository.changeStatShow((short) 1,loginId);
     }
 
 }

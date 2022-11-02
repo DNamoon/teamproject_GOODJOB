@@ -1,11 +1,11 @@
-$(document).ready(function(){
+$(document).ready(function () {
     var pageNum = 0;
     var postId = $("#postId").val();
     getApplierList(postId, pageNum);
 })
 
 //지원자 리스트 출력
-function getApplierList(postId, pageNum){
+function getApplierList(postId, pageNum) {
     $.getJSON('/status/getApplierList/' + postId + '/' + pageNum, function (result){
         var list = '';
         $(".postTitle").text("공고명 [" + result.dtoList[0].postTitle + "] 의 서류 지원자입니다.");
@@ -58,12 +58,12 @@ function getApplierList(postId, pageNum){
     })
 }
 
-function clickPass(statId){
-    if(confirm("서류 합격 처리하시겠습니까?")){
+function clickPass(statId) {
+    if (confirm("서류 합격 처리하시겠습니까?")) {
         $.ajax({
             url: "/status/changePass/" + statId,
             type: "get",
-            success: function(){
+            success: function () {
                 alert("서류 합격 처리하였습니다.");
                 $(".passBtn" + statId).replaceWith('<td style="color: #0a53be;">서류합격</td>');
             }
@@ -71,12 +71,12 @@ function clickPass(statId){
     }
 }
 
-function clickUnPass(statId){
-    if(confirm("서류 불합격 처리하시겠습니까?")){
+function clickUnPass(statId) {
+    if (confirm("서류 불합격 처리하시겠습니까?")) {
         $.ajax({
             url: "/status/changeUnPass/" + statId,
             type: "get",
-            success: function(){
+            success: function () {
                 alert("서류 불합격 처리하였습니다.");
                 $(".passBtn" + statId).replaceWith('<td style="color: red;">서류불합격</td>');
             }
@@ -84,7 +84,7 @@ function clickUnPass(statId){
     }
 }
 
-function addDay(date, days){
+function addDay(date, days) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;

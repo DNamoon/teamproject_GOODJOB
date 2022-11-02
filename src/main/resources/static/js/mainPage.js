@@ -3,9 +3,18 @@ $(document).ready(function(){
 })
 
 function havePass(){
-    if($("#havePass").val() > 0){
-        alert("서류 지원 결과가 나왔습니다.\n");
+    if($("#havePass").val() === 'true'){
+        Swal.fire({
+            title: '서류 지원 합격결과가 나왔습니다.',         // Alert 제목
+            text: '이후 전형에 대한 안내는 이력서의 이메일을 확인해주세요',  // Alert 내용
+            icon: 'icon'
+        });
     }
+
+    $.ajax({
+        url: "/status/changeStatShow",
+        type: "post"
+    })
 }
 
 // mainPage.html 에서 쓰이는 JS

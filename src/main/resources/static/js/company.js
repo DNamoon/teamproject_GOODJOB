@@ -165,7 +165,7 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
-//비밀번호1,2 일치 여부 보여주는 fuction
+//비밀번호1,2 일치 여부 보여주는 function
 function passwordConfirm() {
     var password = document.getElementById('comPw1');
     var passwordConfirm = document.getElementById('comPw2');

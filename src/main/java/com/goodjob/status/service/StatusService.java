@@ -21,7 +21,8 @@ public interface StatusService {
     void changePass(Long statId);
     void changeUnPass(Long statId);
     SendMailDTO getApplierToSendMail(Long statId);
-    int havePass(String loginId);
+    boolean havePass(String loginId);
+    void changeStatShow(String loginId);
     default Status dtoToEntity(Long postId, Long resumeId){
         Post post = Post.builder().postId(postId).build();
         Resume resume = Resume.builder().resumeId(resumeId).build();
