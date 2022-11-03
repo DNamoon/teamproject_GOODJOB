@@ -6,15 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
  * 22.10.30 오성훈
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CustomerInquiryServiceImpl implements CustomerInquiryService {
 
@@ -37,9 +40,15 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     }
 
     @Override
+    public void updateInquiryPostWithAnswer(Long id, String inquiryPostAnswer, String inquiryPostAnswerName, LocalDateTime inquiryPostAnswerDate, String status) {
+        customerInquiryPostRepository.updateInquiryPostWithAnswer(id, inquiryPostAnswer, inquiryPostAnswerName, inquiryPostAnswerDate, status);
+    }
+
+    @Override
     public void deleteByInquiryPostId(Long inquiryPostId) {
         customerInquiryPostRepository.deleteById(inquiryPostId);
     }
+
 
     @Override
     public Page<CustomerInquiryPost> findInquiryListById(Pageable pageable, HttpServletRequest request) {

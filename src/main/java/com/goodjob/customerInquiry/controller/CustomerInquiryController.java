@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 22.10.30 오성훈 고객문의 컨트롤러 URI는 고민 후 간결하게 변경할 예정
@@ -69,7 +70,7 @@ public class CustomerInquiryController {
                     .inquiryPostContent(customerInquiryDTO.getInquiryPostContent())
                     .inquiryPostTitle(customerInquiryDTO.getInquiryPostTitle())
                     .inquiryPostWriter((String) session.getAttribute("sessionId"))
-                    .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
+                    .inquiryPostPublishedDate(LocalDateTime.now())
                     .inquiryPostStatus("0")
                     .build();
             customerInquiryService.saveInquiry(inquiryPostByCompany);
@@ -82,7 +83,7 @@ public class CustomerInquiryController {
                     .inquiryPostContent(customerInquiryDTO.getInquiryPostContent())
                     .inquiryPostTitle(customerInquiryDTO.getInquiryPostTitle())
                     .inquiryPostWriter((String) session.getAttribute("sessionId"))
-                    .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
+                    .inquiryPostPublishedDate(LocalDateTime.now())
                     .inquiryPostStatus("0")
                     .build();
             customerInquiryService.saveInquiry(inquiryPostByMember);

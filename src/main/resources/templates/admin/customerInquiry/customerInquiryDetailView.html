@@ -21,7 +21,8 @@
                             <div class="d-flex flex-row justify-content-end col-8">
                                 <div class="">
                                     <a role="button" class="text-white btn"
-                                       style="background-color: #344767;">취소</a>
+                                       th:href="@{/admin/customerInquiry}"
+                                       style="background-color: #344767;">목록</a>
                                 </div>
                             </div>
                         </div>
@@ -30,52 +31,137 @@
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="d-flex col">
                             <div class="col-2">
-                                <h6 class="text-center mt-2 mb-0">제목</h6>
-                                <h6 class="text-center mt-4 mb-0">내용</h6>
+                                <h6 class="text-center mt-2 mb-3 text-secondary">작성자</h6>
+                            </div>
+                            <div>
+                                <th:block th:if="${findInquiry.inquiryPostMemberId ne null}">
+                                    <h6 class="text-center mt-2 mb-3 ms-2"
+                                        th:text="*{inquiryPostMemberId.getMemLoginId()}"></h6>
+                                </th:block>
+                                <th:block th:if="${findInquiry.inquiryPostComId ne null}">
+                                    <h6 class="text-center mt-2 mb-3 ms-2"
+                                        th:text="*{inquiryPostComId.getComLoginId()}"></h6>
+                                </th:block>
+                            </div>
+                            <div class="col-2">
+                                <h6 class="text-center mt-2 mb-3 text-secondary">작성일</h6>
+                            </div>
+                            <h6 class=" mt-2 mb-3 ms-2"
+                                th:text="${#temporals.format(findInquiry.inquiryPostPublishedDate,'yyyy-MM-dd hh:mm')}"></h6>
+                        </div>
+                        <div class="d-flex col">
+                            <div class="col-2">
+                                <h6 class="text-center mt-2 mb-0 text-secondary">제목</h6>
+                                <h6 class="text-center mt-4 mb-0 text-secondary">내용</h6>
                             </div>
                             <div class="col-9">
                                 <div class="d-flex flex-row">
                                     <h6 class="mt-2 ms-2" th:text="*{inquiryPostTitle}"></h6>
                                 </div>
                                 <div class="d-flex flex-row card">
-                                    <div id="noticeContent" class="card-body flex-fill" style="min-height: 20rem">
+                                    <div id="noticeContent" class="card-body flex-fill p-2" style="min-height: 20rem">
+                                        <h6 style="width: 50rem" id="inquiryPostContent">
 
+                                        </h6>
                                     </div>
                                     <script th:inline="javascript">
-                                        noticeContent = [[${findInquiry.inquiryPostContent}]];
-                                        createTag = document.createElement('h6');
-                                        createTag.innerHTML = noticeContent;
-                                        document.querySelector('#noticeContent').append(createTag);
+                                        const inquiryPostContent = [[${findInquiry.inquiryPostContent}]];
+                                        inquiryPostContentH6 = document.querySelector('#inquiryPostContent');
+                                        inquiryPostContentH6.innerHTML = inquiryPostContent;
+                                        document.querySelector('#inquiryPostContent').append(inquiryPostContentH6);
                                     </script>
                                 </div>
                             </div>
                         </div>
-                        <form>
-                            <div class="card  mt-2">
+                        <th:block th:if="${findInquiry.inquiryPostStatus.equals('0')}">
+                            <form th:action="@{/admin/customerInquiry/{id}(id=*{inquiryPostId},requestURL=${#request.requestURI})}"
+                                  method="post">
+                                <div class="card  mt-2">
+                                    <div class="card-body px-0 pt-0 pb-1">
+                                        <div class="d-flex col">
+                                            <div class="col-2">
+                                                <h6 class="text-center mt-2 mb-0 text-secondary">답글</h6>
+                                            </div>
+                                            <div class="col-10">
+                                    <textarea type="text" class="form-control w-90"
+                                              placeholder="답변내용을 입력하세요" name="inquiryPostAnswer"
+                                              style="min-height: 10rem; resize: none;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body px-0 pt-0 pb-2">
+                                        <div class="d-flex col-11 justify-content-end">
+                                            <input type="submit" class="btn bg-gradient-dark" value="작성">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </th:block>
+                        <th:block th:if="${findInquiry.inquiryPostStatus.equals('1')}">
+                            <div class="card mt-2">
                                 <div class="card-body px-0 pt-0 pb-1">
                                     <div class="d-flex col">
                                         <div class="col-2">
-                                            <h6 class="text-center mt-2 mb-0">답글</h6>
+                                            <h6 class="text-center mt-2 mb-0 text-secondary">답변 내용</h6>
                                         </div>
                                         <div class="col-10">
-                                    <textarea type="text" class="form-control w-90"
-                                              placeholder="답변내용을 입력하세요"
-                                              style="min-height: 10rem; resize: none;"></textarea>
+                                            <div style="width: 50rem;" id="inquiryPostAnswer">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body px-0 pt-0 pb-2">
                                     <div class="d-flex col-11 justify-content-end">
-                                        <input type="submit" class="btn bg-gradient-dark">
+                                        <button id="updateBtn" role="button" class="btn bg-gradient-dark">수정</button>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </th:block>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+<script th:inline="javascript">
+    const content = [[${findInquiry.inquiryPostAnswer}]];
+    let customerInquiryId = [[${findInquiry.inquiryPostId}]];
+    $(document).ready(function () {
+        $('#updateBtn').click(function () {
+            $.ajax({
+                //////////////////// send(가는것)
+                url: "/admin/customerInquiry/update",
+                type: "get",
+                //	data : "t1=XYZ&t2=자차카", // 넘겨주는 데이터
+                data: {id: customerInquiryId, inquiryPostAnswer: content}, //위와동일
+
+                //////////////////// recv
+                success: function (data, status, xhr) { // status, xhr 생략가능
+                    alert("ok")
+                    location.href = window.location.pathname
+
+                    $("#demo").html(data);
+                    //	alert(status);  // 상태를 반환한다 (success)
+                    //	alert(xhr.responseText); // html문서 형태 전체를 출력한다.
+                },
+                error: function (xhr, status, error) { // (파라미터 생략가능)
+                },
+                complete: function (xhr, status) { // (파라미터 생략가능)
+                }
+            });
+        });
+    });
+
+
+    textarea = document.querySelector('#inquiryPostAnswer');
+    textarea.innerHTML = content;
+    document.querySelector('#inquiryPostAnswer').append(textarea);
+</script>
+<script th:inline="javascript">
+
+
+</script>
+</script>
 </body>
 </html>

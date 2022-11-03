@@ -8,8 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 /**
  * 22.10.30 오성훈
@@ -40,7 +42,7 @@ public class CustomerInquiryPost {
 
     @Column
     @CreationTimestamp
-    private Date inquiryPostPublishedDate;
+    private LocalDateTime inquiryPostPublishedDate;
 
     @Column(columnDefinition = "boolean default 0")
     private String inquiryPostStatus;
@@ -52,8 +54,7 @@ public class CustomerInquiryPost {
     private String inquiryPostAnswer;
 
     @Column
-    @CreationTimestamp
-    private Date inquiryPostAnswerDate;
+    private LocalDateTime inquiryPostAnswerDate;
 
     @ManyToOne
     private Member inquiryPostMemberId;

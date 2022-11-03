@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 관리자 컨트롤러 By.OH
@@ -83,42 +86,50 @@ public class AdminController {
     }
 
     @GetMapping("/memberManage")
-    public String adminMemberPage(){
+    public String adminMemberPage() {
         return "/admin/managePage/adminMemberManage";
     }
 
     @GetMapping("/customerInquiry")
-    public String adminCustomerInquiryList(Model model){
+    public String adminCustomerInquiryList(Model model) {
         Pageable Pageable = PageRequest.of(0, 10, Sort.by("inquiryPostId").descending());
-        model.addAttribute("inquiryPostList",customerInquiryService.findAll(Pageable));
+        model.addAttribute("inquiryPostList", customerInquiryService.findAll(Pageable));
         return "admin/customerInquiry/customerInquiryList";
     }
 
     @GetMapping("/customerInquiry/{id}")
-    public String inquiryPostView(@PathVariable("id")Long id,Model model){
-        model.addAttribute("findInquiry",customerInquiryService.findOne(id).orElse(null));
+    public String inquiryPostView(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("findInquiry", customerInquiryService.findOne(id).orElse(null));
         return "admin/customerInquiry/customerInquiryDetailView";
     }
+
     @PostMapping("/customerInquiry/{id}")
-    public String inquiryPostReply(@PathVariable("id")Long id,Model model,
-                                   CustomerInquiryPostAnswerDTO customerInquiryPostAnswerDTO){
-        return "redirect:admin";
+    public String inquiryPostReply(@PathVariable("id") Long id, @RequestParam("requestURL") String requestURL,
+                                   @RequestParam("inquiryPostAnswer") String inquiryPostAnswer) {
+        customerInquiryService.updateInquiryPostWithAnswer(id,
+                inquiryPostAnswer,
+                AdminConst.ADMIN,
+                LocalDateTime.now(),
+                "1"
+        );
+        return "redirect:" + requestURL;
     }
 
     /**
      * 22.10.30 오성훈 이하 테스트메소드 차후 삭제예정.
      */
     @GetMapping("/test")
-    public String test(){
+    public String test() {
         return "post/postDetailViewWithMap";
     }
 
     @PostMapping("/test")
-    public String test2(@ModelAttribute PostInsertDTO post){
-            return "admin/adminHome";
+    public String test2(@ModelAttribute PostInsertDTO post) {
+        return "admin/adminHome";
     }
+
     @GetMapping("/test2")
-    public String test3(){
+    public String test3() {
         return "post/postDetailView";
     }
 }

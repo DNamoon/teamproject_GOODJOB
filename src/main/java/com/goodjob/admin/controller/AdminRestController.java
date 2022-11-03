@@ -1,5 +1,6 @@
 package com.goodjob.admin.controller;
 
+import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.apexchart.GenderDTO;
 import com.goodjob.admin.apexchart.PostStatistics;
 import com.goodjob.admin.apexchart.VisitorStatistics;
@@ -16,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -124,5 +127,13 @@ public class AdminRestController {
         }
         String jsonString = jsonObject.toString();
         return jsonString;
+    }
+
+    @GetMapping("/customerInquiry/update")
+    public void inquiryPostReply(@Param("id") Long id,
+                                 @Param("inquiryPostAnswer") String inquiryPostAnswer) {
+        log.info("OSHID={}", id);
+        log.info("OSHID={}", inquiryPostAnswer);
+        customerInquiryService.updateInquiryPostWithAnswer(id,inquiryPostAnswer,AdminConst.ADMIN,LocalDateTime.now(),"0");
     }
 }
