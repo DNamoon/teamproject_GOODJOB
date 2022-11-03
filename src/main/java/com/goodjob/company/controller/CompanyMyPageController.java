@@ -6,8 +6,8 @@ package com.goodjob.company.controller;
 import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,15 +19,24 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@Log4j2
 @RequestMapping("/com")
+@RequiredArgsConstructor
+@Log4j2
 public class CompanyMyPageController {
 
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/myPagePost")
+    public String myPageForm(){
+        return "/company/companyMyPagePostList";
+    }
+
+    @GetMapping("/myPageApplier")
+    public String myPageApplierList(){
+        return "/company/companyMyPageApplyList";
+    }
 
     //ho - 22.10.17 마이페이지 세션 넘기기+
     @GetMapping("/myPage")
@@ -116,7 +125,7 @@ public class CompanyMyPageController {
     private int matchPassword(HttpSession session, @RequestParam("pw") String password) {
 
         String comPw = getSessionLoginId(session).getComPw();
-        
+
         if(password == null || !passwordEncoder.matches(password,comPw)) {
             return 0;
         } else {
