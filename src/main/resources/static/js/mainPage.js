@@ -5,9 +5,9 @@ $(document).ready(function(){
 function havePass(){
     if($("#havePass").val() === 'true'){
         Swal.fire({
-            title: '서류 지원 합격결과가 나왔습니다.',         // Alert 제목
-            text: '이후 전형에 대한 안내는 이력서의 이메일을 확인해주세요',  // Alert 내용
-            icon: 'icon'
+            title: '서류지원에 합격하였습니다',
+            text: '이후 전형에 대한 안내는 이력서의 이메일을 확인해주세요',
+            icon: 'info'
         });
     }
 

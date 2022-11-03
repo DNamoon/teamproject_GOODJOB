@@ -72,10 +72,7 @@ public class StatusServiceImpl implements StatusService{
     @Override
     public void changeStatShow(String loginId) {
         List<Long> list = statusRepository.getStatId(loginId);
-        System.out.println("====================");
-        System.out.println(list);
         for(Long statId : list){
-            System.out.println(statId);
             statusRepository.changeStatShow(statId);
         }
     }

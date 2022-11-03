@@ -37,7 +37,6 @@ function getJSONResumeList() {
 function doneSelectResume(){
     var selectResumeId = $("input:radio[name='selectResumeId']:checked").val();
     var postId = $("#postId").val();
-    
 
     $.ajax({
         url: "/status/applyResume/" + postId,

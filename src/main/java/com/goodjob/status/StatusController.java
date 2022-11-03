@@ -65,9 +65,7 @@ public class StatusController {
    @ResponseBody
    @PostMapping("/changeStatShow")
    public void changeStatShow(HttpSession session){
-      System.out.println("컨트롤러 changeStatShow 실행");
       String id = (String) session.getAttribute("sessionId");
-      System.out.println(id);
       statusService.changeStatShow(id);
    }
 }
