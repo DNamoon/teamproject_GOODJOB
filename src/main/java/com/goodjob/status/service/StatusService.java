@@ -30,7 +30,7 @@ public interface StatusService {
         Status status = Status.builder()
                 .statPostId(post)
                 .statResumeId(resume)
-                .statShow((short) 0)
+                .statShow(false)
                 .build();
 
         return status;

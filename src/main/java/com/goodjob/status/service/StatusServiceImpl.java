@@ -1,11 +1,13 @@
 package com.goodjob.status.service;
 
 import com.goodjob.post.postdto.PageResultDTO;
+import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
 import com.goodjob.status.dto.ApplierListDTO;
 import com.goodjob.status.dto.ApplyListDTO;
 import com.goodjob.status.dto.SendMailDTO;
 import com.goodjob.status.repository.StatusRepository;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -56,19 +59,25 @@ public class StatusServiceImpl implements StatusService{
 
     @Override
     public SendMailDTO getApplierToSendMail(Long statId) {
-        log.info("=========== 메일발송 ===========");  //보안? 그런거때문에 오류남
+        log.info("=========== 메일발송 ===========");
         SendMailDTO sendMailDTO = entityToSendMailDTO(statusRepository.findOneApplier(statId));
         return sendMailDTO;
     }
 
     @Override
     public boolean havePass(String loginId) {
-        return statusRepository.existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndAndStatShowAndStatPass(loginId, (short) 0, "서류합격");
+        return statusRepository.existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(loginId,"서류합격");
     }
 
     @Override
     public void changeStatShow(String loginId) {
-        statusRepository.changeStatShow((short) 1,loginId);
+        List<Long> list = statusRepository.getStatId(loginId);
+        System.out.println("====================");
+        System.out.println(list);
+        for(Long statId : list){
+            System.out.println(statId);
+            statusRepository.changeStatShow(statId);
+        }
     }
 
 }

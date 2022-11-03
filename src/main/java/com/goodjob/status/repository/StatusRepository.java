@@ -1,12 +1,15 @@
 package com.goodjob.status.repository;
 
 import com.goodjob.status.Status;
+import org.apache.catalina.LifecycleState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -27,10 +30,12 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     void updateStatUnPass(Long statId);
     @Query("select s from Status s where s.statId =:statId")
     Status findOneApplier(Long statId);
-    boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndAndStatShowAndStatPass(String loginId, Short show, String pass);
+    boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(String loginId, String pass);
     int countStatusByStatResumeId_ResumeId(Long resumeId);
     @Transactional
     @Modifying
-    @Query("update Status s set s.statShow =:show where s.statResumeId.resumeMemId.memLoginId =:loginId and s.statPass='서류합격'")
-    void changeStatShow(Short show, String loginId);
+    @Query("update Status s set s.statShow = true where s.statId =:statId")
+    void changeStatShow(Long statId);
+    @Query("select s.statId from Status s where s.statResumeId.resumeMemId.memLoginId =:loginId and s.statPass='서류합격' and s.statShow=false")
+    List<Long> getStatId(String loginId);
 }

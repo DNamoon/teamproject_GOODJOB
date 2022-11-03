@@ -105,9 +105,12 @@ public class MemberController {
                     //박채원 22.11.02 추가 (이하 5줄) - 합격한 회사가 있는지 확인
                     String loginId = (String) session.getAttribute("sessionId");
                     String type = (String) session.getAttribute("Type");
-                    if((!loginId.equals(null)) && statusService.havePass(loginId) && type.equals("member")){
+                    if(statusService.havePass(loginId)){
                         redirectAttributes.addAttribute("havePass",String.valueOf(statusService.havePass(loginId)));
                     }
+//                    if((!loginId.equals(null)) && statusService.havePass(loginId) && type.equals("member")){
+//                        redirectAttributes.addAttribute("havePass",String.valueOf(statusService.havePass(loginId)));
+//                    }
                     return "redirect:/"; // 로그인 성공 시 메인페이지
                 } else {
                     return "redirect:/login?error";  //pw가 틀린 경우

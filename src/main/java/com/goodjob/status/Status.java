@@ -15,6 +15,7 @@ import java.sql.Date;
 
 /**
  * 박채원 22.10.26 수정 - 합불합, 지원날짜 추가
+ * 박채원 22.11.02 수정 - 합격결과 출력여부 컬럼 추가
  */
 
 @AllArgsConstructor
@@ -34,7 +35,7 @@ public class Status {
     private String statPass;
 
     @Column(nullable = false)
-    private Short statShow;
+    private Boolean statShow;
     
     @Column
     @CreationTimestamp
