@@ -155,7 +155,7 @@ $(document).ready(function() {
                         location.replace('/'); //뒤로가기 불가능
                     });
                 }else {
-                    Swal.fire("비밀번호를 확인해주세요.")
+                    Swal.fire("ERROR","비밀번호를 확인해주세요.","error");
                 }
             }
         })
@@ -186,18 +186,17 @@ function checkEmail(){
                 sendEmail("com");
                 // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
 
-                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             } else if(result == "mem") {
                 sendEmail("mem");
-                // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
 
-                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             }
             else if (result == "false") {
-                // Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
-               alert("가입정보가 없는 이메일입니다.")
+                Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
+               // alert("가입정보가 없는 이메일입니다.")
             }
         }).fail(function(error){
             alert(JSON.stringify(error));
@@ -214,7 +213,7 @@ function sendEmail(type){
             'memberEmail' : memberEmail,
             'mailType': type
         },success: function(result){
-            console.log(result);
+            Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
         },
         error: function(error){
             alert("ㅇㅇㅇㅇㅇㅇ"+JSON.stringify(error));
