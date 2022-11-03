@@ -76,7 +76,7 @@ public class MemMyPageController {
         }
         return "1";
     }
-    /** 비밀번호 변경 전 기존 비밀번호 확인**/
+    /** 비밀번호 변경 전 기존 비밀번호 확인 **/
     @PostMapping("/changePw")
     @ResponseBody
     public String changePwCheck(@RequestParam("checkPw")String checkPw, @RequestParam("id")String loginId){
