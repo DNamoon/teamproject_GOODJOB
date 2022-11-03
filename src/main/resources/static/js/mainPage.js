@@ -1,30 +1,46 @@
-// mainPage.html 에서 쓰이는 JS
+// mainPage.html JS
 let postJS = {
-    pageRequestDTOForMainPage(page,size,sort){
+    init(){
+      const _this = this;
+      _this.insertPostListCard('changeContentDiv',1,8,'new');
+    },
+    pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary){
         return {
         page: page,
         size: size,
-        sort: sort
+        sort: sort,
+        filterOccupation: filterOccupation,
+        filterAddress: filterAddress,
+        filterSalary: filterSalary
         }
     },
-
-    list(targetDomClassName,page,size,sort){
+    insertPostListCard(targetDomClassName,page,size,sort,filterOccupation, filterAddress, filterSalary){
         const _this = this;
         const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
 
         // console.log(document.querySelector(".postDetailOccName").textContent)
-        fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort))
+        fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary))
             .then(data => {
                 console.log("data :" + data);
                 // ajax 받아오기 전에 자식노드들 삭제
                 while(changeContentDiv.hasChildNodes()){
                     changeContentDiv.removeChild(changeContentDiv.firstChild);
                 }
-                for(let dto of data.dtoList){
-                    console.log(dto);
-                    changeContentDiv.appendChild(this.makePostListHtml(dto));
+                if(data.totalCount !==0){
+                    for(let dto of data.dtoList){
+                        console.log(dto);
+                        changeContentDiv.appendChild(this.makePostListHtml(dto));
+                    }
+                } else {
+                    const ifEmptyDiv = document.createElement('div');
+                    ifEmptyDiv.classList.add('empty_box');
+                    const div = document.createElement('div');
+                    div.style.margin="auto";
+                    div.style.textAlign="center";
+                    ifEmptyDiv.appendChild(div);
+                    div.innerHTML='<p class="empty_box-message">일치하는 자료가 없습니다</p>'
+                    changeContentDiv.appendChild(ifEmptyDiv);
                 }
-
             })
             .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
     },
@@ -32,8 +48,6 @@ let postJS = {
         // 공고 html 생성 코드
         const postWrapper = document.createElement("div");
         postWrapper.classList.add("mainPage-wrapper");
-        // const goToPostDetails = document.createElement("a");
-        // goToPostDetails.setAttribute("href",`/mainPage/read?postId=${dto.id}`);
         const div1 = document.createElement("div");
         div1.classList.add("col", "p-0");
         const div2 = document.createElement("div");
@@ -41,7 +55,7 @@ let postJS = {
 
         const div3 = document.createElement("div");
         div3.classList.add("w-100","p-0","h-50","img-css");
-        div3.setAttribute("onclick",`location.href="/post/read?postId=${dto.id}"`)
+        div3.setAttribute("onclick",`location.href="/post/readPost/${dto.id}"`)
         const img = document.createElement("img");
         img.setAttribute("src","https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08");
         img.classList.add("w-100","h-100","card-img-post");
@@ -81,13 +95,13 @@ let postJS = {
     }
 
 }
-// comMyPagePost.html 에서 쓰이는 JS
+// comMyPagePost.html JS
 let comMyPagePost = {
     init(){
       const _this = this;
       _this.setClearSearchCondition();
     },
-    getPostListMapping: "comMyPagePost",
+    comMyPagePostUri: "comMyPagePost",
     getFormDom : function(){
         return document.querySelector(".comMyPage-post-search-form");
     },
@@ -129,7 +143,7 @@ let comMyPagePost = {
         clearBtn.addEventListener("click", function(e)
         {
             e.preventDefault()
-            location.href=`/${fetchJs.uri}${_this.getPostListMapping}`
+            location.href=`/${fetchJs.uri}${_this.comMyPagePostUri}`
         });
     },
     updatePost(postId){
@@ -137,21 +151,50 @@ let comMyPagePost = {
     }
 
 }
+
+// searchPage.html JS
 let searchPage = {
     init(){
         const _this=this;
-
     },
-    searchPage:"searchPage",
-    redirectToRegisterPage(redirectedFrom){
-        location.href=`${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
-    }
+
+    searchPageUri:"searchPage",
+
+
 }
+// postInsertForm.html JS
 let postInsertForm ={
     backToRedirectedFrom(redirectedFrom){
         console.log(redirectedFrom);
         location.href=`/post/${redirectedFrom}`;
     },
+    redirectToRegisterPage(redirectedFrom){
+        location.href=`/${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
+    }
+}
+
+// postDetailViewWithMap.html JS
+let postDetailViewWithMap = {
+    init(dto){
+        console.log(dto);
+        const _this = this;
+        console.log(dto.occName);
+        postJS.insertPostListCard('changePostDiv',1,4,'count',dto.occName);
+        _this.setRedirectToUpdatePage(_this.postDetailViewWithMap,dto.postId);
+    },
+    postDetailViewWithMap:"postDetailViewWithMap",
+    redirectToUpdatePage(redirectedFrom, postId){
+        location.href=`/${fetchJs.uri}updatePost/${postId}`
+    },
+    setRedirectToUpdatePage(redirectedFrom, postId){
+        const _this = this;
+        const btn = document.querySelector(".post-read-side_bar-toModifyBtn");
+        btn.addEventListener("click",function (){
+            _this.redirectToUpdatePage(redirectedFrom,postId);
+        })
+    }
+
+
 }
 
 

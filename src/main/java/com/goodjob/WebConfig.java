@@ -1,6 +1,7 @@
 package com.goodjob;
 
 import com.goodjob.admin.interceptor.AdminLoginCheckInterceptor;
+import com.goodjob.post.interceptors.ComLoginCheckInterCeterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -23,6 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/admin/**") // 인터셉터를 적용할 URI
                 .excludePathPatterns("/css/**", "/*.ico", "/error", "/admin/login","/assets/**","/*.css","/*.js"); // 제외 URI
+        registry.addInterceptor(new ComLoginCheckInterCeterceptor())
+                .order(2)
+                .addPathPatterns("/post/**")
+                .excludePathPatterns("/post/readPost/**");
 
     }
     // 썸머노트(텍스트 에디터)에 대한 요청 응답 핸들러

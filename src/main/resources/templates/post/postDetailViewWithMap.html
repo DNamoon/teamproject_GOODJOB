@@ -9,15 +9,28 @@
             <div class="col p-0 d-flex">
                 <div class="col-9 ps-0">
                     <div class="ps-5">
-                        <div class="d-flex flex-row mt-2 ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-                                        <img class="img-fluid" th:src="@{/img/testImage.png}">
-                                    </div>
+                        <div class="d-flex flex-row mt-2 ps-5 carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" class="d-block w-100" alt="...">
                                 </div>
                             </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
+
                         <div class="d-flex flex-row mt-2 ps-5">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
@@ -62,16 +75,16 @@
                                     <div class="col-12">
                                         <div class="d-flex">
                                             <div class="col-2 p-0">
+                                                <h6 class="text-secondary">시작일</h6>
+                                            </div>
+                                            <div class="col-3">
+                                                <h6>[[${dto.startDate}]]</h6>
+                                            </div>
+                                            <div class="col-2 p-0">
                                                 <h6 class="text-secondary">마감일</h6>
                                             </div>
                                             <div class="col-3">
                                                 <h6>[[${dto.endDate}]]</h6>
-                                            </div>
-                                            <div class="col-2 p-0">
-                                                <h6 class="text-secondary">D-day</h6>
-                                            </div>
-                                            <div class="col-3">
-                                                <h6>[[${dto.remainDay}]]</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -87,7 +100,7 @@
                                                 <h6 class="text-secondary">근무지역</h6>
                                             </div>
                                             <div class="col-10">
-                                                <h6 class="post-details-postAddress">[[${dto.postAddress}]]</h6>
+                                                <h6 class="post-details-postAddress">[[${dto.postAddress1}]] [[${dto.postAddress2}]]</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +186,7 @@
                                 <div class="d-flex flex-fill">
                                     <div class="col-6">
                                         <h6>근무지</h6>
-                                        <h6 class="text-secondary">[[${dto.regionName}]]</h6>
+                                        <h6 class="text-secondary">[[${dto.postAddress1}]]</h6>
                                     </div>
                                     <div class="col-6">
                                         <h6>D-day</h6>
@@ -181,18 +194,27 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-fill mt-3">
-                                    <div class="col-6">
-                                        <a role="button" class="btn"
-                                           style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;"><i
-                                                class="bi bi-bookmark"></i>북마크</a>
-                                    </div>
-                                    <div class="col-6">
-<!--                                        <a role="button" class="btn"-->
-<!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
-                                        <input type="hidden" th:value="${dto.postId}" id="postId">
-                                        <button type="button" class="btn btn-primary applyBtn" data-bs-toggle="modal"
-                                                data-bs-target="#selectResumeModal" style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</button>
-                                    </div>
+                                    <th:block th:if="${isCompanySession != true}">
+                                        <div class="col-6">
+                                            <a role="button" class="btn"
+                                               style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;"><i
+                                                    class="bi bi-bookmark"></i>북마크</a>
+                                        </div>
+                                        <div class="col-6">
+                                            <!--                                        <a role="button" class="btn"-->
+                                            <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
+                                            <input type="hidden" th:value="${dto.postId}" id="postId">
+                                            <button type="button" class="btn btn-primary applyBtn" data-bs-toggle="modal"
+                                                    data-bs-target="#selectResumeModal" style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</button>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${isCompanySession == true}">
+                                        <div class="col-12" style="text-align: center">
+                                            <a role="button" class="btn post-read-side_bar-toModifyBtn"
+                                               style="color: #0d6efd; background-color: #fff; border-color: #0d6efd; margin:auto"
+                                            >수정하기</a>
+                                        </div>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>
@@ -209,26 +231,7 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4" >
-                        <th:block th:each="dto2:${result.dtoList}">
-                        <div class="col-3 p-0" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
-                            <div class="p-0 m-2 card-css ">
 
-                                <div class="w-100 p-0 h-50 img-css">
-                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"
-                                         class=" w-100 h-100 card-img-post">
-                                </div>
-
-                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
-                                    <p class="card-title-post">[[${dto2.title}]]</p>
-                                    <p class="card-company-post">[[${dto2.comName}]]</p>
-                                    <p class="card-text-post">연봉 | [[${dto2.salaryRange}]]</p>
-                                    <p class="card-text-post">위치 | [[${dto2.regionName}]]</p>
-                                    <p class="card-text-post">직종 | [[${dto2.occName}]]</p>
-                                    <p class="card-dDay-post">[[${dto2.remainDay}]]</p>
-                                </div>
-                            </div>
-                        </div>
-                        </th:block>
 
                     </div>
                  </div>
@@ -272,7 +275,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row" style="float: inline-start;">
+                        <div class="row" style="">
                             <div class="resumeList">
 
                             </div>
@@ -306,6 +309,10 @@
                 $('#copy_icon').attr('class', 'bi bi-clipboard-check fs-4 m-0')
             })
 
+
+        </script>
+        <script type="text/javascript" th:inline="javascript">
+            postDetailViewWithMap.init([[${dto}]]);
         </script>
 
     </th:block>

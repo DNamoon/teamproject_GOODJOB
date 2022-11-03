@@ -2,6 +2,19 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 /*mainPage.html 공고 카드 css*/
+    .empty_box{
+        border: solid 1px black;
+        width: 80%;
+        height: 250px;
+        margin: auto;
+        display:flex;
+    }
+    .empty_box-message{
+        margin: auto;
+        font-size: 1.2rem;
+        font-family: Pretendard,Pretendard JP,Pretendard Std,-apple-system,system-ui,BlinkMacSystemFont,Roboto,Segoe UI,Helvetica,Arial,Apple SD Gothic Neo,Nanum Gothic,Malgun Gothic,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,sans-serif;
+        color: var(--bs-heading-color);
+    }
 
     .card-title-post{
         position: relative;
@@ -258,7 +271,7 @@
     /* 공고 카드 이미지+음영+hovering css 끝 */
 
 /*2022-10-29 - jhc comMyPagePost.html 기업마이페이지 css 끝*/
-/*2022-10-30 - jhc postDetailView.html 공고 조회 페이지 css 시작*/
+/*2022-10-30 - jhc searchPage.html 공고 검색페이지 css 시작*/
 .post-search-header{
     display: flex;
     flex-flow: row wrap; /* Shorthand for flex-direction: row and flex-wrap: wrap */
@@ -300,4 +313,7 @@
     margin-bottom: 0;
     padding-bottom: 15px;
 }
+/*2022-10-30 - jhc searchPage.html 공고 검색페이지 css 끝*/
+/*2022-10-30 - jhc postDetailView.html 공고 조회 페이지 css 시작*/
+
 /*2022-10-30 - jhc postDetailView.html 공고 조회 페이지 css 끝*/

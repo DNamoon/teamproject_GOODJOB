@@ -14,10 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,10 +36,8 @@ public class PostController {
 
 
     @GetMapping("/test")
-    public void test(String str){
-        tokenizerStringToList(str).forEach(e->log.info("list.............."+e));
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        log.info(booleanBuilder.hasValue());
+    public String test(String str){
+        return "/error/postError";
 
     }
     private List<String> tokenizerStringToList(String keyword){
@@ -50,6 +51,7 @@ public class PostController {
 
     @GetMapping("/savePost")
     public String postSaveForm(String redirectedFrom ,HttpServletRequest httpServletRequest, Model model){
+
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
         model.addAttribute("comInfo",postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
@@ -57,11 +59,11 @@ public class PostController {
         model.addAttribute("redirectedFrom", redirectedFrom);
         return "/post/postInsertForm";
     }
-
-
-
     @PostMapping("/savePost")
-    public String postSave(PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
+    public String postSave(@Valid PostInsertDTO postInsertDTO, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) throws IOException {
+        if(bindingResult.hasErrors()){
+            return "redirect:/post/comMyPagePost";
+        }
         log.info("===================="+postInsertDTO);
         postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         postService.savePost(postInsertDTO);
@@ -69,7 +71,7 @@ public class PostController {
     }
 
     @GetMapping(value = {"/updatePost/{postId}"})
-    public String postUpdate(@PathVariable(name="postId")Long postId, HttpServletRequest httpServletRequest, Model model){
+    public String postUpdate(@PathVariable(name="postId")Long postId, String redirectedFrom, HttpServletRequest httpServletRequest, Model model){
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
         PostInsertDTO postInsertDTO = postService.getPostById(postId);
         model.addAttribute("comInfo",postService.getComInfo(sessionId));
@@ -107,14 +109,11 @@ public class PostController {
     // postId 값으로 개별 공고를 조회하는 페이지로 이동하는 메소드
     @GetMapping(value = {"/readPost/{postId}"})
     @Transactional
-    public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model){
+    public String readPost(@PathVariable(name = "postId") Long postId, HttpServletRequest httpServletRequest, PageRequestDTO pageRequestDTO, Model model){
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         model.addAttribute("dto",postDetailsDTO);
-        pageRequestDTO.setPage(1);
-        pageRequestDTO.setSize(4);
-        pageRequestDTO.setSort("count");
-        pageRequestDTO.setFilterOccupation(postDetailsDTO.getOccName());
-        model.addAttribute("result",postService.getPagingPostList(pageRequestDTO));
+        Boolean isCompanySession = getSessionInfo(httpServletRequest, "Type") != null;
+        model.addAttribute("isCompanySession", isCompanySession);
         return "/post/postDetailViewWithMap";
     }
 
@@ -124,14 +123,16 @@ public class PostController {
     // "sessionId" -> 유저나 기업회원 로그인 ID 값
     private String getSessionInfo(HttpServletRequest httpServletRequest, String typeOrSessionId){
         HttpSession httpSession = httpServletRequest.getSession(false);
-        // 세션 타입 체크
-        if (typeOrSessionId.equals("Type")) {
-            return httpSession.getAttribute("Type").toString();
-        } else if (typeOrSessionId.equals("sessionId")) {
-            return httpSession.getAttribute("sessionId").toString();
-        } else {
-            return null;
+        if(httpSession != null){
+            // 세션 타입 체크
+            if (typeOrSessionId.equals("Type")) {
+                return httpSession.getAttribute("Type").toString();
+            } else if (typeOrSessionId.equals("sessionId")) {
+                return httpSession.getAttribute("sessionId").toString();
+            } else {
+                return null;
+            }
         }
-
+        return null;
     }
 }

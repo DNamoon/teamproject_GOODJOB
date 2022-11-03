@@ -40,10 +40,7 @@ public class HomeController {
         return "searchPage";
     }
     @GetMapping(value = {"/"})
-    public String main(PageRequestDTO pageRequestDTO, Model model){
-        pageRequestDTO.setSize(8);
-        PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
-        model.addAttribute("result",result);
+    public String main(){
         return "mainPage";
     }
 
@@ -54,6 +51,7 @@ public class HomeController {
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("================================="+pageRequestDTO);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
+        log.info(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
