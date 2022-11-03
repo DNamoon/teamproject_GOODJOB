@@ -5293,6 +5293,8 @@ fieldset:disabled .btn {
 .card-img-top {
   border-top-left-radius: var(--bs-card-inner-border-radius);
   border-top-right-radius: var(--bs-card-inner-border-radius);
+  Width:290px;
+  Height:180px;
 }
 
 .card-img,
@@ -8280,7 +8282,7 @@ fieldset:disabled .btn {
 .vr {
   display: inline-block;
   align-self: stretch;
-  width: 1px;
+  width: 2px;
   min-height: 1em;
   background-color: currentcolor;
   opacity: 0.25;

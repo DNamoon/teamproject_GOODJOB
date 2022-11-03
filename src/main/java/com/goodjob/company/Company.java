@@ -9,9 +9,13 @@
  */
 package com.goodjob.company;
 
+import com.goodjob.customerInquiry.CustomerInquiryPost;
+import com.goodjob.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -38,7 +42,7 @@ public class Company {
     @Column
     private String comPhone;
 
-    @Column
+    @Column(unique = true)
     private String comEmail;
 
     @Column
@@ -60,6 +64,12 @@ public class Company {
     //22.10.05 ho - 회사 주소 넣기 위해 컬럼 추가
     @Column
     private String comAddress;
+    // 오성훈 22.10.30 cascade 연관관계 추가 및 cascade 확인완료
+    @OneToMany(mappedBy = "postComId", cascade = CascadeType.ALL)
+    private List<Post> memResume = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inquiryPostComId", cascade = CascadeType.ALL)
+    private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
 
     // 더미데이터 생성을 위한 임시 생성자 by.OH
     public Company(Region comRegCode, Comdiv comComdivCode, String comLoginId, String comPw) {
@@ -68,4 +78,11 @@ public class Company {
         this.comLoginId = comLoginId;
         this.comPw = comPw;
     }
+    /** 22.10.29 김도현 추가
+     * 비밀번호 변경
+     * **/
+    public void updatePassword(String password){
+        this.comPw = password;
+    }
+
 }

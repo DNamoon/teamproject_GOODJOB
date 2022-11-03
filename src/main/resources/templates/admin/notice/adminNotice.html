@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main>
+    <div class="d-flex flex-nowrap">
+        <th:block th:replace="~{/admin/fragment/sideBar :: sideBar}"/>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6 class="text-2xl m-lg-1">공고 관리 게시판</h6>
+                        </div>
+                        <div class="d-flex flex-row justify-content-end">
+                            <a th:text="글쓰기" role="button" class="text-white btn mx-4"
+                               style="background-color: #344767;" th:href="@{/admin/notice/insert}"></a>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 20%">
+                                            NO
+                                        </th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75 ps-2"
+                                            style="width: 40%">
+                                            제목
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 10%">
+                                            상태
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 10%">
+                                            상태변경
+                                        </th>
+                                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
+                                            style="width: 20%">
+                                            등록일
+                                        </th>
+                                        <th class="text-secondary opacity-7" style="width: 10%"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:object="${noticeList}" th:each="notice : ${noticeList}">
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    <!--                                                    <h6 th:text="${mainPage.postId}" class="m-lg-1 text-sm"></h6>-->
+                                                    <!--<img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
+                                                              alt="user1">-->
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <p th:text="${notice.noticeId}"
+                                                       class="text-sm font-weight-bold m-lg-1"/>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/notice/{noticeId}/details(noticeId=${notice.noticeId})}">
+                                                <h6 th:text="${notice.noticeTitle}" class="m-lg-2 text-sm"/></a>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <th:block>
+                                                <span th:if="${notice.noticeStatus eq '0'}" class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
+                                            </th:block>
+                                            <th:block>
+                                                <span th:if="${notice.noticeStatus eq '1'}" class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
+                                            </th:block>
+                                        </td>
+
+                                        <td class="align-middle text-center text-sm">
+                                            <span th:id="${notice.noticeId}"
+                                                  th:onclick="updateNoticeStatus(this.getAttribute('id'))"
+                                                  class="badge badge-sm bg-gradient-primary rounded-pill" role="button">
+                                                변경
+                                            </span>
+                                        </td>
+
+                                        <td class="align-middle text-center">
+                                            <span th:text="${notice.noticeDate}"
+                                                  class="text-secondary text-xs font-weight-bold"></span>
+                                        </td>
+                                        <td class="align-middle text-center text-sm">
+                                            <span th:id="${notice.noticeId}"
+                                                  th:onclick="deleteNotice(this.getAttribute('id'))"
+                                                  class="badge badge-sm bg-gradient-danger rounded-pill" role="button">
+                                                삭제
+                                            </span>
+                                        </td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                                <div class="d-flex flex-row justify-content-center">
+                                    <th:block th:if="${noticeList.hasContent()}">
+                                        <th:block th:if="${noticeList.hasPrevious()}">
+                                            <a class="m-lg-1 fs-5" th:if="${noticeList.getNumber()>=5}"
+                                               th:href="@{/admin/notice/{pageNum}(pageNum=${noticeList.getNumber()-4})}">&lt;&lt;</a>
+                                        </th:block>
+                                        <th:block
+                                                th:each="num : ${#numbers.sequence(noticeList.getNumber(),noticeList.getNumber()+5)}">
+                                            <th:block th:if="${num<=noticeList.getTotalPages() && num > 0}">
+                                                <div class="pageIndex">
+                                                    <a class="m-lg-1 fs-5" th:id="${num}" th:text="${num}"
+                                                       th:href="@{/admin/notice/{pageNum}(pageNum=${num})}">[[${num}]]</a>
+                                                </div>
+                                            </th:block>
+                                        </th:block>
+                                        <th:block
+                                                th:if="${noticeList.hasNext() && noticeList.getNumber()<noticeList.getTotalPages()-5}">
+                                            <a class="m-lg-1 fs-5"
+                                               th:href="@{/admin/notice/{pageNum}(pageNum=${noticeList.getNumber()+6})}">&gt;&gt;</a>
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+<script th:inline="javascript">
+    function deleteNotice(noticeId) {
+        if (confirm("삭제 하시겠습니까?") == true) {
+            $.ajax({
+                url: "/admin/notice/delete",
+                type: "post",
+                data: {noticeId: noticeId},
+                success: function () {
+                    alert("삭제되었습니다");
+                    location.href = "/admin/notice/1";
+                }
+            })
+        }
+    }
+
+    function updateNoticeStatus(noticeId) {
+        if (confirm("상태를 변경하시겠습니까?") == true) {
+            $.ajax({
+                url: "/admin/notice/changeStatus",
+                type: "post",
+                data: {noticeId: noticeId},
+                success: function () {
+                    location.href = "/admin/notice/1";
+                }
+            })
+        }
+    }
+
+    $(document).ready(function () {
+        let pageIndex = [[${noticeList.getNumber()}]] + 1
+        let pageNum = [[${pageNum}]];
+        let a
+        $(".pageIndex a").each(function () {
+            let val = $(".pageIndex a").text();
+            let val2 = this.getAttribute('id');
+            var idx = parseInt($(this).parent().index());
+            var thistitle = parseInt($(this).text())
+            // console.log(pageIndex)
+            // console.log(thistitle)
+            // console.log(val2)
+            // console.log(pageNum)
+            // console.log(text)
+            console.log(val)
+            if (pageNum == val2) {
+                // $(".pageIndex a").eq(pageNum).addClass("fs-1");
+            }
+        });
+    });
+</script>
+</body>
+</html>

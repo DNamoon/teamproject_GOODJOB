@@ -36,11 +36,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             ",m.memEmail =:#{#p.memEmail},m.memGender =:#{#p.memGender},m.memName =:#{#p.memName},m.memPhone =:#{#p.memPhone} where m.memId =:#{#p.memId}")
     void updateInfo(@Param("p") Member member);
 
-    Boolean existsByMemEmail(String memEmail);
-
     Member findByMemEmail(String memEmail);
 
     Member findByMemId(Long memId);
+
+    @Query("select count(m) from Member m where m.memLoginId =:memLoginId")
+    int checkId2(@Param("memLoginId") String memLoginId);
 
 
     //22.11.01 ho 추가. 아이디 찾기(이름, 이메일 일치하는 데이터 존재여부)

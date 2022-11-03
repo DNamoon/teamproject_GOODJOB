@@ -15,6 +15,7 @@ import java.util.List;
 
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
     Resume findByResumeId(Long resumeId);
+    Resume findByResumeMemIdAndAndResumeId(String memId, Long resumeId);
 
     @Transactional
     @Modifying

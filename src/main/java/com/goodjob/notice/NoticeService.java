@@ -18,4 +18,5 @@ public interface NoticeService {
     Notice insertNotice(Notice notice);
 
     void deleteNotice(Long id);
+    void updateNoticeStatus(Long id);
 }
