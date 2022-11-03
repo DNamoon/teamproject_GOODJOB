@@ -77,8 +77,7 @@ public class MemberServiceImpl implements MemberService {
         return memberDTO;
     }
     @Override
-    public void updateMemInfo(MemberDTO memberDTO, String memEmail) {
-        checkEmail(memEmail);
+    public void updateMemInfo(MemberDTO memberDTO) {
         Member mem =  memberDTO.toEntity();
         memberRepository.updateInfo(mem);
     }
