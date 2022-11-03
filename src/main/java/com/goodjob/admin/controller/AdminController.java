@@ -3,6 +3,7 @@ package com.goodjob.admin.controller;
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.admindto.AdminDTO;
+import com.goodjob.admin.customerInquiry.CustomerInquiryPostAnswerDTO;
 import com.goodjob.admin.postpaging.AdminPostService;
 import com.goodjob.admin.service.AdminService;
 import com.goodjob.customerInquiry.service.CustomerInquiryService;
@@ -34,7 +35,6 @@ public class AdminController {
 
     private final AdminService adminService;
     private final AdminPostService adminPostService;
-
     private final CustomerInquiryService customerInquiryService;
 
     @GetMapping
@@ -98,6 +98,11 @@ public class AdminController {
     public String inquiryPostView(@PathVariable("id")Long id,Model model){
         model.addAttribute("findInquiry",customerInquiryService.findOne(id).orElse(null));
         return "admin/customerInquiry/customerInquiryDetailView";
+    }
+    @PostMapping("/customerInquiry/{id}")
+    public String inquiryPostReply(@PathVariable("id")Long id,Model model,
+                                   CustomerInquiryPostAnswerDTO customerInquiryPostAnswerDTO){
+        return "redirect:admin";
     }
 
     /**

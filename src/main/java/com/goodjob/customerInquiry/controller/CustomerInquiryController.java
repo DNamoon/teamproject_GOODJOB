@@ -45,7 +45,7 @@ public class CustomerInquiryController {
 
     @GetMapping("/qna")
     public String customerInquiryQNA(Model model, HttpServletRequest request) {
-        if (request.getSession(false) == null) {
+        if (request.getSession(false).getAttribute("Type") == null) {
             log.info("request.getSession(false) is null");
 
             return "/customerInquiry/customerInquiryQNA";

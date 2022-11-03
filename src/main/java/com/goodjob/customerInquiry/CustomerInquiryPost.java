@@ -45,6 +45,16 @@ public class CustomerInquiryPost {
     @Column(columnDefinition = "boolean default 0")
     private String inquiryPostStatus;
 
+    @Column
+    private String inquiryPostAnswerName;
+
+    @Column(columnDefinition = "text(5000)")
+    private String inquiryPostAnswer;
+
+    @Column
+    @CreationTimestamp
+    private Date inquiryPostAnswerDate;
+
     @ManyToOne
     private Member inquiryPostMemberId;
 

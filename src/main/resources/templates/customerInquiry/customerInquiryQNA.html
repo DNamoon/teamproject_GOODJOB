@@ -17,7 +17,7 @@
                         통합서비스 이용약관
                     </a>
                 </div>
-                <th:block th:if="${#session == null}">
+                <th:block th:if="${session.sessionId == null}">
                     <div class="d-flex flex-row col justify-content-center">
                         <div class="col-12 justify-content-center">
                             <h4>1:1 문의 내역</h4>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </th:block>
-                <th:block th:if="${#session != null}">
+                <th:block th:if="${session.sessionId != null}">
                     <div class="d-flex flex-row col justify-content-center">
                         <div class="col-6 justify-content-center">
                             <h4>1:1 문의 내역</h4>
@@ -99,7 +99,7 @@
                                                                 <td>
                                                                     <div class="d-flex px-2">
                                                                         <div class="d-flex flex-column justify-content-center">
-                                                                    <span class="text-secondary text-xs font-weight-bold"
+                                                                    <span class="text-secondary text-xs font-weight-bold ms-2"
                                                                           th:text="${inquiryPost.inquiryPostCategory.customerInquiryPostCategory}">
                                                                     </span>
                                                                         </div>
