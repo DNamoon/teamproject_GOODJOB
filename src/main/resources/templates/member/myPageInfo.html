@@ -56,7 +56,7 @@
                                             <input class="form-control" type="text" th:value="${memberInfo.memEmail1}" name="memEmail1"
                                                    onchange="emailCheckMassage()" id="signUpEmail">
                                             &nbsp;@&nbsp;
-                                            <select class="form-select" name="memEmail2" id="emailSelect" required>
+                                            <select class="form-select" name="memEmail2" id="emailSelect" required onchange="emailCheckMassage()" >
                                                 <option th:value="${memberInfo.memEmail2}">[[${memberInfo.memEmail2}]] (기본정보)</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="gmail.com">gmail.com</option>
@@ -91,7 +91,7 @@
                             <label>&nbsp;</label>
                             <div class="row">
                                 <div class="col">
-                                    <button type="button" id="bb" class="btn bg-gradient-dark w-100 " onclick="updateInfo()" style="font-size:15px" >수정</button>
+                                    <button type="button" id="bb" class="btn bg-gradient-dark w-100 "  style="font-size:15px" >수정</button>
                                     <div id="realUpdate"></div>
                                 </div>
                                 <div class="col">
