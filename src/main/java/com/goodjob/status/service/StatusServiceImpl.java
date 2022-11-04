@@ -14,7 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.beans.ExceptionListener;
 import java.util.List;
 import java.util.function.Function;
 
@@ -26,9 +28,13 @@ public class StatusServiceImpl implements StatusService{
     private final StatusRepository statusRepository;
 
     @Override
-    public void applyResume(Long postId, Long resumeId) {
-        log.info("=========== 지원완료 ===========");
-        statusRepository.save(dtoToEntity(postId, resumeId));
+    public void applyResume(Long postId, Long resumeId, String loginId) throws Exception {
+        if(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPostId_PostId(loginId, postId) <= 0){
+            log.info("=========== 지원완료 ===========");
+            statusRepository.save(dtoToEntity(postId, resumeId));
+        }else{
+            throw new Exception("지원실패");
+        }
     }
 
     @Override

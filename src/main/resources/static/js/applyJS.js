@@ -12,7 +12,7 @@ $(document).ready(function(){
     });
 });
 
-//작성한 이력서 리스트 출력
+//지원하기 버튼 눌렀을 때 작성한 이력서 리스트 출력
 function getJSONResumeList() {
     $.getJSON('/member/getResumeList', function (arr) {
         var list = '';
@@ -43,7 +43,17 @@ function doneSelectResume(){
         type: "post",
         data : {selectResumeId : selectResumeId},
         success: function() {
-            //지원완료되면 뭐라해야할지 모르겠어
+            Swal.fire({
+                title: '이력서를 지원하였습니다',
+                text: '서류 결과는 메일 및 마이페이지에서 확인할 수 있습니다.',
+                icon: 'info'
+            });
+        }, error: function () {
+            Swal.fire({
+                title: '이미 지원한 회사입니다',
+                text: '지원 결과는 메일 및 마이페이지에서 확인해 주세요.',
+                icon: 'error'
+            });
         }
     })
 }

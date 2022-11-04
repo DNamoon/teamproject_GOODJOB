@@ -32,6 +32,7 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     Status findOneApplier(Long statId);
     boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(String loginId, String pass);
     int countStatusByStatResumeId_ResumeId(Long resumeId);
+    int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPostId_PostId(String loginId, Long postId);
     @Transactional
     @Modifying
     @Query("update Status s set s.statShow = true where s.statId =:statId")

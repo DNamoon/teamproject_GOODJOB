@@ -29,8 +29,9 @@ public class StatusController {
    //이력서 지원
    @ResponseBody
    @PostMapping("/applyResume/{postId}")
-   public void applyResume(@PathVariable("postId") Long postId, @RequestParam("selectResumeId") Long resumeId){
-      statusService.applyResume(postId, resumeId);
+   public void applyResume(@PathVariable("postId") Long postId, @RequestParam("selectResumeId") Long resumeId, HttpSession session) throws Exception {
+      String id = (String) session.getAttribute("sessionId");
+      statusService.applyResume(postId, resumeId, id);
    }
 
    //개인 마이페이지에서 지원회사 목록 출력

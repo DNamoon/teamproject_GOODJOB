@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 
 public interface StatusService {
-    void applyResume(Long postId, Long resumeId);
+    void applyResume(Long postId, Long resumeId, String loginId) throws Exception;
     PageResultDTO<ApplyListDTO, Status> getApplyList(String loginId, int pageNum);
     PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, Long postId, int pageNum);
     void changePass(Long statId);
