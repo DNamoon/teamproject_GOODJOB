@@ -104,7 +104,7 @@ public class MemMyPageController {
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
-    public String changePwForm(){
+    public String changePwForm(MemberDTO memberDTO){
         return "member/memChangePassword";
     }
 
