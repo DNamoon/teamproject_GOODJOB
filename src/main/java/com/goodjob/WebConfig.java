@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .order(2)
                 .addPathPatterns("/member/**","/resume/**")
-                .excludePathPatterns("/login","/*.css","/*.js","/assets/**", "/member/login");
+                .excludePathPatterns("/login","/*.css","/*.js","/assets/**", "/member/login","/member/signUp");
 
     }
     // 썸머노트(텍스트 에디터)에 대한 요청 응답 핸들러
