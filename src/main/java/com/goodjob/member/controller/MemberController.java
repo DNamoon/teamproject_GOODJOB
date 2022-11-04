@@ -97,7 +97,6 @@ public class MemberController {
                     HttpSession session = request.getSession();
                     session.setAttribute("sessionId", memberDTO.getLoginId());
                     session.setAttribute("Type", "member");
-                    session.setMaxInactiveInterval(10); //session 1시간 유지
                     return "redirect:/"; // 로그인 성공 시 메인페이지
                 } else {
                     return "redirect:/login?error";  //pw가 틀린 경우

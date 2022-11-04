@@ -60,16 +60,6 @@ public class MemMyPageController {
         }
         return "1";
     }
-    public String chch(String pw, String loginId) {
-        Optional<Member> mem = memberService.loginIdCheck(loginId);
-        if (mem.isPresent()) {
-            Member member = mem.get();
-            if (passwordEncoder.matches(pw,member.getMemPw())) {
-                return "0";
-            }
-        }
-        return "1";
-    }
 
     @PostMapping("/myPageInfo")
     public String infoUpdate(@Valid MemberDTO memberDTO, BindingResult result){
@@ -110,13 +100,11 @@ public class MemMyPageController {
             }
         }
         return "1";
-//        return chch(checkPw,loginId);
     }
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
-    public String changePwForm(MemberDTO memberDTO){
-//        memberDTO.setMemId(memberService.memInfo(loginId).getMemId());
+    public String changePwForm(){
         return "member/memChangePassword";
     }
 
