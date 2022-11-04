@@ -47,21 +47,32 @@ public class MemMyPageController {
         return "member/myPageInfo";
     }
 
-   /**개인정보 수정 시 비밀번호 확인**/
+   //개인정보 수정 시 비밀번호 확인
     @ResponseBody
     @PostMapping("/checkPW")
-    public String updateCheckPW(@Param("pw")String pw, @Param("id")String loginId) {
-       return checkPW(pw,loginId);
+    public String checkPW(@Param("pw")String pw, @Param("id")String loginId) {
+        Optional<Member> mem = memberService.loginIdCheck(loginId);
+        if (mem.isPresent()) {
+            Member member = mem.get();
+            if (passwordEncoder.matches(pw,member.getMemPw())) {
+                return "0";
+            }
+        }
+        return "1";
     }
 
-    /** 개인정보 수정 */
     @PostMapping("/myPageInfo")
-    public String infoUpdate(@Valid MemberDTO memberDTO){
+    public String infoUpdate(@Valid MemberDTO memberDTO, BindingResult result){
+        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
+            result.rejectValue("","emailInCorrect",
+                    "이미 가입된 이메일입니다.");
+            return "member/signup";
+        }
         memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
     }
 
-    /**회원탈퇴 (비밀번호 확인 후 회원 정보 삭제,이력서 정보 같이 삭제)**/
+    //회원탈퇴 (비밀번호 확인 후 회원 정보 삭제,이력서 정보 같이 삭제)
     @ResponseBody
     @RequestMapping("/delete")
     public String deleteMember(@Param("deletePw")String deletePw, @Param("id")String loginId, @Param("memId")Long memId,HttpSession session) {
@@ -76,14 +87,22 @@ public class MemMyPageController {
         }
         return "1";
     }
-    /** 비밀번호 변경 전 기존 비밀번호 확인 **/
+    // 비밀번호 변경 전 기존 비밀번호 확인
     @PostMapping("/changePw")
     @ResponseBody
     public String changePwCheck(@RequestParam("checkPw")String checkPw, @RequestParam("id")String loginId){
-        return checkPW(checkPw,loginId);
+        System.out.println("pw"+checkPw+"////id"+loginId);
+        Optional<Member> mem = memberService.loginIdCheck(loginId);
+        if (mem.isPresent()) {
+            Member member = mem.get();
+            if (passwordEncoder.matches(checkPw,member.getMemPw())){
+                return "0";
+            }
+        }
+        return "1";
     }
 
-    /** 비밀번호 변경**/
+    // 비밀번호 변경
     @GetMapping("/changePassword")
     public String changePwForm(){
         return "member/memChangePassword";
@@ -91,11 +110,11 @@ public class MemMyPageController {
 
     @RequestMapping(value="/changePassword",method = RequestMethod.POST)
     public String changePw(@Valid MemberDTO memberDTO, BindingResult result, HttpSession session,Model model) {
+        if(result.hasErrors()){
+            return "member/signup";
+        }
         String id = (String)session.getAttribute("sessionId");
         MemberDTO mem = memberService.memInfo(id);
-        if(result.hasErrors()){
-            return "member/memChangePassword";
-        }
         model.addAttribute("changePwMem",mem.getMemId());
         //비밀번호 일치하지 않을 시 에러 발생
         if(!memberDTO.getPw().equals(memberDTO.getPw2())){
@@ -108,17 +127,7 @@ public class MemMyPageController {
         model.addAttribute("memberInfo",mem);
         return "member/myPageInfo";
     }
-    /**비밀번호 확인 메소드**/
-    public String checkPW(String pw, String loginId) {
-        Optional<Member> mem = memberService.loginIdCheck(loginId);
-        if (mem.isPresent()) {
-            Member member = mem.get();
-            if (passwordEncoder.matches(pw,member.getMemPw())) {
-                return "0";
-            }
-        }
-        return "1";
-    }
+
     @GetMapping("/myPageResume")
     public String myPageResume(){
         return "/member/myPageResumeList";
