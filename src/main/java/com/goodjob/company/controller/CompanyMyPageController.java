@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/com")
 @RequiredArgsConstructor
-public class ComMyPageController {
+public class CompanyMyPageController {
 
     @GetMapping("/myPagePost")
     public String myPageForm(){
