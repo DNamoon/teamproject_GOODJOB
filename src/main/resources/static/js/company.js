@@ -448,6 +448,8 @@ $('#id_input').on("change keyup", function(){
     var idError = $('.id_error');
     idError.css("color", "#ff0000");
 
+    var submit = false;
+
     $.ajax({
         type : "post",
         url : "/com/check",
@@ -463,12 +465,14 @@ $('#id_input').on("change keyup", function(){
                     } else { //아이디 중복도 없고 정규식도 올바를 때
                         idError.css("color","#54b254");
                         idError.show().text("사용할 수 있는 아이디입니다!");
+                        submit = true;
                     }
                 }
             } else {  //중복되는 아이디가 있을 경우
                 idError.show().text("이미 존재하는 아이디입니다.");
             }
-
+            console.log(submit);
+            return submit;
         }
     });
 });
@@ -482,6 +486,7 @@ function btnRexExp() {
 
     //비밀번호 정규식 확인용 변수
     var password = $('#comPw1').val();
+    var passwordConfirm = $('#comPw2').val();
 
     //이메일 정규식 확인용 변수
     let email = $('#email').val();
@@ -527,11 +532,42 @@ function btnRexExp() {
         $('#comPw1').focus();
         //Swal.fire("비밀번호 양식을 확인해주세요.","","error");
     } else {
-        result2 = "true";
+        if(password != passwordConfirm) {
+            $('#comPw2').focus();
+        } else {
+            result2 = "true";
+        }
     }
 
     //아이디 정규식 확인
     var result1 = "false";
+    // .id_input에 입력되는 값
+    var result6 = "false";
+    var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+    $.ajax({
+        type : "post",
+        url : "/com/check",
+        data : data,
+        success : function(result){
+            if(result != 'fail'){  //중복되는 아이디가 없을 때
+                let regExp = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+                if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
+                } else {
+                    if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+                    } else { //아이디 중복도 없고 정규식도 올바를 때
+                        result6 = "true";
+                    }
+                }
+            } else {  //중복되는 아이디가 있을 경우
+            }
+            if (result6 == "false") {
+                $('#id_input').focus();
+            }
+            return result6;
+        }
+    });
+    console.log("버튼 눌렀을 때 아이디 중복 result6 값: " + result6);
+
     if (comLoginId === null || comLoginId === "") {  //아이디 입력을 안 했을 때
         //Swal.fire("아이디를 입력해주세요!","","error");
         $('#id_input').focus();
@@ -544,7 +580,7 @@ function btnRexExp() {
         }
     }
 
-    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true") {
+    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true" && result6 == "true") {
         // $('#contact-form').submit();
         Swal.fire("회원가입 완료",comLoginId+"님 회원가입을 축하드립니다!","success")
             .then(function (){  //alert창 확인 누르면 submit
@@ -605,7 +641,6 @@ function btn_change_info(){
     } else {
         result3 = "true";
     }
-
 
     //전화번호 확인용 변수
     let phone = $('#phone').val();
