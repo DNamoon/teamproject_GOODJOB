@@ -417,9 +417,9 @@ function passwordConfirm() {
 
     if(!regExp.test(password.value)){
         passwordError.style.color = wrongColor;
-        passwordError.innerHTML = "비번은 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다."
+        //passwordError.innerHTML = "비번은 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다."
         confirmMsg.style.color = wrongColor;
-        confirmMsg.innerHTML = "올바른 비밀번호를 입력해주세요."
+        confirmMsg.innerHTML = "비밀번호는 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다."
     } else {
         if(password.value == passwordConfirm.value) {
             passwordError.style.color = correctColor;

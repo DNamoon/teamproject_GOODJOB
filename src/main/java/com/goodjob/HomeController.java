@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class HomeController {
 
     private final OccupationService occuService;
-    private final CompanyService companyService;
     private final PostService postService;
 
 
