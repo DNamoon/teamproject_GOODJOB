@@ -56,4 +56,13 @@ public class MemberDTO {
         return member;
     }
 
+    //22.11.01 ho 추가. 아이디 찾기용 엔터티 변환 메서드.
+    public Member toEntityForFindId() {
+        return Member.builder()
+                .memName(memName)
+                .memEmail(memEmail1)
+                .memPw(pw)
+                .build();
+    }
+
 }

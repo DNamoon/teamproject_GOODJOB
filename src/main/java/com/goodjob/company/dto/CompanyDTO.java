@@ -82,13 +82,26 @@ public class CompanyDTO {
     private String comAddress1;  // 회사주소(우편번호)
     @NotBlank
     private String comAddress2;  // 회사주소(주소)
-    @NotBlank
     private String comAddress3;  // 회사주소(상세주소)
 
     private String comAddress4;  // 회사주소(참고항목)
     @NotBlank
     private String comEmail1;
     private String comEmail2;
+
+    //22.10.29 - 아이디 찾기 때 사용하는 엔티티 변환 메서드. 기존 toEntity 메서드 if문 때문에 에러 발생.
+    public Company toEntityForFindId(){
+        return Company.builder()
+                .comPw(pw)
+                .comName(comName)
+                .comEmail(comEmail1)
+                .build();
+
+//        return Company.builder()
+//               .comName(comName)
+//               .comEmail(comEmail1)
+//               .build();
+    }
 
     public Company toEntity() {
         //엔티티 바꿀 때는 builder이용해서 필요한 객체 만들자.
