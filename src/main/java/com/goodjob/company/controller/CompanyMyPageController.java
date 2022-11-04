@@ -1,6 +1,7 @@
 package com.goodjob.company.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,12 @@ public class CompanyMyPageController {
     @GetMapping("/myPageApplier/{postId}")
     public String myPageApplierList(@PathVariable("postId") Long postId, Model model){
         model.addAttribute("postId", postId);
-        return "company/companyMyPageApplyList";
+        return "/company/companyMyPageResumeApplyList";
+    }
+
+    @GetMapping("/myPageInterviewee/{postId}")
+    public String myPageIntervieweeList(@PathVariable("postId") Long postId, Model model){
+        model.addAttribute("postId", postId);
+        return "/company/companyMyPageIntervieweeList";
     }
 }

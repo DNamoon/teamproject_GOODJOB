@@ -63,8 +63,12 @@ function clickPass(statId) {
         $.ajax({
             url: "/status/changePass/" + statId,
             type: "get",
+            data: {applyResult : "서류합격"},
             success: function () {
-                alert("서류 합격 처리하였습니다.");
+                Swal.fire({
+                    title: '서류 합격 처리하였습니다',
+                    icon: 'info'
+                });
                 $(".passBtn" + statId).replaceWith('<td style="color: #0a53be;">서류합격</td>');
             }
         })
@@ -76,8 +80,12 @@ function clickUnPass(statId) {
         $.ajax({
             url: "/status/changeUnPass/" + statId,
             type: "get",
+            data: {applyResult : "서류불합격"},
             success: function () {
-                alert("서류 불합격 처리하였습니다.");
+                Swal.fire({
+                    title: '서류 불합격 처리하였습니다',
+                    icon: 'info'
+                });
                 $(".passBtn" + statId).replaceWith('<td style="color: red;">서류불합격</td>');
             }
         })
