@@ -64,7 +64,7 @@ public interface MemberService {
     // mypage 개인정보 수정
     MemberDTO memInfo(String loginId);
 
-    void updateMemInfo(MemberDTO memberDTO,String memEmail);
+    void updateMemInfo(MemberDTO memberDTO);
 
     void deleteById(Long memId);
 
@@ -75,4 +75,7 @@ public interface MemberService {
     String getTmpPassword();
 
     void changePassword(String changePw, Long memId);
+
+    //22.11.01 ho 추가. 아이디 찾기
+    String findId(String name, String email);
 }

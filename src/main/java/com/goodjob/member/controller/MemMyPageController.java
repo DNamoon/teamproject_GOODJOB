@@ -60,25 +60,15 @@ public class MemMyPageController {
         }
         return "1";
     }
-    public String chch(String pw, String loginId) {
-        Optional<Member> mem = memberService.loginIdCheck(loginId);
-        if (mem.isPresent()) {
-            Member member = mem.get();
-            if (passwordEncoder.matches(pw,member.getMemPw())) {
-                return "0";
-            }
-        }
-        return "1";
-    }
 
     @PostMapping("/myPageInfo")
-    public String infoUpdate(@RequestParam("email") String memEmail,@Valid MemberDTO memberDTO, BindingResult result){
-        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
-            result.rejectValue("","emailInCorrect",
-                    "이미 가입된 이메일입니다.");
-            return "member/signup";
-        }
-        memberService.updateMemInfo(memberDTO,memEmail);
+    public String infoUpdate(@Valid MemberDTO memberDTO, BindingResult result){
+//        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
+//            result.rejectValue("","emailInCorrect",
+//                    "이미 가입된 이메일입니다.");
+//            return "member/myPageInfo";
+//        }
+        memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
     }
 
@@ -110,13 +100,11 @@ public class MemMyPageController {
             }
         }
         return "1";
-//        return chch(checkPw,loginId);
     }
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
     public String changePwForm(MemberDTO memberDTO){
-//        memberDTO.setMemId(memberService.memInfo(loginId).getMemId());
         return "member/memChangePassword";
     }
 
