@@ -6,11 +6,11 @@
          url:'/member/checkId?id='+id, //Controller에서 요청 받을 주소
          success:function(result){ //컨트롤러에서 값을 받는다
              console.log(result)
-             if(result != 0){ //cnt가 1이 아니면(=0일 경우) -> 이미 존재하는 아이디
+             if(result != 0){
                  $('#checkMassage').css('color','red')
                  $('#checkMassage').html("사용할 수 없는 아이디입니다.")
 
-             } else { // cnt가 1일 경우 -> 사용 가능한 아이디
+             } else {
                  $('#checkMassage').css('color','blue')
                  $('#checkMassage').html("사용할 수 있는 아이디입니다.")
              }
@@ -35,7 +35,8 @@ function emailCheckMassage(){
             }
         }
     });
-};
+}
+
  //주소찾기
  function execPostCode() {
      daum.postcode.load(function () {

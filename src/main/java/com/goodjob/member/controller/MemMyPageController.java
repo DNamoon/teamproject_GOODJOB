@@ -63,11 +63,11 @@ public class MemMyPageController {
 
     @PostMapping("/myPageInfo")
     public String infoUpdate(@Valid MemberDTO memberDTO, BindingResult result){
-        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
-            result.rejectValue("","emailInCorrect",
-                    "이미 가입된 이메일입니다.");
-            return "member/signup";
-        }
+//        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
+//            result.rejectValue("","emailInCorrect",
+//                    "이미 가입된 이메일입니다.");
+//            return "redirect:/member/myPage";
+//        }
         memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
     }

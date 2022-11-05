@@ -24,10 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/admin/**") // 인터셉터를 적용할 URI
                 .excludePathPatterns("/css/**", "/*.ico", "/error", "/admin/login","/assets/**","/*.css","/*.js"); // 제외 URI
 
-        registry.addInterceptor(new LoginInterceptor())
-                .order(2)
-                .addPathPatterns("/member/**","/resume/**")
-                .excludePathPatterns("/login","/*.css","/*.js","/assets/**", "/member/login","/member/signUp");
+//        registry.addInterceptor(new LoginInterceptor())
+//                .order(2)
+//                .addPathPatterns("/member/**","/resume/**")
+//                .excludePathPatterns("/login","/*.css","/*.js","/assets/**", "/member/login","/member/signUp");
 
     }
     // 썸머노트(텍스트 에디터)에 대한 요청 응답 핸들러

@@ -52,6 +52,7 @@ public class MemberController {
     public String checkEmailDuplication(@RequestParam("email") String email) {
         String result = memberService.checkEmail(email);
         return result;
+
     }
 
     //회원가입
