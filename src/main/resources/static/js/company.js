@@ -1,11 +1,169 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
-// 22.10.26 회원가입 완료 메시지
-// $(document).ready(function (){
-//     $('#sign_up').click(function (){
-//         alert("회원가입을 축하드립니다.");
+//22.11.01 ho - 아이디 찾기(이름, 이메일로 찾기)
+$('#btn_findId').click(function (){
+    findId();
+})
+
+function findId() {
+    let name = $('#name').val();
+    let email = $('#email').val();
+
+    // $.ajax({
+    //     type:"post",
+    //     url:"/com/changePw",
+    //     data:"pw="+password,
+    //     success : function (result) {
+    //         if(result == 1) {
+    //             Swal.fire("비밀번호 변경페이지로 이동!","","success").then(function (){
+    //                 location.href = "/com/changePassword";
+    //             })
+    //             // alert("비밀번호 변경 페이지로 이동합니다.");
+    //             // location.href = "/com/changePassword";
+    //         } else {
+    //             Swal.fire("비밀번호를 확인해주세요!","","error");
+    //         }
+    //     }
+    // });
+
+    if (!email || email.trim() === "") {
+        alert("이메일을 입력하세요.");
+    } else {
+        if (!name || name.trim() === "") {
+            alert("이름(기업명)을 입력하세요.");
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '/com/findId',
+                data: {
+                    'email': email,
+                    'name': name
+                },
+                success: function (result) {
+                    console.log(result);
+                    if(result[0] == "1"){
+                        Swal.fire("기업회원",result[1]+"님의 아이디는 ["+result[2]+"]입니다.")
+                            .then(function (){
+                                location.href = "/login";
+                            })
+                        // alert("회원타입은 기업회원입니다! "+result[2]+"님의 아이디는 ["+result[1]+"]입니다.");
+                        // location.href = "/login";
+                    } else if(result[0] == "2") {
+                        Swal.fire("개인회원",result[1]+"님의 아이디는 ["+result[2]+"]입니다.")
+                            .then(function (){
+                                location.href = "/login";
+                            })
+                        // alert("회원타입은 개인회원입니다! "+result[2]+"님의 아이디는 ["+result[1]+"]입니다.");
+                        // location.href = "/login";
+                    } else {
+                        Swal.fire("회원정보 없음","찾으시는 회원정보가 없습니다.","error");
+                        //alert("찾으시는 회원정보가 없습니다. 입력정보를 확인해주세요.");
+                    }
+                }
+
+                //dataType: "text",
+
+                //
+                // }).done(function(result){
+                //     console.log("result :" + result);
+                //     if (result == "true") {
+                //         alert('ajax alert 통과!!');
+                //         window.location.href="/login";
+                //     } else if (result == "false") {
+                //         alert('가입되지 않은 이메일입니다.');
+                //     }
+                // }).fail(function(error){
+                //     alert(JSON.stringify(error));
+                // })
+                //}
+            })
+        }
+    }
+}
+
+
+// //아이디 찾기  잉??? 언제 해 놓은거지???? 이미 했었네?? 10.30 일요일 아침에 한건가?
+// $(document).ready(function() {
+//     $('#btn_find_id').on('click', function () {
+//         whatId();
 //     })
-// })
+// });
+// function whatId() {
+//     const id = $('#id').val();
+//     const email = $('#email').val();
+//     console.log(email);
+//
+//     if (!id || id.trim() === "") {
+//         alert("이름을 입력하세요.");
+//     } else {
+//         if (!email || email.trim() === "") {
+//             alert("이메일을 입력하세요");
+//         } else {
+//             $.ajax({
+//                 type: 'post',
+//                 url: '/com/findId',
+//                 data: {
+//                     'comName': id,
+//                     'comEmail' : email
+//                 },
+//                 dataType: "text",
+//             }).done(function (result) {
+//                 console.log("result :" + result);
+//                 if (result == null) {
+//                     // sendEmail();
+//                     alert('가입된 회원정보를 찾을 수 없습니다.');
+//                 } else if (result == "false") {
+//                     alert('회원님의 아이디는 ['+result+']입니다.');
+//                     window.location.href = "/login";
+//                 }
+//             }).fail(function (error) {
+//                 alert(JSON.stringify(error));
+//             })
+//         }
+//     }
+// }
+
+
+
+// 22.10.27 회원가입 완료 메시지 sweetalert2 사용 실패
+
+// $(document).ready(function (){
+//     var loginId = $('#id_input').val();
+//
+//     $('#sign_up').click(function (){
+//         Swal.fire({
+//             icon: 'success',
+//             title: '회원가입 완료',
+//             text: loginId + '님 회원가입을 축하드립니다!'
+//         }).then(function (){
+//             location.href = 'redirect:/';
+//         });
+//     });
+// });
+
+//비밀번호 변경
+$(document).ready(function(){
+    $('#change_confirm').click(function (){
+        const password = $('#change_password_confirm').val();
+
+        $.ajax({
+            type:"post",
+            url:"/com/changePw",
+            data:"pw="+password,
+            success : function (result) {
+                if(result == 1) {
+                    Swal.fire("비밀번호 변경페이지로 이동!","","success").then(function (){
+                        location.href = "/com/changePassword";
+                    })
+                    // alert("비밀번호 변경 페이지로 이동합니다.");
+                    // location.href = "/com/changePassword";
+                } else {
+                    Swal.fire("비밀번호를 확인해주세요!","","error");
+                }
+            }
+        });
+    });
+});
 
 
 // 회원탈퇴
@@ -19,10 +177,15 @@ $(document).ready(function(){
             data:"pw="+password,
             success : function (result) {
                 if(result == 1) {
-                    alert("회원을 탈퇴합니다.");
-                    location.replace('/');  //.replace : 뒤로가기 불가능
+                    Swal.fire("회원을 탈퇴합니다!","","success").then(function (){
+                        location.replace('/');  //.replace : 뒤로가기 불가능
+                        //$("#contact-form").submit();
+                        // location.href("/com/myPage");
+                    })
+                    //alert("회원을 탈퇴합니다.");
                 } else {
-                    alert("비밀번호를 확인해주세요");
+                    Swal.fire("비밀번호를 확인해주세요!","","error");
+                    //alert("비밀번호를 확인해주세요");
                 }
             }
         });
@@ -41,10 +204,14 @@ $(document).ready(function(){
             data: "pw=" +password,
             success : function (result) {
                 if(result == 1) {
-                    alert("회원정보를 수정합니다.");
-                    $("#contact-form").submit();
+                    Swal.fire("회원정보를 수정합니다!","","success").then(function (){
+                        $("#contact-form").submit();
+                        // location.href("/com/myPage");
+                    })
+                    //alert("회원정보를 수정합니다.");
                 } else {
-                    alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
+                    Swal.fire("비밀번호를 확인해주세요!","","error");
+                    //alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
                 }
             }
 
@@ -52,24 +219,47 @@ $(document).ready(function(){
     });
 })
 
+//수정하기 버튼 클릭시 disabled가 false 되며 입력할수 있게 변함. (jquery로 업데이트 10.27)
+$(document).ready(function () {
+    $('#btn_modify').click(function () {
+        //입력창 활성화
+        $('#btn_target').attr('disabled', false);
+        //'정보 수정하기'버튼 숨기기
+        $('#btn_modify').css('display', 'none')
+        //'이전으로 돌아가기'버튼 생성
+        //$('#btn_back').append('<input type="button" value="이전으로 돌아가기" onClick="btnDisabled()" id="btn_hidden" class="btn bg-gradient-dark w-100">');
+        //'이전으로 돌아가기'버튼 보이기
+        $('#btn_hidden').removeAttr('hidden');
+        //'회원정보 수정완료'버튼 보이기
+        $('#modal_open_btn').removeAttr('hidden');
+        //'비밀번호 변경하기'버튼 보이기
+        $('#btn_change_pw').removeAttr('hidden');
+    })
+})
+
 //수정하기 버튼 클릭시 disabled가 false 되며 입력할수 있게 변함.
-function btnActive(){
-    //정보 수정할 수 있게 입력창 활성화
-    const target = document.getElementById("btn_target");
-    target.disabled = false;
-
-    //'이전으로 돌아가기'버튼 보이기
-    const target2 = document.getElementById("btn_hidden");
-    target2.hidden = false;
-
-    //'정보 수정하기'버튼 숨기기
-    const target3 = document.getElementById("btn");
-    if(target3.style.display == 'block')
-    target3.style.display = 'none';
-
-    //'정보 수정완료'버튼 보이기
-    const target7 = document.getElementById("modal_open_btn");
-    target7.hidden = false;
+// function btnActive(){
+//     //정보 수정할 수 있게 입력창 활성화
+//     const target = document.getElementById("btn_target");
+//     target.disabled = false;
+//
+//     //'정보 수정하기'버튼 숨기기
+//     const target3 = document.getElementById("btn");
+//     if(target3.style.display == 'block')
+//     target3.style.display = 'none';
+//
+//     //'이전으로 돌아가기'버튼 보이기
+//     const target2 = document.getElementById("btn_hidden");
+//     target2.hidden = false;
+//
+//     const target8 = document.getElementById("btn_change_pw");
+//     const target9 = document.createElement('input');
+//
+//
+//
+//     //'정보 수정완료'버튼 보이기
+//     const target7 = document.getElementById("modal_open_btn");
+//     target7.hidden = false;
     // target7.disabled = true;
 
 
@@ -80,7 +270,7 @@ function btnActive(){
     // target4.disabled = true;
     // target5.disabled = true;
     // target6.disabled = true;
-}
+//}
 
 // $('#comComdivCode').click(function () {
 //     if($('#comComdivCode').value == 0){
@@ -91,30 +281,31 @@ function btnActive(){
 // })
 
 //'이전으로 돌아가기'버튼 클릭시
-function btnDisabled(){
-    //'이전으로 돌아가기'버튼 숨기기
-    const target2 = document.getElementById("btn_hidden");
-    target2.hidden = true;
+//function btnDisabled(){
+    // //'이전으로 돌아가기'버튼 숨기기
+    // const target2 = document.getElementById("btn_hidden");
+    // target2.hidden = true;
+    //
+    // //'정보 수정하기'버튼 보이기
+    // const target3 = document.getElementById("btn_modify");
+    // if(target3.style.display == 'none')
+    //     target3.style.display = 'block';
+    //
+    // //정보 수정 못 하게 입력창 막기
+    // const target = document.getElementById("btn_target");
+    // target.disabled = true;
+    //
+    // //'정보 수정완료'버튼 숨기기
+    // const target7 = document.getElementById("modal_open_btn");
+    // target7.hidden = true;
+    //
+    // const target8 = document.getElementById("btn_change_pw");
+    // target8.hidden = true;
+    // //$('#btn_change_pw').removeAttr('hidden');
 
-    //'정보 수정하기'버튼 보이기
-    const target3 = document.getElementById("btn");
-    if(target3.style.display == 'none')
-        target3.style.display = 'block';
+    //location.href = "/com/myPage";
 
-    //정보 수정 못 하게 입력창 막기
-    const target = document.getElementById("btn_target");
-    target.disabled = true;
-
-    //'정보 수정완료'버튼 숨기기
-    const target7 = document.getElementById("modal_open_btn");
-    target7.hidden = true;
-}
-
-function password_confirm() {
-    const password = document.getElementById("password_confirm");
-
-    $.ajax("/confirm")
-}
+//}
 
 //Daum 주소 찾기API function
 function sample6_execDaumPostcode() {
@@ -165,50 +356,295 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
-//비밀번호1,2 일치 여부 보여주는 fuction
+//view - 사업자 등록번호 양식 일치 3-2-5
+$('#comBusiNum').blur(function (){
+    let busiNum = $(this).val();
+    let regExp = /^\d{3}-\d{2}-\d{5}$/;
+    let busiNum_error = $('#busiNum_error');
+
+    if(!regExp.test(busiNum)) {
+        busiNum_error.css("color","#ff0000");
+        busiNum_error.show().text("형식이 맞지 않습니다. 다시 확인해주세요.");
+    }else {
+        busiNum_error.css("color","#54b254");
+        busiNum_error.show().text("올바른 형식입니다.");
+    }
+})
+
+//view - 전화번호 양식 일치(2~3)-(3~4)-4
+$('#phone').blur(function (){
+    let phone = $('#phone').val();
+    let regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+    let phone_error = $('#phone_error');
+
+    if(!regExp.test(phone)) {
+        phone_error.css("color","#ff0000");
+        phone_error.show().text("형식이 맞지 않습니다. 다시 확인해주세요.");
+    }else {
+        phone_error.css("color","#54b254");
+        phone_error.show().text("올바른 형식입니다.");
+    }
+})
+
+//view - 이메일 양식일치
+$('#email').keyup(function (){
+    let email = $('#email').val();
+    let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
+    let emailError = $('#email_error');
+    emailError.css("color","#ff0000");
+
+    if(!regExp.test(email)) {
+        emailError.show().text("올바른 이메일 양식이 아닙니다!")
+    } else {
+        emailError.show().text("");
+    }
+})
+
+
+//view - 비밀번호1,2 일치 여부 보여주는 function
 function passwordConfirm() {
     var password = document.getElementById('comPw1');
     var passwordConfirm = document.getElementById('comPw2');
     var confirmMsg = document.getElementById('confirmMsg')  //확인 메시지
-    var correctColor = "#73b973"; //맞았을 때 출력되는 색깔.
+
+    var passwordError = document.getElementById('password_error');
+
+    var correctColor = "#54b254"; //맞았을 때 출력되는 색깔.
     var wrongColor = "#ff0000";   //틀렸을 때 출력되는 색깔.
 
-    if(password.value == passwordConfirm.value) {
-        confirmMsg.style.color = correctColor;
-        confirmMsg.innerHTML = "비밀번호 일치";
-    } else {
+    var regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+//                ^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$
+
+    if(!regExp.test(password.value)){
+        passwordError.style.color = wrongColor;
+        //passwordError.innerHTML = "비번은 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다."
         confirmMsg.style.color = wrongColor;
-        confirmMsg.innerHTML = "비밀번호 불일치";
+        confirmMsg.innerHTML = "비밀번호는 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다."
+    } else {
+        if(password.value == passwordConfirm.value) {
+            passwordError.style.color = correctColor;
+            passwordError.innerHTML = ""
+            confirmMsg.style.color = correctColor;
+            confirmMsg.innerHTML = "비밀번호 일치";
+        } else {
+            passwordError.style.color = correctColor;
+            passwordError.innerHTML = ""
+            confirmMsg.style.color = wrongColor;
+            confirmMsg.innerHTML = "비밀번호 불일치";
+        }
+
     }
+
 }
 
 
-//아이디 중복검사
+//view - 아이디 중복검사
 //onkeyup이 여기서는 "change keyup"이다!!!
 $('#id_input').on("change keyup", function(){
 
     console.log("keyup 테스트");
     var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
     var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+    var idError = $('.id_error');
+    idError.css("color", "#ff0000");
 
     $.ajax({
         type : "post",
         url : "/com/check",
         data : data,
         success : function(result){
-            if(result != 'fail'){
-                $('.id_input_re_1').css("display","inline-block");
-                $('.id_input_re_2').css("display", "none");
-            } else {
-                $('.id_input_re_2').css("display","inline-block");
-                $('.id_input_re_1').css("display", "none");
+            if(result != 'fail'){  //중복되는 아이디가 없을 때
+                let regExp = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+                if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
+                    idError.show().text("필수 입력값입니다. 아이디를 입력해주세요.");
+                } else {
+                    if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+                        idError.show().text("아이디는 3~15자의 영문 소문자와 숫자,특수기호(_),(-)만 사용 가능합니다.")
+                    } else { //아이디 중복도 없고 정규식도 올바를 때
+                        idError.css("color","#54b254");
+                        idError.show().text("사용할 수 있는 아이디입니다!");
+                    }
+                }
+            } else {  //중복되는 아이디가 있을 경우
+                idError.show().text("이미 존재하는 아이디입니다.");
             }
 
         }
     });
 });
 
+//회원가입 유효성 검사
+function btnRexExp() {
 
+    //아이디 정규식 확인용 변수
+    var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
+    let regExp1 = /^[a-z0-9_-]{3,15}$/g; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+
+    //비밀번호 정규식 확인용 변수
+    var password = $('#comPw1').val();
+
+    //이메일 정규식 확인용 변수
+    let email = $('#email').val();
+    let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
+
+    //사업자 등록번호 확인용 변수
+    let busiNum = $('#comBusiNum').val();
+    let regExp4 = /^\d{3}-\d{2}-\d{5}$/;
+
+    //사업자 등록번호 정규식 확인
+    let result4 = "false";
+    if(!regExp4.test(busiNum)) {
+        $('#comBusiNum').focus();
+    }else {
+        result4 = "true";
+    }
+
+    //전화번호 확인용 변수
+    let phone = $('#phone').val();
+    let regExp5 = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+    //전화번호 정규식 확인
+    let result5 = "false";
+    if(!regExp5.test(phone)) {
+        $('#phone').focus();
+    }else {
+        result5 = "true";
+    }
+
+    //이메일 정규식 확인
+    let result3 = "false";
+    if(!regExp3.test(email)) {
+        //Swal.fire("이메일 양식을 확인해주세요.","","error");
+        $('#email').focus();
+    } else {
+        result3 = "true";
+    }
+
+    //비밀번호 정규식 확인
+    var result2 = "false";
+    let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+    if (!regExp2.test(password)) {
+        $('#comPw1').focus();
+        //Swal.fire("비밀번호 양식을 확인해주세요.","","error");
+    } else {
+        result2 = "true";
+    }
+
+    //아이디 정규식 확인
+    var result1 = "false";
+    if (comLoginId === null || comLoginId === "") {  //아이디 입력을 안 했을 때
+        //Swal.fire("아이디를 입력해주세요!","","error");
+        $('#id_input').focus();
+    } else {
+        if (!regExp1.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+            //Swal.fire("아이디 양식을 확인해주세요!","","error");
+            $('#id_input').focus();
+        } else { //아이디 중복도 없고 정규식도 올바를 때
+            result1 = "true";
+        }
+    }
+
+    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true") {
+        // $('#contact-form').submit();
+        Swal.fire("회원가입 완료",comLoginId+"님 회원가입을 축하드립니다!","success")
+            .then(function (){  //alert창 확인 누르면 submit
+                $('#contact-form').submit();
+            });
+    } else {
+    }
+}
+
+//비밀번호 변경 폼 유효성 검사
+function btn_passwordChange() {
+
+    //비밀번호 정규식 확인용 변수
+    var password = $('#comPw1').val();
+    var passwordConfirm = $('#comPw2').val();
+
+    //비밀번호 정규식 확인
+    let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+    if (!regExp2.test(password)) {
+        Swal.fire("비밀번호 사용 불가!","비밀번호는 3~25자로 최소 하나의 영문자, 숫자, 특수문자가 들어가야 합니다.","error");
+        return false;
+    } else {
+        if(password == passwordConfirm){
+            $('#form_change_pw').submit();
+        } else {
+            Swal.fire("비밀번호 불일치!","","error");
+        }
+    }
+
+}
+//
+// function regExpForComBusiNum(){
+//     let busiNum = $('#comBusiNum').val();
+//     let regExp4 = /^\d{3}-\d{2}-\d{5}$/;
+//
+//     //사업자 등록번호 정규식 확인
+//     let result4 = "false";
+//     if(!regExp4.test(busiNum)) {
+//         $('#comBusiNum').focus();
+//     }else{
+//         result4 = "true";
+//     }
+//
+//     return result4;
+// }
+
+//회원정보 수정 유효성 검사
+function btn_change_info(){
+    /** 순서 중요 - 이메일,전화번호,사업자 거꾸로 확인하여 맨 위에 양식 안 맞는 것부터 focus()*/
+    //이메일 정규식 확인용 변수
+    let email = $('#email').val();
+    let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
+
+    //이메일 정규식 확인
+    let result3 = "false";
+    if(!regExp3.test(email)){
+        $('#email').focus();
+    } else {
+        result3 = "true";
+    }
+
+
+    //전화번호 확인용 변수
+    let phone = $('#phone').val();
+    let regExp5 = /^\d{2,3}-\d{3,4}-\d{4}$/;
+
+    //전화번호 정규식 확인
+    let result5 = "false";
+    if(!regExp5.test(phone)) {
+        $('#phone_alert').show();
+        $('#phone').focus();
+    }else {
+        $('#phone_alert').hide();
+        result5 = "true";
+    }
+
+    //사업자 등록번호 확인용 변수
+    let busiNum = $('#comBusiNum').val();
+    let regExp4 = /^\d{3}-\d{2}-\d{5}$/;
+
+    //사업자 등록번호 정규식 확인
+    let result4 = "false";
+    if(!regExp4.test(busiNum)) {
+        $('#busiNum_alert').show();
+        $('#comBusiNum').focus();
+    }else {
+        $('#busiNum_alert').hide();
+        result4 = "true";
+    }
+
+    if(result3 != "false" && result4 != "false" && result5 != "false") {
+        $('#modal_open_btn').attr("data-toggle", "modal");
+        $("#confirmPasswordModal").modal();
+    } else {
+        $('#modal_open_btn').removeAttr("data-toggle");
+    }
+}
+
+
+/////////////////////
 // 사론님 로그인 중복체크(정규표현식) 여기서 사용은 안 함.
 $("#userId").blur(function () {
     let idError = $("#idError");
@@ -247,55 +683,4 @@ $("#userId").blur(function () {
             console.log("아이디 체크 오류");
         }
     });
-});
-
-
-//다른분 아이디 중복체크 - 여기서는 사용 안함.
-var $id = $("#id");
-// 아이디 정규식
-$id.on("keyup", function() { // 키보드에서 손을 땠을 때 실행
-    var regExp = /^[a-z]+[a-z0-9]{5,15}$/g;
-
-    if (!regExp.test($id.val())) { // id 가 공백인 경우 체크
-        idchk = false;
-        $id.html("<span id='check'>사용할 수 없는 아이디입니다.</span>");
-        $("#check").css({
-            "color" : "#FA3E3E",
-            "font-weight" : "bold",
-            "font-size" : "10px"
-        })
-    } else { // 공백아니면 중복체크
-        $.ajax({
-            type : "POST", // http 방식
-            url : "/com/register", // ajax 통신 url
-            data : { // ajax 내용 => 파라미터 : 값 이라고 생각해도 무방
-                "type" : "user",
-                "id" : $id.val()
-            },
-            success : function(data) {
-                if (data == 1) { // 1이면 중복
-                    idchk = false;
-                    $id.html("<span id='check'>이미 존재하는 아이디입니다</span>")
-                    $("#check").css({
-                        "color" : "#FA3E3E",
-                        "font-weight" : "bold",
-                        "font-size" : "10px"
-
-                    })
-                    //console.log("중복아이디");
-                } else { // 아니면 중복아님
-                    idchk = true;
-                    $id.html("<span id='check'>사용가능한 아이디입니다</span>")
-
-                    $("#check").css({
-                        "color" : "#0D6EFD",
-                        "font-weight" : "bold",
-                        "font-size" : "10px"
-
-                    })
-                    //console.log("중복아닌 아이디");
-                }
-            }
-        })
-    }
 });
