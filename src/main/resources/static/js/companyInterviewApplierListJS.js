@@ -10,7 +10,7 @@ function getApplierList(postId, pageNum) {
         var list = '';
         $(".postTitle").text("공고명 [" + result.dtoList.applierName + "] 의 서류 합격자입니다.");
         
-        if(result.length > 0){
+        if(result.dtoList.length > 0){
             $.each(result.dtoList, function (applyIdx, applier) {
                 list += '    <tr>\n' +
                     '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +

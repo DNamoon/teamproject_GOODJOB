@@ -8,9 +8,9 @@ $(document).ready(function () {
 function getApplierList(postId, pageNum) {
     $.getJSON('/status/getApplierList/' + postId + '/' + pageNum, function (result){
         var list = '';
-        $(".postTitle").text("공고명 [" + result.dtoList[0].postTitle + "] 의 서류 지원자입니다.");
+        // $(".postTitle").text("공고명 [" + result.dtoList[0].postTitle + "] 의 서류 지원자입니다.");
 
-        if(result.length > 0){
+        if(result.dtoList.length > 0){
             $.each(result.dtoList, function (applyIdx, applier) {
                 list += '    <tr>\n' +
                     '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
@@ -28,9 +28,9 @@ function getApplierList(postId, pageNum) {
                 }
 
                 //결과가 나왔으면 그 결과를 띄우고 아니면 합격/불합격 버튼을 띄움
-                if(applier.statPass === '서류합격'){
+                if(applier.statPass === '서류합격' || applier.statPass === '최종합격'){
                     list += '      <td style="color: #0a53be;">' + applier.statPass + '</td>\n';
-                }else if(applier.statPass === '서류불합격'){
+                }else if(applier.statPass === '서류불합격' || applier.statPass === '면접불합격'){
                     list += '      <td style="color: red;">' + applier.statPass + '</td>\n';
                 }
                 else{

@@ -170,7 +170,7 @@ function getApplyList(pageNum) {
         var list = '';
         var loginId = $("#sessionInput").val();
 
-        if(result.length > 0){
+        if(result.dtoList.length > 0){
             $.each(result.dtoList, function (applyIdx, apply) {
                 list += '    <tr>\n' +
                     '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
