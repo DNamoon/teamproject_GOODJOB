@@ -2,10 +2,7 @@ package com.goodjob.status.service;
 
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.status.Status;
-import com.goodjob.status.dto.ApplierListDTO;
-import com.goodjob.status.dto.ApplyListDTO;
-import com.goodjob.status.dto.IntervieweeListDTO;
-import com.goodjob.status.dto.SendMailDTO;
+import com.goodjob.status.dto.*;
 import com.goodjob.status.repository.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -97,6 +94,13 @@ public class StatusServiceImpl implements StatusService{
     @Override
     public void updateInterviewInfo(Long statId, String interviewPlace, LocalDateTime interviewDate) {
         statusRepository.updateInterviewInfo(statId, interviewPlace, interviewDate);
+    }
+
+    @Override
+    public SendMailToIntervieweeDTO getIntervieweeToSendMail(Long statId) {
+        log.info("=========== 메일발송 ===========");
+        SendMailToIntervieweeDTO sendMailToIntervieweeDTO = entityToSendMailToIntervieweeDTO(statusRepository.findOneApplier(statId));
+        return sendMailToIntervieweeDTO;
     }
 
 }

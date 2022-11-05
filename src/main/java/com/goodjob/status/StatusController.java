@@ -60,6 +60,7 @@ public class StatusController {
          mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
       }else if(result.equals("최종합격")){
          statusService.changePass(statId, result);
+         mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
       }
    }
 
@@ -71,6 +72,7 @@ public class StatusController {
          mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
       }else if(result.equals("면접불합격")){
          statusService.changeUnPass(statId, result);
+         mailService.sendMailToResumeApplier(statusService.getApplierToSendMail(statId));
       }
    }
 
@@ -89,7 +91,8 @@ public class StatusController {
 
    @ResponseBody
    @GetMapping("/updateInterviewInfo/{statId}")
-   public void updateInterviewInfo(@PathVariable("statId") Long statId, @RequestParam("place") String place, @RequestParam("date") LocalDateTime date){
-      statusService.updateInterviewInfo(statId, place, date);
+   public void updateInterviewInfo(@PathVariable("statId") Long statId, @RequestParam("place") String place, @RequestParam("date") String date){
+      statusService.updateInterviewInfo(statId, place, LocalDateTime.parse(date));
+      mailService.sendMailAboutInterviewInfo(statusService.getIntervieweeToSendMail(statId));
    }
 }

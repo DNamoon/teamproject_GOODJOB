@@ -4,10 +4,7 @@ import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
-import com.goodjob.status.dto.ApplierListDTO;
-import com.goodjob.status.dto.ApplyListDTO;
-import com.goodjob.status.dto.IntervieweeListDTO;
-import com.goodjob.status.dto.SendMailDTO;
+import com.goodjob.status.dto.*;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -27,6 +24,7 @@ public interface StatusService {
     void changeStatShow(String loginId);
     PageResultDTO<IntervieweeListDTO, Status> getIntervieweeList(String loginId, Long postId, int pageNum);
     void updateInterviewInfo(Long statId, String interviewPlace, LocalDateTime interviewDate);
+    SendMailToIntervieweeDTO getIntervieweeToSendMail(Long statId);
     default Status dtoToEntity(Long postId, Long resumeId){
         Post post = Post.builder().postId(postId).build();
         Resume resume = Resume.builder().resumeId(resumeId).build();
@@ -95,5 +93,18 @@ public interface StatusService {
                 .build();
 
         return intervieweeListDTO;
+    }
+
+    default SendMailToIntervieweeDTO entityToSendMailToIntervieweeDTO(Status status){
+        SendMailToIntervieweeDTO sendMailToIntervieweeDTO = SendMailToIntervieweeDTO.builder()
+                .applierEmail(status.getStatResumeId().getResumeMemEmail())
+                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .companyName(status.getStatPostId().getPostComId().getComName())
+                .postName(status.getStatPostId().getPostTitle())
+                .interviewDate(status.getStatInterviewDate())
+                .interviewPlace(status.getStatInterviewPlace())
+                .build();
+
+        return sendMailToIntervieweeDTO;
     }
 }
