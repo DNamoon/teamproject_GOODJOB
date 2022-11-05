@@ -13,7 +13,10 @@ $(document).ready(function () {
         var size = $("h5[name='resumeTitle']").length;
 
         if (size >= 5) {
-            alert("이미 이력서를 5개 작성하였습니다.");
+            Swal.fire({
+                title: '이미 이력서를 5개 작성하였습니다',
+                icon: 'error'
+            });
         } else {
             $.ajax({
                 type: "get",
@@ -31,7 +34,6 @@ $(document).ready(function () {
 
 function getResumeData() {
     var count = $("input[id=resumeCheckBox]").length;
-    console.log(count);
     $(".resumeCount").text(count);
 }
 
@@ -40,24 +42,28 @@ function getJSONResumeList() {
     $.getJSON('/member/getResumeList', function (arr) {
         var list = '';
 
-        $.each(arr, function (idx, resume) {
-            list += '<div class="row">';
-            list += '<div class="col-2 text-center" style="margin-top: 8px">';
-            list += '<input class="form-check-input me-1" type="checkbox" id="resumeCheckBox" value="' + resume.resumeId + '" name="resumeCheckBox" style="background-color: #e4e1e4">'
-            list += '</div>';
-            list += '<div class="col-8" style="margin-top: 8px">';
-            list += '<h5 class="text-bold" name="resumeTitle" onclick="changeTitleForm(this)">' + resume.resumeTitle + '</h5>';
-            list += '<h6 style="color: #bbb8bb">이력서 등록날짜 | ' + resume.resumeUpdateDate + '</h6>';
-            list += '</div>';
-            list += '<div class="col-2">';
-            list += '<input id="resumeId" type="hidden" value="' + resume.resumeId + '">'
-            list += '<button type="button" class="btn btn-sm btn-outline-secondary" style="margin-bottom: 8px" onclick="updateResume(this)">이력서수정</button>';
-            list += '<br>';
-            list += '<button type="button" class="btn btn-sm btn-outline-danger" style="margin-bottom: 8px" onclick="deleteResume(this)">이력서삭제</button>';
-            list += '</div>';
-            list += '</div>';
-            list += '<hr style="margin-bottom: 25px">';
-        })
+        if(arr.length > 0){
+            $.each(arr, function (idx, resume) {
+                list += '<div class="row">';
+                list += '<div class="col-2 text-center" style="margin-top: 8px">';
+                list += '<input class="form-check-input me-1" type="checkbox" id="resumeCheckBox" value="' + resume.resumeId + '" name="resumeCheckBox" style="background-color: #e4e1e4">'
+                list += '</div>';
+                list += '<div class="col-8" style="margin-top: 8px">';
+                list += '<h5 class="text-bold" name="resumeTitle" onclick="changeTitleForm(this)">' + resume.resumeTitle + '</h5>';
+                list += '<h6 style="color: #bbb8bb">이력서 등록날짜 | ' + resume.resumeUpdateDate + '</h6>';
+                list += '</div>';
+                list += '<div class="col-2">';
+                list += '<input id="resumeId" type="hidden" value="' + resume.resumeId + '">'
+                list += '<button type="button" class="btn btn-sm btn-outline-secondary" style="margin-bottom: 8px" onclick="updateResume(this)">이력서수정</button>';
+                list += '<br>';
+                list += '<button type="button" class="btn btn-sm btn-outline-danger" style="margin-bottom: 8px" onclick="deleteResume(this)">이력서삭제</button>';
+                list += '</div>';
+                list += '</div>';
+                list += '<hr style="margin-bottom: 25px">';
+            })
+        } else{
+            list += '<h6 class="text-center">작성한 이력서가 없습니다.</h6>';
+        }
 
         $(".resumeList").html(list);
     })
@@ -164,37 +170,43 @@ function getApplyList(pageNum) {
         var list = '';
         var loginId = $("#sessionInput").val();
 
-        $.each(result.dtoList, function (applyIdx, apply) {
-            list += '    <tr>\n' +
-                '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
-                '      <td><a href="/post/readPost/'+ apply.statPostId +'">' + apply.postName.substr(0, 10) + "..." + '</a></td>\n' +
-                '      <td>' + apply.companyName + '</td>\n' +
-                '      <td><a href="/resume/resumeRead/' + loginId + '/'+ apply.statResumeId +'" target="_blank">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
-                '      <td>' + apply.statApplyDate + '</td>\n' +
-                '      <td>' + apply.statPass + '</td>\n' +
-                '    </tr>\n';
-        })
+        if(result.length > 0){
+            $.each(result.dtoList, function (applyIdx, apply) {
+                list += '    <tr>\n' +
+                    '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
+                    '      <td><a href="/post/readPost/'+ apply.statPostId +'">' + apply.postName.substr(0, 10) + "..." + '</a></td>\n' +
+                    '      <td>' + apply.companyName + '</td>\n' +
+                    '      <td><a href="/resume/resumeRead/' + loginId + '/'+ apply.statResumeId +'" target="_blank">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
+                    '      <td>' + apply.statApplyDate + '</td>\n' +
+                    '      <td>' + apply.statPass + '</td>\n' +
+                    '    </tr>\n';
+            })
 
-        $(".applyTable").html(list);
+            $(".applyTable").html(list);
 
-        var pageBtn = '';
+            var pageBtn = '';
 
-        //이렇게 적으면 버튼하나를 누를 때마다 result.page가 1씩 증가하는데 왜 그런겨
-        // $.each(result.pageList, function (pageIdx, page){
-        //     pageBtn += '<li class="page-item"><a class="page-link" onclick="getApplyList('+ result.page +')">'+ page +'</a></li>';
-        //     console.log(result.page);
-        // })  
+            //이렇게 적으면 버튼하나를 누를 때마다 result.page가 1씩 증가하는데 왜 그런겨
+            // $.each(result.pageList, function (pageIdx, page){
+            //     pageBtn += '<li class="page-item"><a class="page-link" onclick="getApplyList('+ result.page +')">'+ page +'</a></li>';
+            //     console.log(result.page);
+            // })
 
-        pageBtn += '<li class="page-item" th:if="${'+ result.prev +'}">';
-        pageBtn += '<a class="page-link" onclick="getApplyList(' + (result.start - 1) + ')" tabindex="-1"><<</a>';
-        pageBtn += '</li>';
-        for(i = 0; i < result.totalPage; i++){
-            pageBtn += '<a class="page-link" onclick="getApplyList('+ i +')"><li class="page-item">'+ (i + 1) +'</li></a>';
+            pageBtn += '<li class="page-item" th:if="${'+ result.prev +'}">';
+            pageBtn += '<a class="page-link" onclick="getApplyList(' + (result.start - 1) + ')" tabindex="-1"><<</a>';
+            pageBtn += '</li>';
+            for(i = 0; i < result.totalPage; i++){
+                pageBtn += '<a class="page-link" onclick="getApplyList('+ i +')"><li class="page-item">'+ (i + 1) +'</li></a>';
+            }
+            pageBtn += '<li class="page-item" th:if="${'+ result.next +'}">';
+            pageBtn += '<a class="page-link" onclick="getApplyList(' + (result.end) + ')">>></a>';
+            pageBtn += '</li>';
+
+            $(".pagination").html(pageBtn);
+        }else {
+            list += '<h6 class="text-center">지원한 회사가 없습니다.</h6>';
+            $(".noData").html(list);
         }
-        pageBtn += '<li class="page-item" th:if="${'+ result.next +'}">';
-        pageBtn += '<a class="page-link" onclick="getApplyList(' + (result.end) + ')">>></a>';
-        pageBtn += '</li>';
 
-        $(".pagination").html(pageBtn);
     })
 }

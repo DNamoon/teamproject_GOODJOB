@@ -37,6 +37,7 @@ $(document).ready(function(){
     //학교 찾기
     $(".findSchool").click(function(){
         var schoolName = $(".findSchoolName").val();
+        $(".schoolList").empty();
 
         $.ajax({
             type: "get",
@@ -44,14 +45,18 @@ $(document).ready(function(){
             dataType: "json",
             async: false,
             success: function (data){
-                for(var i=0; i<data.length; i++){
-                    $(".schoolList").append('<input class="form-check-input me-1" type="radio" name="selectSchoolName" value="' + data[i].schName +'" style="background-color: #e4e1e4">' + data[i].schName +'<br/>');
+                if(data.length > 0){
+                    for(var i=0; i<data.length; i++){
+                        $(".schoolList").append('<input class="form-check-input me-1" type="radio" name="selectSchoolName" value="' + data[i].schName +'" style="background-color: #e4e1e4">' + data[i].schName +'<br/>');
+                    }
+                    $(".doneFindSchool").click(function (){
+                        $("#schoolName").attr("value", $("input:radio[name='selectSchoolName']:checked").val());
+                        $(".schoolList").empty();
+                        $(".findSchoolName").empty();
+                    });
+                }else{
+                    $(".schoolList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
                 }
-                $(".doneFindSchool").click(function (){
-                    $("#schoolName").val($("input:radio[name='selectSchoolName']:checked").val());
-                    $(".schoolList").empty();
-                    $(".findSchoolName").empty();
-                });
             }
         });
         $(".close").click(function(){
@@ -63,6 +68,7 @@ $(document).ready(function(){
     //전공 찾기
     $(".findMajor").click(function(){
         var majorName = $(".findMajorName").val();
+        $(".majorList").empty();
 
         $.ajax({
             type: "get",
@@ -70,14 +76,18 @@ $(document).ready(function(){
             dataType: "json",
             async: false,
             success: function (data){
-                for(var i=0; i<data.length; i++){
-                    $(".majorList").append('<input class="form-check-input me-1" type="radio" name="selectMajorName" value="' + data[i].majName +'" style="background-color: #e4e1e4">' + data[i].majName +'<br/>');
+                if(data.length > 0){
+                    for(var i=0; i<data.length; i++){
+                        $(".majorList").append('<input class="form-check-input me-1" type="radio" name="selectMajorName" value="' + data[i].majName +'" style="background-color: #e4e1e4">' + data[i].majName +'<br/>');
+                    }
+                    $(".doneFindMajor").click(function (){
+                        $("#majorName").attr("value", $("input:radio[name='selectMajorName']:checked").val());
+                        $(".majorList").empty();
+                        $(".findMajorName").empty();
+                    });
+                }else{
+                    $(".majorList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
                 }
-                $(".doneFindMajor").click(function (){
-                    $("#majorName").val($("input:radio[name='selectMajorName']:checked").val());
-                    $(".majorList").empty();
-                    $(".findMajorName").empty();
-                });
             }
         });
         $(".close").click(function(){
@@ -89,6 +99,7 @@ $(document).ready(function(){
     //자격증 찾기
     $(".findCerti").click(function () {
         var certiName = $(".findCertiName").val();
+        $(".certiList").empty();
 
         $.ajax({
             type: "get",
@@ -96,35 +107,38 @@ $(document).ready(function(){
             dataType: "json",
             async: false,
             success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    $(".certiList").append('<input class="form-check-input me-1" type="radio" name="selectCertiName" value="' + data[i].certiName + '" style="background-color: #e4e1e4">' + data[i].certiName + '<br/>');
-                }
-                $(".doneFindCerti").click(function () {
-                    //이미 작성한 자격증인지 확인하고 작성하지 않은 자격증일 경우에만 값이 입력되도록함(중복 방지)
-                    var inputId = $("#modalId").val();
-                    var checkCerti = [];
-                    var inputSize = $("input[name=certificateName]").length;
+                if(data.length > 0){
+                    for (var i = 0; i < data.length; i++) {
+                        $(".certiList").append('<input class="form-check-input me-1" type="radio" name="selectCertiName" value="' + data[i].certiName + '" style="background-color: #e4e1e4">' + data[i].certiName + '<br/>');
+                    }
+                    $(".doneFindCerti").click(function () {
+                        //이미 작성한 자격증인지 확인하고 작성하지 않은 자격증일 경우에만 값이 입력되도록함(중복 방지)
+                        var inputId = $("#modalId").val();
+                        var checkCerti = [];
+                        var inputSize = $("input[name=certificateName]").length;
 
-                    for(var i = 0; i < inputSize; i++){
-                        console.log(i);
-                        if($("input:radio[name=selectCertiName]:checked").val() !== $("input[name=certificateName]").eq(i).val()){
-                            checkCerti.push('같지않음');
-                        }else{
-                            checkCerti.push('같음');
+                        for(var i = 0; i < inputSize; i++){
+                            if($("input:radio[name=selectCertiName]:checked").val() !== $("input[name=certificateName]").eq(i).val()){
+                                checkCerti.push('같지않음');
+                            }else{
+                                checkCerti.push('같음');
+                            }
                         }
-                    }
 
-                    if(checkCerti.includes('같음')){
-                        alert("이미 작성한 자격증입니다.");
-                        deleteAddInfo($("#" + inputId).parent());
-                        $(".certiList").empty();
-                        $(".findCertiName").empty();
-                    }else{
-                        $("#" + inputId).attr("value", $("input:radio[name='selectCertiName']:checked").val());
-                        $(".certiList").empty();
-                        $(".findCertiName").empty();
-                    }
-                });
+                        if(checkCerti.includes('같음')){
+                            alert("이미 작성한 자격증입니다.");
+                            deleteAddInfo($("#" + inputId).parent());
+                            $(".certiList").empty();
+                            $(".findCertiName").empty();
+                        }else{
+                            $("#" + inputId).attr("value", $("input:radio[name='selectCertiName']:checked").val());
+                            $(".certiList").empty();
+                            $(".findCertiName").empty();
+                        }
+                    });
+                }else{
+                    $(".certiList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
+                }
             }
         });
         $(".close").click(function(){
@@ -299,8 +313,6 @@ function deleteCertiWC(dataBtn, certiId){
 
 //자격증, 경력 항목을 삭제했을 때 항목의 수가 1개이면 x버튼을 비활성화 함
 function isXBtnDisabled(){
-    console.log($("button[id=deleteCertiBtn]").length);
-
     if($("button[id=deleteCertiBtn]").length <= 1){
         $("#deleteCertiBtn").eq(0).attr("disabled", true);
     }else{
