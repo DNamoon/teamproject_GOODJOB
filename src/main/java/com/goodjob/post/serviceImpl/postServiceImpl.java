@@ -20,6 +20,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -94,7 +95,7 @@ public class postServiceImpl implements PostService {
         Address address = new Address(postInsertDTO.getPostcode(), postInsertDTO.getPostAddress(), postInsertDTO.getPostDetailAddress(),postInsertDTO.getEtc());
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
-        List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
+        List<UploadFile> uploadFiles =  fileService.storeFiles(postInsertDTO.getPostImg());
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && salary.isPresent()){
             Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),salary.get(),uploadFiles,address));

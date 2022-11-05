@@ -1,3 +1,12 @@
+let common = {
+    postPath:{
+        hostname:"localhost:8080",
+        path:"/post/",
+        hostNameAndPath: `${this.hostname}${this.path}`, // localhost:8080/post/
+        comMyPagePost:"comMyPagePost",
+        readPost:"readPost/"
+    }
+}
 // mainPage.html JS
 let postJS = {
     init(){
@@ -164,12 +173,72 @@ let searchPage = {
 }
 // postInsertForm.html JS
 let postInsertForm ={
+    init(){
+      const _this = this;
+      _this.setDateDefaultToNow();
+      _this.setSaveBtn();
+    },
+    setSaveBtn(){
+        const _this = this;
+        document.querySelector("#saveBtn").addEventListener("click",function (e){
+            e.preventDefault();
+            const form = $("#savePostForm")[0]
+            let dataWithFile = new FormData(form);
+            // dataWithFile.delete("id");
+            // dataWithFile.delete("comLoginId");
+            _this.postSave(dataWithFile)
+      })
+    },
+    postSave(dataWithFile){
+        fetchJs.postWithFile(fetchJs.url,fetchJs.uri+"savePost",dataWithFile)
+            .then(response => {
+                if(response.ok){
+                    console.log(response);
+                    response.json().then(id => {
+                        console.log("요청 성공")
+                        alert("저장에 성공하였습니다.")
+                        console.log(id);
+                        location.replace(`${common.postPath.path}${common.postPath.readPost}${id}`)
+                    })
+                } else {
+                    response.json().then(data =>{
+                        console.log("요청 실패")
+                        console.log(data)
+                        console.log(data.errors)
+                        for(let error of data.errors){
+                            console.log(error)
+                            const reason = error.reason;
+                            console.log(error.field)
+                            console.log(error.reason);
+                            switch (error.field){
+                                case "postTitle":
+                                    const postInsertTitleDom = document.querySelector(".post-Insert-Title")
+                                    postInsertTitleDom.style.display = "block"
+                                    if(reason==="Empty Title"){
+                                        postInsertTitleDom.append(`<div class="post-error-style-title">제목은 필수 값입니다.</div>`)
+                                    } else if(reason ==="Max length(50)"){
+                                        postInsertTitleDom.append(`<div class="post-error-style-title">제목 길이 제한은 50 문자입니다.</div>`)
+                                    }
+                                    break;
+                            }
+                        }
+                    })
+                }
+
+            })
+            .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
+
+    },
     backToRedirectedFrom(redirectedFrom){
         console.log(redirectedFrom);
         location.href=`/post/${redirectedFrom}`;
     },
     redirectToRegisterPage(redirectedFrom){
         location.href=`/${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
+    },
+    setDateDefaultToNow(){
+        document.querySelector("#postStartDate").valueAsDate=new Date();
+        document.querySelector("#postEndDate").valueAsDate=new Date();
     }
 }
 
@@ -214,13 +283,7 @@ const fetchJs = {
             }
         };
         const response = await fetch(url, options); // Response {status: 200, ok: true, redirected: false, type: "cors", url: "url", …}
-        const data = await response.json();
-        const message = 'Error with Status Code: ' + response.status;
-        console.log("response =============")
-        console.log(response);
-        console.log("data =============")
-        console.log(data);
-        return response.ok ? data : new Error(message); // Error: [object Response]
+        return await response.json();
     },
 
     // POST FETCH
@@ -235,8 +298,16 @@ const fetchJs = {
             body: JSON.stringify(body),
         };
         const response = await fetch(url, options); // Response {type: "cors", url: "url", redirected: false, status: 201, ok: true, …}
-        const data = await response.json();
-        return response.ok ? data : new Error(data);
+        return await response.json();
+    },
+    // POST FETCH (multipart/form-data)
+    postWithFile : async function post(host, path, body){
+        const url = `http://${host}/${path}`;
+        const options = {
+            method: 'POST',
+            body: body,
+        };
+        return await fetch(url, options);
     },
     // DELETE FETCH
     delete : async function deleteById(host,path){

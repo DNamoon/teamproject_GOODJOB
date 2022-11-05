@@ -10,11 +10,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 //@Documented
-//@Constraint(validatedBy = DateValidator.class)
-//@Target( {ElementType.METHOD, ElementType.FIELD})
+//@Constraint(validatedBy = OrderSheetFormValidator.class)
+//@Target({ElementType.TYPE})
 //@Retention(RetentionPolicy.RUNTIME)
-public interface DateValiation {
-//    String message() default "날짜형식이 옳바르지 않습니다.";
-//    Class<?>[] groups() default {};
-//    Class<? extends Payload>[] payload() default {};
+public @interface DateValiation {
+    String message() default "날짜형식이 옳바르지 않습니다.";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }

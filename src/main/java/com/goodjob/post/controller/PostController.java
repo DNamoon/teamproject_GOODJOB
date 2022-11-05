@@ -3,6 +3,9 @@ package com.goodjob.post.controller;
 import com.goodjob.company.Company;
 import com.goodjob.company.service.CompanyService;
 import com.goodjob.post.Post;
+import com.goodjob.post.Test;
+import com.goodjob.post.error.SessionCompanyAccountNotFound;
+import com.goodjob.post.error.SessionNotFoundException;
 import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.service.PostService;
@@ -10,6 +13,7 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +21,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,10 +42,17 @@ public class PostController {
     private final CompanyService companyService;
 
 
-    @GetMapping("/test")
-    public String test(String str){
-        return "/error/postError";
+    @PostMapping(value = {"/test"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public ResponseEntity<String> test(@ModelAttribute Test tn, HttpServletRequest httpServletRequest){
 
+        log.info("테스트!!!!!!!!!!!!!!"+tn);
+        if(tn.getFiles()==null){
+            return new ResponseEntity<>("저장 실패",HttpStatus.OK);
+        } else {
+            log.info(tn.getFiles());
+            return new ResponseEntity<>("저장 성공",HttpStatus.OK);
+        }
     }
     private List<String> tokenizerStringToList(String keyword){
         List<String> list = new ArrayList<>();
@@ -59,15 +73,17 @@ public class PostController {
         model.addAttribute("redirectedFrom", redirectedFrom);
         return "/post/postInsertForm";
     }
-    @PostMapping("/savePost")
-    public String postSave(@Valid PostInsertDTO postInsertDTO, BindingResult bindingResult, HttpServletRequest httpServletRequest, Model model) throws IOException {
-        if(bindingResult.hasErrors()){
-            return "redirect:/post/comMyPagePost";
-        }
+    @PostMapping(value = "/savePost",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> postSave(@Valid @ModelAttribute PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
         log.info("===================="+postInsertDTO);
         postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
-        postService.savePost(postInsertDTO);
-        return "redirect:/post/comMyPagePost";
+        Long savedPostId = postService.savePost(postInsertDTO);
+        if(savedPostId!=null){
+            return new ResponseEntity<Long>(savedPostId, HttpStatus.OK);
+        } else {
+            return null;
+        }
     }
 
     @GetMapping(value = {"/updatePost/{postId}"})
@@ -123,16 +139,17 @@ public class PostController {
     // "sessionId" -> 유저나 기업회원 로그인 ID 값
     private String getSessionInfo(HttpServletRequest httpServletRequest, String typeOrSessionId){
         HttpSession httpSession = httpServletRequest.getSession(false);
-        if(httpSession != null){
+        if(httpSession != null && httpSession.getAttribute("Type")=="company"){
             // 세션 타입 체크
             if (typeOrSessionId.equals("Type")) {
                 return httpSession.getAttribute("Type").toString();
             } else if (typeOrSessionId.equals("sessionId")) {
                 return httpSession.getAttribute("sessionId").toString();
             } else {
-                return null;
+                throw new SessionCompanyAccountNotFound();
             }
+        } else{
+            throw new SessionNotFoundException();
         }
-        return null;
     }
 }

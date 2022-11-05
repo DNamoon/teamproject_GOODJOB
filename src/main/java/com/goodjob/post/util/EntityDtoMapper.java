@@ -57,6 +57,7 @@ public interface EntityDtoMapper {
                 .endDate(post.getPostEndDate().toString())
                 .remainDay(remainDay)
                 .salary(post.getPostSalary().getSalaryRange())
+                .recruitNum(post.getPostRecruitNum())
                 .postAddress1(post.getAddress().getAddress1())
                 .postAddress2(post.getAddress().getAddress2())
                 .occName(post.getPostOccCode().getOccName())

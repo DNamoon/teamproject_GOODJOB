@@ -1,7 +1,8 @@
 package com.goodjob.post.postdto;
 
-import lombok.Builder;
-import lombok.Data;
+import com.goodjob.post.PostInsertForm;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,43 +15,45 @@ import java.util.List;
  */
 @Data
 @Builder
+@PostInsertForm
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostInsertDTO {
 
-    @Positive(message = "invalid post id")
+    @Positive(message = "Id must be bigger than zero")
     private Long id; // 공고 pk
 
-    @NotEmpty
-    @Size(max = 50)
+    @Size(max = 50,message = "Max length(50)")
+    @NotEmpty(message = "Empty Title")
     private String postTitle; //공고 제목
 
-    @Positive
-    private Long postOccCode; // 공고 지역코드
-    @NotEmpty
-    @Max(100)
+    @Positive(message = "Id must be bigger than zero")
+    @Max(value = 64,message = "Occupation code is not found")
+    private Long postOccCode; // 공고 직종코드
+    @NotEmpty(message = "Empty String is not allowed")
     private String postRecruitNum; // 공고 모집인원
-    @NotEmpty
+    @NotEmpty(message = "Empty String is not allowed")
     private String postGender; // 공고 성별 (남,여,무관)
-    @Future
     private Date postStartDate; // 공고 시작일
-    @Future
     private Date postEndDate; // 공고 종료일
 
     private List<MultipartFile> postImg;
     @NotEmpty
-    @Size(min = 5,max = 5)
+    @Size(min = 5,max = 5,message = "The length of zipcode must be five")
     private String postcode; //우편번호
-    @NotEmpty
-    @Size(max = 255)
+    @NotEmpty(message = "Empty String is not allowed")
+    @Size(max = 255,message = "The length of address has exceeded the limit(255)")
     private String postAddress; // 주소1
-    @NotEmpty
-    @Size(max = 255)
+    @NotEmpty(message = "Empty String is not allowed")
+    @Size(max = 255,message = "The length of title has exceeded the limit(255)")
     private String postDetailAddress; // 주소2
     @Nullable
     private String etc; // 참고사항
-    @Positive
+    @Positive(message = "SalaryId must be bigger than zero")
+    @Max(value=14,message = "SalaryId is not found")
     private Long postSalaryId; // 연봉대
-    @NotEmpty
-    @Size(max = 5000)
+    @NotEmpty(message = "Empty String is not allowed")
+    @Size(max = 5000,message = "The length of address has exceeded the limit(5000)")
     private String postContent; // 공고 내용
     @Nullable
     private String comLoginId; // 회사 로그인 id
