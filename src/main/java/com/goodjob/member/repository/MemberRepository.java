@@ -42,4 +42,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select count(m) from Member m where m.memLoginId =:memLoginId")
     int checkId2(@Param("memLoginId") String memLoginId);
 
+
+    //22.11.01 ho 추가. 아이디 찾기(이름, 이메일 일치하는 데이터 존재여부)
+    Long countByMemNameAndMemEmail(String memName, String memEmail);
+
+    //22.11.01 ho 추가. 아이디 반환하기
+    Member findByMemNameAndMemEmail(String memName, String memEamil);
 }

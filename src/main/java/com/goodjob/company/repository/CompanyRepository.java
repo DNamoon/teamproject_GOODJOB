@@ -15,9 +15,29 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
+
+    @Modifying
+    @Transactional
+    @Query("update Company c set c.comPw =:comPw where c.comLoginId =:comLoginId")
+    void updatePassword(String comPw, String comLoginId);
+
+    Long countByComNameAndComEmail(String comName, String comEmail);
+
+    Optional<Company> findByComNameAndComEmail(String comName, String comEmail);
+
+    //아이디 존재여부 확인
+    Long countByComName(String comName);  //주의 countBy메서드 반환타입은 Long!
+
+    //아이디 찾기
+    Optional<Company> findByComName(String comName);
+
+    //아이디 찾기
+//    @Query("select c.comLoginId from Company c where c.comName=:comName and c.comEmail=:comEamil")
+//    Optional<Company> checkNameAndEmail(String comName, String comEmail);
 
     @Query("select count(c) from Company c where c.comLoginId =:comLoginId")
     int checkId2(@Param("comLoginId") String comLoginId);

@@ -4,6 +4,16 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+/*!
+ *22.11.01 ho
+ *input태그 nuber타입 화살표 없애기
+ */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 :root {
   --bs-blue: #63B3ED;
   --bs-indigo: #596CFF;

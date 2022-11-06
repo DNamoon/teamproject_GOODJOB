@@ -1,0 +1,40 @@
+<!--ho 22.10.28 작성-->
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <section class="page-header min-vh-100">
+        <div class="col-md-0">
+        <div class="row">
+            <div class="col-lg-7" style="width : 500px">
+                <div class="text-center pb-0 text-left">
+                    <h3 class="font-weight-bolder">아이디 찾기</h3>
+                </div>
+                <form role="form" name="frm" method="post" th:action="@{/com/findId}">
+                    <div th:if="${param.error}" role="alert">
+                        <p class="text-center" style="color: rgb(244, 54, 54);">이름 및 이메일을 확인해주세요.</p>
+                    </div>
+                    <div class="mb-3">
+                        <span>이름(기업명)을 입력해주세요.</span><br/>
+                        <input type="text" class="form-control form-control-lg mt-2" id="name" placeholder="이름"
+                               name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <span>이메일을 입력해주세요.</span><br/>
+                        <input type="text" class="form-control form-control-lg mt-2 mb-4" id="email" placeholder="이메일"
+                               name="email" required>
+                    </div>
+
+                    <div class="input-gorup">
+                        <div class="col-md-12 text-center">
+                            <button type="button" class="btn bg-gradient-dark w-60" id="btn_findId"
+                                    style="font-size:15px">아이디 찾기
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+        </section>
+    </th:block>
+</th:block>

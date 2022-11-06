@@ -10,8 +10,11 @@ package com.goodjob.company.controller;
 import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
+import com.goodjob.member.memDTO.MemberDTO;
+import com.goodjob.member.service.MemberService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,15 +22,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @Log4j2
 @RequestMapping("/com")
 public class CompanyController {
-//주석삭제
+    //주석삭제
     @Autowired
     private CompanyService companyService;
 
@@ -35,24 +42,27 @@ public class CompanyController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MemberService memberService;
+
     @GetMapping("/signup")
-    public String companySignUpForm(Model model, HttpServletRequest request) {
+    public String companySignUpForm(Model model, HttpServletRequest request, CompanyDTO companyDTO) {
+
         //22.10.11 세션있으면(로그인 되어있으면) 세션 종료 후 회원 가입 페이지로 넘어가도록 설정.
-        HttpSession session = request.getSession(false);
+        logout(request);
 
-        if (session != null) {
-            session.invalidate();
-        }
-
-        model.addAttribute("companyDTO", new CompanyDTO());
+        model.addAttribute("companyDTO", companyDTO);
+//        model.addAttribute("comdivCode",companyDTO.getComComdivCode());
+//        model.addAttribute("comdivName",companyDTO.getComComdivName());
         return "/company/companySignUpForm";
     }
 
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/signup")
-    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result) throws Exception {
+    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, HttpServletResponse response, Model model) throws Exception {
         System.out.println("====================" + companyDTO);
         if(result.hasErrors()){
+            model.addAttribute("companyDTO",companyDTO);
             return "/company/companySignUpForm";
         }
         //회원가입시 비밀번호, 비밀번호확인이 동일하지 않을시 회원가입버튼을 눌러도 회원가입이 되지 않도록 하는 코드
@@ -68,13 +78,29 @@ public class CompanyController {
         //22.10.20 아이디 중복시 에러메시지 + 로그인 폼 반환
         if(companyService.checkId2(companyDTO.getLoginId()) !=0){
             result.rejectValue("loginId","loginIdDuplicated"
-            ,"아이디가 중복됩니다. 다른 아이디를 지정하십시오.");
+                    ,"아이디가 중복됩니다. 다른 아이디를 지정하십시오.");
             return "/company/companySignUpForm";
         }
 
         System.out.println("companyDTO.toString() = " + companyDTO.toString());
         companyService.createCompanyUser(companyDTO);
-        return "/company/companySignUpView";
+
+        //22.10.27 회원가입시 alert 환영메시지 후 메인페이지 이동
+        try {
+            response.setContentType("text/html; charset=utf-8");
+            PrintWriter w = response.getWriter();
+            w.write("<script>alert('"+companyDTO.getLoginId()+"님 가입을 환영합니다!');</script>");
+//            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
+//                    ".then(function(){location.href='/';</script>");
+            w.write("<script>location.href='/';</script>");
+            w.flush();
+            w.close();
+            return null;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        //return "redirect:/";
     }
 
     //회원가입 아이디 증복확인시 $.ajax 사용하기 위한 코드
@@ -144,64 +170,137 @@ public class CompanyController {
         return "redirect:/";
     }
 
-    //ho - 22.10.17 마이페이지 세션 넘기기+
-    @GetMapping("/myPage")
-    public String companyMyPage(HttpSession httpSession, Model model){
-        String sessionId = (String) httpSession.getAttribute("sessionId");
-        Optional<Company> company = companyService.loginIdCheck(sessionId);
-        Company com = company.get();
-        CompanyDTO companyInfo = companyService.entityToDTO2(com);
-        model.addAttribute("companyInfo",companyInfo);
-
-//        log.info(companyInfo.getComRegCode().getRegName());
-        return "/company/companyMyPage";
+    //아이디 찾기페이지 이동
+    @GetMapping("/findId")
+    public String findLoginIdForm(){
+        return "/findId";
     }
 
-    //ho - 22.10.19 기업정보 수정하기(업데이트 버전)
-    @PostMapping("/update")
-    public String companyInfoUpdate(CompanyDTO companyInfo) {
-        companyService.companyInfoUpdate(companyInfo);
-        return "redirect:/com/myPage";
-    }
-
-    //ho - 22.10.20 기업정보 수정하기 전 비밀번호 확인
+    //아이디 찾기 22.11.01 다시 도전. ajax로 받은 값을 Service로 넘겨서 DTO로 변경. 다시 DTO를 Entity로 변경해서 아이디 찾기 진행
     @ResponseBody
-    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public String passwordConfirm(CompanyDTO companyInfo, HttpSession session, @RequestParam("pw") String password) throws Exception {
-        //log.info("===========로그인 아이디 받아오나? : "+companyInfo.getLoginId());
-        String comLoginId = (String) session.getAttribute("sessionId");
-        log.info("=========== 세션에 있는 로그인 아이디 받아오나? : " + comLoginId);
-        Optional<Company> company1 = companyService.loginIdCheck(comLoginId);
-        log.info("============ DB에 있는 로그인 아이디 : " + company1.get().getComLoginId());
-        log.info(company1.get().getComPw());
+    @RequestMapping("/findId")
+    public List<String> findLoginId(@Param("name") String name, @Param("email") String email, HttpServletResponse response){
 
-        String comPw = company1.get().getComPw();
+        //기업 아이디
+        String findId = companyService.findId2(name, email);
+        //일반 회원 아이디
+        String id = memberService.findId(name,email);
+        List<String> result = new ArrayList();
 
-        if(password == null || !passwordEncoder.matches(password,comPw)) {
-            return "0";
+        if(findId != "fail") {
+            result.add("1");
+            result.add(name);
+            result.add(findId);
+            return result;
         } else {
-            return "1";
+            if(id != "fail") {
+                result.add("2");
+                result.add(name);
+                result.add(id);
+            } else {
+                result.add("3");
+            }
+            return result;
         }
+//        if(findId != "fail") {
+//            try {
+//                response.setContentType("text/html; charset=utf-8");
+//                PrintWriter w = response.getWriter();
+//                w.write("<script>alert('회원타입은 기업회원입니다! " + name + "님의 아이디는 [" + findId + "] 입니다!');</script>");
+////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
+////                    ".then(function(){location.href='/';</script>");
+//                w.write("<script>location.href='/login';</script>");
+//                w.flush();
+//                w.close();
+//                return null;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        } else {
+//            if(id != "fail") {
+//                try {
+//                    response.setContentType("text/html; charset=utf-8");
+//                    PrintWriter w = response.getWriter();
+//                    w.write("<script>alert('회원타입은 개인회원입니다! " + name + "님의 아이디는 [" + id + "] 입니다!');</script>");
+//                    w.write("<script>location.href='/login';</script>");
+//                    w.flush();
+//                    w.close();
+//                    return null;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    return null;
+//                }
+//            }
+//            try {
+//                response.setContentType("text/html; charset=utf-8");
+//                PrintWriter w = response.getWriter();
+//                w.write("<script>alert('입력한 회원정보가 없습니다. 다시 확인해주세요.');</script>");
+//                w.write("<script>location.href='/com/findId';</script>");
+//                w.flush();
+//                w.close();
+//                return null;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+
 
     }
 
-    //ho - 2022.10.25 회원 탈퇴
-    @ResponseBody
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public int deleteCompany(HttpSession httpSession, @RequestParam("pw") String password) {
-        String comLoginId = (String) httpSession.getAttribute("sessionId");
-        Optional<Company> company = companyService.loginIdCheck(comLoginId);
-        Company com = company.get();
-        Long comId = com.getComId();
-        log.info("==============pk comId 잘 받아오나 : " +comId);
-
-        if(password == null || !passwordEncoder.matches(password,com.getComPw())){
-            return 0;
-        } else {
-            companyService.delete(comId);
-            httpSession.invalidate();  //세션 만료시키기.
-            return 1;
-        }
-    }
+//    @ResponseBody
+//    @RequestMapping("/findId")
+//    public String findLoginId(CompanyDTO companyDTO, MemberDTO memberDTO, HttpServletResponse response){
+//
+//        String findId = companyService.findId2(companyDTO);
+//        String id = memberService.findId(memberDTO);
+//
+//        if(findId != "fail") {
+//            try {
+//                response.setContentType("text/html; charset=utf-8");
+//                PrintWriter w = response.getWriter();
+//                w.write("<script>alert('회원타입은 기업회원입니다! " + companyDTO.getName() + "님의 아이디는 [" + findId + "] 입니다!');</script>");
+////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
+////                    ".then(function(){location.href='/';</script>");
+//                w.write("<script>location.href='/login';</script>");
+//                w.flush();
+//                w.close();
+//                return null;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        } else {
+//            if(id != "fail") {
+//                try {
+//                    response.setContentType("text/html; charset=utf-8");
+//                    PrintWriter w = response.getWriter();
+//                    w.write("<script>alert('회원타입은 개인회원입니다! " + memberDTO.getMemName() + "님의 아이디는 [" + id + "] 입니다!');</script>");
+//                    w.write("<script>location.href='/login';</script>");
+//                    w.flush();
+//                    w.close();
+//                    return null;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    return null;
+//                }
+//            }
+//            try {
+//                response.setContentType("text/html; charset=utf-8");
+//                PrintWriter w = response.getWriter();
+//                w.write("<script>alert('입력한 회원정보가 없습니다. 다시 확인해주세요.');</script>");
+//                w.write("<script>location.href='/com/findId';</script>");
+//                w.flush();
+//                w.close();
+//                return null;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//
+//
+//    }
 
 }
