@@ -126,7 +126,10 @@ $(document).ready(function(){
                         }
 
                         if(checkCerti.includes('같음')){
-                            alert("이미 작성한 자격증입니다.");
+                            Swal.fire({
+                                title: '이미 작성한 자격증입니다',
+                                icon: 'error'
+                            });
                             deleteAddInfo($("#" + inputId).parent());
                             $(".certiList").empty();
                             $(".findCertiName").empty();
@@ -624,7 +627,11 @@ function confirmValidStep1(){
 //학점 - 입력한 값이 총점보다 크지 않도록 검증
 function rangeCredit(){
     if(Number($("#eduGetCredit").val()) > Number($('#eduTotalCredit').val().substr(1))){
-        alert("입력한 값이 총점보다 클 수 없습니다.\n학점을 다시 확인해 주세요.")
+        Swal.fire({
+            title: '입력한 값이 총점보다 큽니다',
+            text: '학점을 다시 확인해 주세요.',
+            icon: 'error'
+        });
         $("#eduGetCredit").val($('#eduTotalCredit').val().replace('/',''));
     }else{
         $("#eduGetCredit").val($('#eduGetCredit').val());

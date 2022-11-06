@@ -31,6 +31,7 @@ function getApplierList(postId, pageNum) {
                 if(applier.statPass === '서류합격' || applier.statPass === '최종합격'){
                     list += '      <td style="color: #0a53be;">' + applier.statPass + '</td>\n';
                 }else if(applier.statPass === '서류불합격' || applier.statPass === '면접불합격'){
+                }else if(applier.statPass === '서류불합격' || applier.statPass === '면접불합격'){
                     list += '      <td style="color: red;">' + applier.statPass + '</td>\n';
                 }
                 else{
