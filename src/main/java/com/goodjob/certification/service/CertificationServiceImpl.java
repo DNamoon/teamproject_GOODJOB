@@ -63,7 +63,7 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public List<CertificateName> findCertiName(String keyword) {
-        return certificationNameRepository.findCertiName(keyword);
+        return certificationNameRepository.findCertificateNameByCertiNameContaining(keyword);
     }
 
     @Override

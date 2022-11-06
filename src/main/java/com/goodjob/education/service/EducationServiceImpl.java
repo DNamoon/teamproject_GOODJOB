@@ -31,7 +31,7 @@ public class EducationServiceImpl implements EducationService {
         String mergeCredit = educationDTO.getEduGetCredit() + educationDTO.getEduTotalCredit();
         Education education = dtoToEntity(educationDTO, mergeCredit);
 
-        if(educationRepository.findSchoolInfoByResumeId(educationDTO.getResumeId()) == null){
+        if(educationRepository.findEducationByResume_ResumeId(educationDTO.getResumeId()) == null){
             log.info("=========== 이력서 학적사항 등록 ===========");
             educationRepository.save(education);
         }else{
@@ -48,7 +48,7 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public EducationDTO bringSchoolInfo(Long resumeId) {
-        Education education = educationRepository.findSchoolInfoByResumeId(resumeId);
+        Education education = educationRepository.findEducationByResume_ResumeId(resumeId);
         String[] credit = education.getEduCredit().split("/");
         EducationDTO educationDTO = entityToDTO(education, credit[0], credit[1]);
         return educationDTO;
@@ -56,11 +56,11 @@ public class EducationServiceImpl implements EducationService {
     
     @Override
     public List<SchoolName> findSchoolName(String keyword) {
-        return schoolNameRepository.findSchoolName(keyword);
+        return schoolNameRepository.findSchoolNameBySchNameContainingAndSchNameNotContaining(keyword, "응답안함");
     }
 
     @Override
     public List<MajorName> findMajorName(String keyword) {
-        return majorNameRepository.findMajorName(keyword);
+        return majorNameRepository.findMajorNameByMajNameContainingAndMajNameNotContaining(keyword, "응답안함");
     }
 }
