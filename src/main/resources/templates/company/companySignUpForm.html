@@ -99,11 +99,11 @@ ho - 22.10.17 로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 
                                         <label th:for="comEmail">이메일<span
                                                 style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control border" th:field="*{comEmail1}"
+                                            <input type="text" class="form-control border" th:field="*{comEmail1}" onblur="emailDuplication()"
                                                    placeholder="goodjob"
                                                    name="email" id="email"
                                                    required> &nbsp;@ &nbsp;&nbsp;
-                                            <select class="form-control border ps-2" th:field="*{comEmail2}">
+                                            <select class="form-control border ps-2" id="email2" th:field="*{comEmail2}" onchange="emailDuplication()">
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="daum.net">daum.net</option>
                                                 <option value="gmail.com">gmail.com</option>

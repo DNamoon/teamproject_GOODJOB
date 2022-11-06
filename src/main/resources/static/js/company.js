@@ -356,6 +356,8 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
+//view 유효성 검사
+
 //view - 사업자 등록번호 양식 일치 3-2-5
 $('#comBusiNum').blur(function (){
     let busiNum = $(this).val();
@@ -389,6 +391,9 @@ $('#phone').blur(function (){
 //view - 이메일 양식일치
 $('#email').keyup(function (){
     let email = $('#email').val();
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+
     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
     let emailError = $('#email_error');
     emailError.css("color","#ff0000");
@@ -398,7 +403,37 @@ $('#email').keyup(function (){
     } else {
         emailError.show().text("");
     }
+
 })
+
+//view - 이메일 중복 검사 22.11.06
+function emailDuplication(){
+
+        let email = $('#email').val();
+        let email2 = $('#email2').val();
+        let emailCheck = email + "@" + email2;
+        let emailError = $('#email_error');
+
+        $.ajax({
+            type: "get",
+            url: "/com/emailCheck",
+            data: {emailCheck: emailCheck},
+            success: function (result) {
+                console.log(result)
+                if (result[0] == "null") {
+                    emailError.css('color', '#54b254');
+                    emailError.html("가입 가능한 이메일입니다.");
+                } else if(result[0] == "com") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 기업회원으로 가입한 이메일입니다.");
+                } else if(result[0] == "mem") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+                }
+            }
+        });
+}
+
 
 
 //view - 비밀번호1,2 일치 여부 보여주는 function
@@ -477,7 +512,7 @@ $('#id_input').on("change keyup", function(){
     });
 });
 
-//회원가입 유효성 검사
+//회원가입폼 유효성 검사
 function btnRexExp() {
 
     //아이디 정규식 확인용 변수
@@ -525,6 +560,32 @@ function btnRexExp() {
         result3 = "true";
     }
 
+    //이메일 중복 확인
+    let result7 = "false";
+
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+    $.ajax({
+        type: "get",
+        url: "/com/emailCheck",
+        async: false,
+        data: {emailCheck: emailCheck},
+        success: function (result) {
+            console.log(result)
+            if (result[0] == "null") {
+                result7 = "true";
+            } else if(result[0] == "com") {
+
+            } else if(result[0] == "mem") {
+            }
+            return result7;
+        }
+    });
+    console.log("이메일 중복확인은 한번에 가자~~~" + result7);
+    if (result7 == "false") {
+        $('#email').focus();
+    }
+
     //비밀번호 정규식 확인
     var result2 = "false";
     let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
@@ -565,13 +626,14 @@ function btnRexExp() {
                 console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?3333" + result6);
             }
 
-            if (result6 == "false") {
-                $('#id_input').focus();
-            }
             console.log("리턴되기 마지막 result6 !!! 왜 true가 아니냐!" + result6);
             return result6;
         }
     });
+
+    if (result6 == "false") {
+          $('#id_input').focus();
+    }
     console.log("버튼 눌렀을 때 아이디 중복 result6 값: " + result6);
 
     //아이디 정규식 확인
@@ -588,8 +650,8 @@ function btnRexExp() {
         }
     }
 
-    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true" && result6 == "true") {
-        // $('#contact-form').submit();
+    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true" && result6 == "true" && result7 == "true") {
+        //$('#contact-form').submit();
         Swal.fire("회원가입 완료",comLoginId+"님 회원가입을 축하드립니다!","success")
             .then(function (){  //alert창 확인 누르면 submit
                 $('#contact-form').submit();
@@ -650,6 +712,32 @@ function btn_change_info(){
         result3 = "true";
     }
 
+    //이메일 중복 확인
+    let result7 = "false";
+
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+    $.ajax({
+        type: "get",
+        url: "/com/emailCheck",
+        async: false,
+        data: {emailCheck: emailCheck},
+        success: function (result) {
+            console.log(result)
+            if (result[0] == "null") {
+                result7 = "true";
+            } else if(result[0] == "com") {
+
+            } else if(result[0] == "mem") {
+            }
+            return result7;
+        }
+    });
+
+    if (result7 == "false") {
+        $('#email').focus();
+    }
+
     //전화번호 확인용 변수
     let phone = $('#phone').val();
     let regExp5 = /^\d{2,3}-\d{3,4}-\d{4}$/;
@@ -678,7 +766,7 @@ function btn_change_info(){
         result4 = "true";
     }
 
-    if(result3 != "false" && result4 != "false" && result5 != "false") {
+    if(result3 != "false" && result4 != "false" && result5 != "false" && result7!="false") {
         $('#modal_open_btn').attr("data-toggle", "modal");
         $("#confirmPasswordModal").modal();
     } else {
