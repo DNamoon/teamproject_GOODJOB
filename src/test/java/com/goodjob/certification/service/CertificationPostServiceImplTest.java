@@ -32,7 +32,7 @@ class CertificationPostServiceImplTest implements CertificationService{
     @Test
     void showPrint(){
         Long resumeId = 226L;
-        List<Certification> certificationList = certificationRepository.findCertiInfoByResumeId(resumeId);
+        List<Certification> certificationList = certificationRepository.findCertificationByResume_ResumeId(resumeId);
         System.out.println("====ENTITY====" + certificationList);
         List<CertificationDTO> certificationDTOList = new ArrayList<>();
         for(Certification certification : certificationList){
