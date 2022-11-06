@@ -108,4 +108,14 @@ public class AdminTest {
         Page<CustomerInquiryPost> allByInquiryPostComIdIsNull = customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
         allByInquiryPostComIdIsNull.getContent().forEach(i-> System.out.println("i = " + i.getInquiryPostComId()));
     }
+
+    @Test
+    void 카테고리검색(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> etc = customerInquiryPostRepository.findAllByCategory(pageable, CustomerInquiryPostType.GENERAL);
+        for (CustomerInquiryPost customerInquiryPost : etc) {
+            System.out.println("customerInquiryPost = " + customerInquiryPost.getInquiryPostTitle());
+        }
+    }
 }

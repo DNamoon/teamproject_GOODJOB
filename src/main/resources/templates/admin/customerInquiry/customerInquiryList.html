@@ -17,7 +17,7 @@
                         </div>
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0">
+                                <table class="table align-items-center mb-0" style="min-height: 20rem">
                                     <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-75"
@@ -44,7 +44,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <th:block th:each="inquiryPost : ${inquiryPostList}">
+
+                                    <th:block th:if="${inquiryPostList.hasContent()}" th:each="inquiryPost : ${inquiryPostList}">
                                         <tr>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
@@ -96,6 +97,7 @@
                                         <div>
                                         </div>
                                     </th:block>
+
                                     </tbody>
                                     <div class="justify-content-end mb-2">
                                         <!-- Example single danger button -->
@@ -104,10 +106,10 @@
                                                 카테고리정렬
                                             </button>
                                             <ul class="dropdown-menu bg-gradient-secondary">
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='GENERAL')}">일반문의</a></h6></li>
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='CORRECTION')}">이메일 및 기타 수정요청</a></h6></li>
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='REPORT')}">허위신고</a></h6></li>
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='ETC')}">기타문의</a></h6></li>
+                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='GENERAL',sort=${sortType})}">일반문의</a></h6></li>
+                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='CORRECTION',sort=${sortType})}">이메일 및 기타 수정요청</a></h6></li>
+                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='REPORT',sort=${sortType})}">허위신고</a></h6></li>
+                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='ETC',sort=${sortType})}">기타문의</a></h6></li>
                                             </ul>
                                         </div>
                                         <a role="button" class="btn btn-info btn-sm"
@@ -119,6 +121,11 @@
                                         <a role="button" class="btn btn-info btn-sm"
                                            th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostPublishedDate')}">등록일정렬</a>
                                     </div>
+                                <th:block th:if="${inquiryPostList.isEmpty()}">
+                                    <div style="position: absolute; top: 20rem; left: 30rem">
+                                        <h6>조회된 문의가 없습니다.</h6>
+                                    </div>
+                                </th:block>
                                 </table>
                                 <div class="d-flex flex-row justify-content-center pager">
                                     <th:block th:if="${inquiryPostList.hasContent()}">

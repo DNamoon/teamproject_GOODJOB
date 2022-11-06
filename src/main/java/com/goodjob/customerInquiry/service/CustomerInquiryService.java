@@ -1,6 +1,7 @@
 package com.goodjob.customerInquiry.service;
 
 import com.goodjob.customerInquiry.CustomerInquiryPost;
+import com.goodjob.customerInquiry.CustomerInquiryPostType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,5 @@ public interface CustomerInquiryService {
     Page<CustomerInquiryPost> findInquiryListById(Pageable pageable, HttpServletRequest request);
 
     Page<CustomerInquiryPost> findAllByMemberType(Pageable pageable,String memberType);
+    Page<CustomerInquiryPost> findAllByCategory(Pageable pageable, String memberType);
 }

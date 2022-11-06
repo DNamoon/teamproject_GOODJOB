@@ -79,6 +79,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <th:block th:if="${session.Type eq 'member'}">
                                     <li><a class="dropdown-item" th:href="@{/member/myPageResume}">이력서 관리</a>
+                                    <li><a class="dropdown-item" th:href="@{/member/bookmark}">북마크 관리</a>
                                     <li><a class="dropdown-item" th:href="@{/member/myPage}">회원정보수정</a></li>
                                     <div style="height: auto; width: 100%; border-top:1px solid #67748e;">
                                         <li><a class="dropdown-item" th:onclick="|location.href='@{/member/logout}'|">로그아웃</a>

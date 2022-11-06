@@ -90,15 +90,23 @@ public class AdminController {
     @GetMapping("/customerInquiry/{pageNum}")
     public String adminCustomerInquiryList(@PathVariable("pageNum") int pageNum, Model model,
                                            @RequestParam("sort") String sortType,
-                                           @RequestParam("category")String category) {
+                                           @RequestParam(value = "category", required = false) String category) {
         if (sortType.equals("inquiryPostComId_comId")) {
             Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
-            model.addAttribute("inquiryPostList", customerInquiryService.findAllByMemberType(Pageable,sortType));
+            model.addAttribute("inquiryPostList", customerInquiryService.findAllByMemberType(Pageable, "inquiryPostComId_comId"));
+            model.addAttribute("sortType", sortType);
             return "admin/customerInquiry/customerInquiryList";
         }
         if (sortType.equals("inquiryPostMemberId_memId")) {
             Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
-            model.addAttribute("inquiryPostList", customerInquiryService.findAllByMemberType(Pageable,sortType));
+            model.addAttribute("inquiryPostList", customerInquiryService.findAllByMemberType(Pageable, "inquiryPostMemberId_memId"));
+            model.addAttribute("sortType", sortType);
+            return "admin/customerInquiry/customerInquiryList";
+        }
+        if (category != null) {
+            Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by(sortType).descending());
+            model.addAttribute("inquiryPostList", customerInquiryService.findAllByCategory(Pageable, category));
+            model.addAttribute("sortType", sortType);
             return "admin/customerInquiry/customerInquiryList";
         }
         Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by(sortType).descending());

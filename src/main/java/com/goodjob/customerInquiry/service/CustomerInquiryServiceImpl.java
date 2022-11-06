@@ -1,6 +1,7 @@
 package com.goodjob.customerInquiry.service;
 
 import com.goodjob.customerInquiry.CustomerInquiryPost;
+import com.goodjob.customerInquiry.CustomerInquiryPostType;
 import com.goodjob.customerInquiry.repository.CustomerInquiryPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -72,6 +73,12 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
            return customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
         }
         return null;
+    }
+
+    @Override
+    public Page<CustomerInquiryPost> findAllByCategory(Pageable pageable, String memberType) {
+        CustomerInquiryPostType customerInquiryPostType = CustomerInquiryPostType.valueOf(memberType);
+        return customerInquiryPostRepository.findAllByCategory(pageable,customerInquiryPostType);
     }
 
 

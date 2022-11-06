@@ -1,0 +1,52 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <div class="container py-4 flex-wrap">
+        <div class="col-12 mt-3">
+            <div class="d-flex flex-row justify-content-center">
+            <h3>북마크</h3>
+            </div>
+        </div>
+            <article class="comMyPage-post-postList">
+                <table class="row p-0 m-0">
+                    <tbody class="col-lg-12">
+                    <th:block th:each="bookmark :${bookMarks}">
+                        <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center">
+                            <td class="col-lg-2 p-2">
+                                <figure>
+                                    <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg"
+                                         class="img-fluid d-block comMypage-post-img">
+                                </figure>
+
+                            </td>
+                            <td class="col-lg-6 comMyPage-post-table_row-content p-3">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item mb-2"><h5>[[${bookmark.bookMarkPostId.postTitle}]]</h5></li>
+                                    <li class="nav-item mb-2">[[${bookmark.bookMarkPostId.address.address1}]]
+                                        [[${bookmark.bookMarkPostId.address.address2}]]
+                                    </li>
+                                    <li class="nav-item mb-2">[[${bookmark.bookMarkPostId.postOccCode.occName}]]</li>
+                                    <li class="nav-item mb-2">[[${bookmark.bookMarkPostId.postSalary.salaryRange}]]</li>
+                                    <li class="nav-item mb-2"><span style="font-size:14px">[[${bookmark.bookMarkPostId.postEndDate}]]</span>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="col-lg-3 h-100">
+                                <ul class="nav flex-column align-items-end">
+                                    <li class="nav-item mb-2" style="color: #333;font-size:15px">D-day:</li>
+                                    <li class="nav-item mb-2" style="color: #333;font-size:15px">지원상태:</li>
+                                </ul>
+                            </td>
+                            <td class="col-lg-1 h-100 ">
+                                <ul class="nav flex-column  align-items-center justify-content-evenly">
+                                    <li><a th:onclick=""><span class="material-symbols-outlined">delete</span></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </article>
+        </div>
+    </th:block>
+</th:block>
