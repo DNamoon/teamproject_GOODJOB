@@ -108,7 +108,7 @@ public class CompanyController {
     @RequestMapping(value = "/check", method = RequestMethod.POST)
     public String memberIdChkPOST(String comLoginId) throws Exception{
         int result = companyService.checkId2(comLoginId);
-
+        log.info("???? : "+result);
         if(result != 0) {
             return "fail";	// 중복 아이디가 존재
         } else {

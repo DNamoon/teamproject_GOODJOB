@@ -18,6 +18,8 @@
  *
  *  +2022.10.24
  *  기업분류, 지역분류 타입 변경. (회원정보에서 코드와 이름으로 받아오기 위해서)
+ *
+ *  +22.11.06 기업 회원 지역 테이블 삭제 -> String타입 comRegCode '지역분류코드'필드, comRegName 필드 삭제.
  */
 package com.goodjob.company.dto;
 
@@ -61,10 +63,6 @@ public class CompanyDTO {
 //    @NotBlank
 //    private Comdiv comComdivCode;
     @NotBlank
-    private String comRegCode;
-
-    private String comRegName;
-    @NotBlank
     private String comComdivCode;
 
     private String comComdivName;
@@ -96,18 +94,10 @@ public class CompanyDTO {
                 .comName(comName)
                 .comEmail(comEmail1)
                 .build();
-
-//        return Company.builder()
-//               .comName(comName)
-//               .comEmail(comEmail1)
-//               .build();
     }
 
     public Company toEntity() {
         //엔티티 바꿀 때는 builder이용해서 필요한 객체 만들자.
-        Region region = Region.builder()
-                .regCode(comRegCode)
-                .build();
 
         Comdiv comdiv = Comdiv.builder()
                 .comdivCode(comComdivCode)
@@ -121,7 +111,6 @@ public class CompanyDTO {
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 93,96라인 변경
         Company com = Company.builder()
                 .comLoginId(loginId)
-                .comRegCode(region)
                 .comComdivCode(comdiv)
                 .comPw(pw)
                 .comPhone(comPhone)

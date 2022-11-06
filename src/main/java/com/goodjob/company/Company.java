@@ -6,6 +6,8 @@
  * 걸리는거!
  * create-drop하고 다시 테이블 생성했는데 comLoginId에 unique 제약조건 없는것 같음
  * ->확인결과 unique 제약조건 걸려 있음.
+ *
+ * +22.11.06 기업 회원 지역 테이블 삭제 -> Region타입 comRegCode '지역분류코드'필드 삭제.
  */
 package com.goodjob.company;
 
@@ -28,10 +30,9 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long comId;
 
-    @OneToOne
-    @JoinColumn(name = "comRegCode")
-    private Region comRegCode; // 지역분류코드
-
+//    @OneToOne
+//    @JoinColumn(name = "comRegCode")
+//    private Region comRegCode; // 지역분류코드
 
     @Column(unique = true)  //로그인 아이디 중복 허용 안 하기 위해서 엔티티에서 제한.
     private String comLoginId;
@@ -72,8 +73,7 @@ public class Company {
     private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
 
     // 더미데이터 생성을 위한 임시 생성자 by.OH
-    public Company(Region comRegCode, Comdiv comComdivCode, String comLoginId, String comPw) {
-        this.comRegCode = comRegCode;
+    public Company(Comdiv comComdivCode, String comLoginId, String comPw) {
         this.comComdivCode = comComdivCode;
         this.comLoginId = comLoginId;
         this.comPw = comPw;

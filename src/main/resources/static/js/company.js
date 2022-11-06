@@ -539,35 +539,43 @@ function btnRexExp() {
         }
     }
 
-    //아이디 정규식 확인
-    var result1 = "false";
-    // .id_input에 입력되는 값
+    // 아이디 중복 확인
     var result6 = "false";
     var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
     $.ajax({
         type : "post",
         url : "/com/check",
+        async:false,  //ajax는 비동기 방식이기 때문에 결과값을 전역변수에 저장하기 위해 추가!
         data : data,
         success : function(result){
             if(result != 'fail'){  //중복되는 아이디가 없을 때
                 let regExp = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
                 if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
+                    console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?111111" + result6);
                 } else {
                     if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+                        console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?22222" + result6);
                     } else { //아이디 중복도 없고 정규식도 올바를 때
+                        console.log("설마 여기로 떨어져??? 성공으로?");
                         result6 = "true";
+                        console.log("그럼 왜 result6 안 바뀌어???" + result6)
                     }
                 }
             } else {  //중복되는 아이디가 있을 경우
+                console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?3333" + result6);
             }
+
             if (result6 == "false") {
                 $('#id_input').focus();
             }
+            console.log("리턴되기 마지막 result6 !!! 왜 true가 아니냐!" + result6);
             return result6;
         }
     });
     console.log("버튼 눌렀을 때 아이디 중복 result6 값: " + result6);
 
+    //아이디 정규식 확인
+    var result1 = "false";
     if (comLoginId === null || comLoginId === "") {  //아이디 입력을 안 했을 때
         //Swal.fire("아이디를 입력해주세요!","","error");
         $('#id_input').focus();
