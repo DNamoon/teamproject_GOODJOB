@@ -91,5 +91,19 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
         return customerInquiryPostRepository.countByInquiryPostStatus("0");
     }
 
+    @Override
+    public Page<CustomerInquiryPost> findAllByWriter(Pageable pageable, String loginId) {
+        return customerInquiryPostRepository.findAllByInquiryPostWriter(pageable, loginId);
+    }
+
+    @Override
+    public Page<CustomerInquiryPost> findAllByTitle(Pageable pageable, String title) {
+        return customerInquiryPostRepository.findByInquiryPostTitleContaining(pageable, title);
+    }
+
+    @Override
+    public Page<CustomerInquiryPost> findAllByContent(Pageable pageable, String content) {
+        return customerInquiryPostRepository.findByInquiryPostContentContaining(pageable,content);
+    }
 
 }

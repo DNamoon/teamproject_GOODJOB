@@ -29,4 +29,7 @@ public interface CustomerInquiryService {
     Page<CustomerInquiryPost> findAllByCategory(Pageable pageable, String memberType);
 
     Long countByUnanswered();
+    Page<CustomerInquiryPost> findAllByWriter(Pageable pageable,String loginId);
+    Page<CustomerInquiryPost> findAllByTitle(Pageable pageable,String title);
+    Page<CustomerInquiryPost> findAllByContent(Pageable pageable,String content);
 }

@@ -4,6 +4,7 @@ import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
 import com.goodjob.admin.customerInquiry.CustomerInquiryPostAnswerDTO;
+import com.goodjob.company.Company;
 import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.customerInquiry.repository.CustomerInquiryPostRepository;
 import com.goodjob.customerInquiry.CustomerInquiryPostType;

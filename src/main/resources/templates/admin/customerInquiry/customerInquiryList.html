@@ -45,7 +45,8 @@
                                     </thead>
                                     <tbody>
 
-                                    <th:block th:if="${inquiryPostList.hasContent()}" th:each="inquiryPost : ${inquiryPostList}">
+                                    <th:block th:if="${inquiryPostList.hasContent()}"
+                                              th:each="inquiryPost : ${inquiryPostList}">
                                         <tr>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
@@ -99,33 +100,63 @@
                                     </th:block>
 
                                     </tbody>
-                                    <div class="justify-content-end mb-2">
-                                        <!-- Example single danger button -->
-                                        <div class="btn-group">
-                                            <button type="button" class="btn bg-gradient-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                카테고리정렬
-                                            </button>
-                                            <ul class="dropdown-menu bg-gradient-secondary">
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='GENERAL',sort=${sortType})}">일반문의</a></h6></li>
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='CORRECTION',sort=${sortType})}">이메일 및 기타 수정요청</a></h6></li>
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='REPORT',sort=${sortType})}">허위신고</a></h6></li>
-                                                <li><h6><a class="dropdown-item text-white" th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='ETC',sort=${sortType})}">기타문의</a></h6></li>
-                                            </ul>
+                                    <div class="d-flex flex-row">
+                                        <div class="justify-content-end mb-2 col-7">
+                                            <!-- Example single danger button -->
+                                            <div class="btn-group">
+                                                <button type="button"
+                                                        class="btn bg-gradient-primary btn-sm dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                    카테고리정렬
+                                                </button>
+                                                <ul class="dropdown-menu bg-gradient-secondary">
+                                                    <li><h6><a class="dropdown-item text-white"
+                                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='GENERAL',sort=${sortType})}">일반문의</a>
+                                                    </h6></li>
+                                                    <li><h6><a class="dropdown-item text-white"
+                                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='CORRECTION',sort=${sortType})}">이메일
+                                                        및 기타 수정요청</a></h6></li>
+                                                    <li><h6><a class="dropdown-item text-white"
+                                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='REPORT',sort=${sortType})}">허위신고</a>
+                                                    </h6></li>
+                                                    <li><h6><a class="dropdown-item text-white"
+                                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,category='ETC',sort=${sortType})}">기타문의</a>
+                                                    </h6></li>
+                                                </ul>
+                                            </div>
+                                            <a role="button" class="btn btn-info btn-sm"
+                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostComId')}">기업만보기</a>
+                                            <a role="button" class="btn btn-info btn-sm"
+                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostMemberId')}">회원만보기</a>
+                                            <a role="button" class="btn btn-info btn-sm"
+                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostStatus')}">미답변만보기</a>
+                                            <a role="button" class="btn btn-info btn-sm"
+                                               th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostPublishedDate')}">등록일정렬</a>
                                         </div>
-                                        <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostComId')}">기업만보기</a>
-                                        <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostMemberId')}">회원만보기</a>
-                                        <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostStatus')}">미답변만보기</a>
-                                        <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostPublishedDate')}">등록일정렬</a>
+                                        <div class="col-5 d-flex ms-4">
+                                            <form th:action="@{/admin/customerInquiry/search/{pageNum}(pageNum=1)}" method="get">
+                                                <div class="col-3">
+                                                    <select class="form-select" style="height: 2.2rem" type="input" name="searchCategory">
+                                                        <option value="searchById" selected>아이디로 검색</option>
+                                                        <option value="searchByTitle">제목으로 검색</option>
+                                                        <option value="searchByContent">내용으로 검색</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control" name="searchText" style="height: 2.2rem">
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="submit" class="btn bg-gradient-dark form-control"
+                                                           style="height: 2.2rem;--bs-btn-padding-y: 0.2rem;">
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                <th:block th:if="${inquiryPostList.isEmpty()}">
-                                    <div style="position: absolute; top: 20rem; left: 30rem">
-                                        <h6>조회된 문의가 없습니다.</h6>
-                                    </div>
-                                </th:block>
+                                    <th:block th:if="${inquiryPostList.isEmpty()}">
+                                        <div style="position: absolute; top: 20rem; left: 30rem">
+                                            <h6>조회된 문의가 없습니다.</h6>
+                                        </div>
+                                    </th:block>
                                 </table>
                                 <div class="d-flex flex-row justify-content-center pager">
                                     <th:block th:if="${inquiryPostList.hasContent()}">

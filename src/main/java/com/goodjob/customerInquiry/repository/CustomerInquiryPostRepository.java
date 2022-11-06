@@ -32,4 +32,8 @@ public interface CustomerInquiryPostRepository extends JpaRepository<CustomerInq
     Page<CustomerInquiryPost> findAllByInquiryPostStatus(Pageable pageable, @Param("Status") String Status);
 
     Long countByInquiryPostStatus(@Param("status") String status);
+
+    Page<CustomerInquiryPost> findAllByInquiryPostWriter(Pageable pageable, @Param("loginId") String loginId);
+    Page<CustomerInquiryPost> findByInquiryPostTitleContaining(Pageable pageable, @Param("title") String title);
+    Page<CustomerInquiryPost> findByInquiryPostContentContaining(Pageable pageable, @Param("content") String content);
 }

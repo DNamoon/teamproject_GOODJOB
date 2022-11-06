@@ -5,9 +5,9 @@ import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.admindto.AdminDTO;
 import com.goodjob.admin.postpaging.AdminPostService;
 import com.goodjob.admin.service.AdminService;
+import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PostInsertDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -109,9 +109,9 @@ public class AdminController {
             model.addAttribute("sortType", sortType);
             return "admin/customerInquiry/customerInquiryList";
         }
-        if (sortType.equals("inquiryPostStatus")){
+        if (sortType.equals("inquiryPostStatus")) {
             Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
-            model.addAttribute("inquiryPostList",customerInquiryService.findAllByInquiryPostStatus(Pageable,"0"));
+            model.addAttribute("inquiryPostList", customerInquiryService.findAllByInquiryPostStatus(Pageable, "0"));
             model.addAttribute("sortType", sortType);
             return "admin/customerInquiry/customerInquiryList";
         }
@@ -140,21 +140,30 @@ public class AdminController {
         return "redirect:" + requestURL;
     }
 
-    /**
-     * 22.10.30 오성훈 이하 테스트메소드 차후 삭제예정.
-     */
-    @GetMapping("/test")
-    public String test() {
-        return "post/postDetailViewWithMap";
+    @GetMapping("/customerInquiry/search/{pageNum}")
+    public String inquiryPostSearch(@PathVariable("pageNum") int pageNum,
+                                    @RequestParam("searchCategory") String searchCategory,
+                                    @RequestParam("searchText") String searchText,
+                                    Model model) {
+        if (searchCategory.equals("searchById")) {
+            Pageable pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
+            Page<CustomerInquiryPost> allByWriter = customerInquiryService.findAllByWriter(pageable, searchText);
+            model.addAttribute("inquiryPostList", allByWriter);
+            return "admin/customerInquiry/customerInquiryList";
+        }
+        if (searchCategory.equals("searchByTitle")){
+            Pageable pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
+            Page<CustomerInquiryPost> allByWriter = customerInquiryService.findAllByTitle(pageable, searchText);
+            model.addAttribute("inquiryPostList", allByWriter);
+            return "admin/customerInquiry/customerInquiryList";
+        }
+        if (searchCategory.equals("searchByContent")){
+            Pageable pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
+            Page<CustomerInquiryPost> allByWriter = customerInquiryService.findAllByContent(pageable, searchText);
+            model.addAttribute("inquiryPostList", allByWriter);
+            return "admin/customerInquiry/customerInquiryList";
+        }
+        return "admin/customerInquiry/customerInquiryList";
     }
 
-    @PostMapping("/test")
-    public String test2(@ModelAttribute PostInsertDTO post) {
-        return "admin/adminHome";
-    }
-
-    @GetMapping("/test2")
-    public String test3() {
-        return "post/postDetailView";
-    }
 }
