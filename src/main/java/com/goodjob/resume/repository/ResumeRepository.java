@@ -16,22 +16,17 @@ import java.util.List;
 public interface ResumeRepository extends JpaRepository<Resume, Long> {
     Resume findByResumeId(Long resumeId);
     Resume findByResumeMemIdAndAndResumeId(String memId, Long resumeId);
-
     @Transactional
     @Modifying
     @Query("update Resume r set r.resumeMemPhone =:memPhoneNum, r.resumeMemEmail =:memEmail, r.resumeMemAddress =:memAddress where r.resumeId =:resumeId")
     void updateMemberInfo(String memPhoneNum, String memEmail, String memAddress, Long resumeId);
-
     List<Resume> getResumeByResumeMemId_MemLoginIdAndDeletedOrderByResumeId(String memId, boolean deleted);
-
     @Transactional
     void deleteByResumeId(Long resumeId);
-
     @Transactional
     @Modifying
     @Query("update Resume r set r.resumeTitle =:title where r.resumeId =:resumeId")
     void changeTitle(String title, Long resumeId);
-
     @Transactional
     @Modifying
     @Query("update Resume r set r.deleted = true where r.resumeId =:resumeId")

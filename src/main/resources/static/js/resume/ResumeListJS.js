@@ -75,21 +75,37 @@ function deleteResume(data) {
     var resumeId = $(data).parent().find("input[id=resumeId]").val();
     resumeIdList.push(resumeId);
 
-    if (confirm("이력서를 삭제하겠습니까?") == true) {
-        $.ajax({
-            url: "/resume/deleteResume",
-            type: "get",
-            data: {"resumeId": JSON.stringify(resumeIdList)},
-            success: function (result) {
-                if (result === 'success') {
-                    alert("이력서가 삭제되었습니다.");
-                    getJSONResumeList($("input[id=sessionInput]").val());
+    Swal.fire({
+        title: '이력서를 삭제하시겠습니까?',
+        text: '삭제된 이력서는 복구할 수 없습니다.',
+        icon: 'warning',
+
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+
+        reverseButtons: true, // 버튼 순서 거꾸로
+
+    }).then(result => {
+        // 만약 Promise리턴을 받으면,
+        if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+            $.ajax({
+                url: "/resume/deleteResume",
+                type: "get",
+                data: {"resumeId": JSON.stringify(resumeIdList)},
+                success: function (result) {
+                    if (result === 'success') {
+                        Swal.fire('이력서가 삭제되었습니다', '', 'success');
+                        getJSONResumeList();
+                    }
                 }
-            }
-        });
-    } else {
-        getJSONResumeList($("input[id=sessionInput]").val());
-    }
+            });
+        }else {
+            getJSONResumeList();
+        }
+    });
 }
 
 //이력서 수정
@@ -148,20 +164,36 @@ function deleteCheckedResume() {
     }
     ;
 
-    if (confirm("이력서를 삭제하겠습니까?") == true) {
-        $.ajax({
-            url: "/resume/deleteResume",
-            type: "get",
-            data: {"resumeId": JSON.stringify(checkedList)},
-            success: function (result) {
-                if (result === 'success') {
-                    alert("이력서가 삭제되었습니다.");
-                    getJSONResumeList();
+    Swal.fire({
+        title: '이력서를 삭제하시겠습니까?',
+        text: '삭제된 이력서는 복구할 수 없습니다.',
+        icon: 'warning',
+
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+
+        reverseButtons: true,
+
+    }).then(result => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/resume/deleteResume",
+                type: "get",
+                data: {"resumeId": JSON.stringify(checkedList)},
+                success: function (result) {
+                    if (result === 'success') {
+                        Swal.fire('이력서가 삭제되었습니다', '', 'success');
+                        getJSONResumeList();
+                    }
                 }
-            }
-        });
-    }
-    ;
+            });
+        }else {
+            getJSONResumeList();
+        }
+    });
 }
 
 //지원현황 리스트

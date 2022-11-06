@@ -16,12 +16,7 @@ import java.util.List;
 
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
 
-//    @Query("select count(c) from Certification c where c.resume.resumeId =:resumeId")
-//    int countCertiByResumeId(Long resumeId);
     int countCertificationByResume_ResumeId(Long resumeId);
-
-//    @Query("select c from Certification c where c.resume.resumeId =:resumeId")
-//    List<Certification> findCertiInfoByResumeId(Long resumeId);
     List<Certification> findCertificationByResume_ResumeId(Long resumeId);
 
     @Transactional

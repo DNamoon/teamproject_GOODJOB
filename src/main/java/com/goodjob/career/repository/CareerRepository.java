@@ -14,13 +14,8 @@ import java.util.List;
  */
 
 public interface CareerRepository extends JpaRepository<Career, Long> {
-//    @Query("select c from Career c where c.resume.resumeId =:resumeId")
-//    List<Career> findCareerInfoByResumeId(Long resumeId);
     List<Career> findCareerByResume_ResumeId(Long resumeId);
     int countCareerByResume_ResumeId(Long resumeId);
-//    @Query("select count(c) from Career c where c.resume.resumeId =:resumeId")
-//    int countCareerByResumeId(Long resumeId);
-
     @Transactional
     @Modifying
     @Query("update Career c set c.careerCompanyName =:companyName, c.careerJoinedDate =:joinDate, c.careerRetireDate =:retireDate, c.careerTask =:task where c.careerId =:careerId")

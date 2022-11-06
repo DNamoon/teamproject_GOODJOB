@@ -12,8 +12,5 @@ import java.util.List;
  */
 
 public interface CertificationNameRepository extends JpaRepository<CertificateName, String> {
-
-//    @Query("select c from CertificateName c where c.certiName like %:keyword%")
-//    List<CertificateName> findCertiName(String keyword);
     List<CertificateName> findCertificateNameByCertiNameContaining(String keyword);
 }
