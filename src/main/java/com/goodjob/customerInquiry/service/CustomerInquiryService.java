@@ -22,4 +22,6 @@ public interface CustomerInquiryService {
     void deleteByInquiryPostId(Long inquiryPostId);
 
     Page<CustomerInquiryPost> findInquiryListById(Pageable pageable, HttpServletRequest request);
+
+    Page<CustomerInquiryPost> findAllByMemberType(Pageable pageable,String memberType);
 }

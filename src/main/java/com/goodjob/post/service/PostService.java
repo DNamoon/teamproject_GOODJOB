@@ -7,7 +7,6 @@ import com.goodjob.post.salary.PostSalary;
 import com.goodjob.post.util.EntityDtoMapper;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 

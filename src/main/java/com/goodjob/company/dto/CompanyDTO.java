@@ -26,12 +26,7 @@ import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @ToString

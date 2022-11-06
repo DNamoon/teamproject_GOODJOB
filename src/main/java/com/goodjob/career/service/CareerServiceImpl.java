@@ -3,7 +3,6 @@ package com.goodjob.career.service;
 import com.goodjob.career.Career;
 import com.goodjob.career.dto.CareerDTO;
 import com.goodjob.career.repository.CareerRepository;
-import com.goodjob.certification.Certification;
 import com.goodjob.resume.Resume;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -13,11 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -130,10 +130,9 @@ public class AdminRestController {
     }
 
     @GetMapping("/customerInquiry/update")
-    public void inquiryPostReply(@Param("id") Long id,
-                                 @Param("inquiryPostAnswer") String inquiryPostAnswer) {
-        log.info("OSHID={}", id);
-        log.info("OSHID={}", inquiryPostAnswer);
-        customerInquiryService.updateInquiryPostWithAnswer(id,inquiryPostAnswer,AdminConst.ADMIN,LocalDateTime.now(),"0");
+    public String inquiryPostReply(@Param("id") Long id, Model model,
+                                   @Param("inquiryPostAnswer") String inquiryPostAnswer) {
+        customerInquiryService.updateInquiryPostWithAnswer(id, inquiryPostAnswer, AdminConst.ADMIN, LocalDateTime.now(), "0");
+        return inquiryPostAnswer;
     }
 }

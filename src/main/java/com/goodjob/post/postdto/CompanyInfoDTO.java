@@ -1,7 +1,6 @@
 package com.goodjob.post.postdto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @AllArgsConstructor

@@ -1,17 +1,13 @@
 package com.goodjob.status.service;
 
 import com.goodjob.post.Post;
-import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
 import com.goodjob.status.dto.ApplierListDTO;
-import com.goodjob.status.dto.ApplyDTO;
 import com.goodjob.status.dto.ApplyListDTO;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * 박채원 22.10.26 작성

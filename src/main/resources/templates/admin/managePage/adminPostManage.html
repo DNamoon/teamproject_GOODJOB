@@ -86,7 +86,7 @@
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${postPage.getNumber()-4})}">&lt;&lt;</a>
                                             </th:block>
                                             <th:block
-                                                    th:each="num : ${#numbers.sequence(postPage.getNumber(),postPage.getNumber()+5)}">
+                                                    th:each="num : ${#numbers.sequence(pageNum -1,pageNum+4)}">
                                                 <a class="m-lg-1 fs-5" th:text="${num}" th:if="${num>0 && num<postPage.getTotalPages()+1}"
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${num})}"></a>
                                             </th:block>

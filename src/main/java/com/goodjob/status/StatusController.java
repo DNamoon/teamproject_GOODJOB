@@ -2,9 +2,7 @@ package com.goodjob.status;
 
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.status.dto.ApplierListDTO;
-import com.goodjob.status.dto.ApplyDTO;
 import com.goodjob.status.dto.ApplyListDTO;
-import com.goodjob.status.repository.StatusRepository;
 import com.goodjob.status.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * 박채원 22.10.26 작성

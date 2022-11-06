@@ -1,6 +1,5 @@
 package com.goodjob.status;
 
-import com.goodjob.member.Member;
 import com.goodjob.post.Post;
 import com.goodjob.resume.Resume;
 import lombok.AllArgsConstructor;

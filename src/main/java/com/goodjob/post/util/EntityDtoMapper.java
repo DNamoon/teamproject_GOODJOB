@@ -1,7 +1,6 @@
 package com.goodjob.post.util;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.post.Address;
 import com.goodjob.post.Post;
 import com.goodjob.post.fileupload.UploadFile;
@@ -10,7 +9,6 @@ import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.salary.PostSalary;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

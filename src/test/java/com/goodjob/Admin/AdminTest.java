@@ -78,16 +78,19 @@ public class AdminTest {
     @Test
     @Commit
     void 고객문의생성테스트(){
-        CustomerInquiryPost build = CustomerInquiryPost.builder().inquiryPostCategory(CustomerInquiryPostType.ETC)
-                .inquiryPostMemberId(memberRepository.findById(2L).get())
-                .inquiryPostContent("content")
-                .inquiryPostId(4L)
-                .inquiryPostPublishedDate(LocalDateTime.now())
-                .inquiryPostStatus("0")
-                .inquiryPostTitle("title")
-                .inquiryPostWriter("writer")
-                .build();
-        customerInquiryPostRepository.save(build);
+        LongStream.rangeClosed(12,72).forEach(i->{
+            CustomerInquiryPost build = CustomerInquiryPost.builder().inquiryPostCategory(CustomerInquiryPostType.GENERAL)
+                    .inquiryPostMemberId(memberRepository.findById(1L).get())
+                    .inquiryPostContent("content")
+                    .inquiryPostId(i)
+                    .inquiryPostPublishedDate(LocalDateTime.now())
+                    .inquiryPostStatus("0")
+                    .inquiryPostTitle("title")
+                    .inquiryPostWriter("writer")
+                    .build();
+            customerInquiryPostRepository.save(build);
+        });
+
     }
     @Test
     void 멤버로문의조회(){
@@ -98,5 +101,11 @@ public class AdminTest {
         System.out.println("test = " + byCompany.getContent().size());
         System.out.println("test = " + byMember.getContent().size());
     }
-
+    @Test
+    void 개인만조회및정렬(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> allByInquiryPostComIdIsNull = customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
+        allByInquiryPostComIdIsNull.getContent().forEach(i-> System.out.println("i = " + i.getInquiryPostComId()));
+    }
 }

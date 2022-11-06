@@ -1,6 +1,5 @@
 package com.goodjob.resume.repository;
 
-import com.goodjob.member.Member;
 import com.goodjob.resume.Resume;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

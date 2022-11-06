@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li>
-                <a th:href="@{/admin/customerInquiry}" class="nav-link text-white">
+                <a th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostId')}" class="nav-link text-white">
                     <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#grid"></use>
                     </svg>

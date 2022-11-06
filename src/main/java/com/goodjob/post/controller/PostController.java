@@ -1,6 +1,5 @@
 package com.goodjob.post.controller;
 
-import com.goodjob.company.Company;
 import com.goodjob.company.service.CompanyService;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.service.OccupationService;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
 
 @Log4j2
 @Controller

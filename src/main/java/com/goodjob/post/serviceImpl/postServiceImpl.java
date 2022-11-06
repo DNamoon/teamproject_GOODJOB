@@ -1,6 +1,5 @@
 package com.goodjob.post.serviceImpl;
 
-import antlr.StringUtils;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;

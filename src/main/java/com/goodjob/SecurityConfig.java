@@ -29,8 +29,8 @@ public class SecurityConfig  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().disable()			//cors 방지
                 .csrf().disable()			//csrf 방지
-                //Security가 세션을 생성 못하게 막음. 기존엔 항시 생성
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //Security가 세션을 생성 못하게 막음. 기존엔 항시 생성
                 .and()
                 .authorizeRequests()
                 .antMatchers("/member/**","/","/resume/**","/admin/**","/com/**","/Users/**","/login","/getPagingPostList","/search","/home","/post/**","/img/**","/status/**","/customerInquiry/**").permitAll() // /auth이하의 주소들은 인증 필요x

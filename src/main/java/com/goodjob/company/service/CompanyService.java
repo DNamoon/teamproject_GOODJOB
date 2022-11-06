@@ -15,14 +15,12 @@ import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.repository.RegionRepository;
-import com.goodjob.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

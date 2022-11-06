@@ -1,6 +1,5 @@
 package com.goodjob.company.repository;
 
-import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

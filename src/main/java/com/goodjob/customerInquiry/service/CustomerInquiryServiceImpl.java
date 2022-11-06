@@ -63,4 +63,16 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
         return null;
     }
 
+    @Override
+    public Page<CustomerInquiryPost> findAllByMemberType(Pageable pageable, String memberType) {
+        if (memberType.equals("inquiryPostComId_comId")){
+           return customerInquiryPostRepository.findAllByInquiryPostMemberIdIsNull(pageable);
+        }
+        if (memberType.equals("inquiryPostMemberId_memId")){
+           return customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
+        }
+        return null;
+    }
+
+
 }

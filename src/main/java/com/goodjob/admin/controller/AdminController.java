@@ -3,7 +3,6 @@ package com.goodjob.admin.controller;
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.admindto.AdminDTO;
-import com.goodjob.admin.customerInquiry.CustomerInquiryPostAnswerDTO;
 import com.goodjob.admin.postpaging.AdminPostService;
 import com.goodjob.admin.service.AdminService;
 import com.goodjob.customerInquiry.service.CustomerInquiryService;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -90,20 +87,33 @@ public class AdminController {
         return "/admin/managePage/adminMemberManage";
     }
 
-    @GetMapping("/customerInquiry")
-    public String adminCustomerInquiryList(Model model) {
-        Pageable Pageable = PageRequest.of(0, 10, Sort.by("inquiryPostId").descending());
+    @GetMapping("/customerInquiry/{pageNum}")
+    public String adminCustomerInquiryList(@PathVariable("pageNum") int pageNum, Model model,
+                                           @RequestParam("sort") String sortType,
+                                           @RequestParam("category")String category) {
+        if (sortType.equals("inquiryPostComId_comId")) {
+            Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
+            model.addAttribute("inquiryPostList", customerInquiryService.findAllByMemberType(Pageable,sortType));
+            return "admin/customerInquiry/customerInquiryList";
+        }
+        if (sortType.equals("inquiryPostMemberId_memId")) {
+            Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by("inquiryPostId").descending());
+            model.addAttribute("inquiryPostList", customerInquiryService.findAllByMemberType(Pageable,sortType));
+            return "admin/customerInquiry/customerInquiryList";
+        }
+        Pageable Pageable = PageRequest.of(pageNum - 1, 10, Sort.by(sortType).descending());
+        model.addAttribute("sortType", sortType);
         model.addAttribute("inquiryPostList", customerInquiryService.findAll(Pageable));
         return "admin/customerInquiry/customerInquiryList";
     }
 
-    @GetMapping("/customerInquiry/{id}")
+    @GetMapping("/customerInquiry/{id}/detail")
     public String inquiryPostView(@PathVariable("id") Long id, Model model) {
         model.addAttribute("findInquiry", customerInquiryService.findOne(id).orElse(null));
         return "admin/customerInquiry/customerInquiryDetailView";
     }
 
-    @PostMapping("/customerInquiry/{id}")
+    @PostMapping("/customerInquiry/{id}/detail")
     public String inquiryPostReply(@PathVariable("id") Long id, @RequestParam("requestURL") String requestURL,
                                    @RequestParam("inquiryPostAnswer") String inquiryPostAnswer) {
         customerInquiryService.updateInquiryPostWithAnswer(id,
