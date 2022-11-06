@@ -65,20 +65,30 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
     }
 
     @Override
+    public Page<CustomerInquiryPost> findAllByInquiryPostStatus(Pageable pageable, String status) {
+        return customerInquiryPostRepository.findAllByInquiryPostStatus(pageable, status);
+    }
+
+    @Override
     public Page<CustomerInquiryPost> findAllByMemberType(Pageable pageable, String memberType) {
-        if (memberType.equals("inquiryPostComId_comId")){
-           return customerInquiryPostRepository.findAllByInquiryPostMemberIdIsNull(pageable);
+        if (memberType.equals("inquiryPostComId_comId")) {
+            return customerInquiryPostRepository.findAllByInquiryPostMemberIdIsNull(pageable);
         }
-        if (memberType.equals("inquiryPostMemberId_memId")){
-           return customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
+        if (memberType.equals("inquiryPostMemberId_memId")) {
+            return customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
         }
         return null;
     }
 
     @Override
-    public Page<CustomerInquiryPost> findAllByCategory(Pageable pageable, String memberType) {
-        CustomerInquiryPostType customerInquiryPostType = CustomerInquiryPostType.valueOf(memberType);
-        return customerInquiryPostRepository.findAllByCategory(pageable,customerInquiryPostType);
+    public Page<CustomerInquiryPost> findAllByCategory(Pageable pageable, String category) {
+        CustomerInquiryPostType customerInquiryPostType = CustomerInquiryPostType.valueOf(category);
+        return customerInquiryPostRepository.findAllByCategory(pageable, customerInquiryPostType);
+    }
+
+    @Override
+    public Long countByUnanswered() {
+        return customerInquiryPostRepository.countByInquiryPostStatus("0");
     }
 
 

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 
@@ -29,4 +28,8 @@ public interface CustomerInquiryPostRepository extends JpaRepository<CustomerInq
 
     @Query("select a from CustomerInquiryPost a where a.inquiryPostCategory=:category")
     Page<CustomerInquiryPost> findAllByCategory(Pageable pageable, @Param("category") CustomerInquiryPostType category);
+
+    Page<CustomerInquiryPost> findAllByInquiryPostStatus(Pageable pageable, @Param("Status") String Status);
+
+    Long countByInquiryPostStatus(@Param("status") String status);
 }

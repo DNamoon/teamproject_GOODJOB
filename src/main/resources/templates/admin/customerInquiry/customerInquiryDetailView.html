@@ -74,7 +74,7 @@
                             </div>
                         </div>
                         <th:block th:if="${findInquiry.inquiryPostStatus.equals('0')}">
-                            <form th:action="@{/admin/customerInquiry/{id}(id=*{inquiryPostId},requestURL=${#request.requestURI})}"
+                            <form th:action="@{/admin/customerInquiry/{id}/detail(id=*{inquiryPostId},requestURL=${#request.requestURI})}"
                                   method="post">
                                 <div class="card  mt-2">
                                     <div class="card-body px-0 pt-0 pb-1">

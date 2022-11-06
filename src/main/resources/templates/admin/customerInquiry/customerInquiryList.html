@@ -75,10 +75,10 @@
                                             </td>
                                             <td class="align-middle text-center text-sm">
                                                 <th:block th:if="${inquiryPost.getInquiryPostStatus() == '1'}">
-                                                    <span class="badge rounded-pill badge-sm bg-gradient-success">답변완료</span>
+                                                    <span class="badge rounded-pill badge-sm bg-gradient-secondary">답변완료</span>
                                                 </th:block>
                                                 <th:block th:if="${inquiryPost.getInquiryPostStatus() == '0'}">
-                                                    <span class="badge rounded-pill badge-sm bg-gradient-warning">답변미완료</span>
+                                                    <span class="badge rounded-pill badge-sm bg-gradient-dark">답변미완료</span>
                                                 </th:block>
                                             </td>
                                             <td class="align-middle text-center">
@@ -113,11 +113,11 @@
                                             </ul>
                                         </div>
                                         <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostComId_comId')}">기업만보기</a>
+                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostComId')}">기업만보기</a>
                                         <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostMemberId_memId')}">회원만보기</a>
+                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostMemberId')}">회원만보기</a>
                                         <a role="button" class="btn btn-info btn-sm"
-                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostStatus')}">상태정렬</a>
+                                           th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostStatus')}">미답변만보기</a>
                                         <a role="button" class="btn btn-info btn-sm"
                                            th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostPublishedDate')}">등록일정렬</a>
                                     </div>

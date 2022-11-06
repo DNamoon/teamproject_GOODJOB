@@ -135,4 +135,8 @@ public class AdminRestController {
         customerInquiryService.updateInquiryPostWithAnswer(id, inquiryPostAnswer, AdminConst.ADMIN, LocalDateTime.now(), "0");
         return inquiryPostAnswer;
     }
+    @GetMapping("/customerInquiry/count")
+    public Long inquiryPostCountByUnanswered(){
+        return customerInquiryService.countByUnanswered();
+    }
 }

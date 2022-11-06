@@ -118,4 +118,15 @@ public class AdminTest {
             System.out.println("customerInquiryPost = " + customerInquiryPost.getInquiryPostTitle());
         }
     }
+    @Test
+    void 미답변테스트(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> allByInquiryPostStatus = customerInquiryPostRepository.findAllByInquiryPostStatus(pageable, "0");
+        for (CustomerInquiryPost byInquiryPostStatus : allByInquiryPostStatus) {
+            System.out.println("byInquiryPostStatus = " + byInquiryPostStatus.getInquiryPostTitle());
+        }
+        System.out.println("customerInquiryPostRepository.countByInquiryPostStatus(\"0\") = " + customerInquiryPostRepository.countByInquiryPostStatus("0"));
+    }
+
 }

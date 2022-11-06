@@ -135,3 +135,8 @@ var url="/admin/totalVisitor"
 $.getJSON(url, function (val) {
     $("#totalVisitor").text(val)
 });
+
+var url="/admin/customerInquiry/count"
+$.getJSON(url, function (val) {
+    $("#countByUnanswered").text(val)
+});
