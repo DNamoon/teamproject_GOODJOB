@@ -161,14 +161,83 @@ let comMyPagePost = {
 
 }
 
+
+
+
 // searchPage.html JS
 let searchPage = {
     init(){
         const _this=this;
+        _this.infiniteScroll();
     },
-
     searchPageUri:"searchPage",
 
+    infiniteScroll () {
+        const _this = this;
+        const controller = new AbortController();
+        let page = 2;
+        console.log("셋팅 시작")
+
+        document.addEventListener('scroll',onScroll,{signal:controller.signal})
+        function onScroll () {
+            const occ = document.querySelector("#occSelect").value;
+            const addr = document.querySelector("#addSelect").value;
+            const sal = document.querySelector("#salarySelect").value;
+            const keyword = document.querySelector("#search").value;
+
+            if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                console.log("무한스크롤 작동")
+                setTimeout(function(){
+                    _this.insertPostListCard("infinite",page,8,"new",occ,addr,sal,keyword)
+                }, 500)
+                page += 1;
+            }
+            if(document.querySelector(".empty_box")!==null){
+                console.log("삭제 발동2")
+                controller.abort();
+            }
+        }
+    },
+
+    pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary,keyword){
+        return {
+            page: page,
+            size: size,
+            sort: sort,
+            filterOccupation: filterOccupation,
+            filterAddress: filterAddress,
+            filterSalary: filterSalary,
+            keyword: keyword
+        }
+    },
+    insertPostListCard(targetDomClassName,page,size,sort,filterOccupation, filterAddress, filterSalary){
+        const _this = this;
+        const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
+
+        // console.log(document.querySelector(".postDetailOccName").textContent)
+        fetchJs.post(fetchJs.url, 'getPagingPostList', _this.pageRequestDTOForMainPage(page, size, sort, filterOccupation, filterAddress, filterSalary))
+            .then(data => {
+                console.log(page+"<="+data.totalPage)
+                if (page <= data.totalPage) {
+                    for (let dto of data.dtoList) {
+                        changeContentDiv.appendChild(postJS.makePostListHtml(dto));
+                    }
+                    searchPage.page +=1;
+
+
+                } else if(page > data.totalPage){
+                    const ifEmptyDiv = document.createElement('div');
+                    ifEmptyDiv.classList.add('empty_box');
+                    const div = document.createElement('div');
+                    div.style.margin = "auto";
+                    div.style.textAlign = "center";
+                    ifEmptyDiv.appendChild(div);
+                    div.innerHTML = '<p class="empty_box-message">더이상 자료가 없습니다</p>'
+                    changeContentDiv.appendChild(ifEmptyDiv);
+                }
+            })
+            .catch(error => console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
+    }
 
 }
 // postInsertForm.html JS
@@ -184,14 +253,14 @@ let postInsertForm ={
             e.preventDefault();
             const form = $("#savePostForm")[0]
             let dataWithFile = new FormData(form);
-            // dataWithFile.delete("id");
-            // dataWithFile.delete("comLoginId");
             _this.postSave(dataWithFile)
       })
     },
     postSave(dataWithFile){
         fetchJs.postWithFile(fetchJs.url,fetchJs.uri+"savePost",dataWithFile)
+
             .then(response => {
+                console.log(dataWithFile)
                 if(response.ok){
                     console.log(response);
                     response.json().then(id => {
@@ -205,23 +274,118 @@ let postInsertForm ={
                         console.log("요청 실패")
                         console.log(data)
                         console.log(data.errors)
+                        let criticalErrorCount = 0;
                         for(let error of data.errors){
-                            console.log(error)
                             const reason = error.reason;
-                            console.log(error.field)
-                            console.log(error.reason);
                             switch (error.field){
                                 case "postTitle":
-                                    const postInsertTitleDom = document.querySelector(".post-Insert-Title")
-                                    postInsertTitleDom.style.display = "block"
+                                    // const postInsertTitleDom = document.querySelector(".post-Insert-Title")
+                                    const titleDom = document.querySelector(".post-error-style-title")
+
+                                    // postInsertTitleDom.style.display = "block"
                                     if(reason==="Empty Title"){
-                                        postInsertTitleDom.append(`<div class="post-error-style-title">제목은 필수 값입니다.</div>`)
+                                        titleDom.innerHTML=`제목은 필수 값입니다.`
                                     } else if(reason ==="Max length(50)"){
-                                        postInsertTitleDom.append(`<div class="post-error-style-title">제목 길이 제한은 50 문자입니다.</div>`)
+                                        titleDom.innerHTML=`제목 길이 제한은 50 문자입니다.`
+                                    }
+                                    break;
+                                case "postOccCode":
+                                    const occupationDom =  document.querySelector(".post-error-style-occupation")
+                                    if(reason==="Invalid value"){
+                                        occupationDom.innerHTML=`비정상적인 데이터입니다`
+                                        criticalErrorCount+=1;
+                                    }
+                                    break;
+                                case "postRecruitNum":
+                                    const recruitNumDom = document.querySelector(".post-error-style-recruit_number")
+                                    if(reason==="Empty Recruit Number"){
+                                        recruitNumDom.innerHTML=`모집인원은 필수값입니다.`
+                                    }
+                                    break;
+                                case "postGender":
+                                    const genderDom = document.querySelector(".post-error-style-gender")
+                                    if(reason==="Empty Gender"){
+                                        genderDom.innerHTML=`모집 성별은 필수값입니다.`
+                                    }
+                                    if(reason==="Gender values must be either male, female, or gender-independent"){
+                                        genderDom.innerHTML=`비정상적인 데이터입니다.`
+                                        criticalErrorCount+=1;
+                                    }
+                                    break;
+                                case "postStartDate":
+                                    const startDateDom = document.querySelector(".post-error-style-start_date")
+                                    if(reason==="The start date must be after today."){
+                                        startDateDom.innerHTML=`시작일은 오늘 이후여야 합니다.`
+                                    }
+                                    if(reason==="The start date must be before the end date."){
+                                        startDateDom.innerHTML=`시작일은 모집 종료일 이전이어야 합니다.`
+                                    }
+                                    break;
+                                case "postEndDate":
+                                    const endDateDom = document.querySelector(".post-error-style-end_date")
+                                    if(reason==="The end date must be after today."){
+                                        endDateDom.innerHTML=`모집 종료일은 오늘 이후여야 합니다.`
+                                    }
+                                    if(reason==="The end date must be after the start date."){
+                                        endDateDom.innerHTML=`모집 종료일은 시작일 이후이어야 합니다.`
+                                    }
+                                    break;
+                                case "postImg":
+                                    const attachmentDom = document.querySelector(".post-error-style-attachment")
+                                    if(reason==="Empty Img"){
+                                        attachmentDom.innerHTML=`공고 사진은 필수값입니다.`
+                                    }
+                                    break;
+                                case "postcode":
+                                    const zipcodeDom = document.querySelector(".post-error-style-zipcode")
+                                    if(reason==="Empty zipcode"){
+                                        zipcodeDom.innerHTML=`우편번호는 필수값입니다.`
+                                    }
+                                    if(reason==="The length of zipcode must be five"){
+                                        zipcodeDom.innerHTML=`우편번호는 5자리입니다.`
+                                    }
+                                    break;
+                                case "postAddress":
+                                    const address1Dom = document.querySelector(".post-error-style-address1")
+                                    if(reason==="Empty Address1"){
+                                        address1Dom.innerHTML=`주소는 필수값입니다.`
+                                    }
+                                    if(reason==="Max length(255)"){
+                                        address1Dom.innerHTML=`주소 길이 제한은 255 문자입니다.`
+                                    }
+                                    break;
+                                case "postDetailAddress":
+                                    const address2Dom = document.querySelector(".post-error-style-address2")
+                                    if(reason==="Empty Address2"){
+                                        address2Dom.innerHTML=`상세주소는 필수값입니다.`
+                                    }
+                                    if(reason==="Max length(255)"){
+                                        address2Dom.innerHTML=`상세주소 길이 제한은 255 문자입니다.`
+                                    }
+                                    break;
+                                case "postSalaryId":
+                                    const salaryDom = document.querySelector(".post-error-style-salary")
+                                    if(reason==="Invalid value"){
+                                        salaryDom.innerHTML=`비정상적인 데이터입니다.`
+                                        criticalErrorCount+=1;
+                                    }
+                                    break;
+                                case "postContent":
+                                    const contentDom = document.querySelector(".post-error-style-content")
+                                    if(reason==="Empty content"){
+                                        contentDom.innerHTML=`내용은 필수값입니다.`
+                                    }
+                                    if(reason==="Max length(5000)"){
+                                        contentDom.innerHTML=`내용 길이 제한은 5000 문자입니다.`
                                     }
                                     break;
                             }
                         }
+                        if(criticalErrorCount>0){
+                            alert("비정상적인 접근입니다. 메인으로 이동합니다.")
+                            // location.replace(`/`)
+                        }
+
                     })
                 }
 
@@ -239,6 +403,11 @@ let postInsertForm ={
     setDateDefaultToNow(){
         document.querySelector("#postStartDate").valueAsDate=new Date();
         document.querySelector("#postEndDate").valueAsDate=new Date();
+    }
+}
+let postUpdateForm = {
+    init(){
+        postInsertForm.setSaveBtn();
     }
 }
 

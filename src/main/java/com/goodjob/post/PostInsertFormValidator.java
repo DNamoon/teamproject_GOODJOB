@@ -30,19 +30,25 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("================="+value.getPostStartDate()+"///"+value.getPostOccCode());
         int invalidCount = 0;
-
+        if(value.getPostOccCode()<0 || value.getPostOccCode()>64){
+            addConstraintViolation(context,"Invalid value","postOccCode");
+            invalidCount +=1;
+        }
+        if(value.getPostSalaryId()<0 || value.getPostOccCode()>14){
+            addConstraintViolation(context,"Invalid value","postSalaryId");
+            invalidCount +=1;
+        }
         if(!Arrays.asList(new String[]{"남자", "여자","성별무관"}).contains(value.getPostGender())){
             addConstraintViolation(context, "Gender values must be either male, female, or gender-independent","postGender");
             invalidCount += 1;
         }
         if(value.getPostStartDate().getTime() < nowDate.getTime()){
-            addConstraintViolation(context, "The start date must be before today","postStartDate");
+            addConstraintViolation(context, "The start date must be after today.","postStartDate");
             invalidCount += 1;
         }
         if(value.getPostEndDate().getTime() < nowDate.getTime()){
-            addConstraintViolation(context, "The end date must be before today","postEndDate");
+            addConstraintViolation(context, "The end date must be after today.","postEndDate");
             invalidCount += 1;
         }
         if(value.getPostStartDate().getTime() > value.getPostEndDate().getTime()){
@@ -54,6 +60,9 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             invalidCount += 1;
         }
         return invalidCount == 0;
+    }
+    private boolean checkIfNumber(String number){ // true 이면 정수
+      return number == null || number.matches("-?\\d+");
     }
 
     private void addConstraintViolation(ConstraintValidatorContext context, String errorMessage, String firstNode, String secondNode) {

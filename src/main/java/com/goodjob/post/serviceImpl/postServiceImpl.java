@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -92,7 +93,7 @@ public class postServiceImpl implements PostService {
 
     @Override
     public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
-        Address address = new Address(postInsertDTO.getPostcode(), postInsertDTO.getPostAddress(), postInsertDTO.getPostDetailAddress(),postInsertDTO.getEtc());
+        Address address = new Address(HtmlUtils.htmlEscape(postInsertDTO.getPostcode()), HtmlUtils.htmlEscape(postInsertDTO.getPostAddress()), HtmlUtils.htmlEscape(postInsertDTO.getPostDetailAddress()),HtmlUtils.htmlEscape(postInsertDTO.getEtc()+""));
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
         List<UploadFile> uploadFiles =  fileService.storeFiles(postInsertDTO.getPostImg());

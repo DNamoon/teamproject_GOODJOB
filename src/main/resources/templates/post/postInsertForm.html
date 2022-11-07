@@ -15,7 +15,7 @@
                                     <label class="m-1" for="postTitle">공고제목</label>
                                     <input type="text" class="flex-fill form-control input-group w-90"
                                            id="postTitle" name="postTitle">
-                                    <div class="post-error-style-title"></div>
+                                    <label class="post-error-style-title post-error-style"></label>
                                 </div>
                             </div>
                         </div>
@@ -71,6 +71,7 @@
                                                 <option th:value="${occ.occId}">[[${occ.occName}]]</option>
                                             </th:block>
                                         </select>
+                                        <label class="post-error-style-occupation post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -83,8 +84,9 @@
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill col-6 p-0">
                                         <label class="m-1" for="postRecruitNum">모집인원</label>
-                                        <input type="text" class="flex-fill form-control input-group"
+                                        <input type="number" class="flex-fill form-control input-group"
                                                id="postRecruitNum" name="postRecruitNum">
+                                        <label class="post-error-style-recruit_number post-error-style"></label>
                                     </div>
                                     <div class="col-4 p-0">
                                         <select type="input" style="margin-top: 1.8rem" name="postGender"
@@ -95,6 +97,7 @@
                                             <option value="남자">남자</option>
                                             <option value="여자">여자</option>
                                         </select>
+                                        <label class="post-error-style-gender post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +114,8 @@
                                                     <div class="col-9 p-0">
                                                         <input type="date"
                                                                class="form-control flex-fill input-group w-90"
-                                                               id="postStartDate" name="postStartDate" required>
+                                                               id="postStartDate" th:value="${#dates.createTodayForTimeZone()}" name="postStartDate" required>
+                                                        <label class="post-error-style-start_date post-error-style"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,7 +127,8 @@
                                                     <div class="col-9 p-0">
                                                         <input type="date"
                                                                class="form-control flex-fill input-group w-90"
-                                                               id="postEndDate" name="postEndDate" required>
+                                                               id="postEndDate" th:value="${#dates.createTodayForTimeZone()}" name="postEndDate" required>
+                                                        <label class="post-error-style-end_date post-error-style"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -141,9 +146,10 @@
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="postImg">파일첨부</label>
+                                        <label class="m-1" for="postImg">파일첨부(필수)</label>
                                         <input type="file" id="postImg" name="postImg" multiple
-                                               class="flex-fill form-control w-80">
+                                               class="flex-fill form-control w-80" required>
+                                        <label class="post-error-style-attachment post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -159,6 +165,7 @@
                                         <label class="m-1" for="companyName">우편번호</label>
                                         <input type="text" class="flex-fill input-group w-100 form-control" name="postcode"
                                                id="postcode" placeholder="우편번호" th:value="${comInfo.getPostcode()}" required readonly>
+                                        <label class="post-error-style-zipcode post-error-style"></label>
                                     </div>
                                     <div class="flex-row d-flex">
                                         <div class="flex-fill">
@@ -183,6 +190,7 @@
                                                name="postAddress"
                                                id="postAddress" th:value="${comInfo.getAddress_name()}" readonly
                                                placeholder="상세주소" required>
+                                        <label class="post-error-style-address1 post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -194,6 +202,7 @@
                                                id="etc" th:value="${comInfo.getEtc()}"
                                                name="etc"
                                                placeholder="참고항목">
+                                        <label class="post-error-style-etc post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -209,6 +218,7 @@
                                         <input type="text" class="form-control flex-fill input-group w-80"
                                                id="postDetailAddress" name="postDetailAddress" th:value="${comInfo.getDetail_name()}"
                                                placeholder="상세주소" required>
+                                        <label class="post-error-style-address2 post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +237,7 @@
                                                 </option>
                                             </th:block>
                                         </select>
+                                        <label class="post-error-style-salary post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -242,6 +253,7 @@
                                         <textarea type="text" style="resize: none; min-height: 10rem" id="postContent"
                                                   class="flex-fill form-control input-group w-90"
                                                   name="postContent"></textarea>
+                                        <label class="post-error-style-content post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -346,18 +358,18 @@
                                 extraAddr = ' (' + extraAddr + ')';
                             }
                             // 조합된 참고항목을 해당 필드에 넣는다.
-                            document.getElementById("sample6_extraAddress").value = extraAddr;
+                            document.getElementById("postAddress").value = extraAddr;
 
                         } else {
-                            document.getElementById("sample6_extraAddress").value = '';
+                            document.getElementById("postAddress").value = '';
                         }
 
                         // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        let postcode = document.getElementById('sample6_postcode').value = data.zonecode;
-                        let address = document.getElementById("sample6_address").value = addr;
-                        let extraAddress = document.getElementById("sample6_extraAddress").value;
+                        let postcode = document.getElementById('postcode').value = data.zonecode;
+                        let address = document.getElementById("postAddress").value = addr;
+                        let extraAddress = document.getElementById("postDetailAddress").value;
                         // 커서를 상세주소 필드로 이동한다.
-                        document.getElementById("sample6_detailAddress").focus();
+                        document.getElementById("postDetailAddress").focus();
                         // document.getElementById("postAddress").value = address + extraAddress
                         // document.getElementById("postAddress").value = '(' + postcode + ')' + address + extraAddress
                     }

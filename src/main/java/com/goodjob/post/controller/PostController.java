@@ -18,10 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
+import org.unbescape.html.HtmlEscape;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +48,10 @@ public class PostController {
     @PostMapping(value = {"/test"}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<String> test(@ModelAttribute Test tn, HttpServletRequest httpServletRequest){
+        // 태그 이스케이프
+        String tag = "<html><div></div></html>";
+        String esTag = HtmlUtils.htmlEscape(tag);
+        String uesTag = HtmlUtils.htmlUnescape(esTag);
 
         log.info("테스트!!!!!!!!!!!!!!"+tn);
         if(tn.getFiles()==null){

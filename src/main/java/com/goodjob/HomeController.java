@@ -31,6 +31,7 @@ public class HomeController {
 
     @GetMapping("/search")
     public String search(PageRequestDTO pageRequestDTO, Model model) {
+        log.info("================================="+pageRequestDTO);
         pageRequestDTO.setSize(12);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
         model.addAttribute("occuAll",occuService.searchOccName());

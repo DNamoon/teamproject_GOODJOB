@@ -9,6 +9,7 @@
                                 <div class="basic-search">
                                     <div class="input-field">
                                         <input type="hidden" name="type" value="titleCompanyName">
+                                        <input type="text" style="display:none;"/>
                                         <input id="search" name="keyword" type="text" placeholder="검색어를 입력해주세요." th:value="${pageRequestDTO.keyword}"/>
                                         <div class="icon-wrap">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -25,7 +26,7 @@
                                     <div class="row">
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="filterOccupation">
+                                                <select data-trigger="" id="occSelect" name="filterOccupation">
                                                     <option placeholder="" value="">직종</option>
                                                     <th:block th:each="o:${occuAll}">
                                                         <option th:value="${o}" th:selected="${pageRequestDTO.filterOccupation == o}">[[${o}]]</option>
@@ -35,10 +36,10 @@
                                         </div>
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="filterAddress">
+                                                <select data-trigger="" id="addSelect" name="filterAddress">
                                                     <option  value="">지역</option>
                                                     <option value="서울" th:selected="${pageRequestDTO.filterAddress == '서울'}">서울특별시</option>
-                                                    <option value="경기" th:selected="${pageRequestDTO.filterAddress == '경기도'}">경기도</option>
+                                                    <option value="경기" th:selected="${pageRequestDTO.filterAddress == '경기'}">경기도</option>
                                                     <option value="인천" th:selected="${pageRequestDTO.filterAddress == '인천'}">인천광역시</option>
                                                     <option value="강원" th:selected="${pageRequestDTO.filterAddress == '강원'}">강원도</option>
                                                     <option value="충남" th:selected="${pageRequestDTO.filterAddress == '충남'}">충청남도</option>
@@ -59,7 +60,7 @@
                                         </div>
                                         <div class="input-field">
                                             <div class="input-select">
-                                                <select data-trigger="" name="filterSalary">
+                                                <select data-trigger="" id="salarySelect" name="filterSalary">
                                                     <option placeholder="" value="">연봉</option>
                                                     <th:block th:each="s:${salaryRange}" >
                                                         <option th:value="${s}" th:selected="${pageRequestDTO.filterSalary == s}">[[${s}]]</option>
@@ -93,27 +94,25 @@
                     </div>
                     </th:block>
                     <th:block th:if="${result.totalCount}!=0">
-                    <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
-                            <h4 class="col-md-12" style="margin-left: 40px">채용중인 공고</h4>
+                    <div class="row row-cols-1 row-cols-md-4 g-4 p-0 infinite">
+                        <h4 class="col-md-12" style="margin-left: 40px">채용중인 공고</h4>
                         <th:block th:each="dto:${result.dtoList}">
-
-                        <div class="post-wrapper">
-                                    <div class="col p-0">
-                                        <div class="p-0 m-2 card-css" th:onclick="|javascript:comMyPagePost.readPost('${dto.id}')|" >
-                                            <div class="w-100 p-0 h-50 img-css" >
-                                                <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
-                                            </div>
-
-                                            <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
-                                                <p class="card-title-post">[[${dto.title}]]</p>
-                                                <p class="card-company-post">[[${dto.comName}]]</p>
-                                                <p class="card-text-post">연봉 | [[${dto.salaryRange}]]</p>
-                                                <p class="card-text-post">위치 | [[${dto.regionName}]]</p>
-                                                <p class="card-text-post">직종 | [[${dto.occName}]]</p>
-                                                <p class="card-dDay-post">[[${dto.remainDay}]]</p>
-                                            </div>
+                            <div class="post-wrapper">
+                                <div class="col p-0">
+                                    <div class="p-0 m-2 card-css" th:onclick="|javascript:comMyPagePost.readPost('${dto.id}')|" >
+                                        <div class="w-100 p-0 h-50 img-css" >
+                                            <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
+                                        </div>
+                                        <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+                                            <p class="card-title-post">[[${dto.title}]]</p>
+                                            <p class="card-company-post">[[${dto.comName}]]</p>
+                                            <p class="card-text-post">연봉 | [[${dto.salaryRange}]]</p>
+                                            <p class="card-text-post">위치 | [[${dto.regionName}]]</p>
+                                            <p class="card-text-post">직종 | [[${dto.occName}]]</p>
+                                            <p class="card-dDay-post">[[${dto.remainDay}]]</p>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </th:block>
                     </div>
@@ -159,6 +158,7 @@
         e.preventDefault()
         location.href="/search";
     });
+    searchPage.init()
 
 </script>
 

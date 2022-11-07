@@ -20,40 +20,35 @@ import java.util.List;
 @AllArgsConstructor
 public class PostInsertDTO {
 
-    @Positive(message = "Id must be bigger than zero")
+    @Positive(message = "Value must be positive")
     private Long id; // 공고 pk
 
     @Size(max = 50,message = "Max length(50)")
     @NotEmpty(message = "Empty Title")
     private String postTitle; //공고 제목
-
-    @Positive(message = "Id must be bigger than zero")
-    @Max(value = 64,message = "Occupation code is not found")
     private Long postOccCode; // 공고 직종코드
-    @NotEmpty(message = "Empty String is not allowed")
+    @NotEmpty(message = "Empty Recruit Number")
     private String postRecruitNum; // 공고 모집인원
-    @NotEmpty(message = "Empty String is not allowed")
+    @NotEmpty(message = "Empty Gender")
     private String postGender; // 공고 성별 (남,여,무관)
     private Date postStartDate; // 공고 시작일
     private Date postEndDate; // 공고 종료일
-
+    @NotEmpty(message = "Empty Img")
     private List<MultipartFile> postImg;
-    @NotEmpty
+    @NotEmpty(message = "Empty zipcode")
     @Size(min = 5,max = 5,message = "The length of zipcode must be five")
     private String postcode; //우편번호
-    @NotEmpty(message = "Empty String is not allowed")
-    @Size(max = 255,message = "The length of address has exceeded the limit(255)")
+    @NotEmpty(message = "Empty Address1")
+    @Size(max = 255,message = "Max length(255)")
     private String postAddress; // 주소1
-    @NotEmpty(message = "Empty String is not allowed")
-    @Size(max = 255,message = "The length of title has exceeded the limit(255)")
+    @NotEmpty(message = "Empty Address2")
+    @Size(max = 255,message = "Max length(255)")
     private String postDetailAddress; // 주소2
     @Nullable
     private String etc; // 참고사항
-    @Positive(message = "SalaryId must be bigger than zero")
-    @Max(value=14,message = "SalaryId is not found")
     private Long postSalaryId; // 연봉대
-    @NotEmpty(message = "Empty String is not allowed")
-    @Size(max = 5000,message = "The length of address has exceeded the limit(5000)")
+    @NotEmpty(message = "Empty content")
+    @Size(max = 5000,message = "Max length(5000)")
     private String postContent; // 공고 내용
     @Nullable
     private String comLoginId; // 회사 로그인 id
