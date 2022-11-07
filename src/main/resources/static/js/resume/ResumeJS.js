@@ -199,7 +199,7 @@ $(document).ready(function(){
 
     //입력 검증하고 step2로 이동
     $("#submitStep1").click(function(){
-        if(confirmValidMajor() && confirmValidSchool() && confirmValidGradDate()){
+        if(confirmValidSchool() && confirmValidGradDate() && confirmValidMajor()){
             $("#step1Form").attr("action", "/resume/resumeStep2/" + $("#resumeId").val());
             $("#step1Form").submit();
         }
