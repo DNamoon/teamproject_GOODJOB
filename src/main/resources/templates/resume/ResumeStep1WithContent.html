@@ -173,13 +173,13 @@
                                     </div>
                                     <div class="col-md-6" style="width: 325px;">
                                         <label>졸업년월<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD"
                                                    type="date"
                                                    name="eduGraduationDate" th:value="${schoolInfo.eduGraduationDate}"
-                                                   max=""
-                                                   required>
+                                                   max="" onkeyup="confirmValidGradDate()">
                                         </div>
+                                        <label id="graduDateValiDiv"></label>
                                     </div>
                                 </div>
                                 <div class="row" style="float: inline-start;">

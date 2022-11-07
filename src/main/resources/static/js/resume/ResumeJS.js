@@ -53,6 +53,7 @@ $(document).ready(function(){
                         $("#schoolName").attr("value", $("input:radio[name='selectSchoolName']:checked").val());
                         $(".schoolList").empty();
                         $(".findSchoolName").empty();
+                        confirmValidSchool();
                     });
                 }else{
                     $(".schoolList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
@@ -62,6 +63,7 @@ $(document).ready(function(){
         $(".close").click(function(){
             $(".schoolList").empty();
             $(".findSchoolName").empty();
+            confirmValidSchool();
         })
     });
 
@@ -84,6 +86,7 @@ $(document).ready(function(){
                         $("#majorName").attr("value", $("input:radio[name='selectMajorName']:checked").val());
                         $(".majorList").empty();
                         $(".findMajorName").empty();
+                        confirmValidMajor();
                     });
                 }else{
                     $(".majorList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
@@ -93,6 +96,7 @@ $(document).ready(function(){
         $(".close").click(function(){
             $(".majorList").empty();
             $(".findMajorName").empty();
+            confirmValidMajor();
         })
     });
 
@@ -195,7 +199,7 @@ $(document).ready(function(){
 
     //입력 검증하고 step2로 이동
     $("#submitStep1").click(function(){
-        if(confirmValidStep1()){
+        if(confirmValidMajor() && confirmValidSchool() && confirmValidGradDate()){
             $("#step1Form").attr("action", "/resume/resumeStep2/" + $("#resumeId").val());
             $("#step1Form").submit();
         }
@@ -575,6 +579,9 @@ function WinPrint() {
         document.body.innerHTML = g_oBeforeBody;
     };
     window.print();
+
+    $(".buttonDiv").replaceWith('<button class="btn btn-secondary" type="button" onclick="WinPrint()">인쇄</button>\n' +
+        '        <button class="btn btn-danger" type="button" onclick="WinClose()">닫기</button>');
 }
 
 //입력검증
@@ -650,14 +657,27 @@ function rangeCredit(){
     }
 }
 
-function confirmValidStep1(){
+function confirmValidGradDate(){
+    if($("#graduDateValiDiv").val() == ''){
+        $("#graduDateValiDiv").replaceWith('<label id="graduDateValiDiv" style="color: red;">졸업년월을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#graduDateValiDiv").replaceWith('<label id="graduDateValiDiv"></label>');
+    }
+    return true;
+}
+
+function confirmValidSchool(){
     if($("#schoolName").val() == ''){
         $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv" style="color: red;">학교명을 입력해주세요.</label>');
         return false;
     }else{
         $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv"></label>');
     }
+    return true;
+}
 
+function confirmValidMajor(){
     if($("#majorName").val() == '') {
         $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv" style="color: red;">전공을 입력해주세요.</label>');
         return false;
@@ -666,11 +686,11 @@ function confirmValidStep1(){
     }
     return true;
 }
-
 //자격증명이 있을 때 취득날짜를 선택안한 경우, 회사명이 있을 때 업무,날짜가 없는 경우 방지
 function checkCertiNCareerBlank(){
     if($("input[name=certificateName]").val() == ''){
         $("#certiNameValiDiv").replaceWith('<label id="certiNameValiDiv" style="color: red;">자격증명을 입력해주세요.</label>');
+        $("input[name=certificateName]").focus();
         return false;
     }else{
         $("#certiNameValiDiv").replaceWith('<label id="certiNameValiDiv"></label>');
