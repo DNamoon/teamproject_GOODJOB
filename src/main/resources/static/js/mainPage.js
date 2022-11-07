@@ -268,7 +268,7 @@ let postInsertForm ={
     init(){
       const _this = this;
       _this.setSaveBtn();
-      // _this.setInputDateDefaultToday()
+      _this.setInputDateDefaultToday()
     },
     setInputDateDefaultToday(){
         const startDate = document.getElementById('postStartDate').valueAsDate = new Date();
@@ -304,12 +304,34 @@ let postInsertForm ={
                         console.log(data.errors)
                         let criticalErrorCount = 0;
                         for(let error of data.errors){
+                            const titleDom = document.querySelector(".post-error-style-title")
+                            const occupationDom =  document.querySelector(".post-error-style-occupation")
+                            const recruitNumDom = document.querySelector(".post-error-style-recruit_number")
+                            const genderDom = document.querySelector(".post-error-style-gender")
+                            const startDateDom = document.querySelector(".post-error-style-start_date")
+                            const endDateDom = document.querySelector(".post-error-style-end_date")
+                            const attachmentDom = document.querySelector(".post-error-style-attachment")
+                            const zipcodeDom = document.querySelector(".post-error-style-zipcode")
+                            const address1Dom = document.querySelector(".post-error-style-address1")
+                            const address2Dom = document.querySelector(".post-error-style-address2")
+                            const salaryDom = document.querySelector(".post-error-style-salary")
+                            const contentDom = document.querySelector(".post-error-style-content")
+                            // titleDom.innerHTML=""
+                            // occupationDom.innerHTML=""
+                            // recruitNumDom.innerHTML=""
+                            // genderDom.innerHTML=""
+                            // startDateDom.innerHTML=""
+                            // endDateDom.innerHTML=""
+                            // attachmentDom.innerHTML=""
+                            // zipcodeDom.innerHTML=""
+                            // address1Dom.innerHTML=""
+                            // address2Dom.innerHTML=""
+                            // salaryDom.innerHTML=""
+                            // contentDom.innerHTML=""
                             const reason = error.reason;
                             switch (error.field){
                                 case "postTitle":
                                     // const postInsertTitleDom = document.querySelector(".post-Insert-Title")
-                                    const titleDom = document.querySelector(".post-error-style-title")
-
                                     // postInsertTitleDom.style.display = "block"
                                     if(reason==="Empty Title"){
                                         titleDom.innerHTML=`제목은 필수 값입니다.`
@@ -318,20 +340,20 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postOccCode":
-                                    const occupationDom =  document.querySelector(".post-error-style-occupation")
                                     if(reason==="Invalid value"){
                                         occupationDom.innerHTML=`비정상적인 데이터입니다`
                                         criticalErrorCount+=1;
                                     }
+                                    if(reason==="Not Selected"){
+                                        occupationDom.innerHTML=`모집 직종은 필수값입니다.`
+                                    }
                                     break;
                                 case "postRecruitNum":
-                                    const recruitNumDom = document.querySelector(".post-error-style-recruit_number")
                                     if(reason==="Empty Recruit Number"){
                                         recruitNumDom.innerHTML=`모집인원은 필수값입니다.`
                                     }
                                     break;
                                 case "postGender":
-                                    const genderDom = document.querySelector(".post-error-style-gender")
                                     if(reason==="Empty Gender"){
                                         genderDom.innerHTML=`모집 성별은 필수값입니다.`
                                     }
@@ -341,7 +363,6 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postStartDate":
-                                    const startDateDom = document.querySelector(".post-error-style-start_date")
                                     if(reason==="The start date must be after today."){
                                         startDateDom.innerHTML=`시작일은 오늘 이후여야 합니다.`
                                     }
@@ -350,7 +371,6 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postEndDate":
-                                    const endDateDom = document.querySelector(".post-error-style-end_date")
                                     if(reason==="The end date must be after today."){
                                         endDateDom.innerHTML=`모집 종료일은 오늘 이후여야 합니다.`
                                     }
@@ -359,13 +379,11 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postImg":
-                                    const attachmentDom = document.querySelector(".post-error-style-attachment")
                                     if(reason==="Empty Img"){
                                         attachmentDom.innerHTML=`공고 사진은 필수값입니다.`
                                     }
                                     break;
                                 case "postcode":
-                                    const zipcodeDom = document.querySelector(".post-error-style-zipcode")
                                     if(reason==="Empty zipcode"){
                                         zipcodeDom.innerHTML=`우편번호는 필수값입니다.`
                                     }
@@ -374,7 +392,6 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postAddress":
-                                    const address1Dom = document.querySelector(".post-error-style-address1")
                                     if(reason==="Empty Address1"){
                                         address1Dom.innerHTML=`주소는 필수값입니다.`
                                     }
@@ -383,7 +400,6 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postDetailAddress":
-                                    const address2Dom = document.querySelector(".post-error-style-address2")
                                     if(reason==="Empty Address2"){
                                         address2Dom.innerHTML=`상세주소는 필수값입니다.`
                                     }
@@ -392,14 +408,15 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postSalaryId":
-                                    const salaryDom = document.querySelector(".post-error-style-salary")
                                     if(reason==="Invalid value"){
                                         salaryDom.innerHTML=`비정상적인 데이터입니다.`
                                         criticalErrorCount+=1;
                                     }
+                                    if(reason==="Not Selected"){
+                                        salaryDom.innerHTML=`연봉대는 필수값입니다.`
+                                    }
                                     break;
                                 case "postContent":
-                                    const contentDom = document.querySelector(".post-error-style-content")
                                     if(reason==="Empty content"){
                                         contentDom.innerHTML=`내용은 필수값입니다.`
                                     }
