@@ -33,17 +33,6 @@ class BookMarkRepositoryTest {
     PostRepository postRepository;
 
     @Test
-    @Commit
-    void 북마크생성() {
-        LongStream.rangeClosed(55, 75).forEach(i -> {
-            BookMarkDTO bookMarkDTO = new BookMarkDTO();
-            bookMarkDTO.setBookMarkPostId(postRepository.findById(i).orElse(null));
-            bookMarkDTO.setBookMarkMemId(memberRepository.findLoginInfo("test"));
-            bookMarkService.saveBookMark(bookMarkDTO);
-        });
-    }
-
-    @Test
     void 북마크조회() {
         Member test = memberRepository.findLoginInfo("test");
         Pageable bookMarkId = PageRequest.of(0, 10, Sort.by("bookMarkId").descending());

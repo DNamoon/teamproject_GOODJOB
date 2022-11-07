@@ -48,7 +48,29 @@
                 </table>
             </article>
         </div>
-        <script>
+        <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
+            <th:block th:each="dto:${bookMarks}">
+                <div class="post-wrapper">
+                    <div class="col p-0">
+                        <div class="p-0 m-2 card-css" >
+                            <div class="w-100 p-0 h-50 img-css" >
+                                <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
+                            </div>
+
+                            <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+                                <p class="card-title-post" th:text="${dto.bookMarkPostId.postTitle}"></p>
+                                <p class="card-company-post"th:text="|기업명 : ${dto.bookMarkPostId.postComId.comName}|"></p>
+                                <p class="card-text-post" th:text="|연봉 : ${dto.bookMarkPostId.postSalary.salaryRange}|"></p>
+                                <p class="card-text-post" th:text="|위치 : ${dto.bookMarkPostId.address.address1} ${dto.bookMarkPostId.address.address2}|">위치</p>
+                                <p class="card-text-post" th:text="|직종 : ${dto.bookMarkPostId.postOccCode.occName}|"></p>
+                                <p class="card-text-post" th:text="|마감일 : ${#dates.format(dto.bookMarkPostId.postEndDate,'yyyy-MM-dd')}|"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+        <script th:inline="javascript">
 
             function deleteBookMark(bookMarkId) {
                 $.ajax({
@@ -64,9 +86,11 @@
                     complete: function (xhr, status) {
                     }
                 });
+
             };
 
             comMyPagePost.init();
+
         </script>
     </th:block>
 </th:block>

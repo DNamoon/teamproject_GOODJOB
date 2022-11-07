@@ -18,4 +18,5 @@ html에 있는 스크립트 js로 정리
 
 * NoticeRepository method=updateStatus 변경
 * url 접근 막기. ex) 로그인 중에는 로그인페이지에 들어갈 수 없다. 기업과 멤버는 서로 url 접근이 되면 안된다.
-* 공지사항
+* 보고서
+
