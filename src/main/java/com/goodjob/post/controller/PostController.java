@@ -74,7 +74,11 @@ public class PostController {
     public String postSaveForm(String redirectedFrom ,HttpServletRequest httpServletRequest, Model model){
 
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
-        model.addAttribute("comInfo",postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
+        if(sessionId != null){
+            model.addAttribute("comInfo",postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
+        } else {
+            throw new SessionNotFoundException();
+        }
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
         model.addAttribute("redirectedFrom", redirectedFrom);
@@ -87,7 +91,9 @@ public class PostController {
         postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         Long savedPostId = postService.savePost(postInsertDTO);
         if(savedPostId!=null){
-            return new ResponseEntity<Long>(savedPostId, HttpStatus.OK);
+            SuccessfulPostVo sp = new SuccessfulPostVo();
+            sp.setId(savedPostId);
+            return new ResponseEntity<>(sp, HttpStatus.OK);
         } else {
             return null;
         }
@@ -110,8 +116,13 @@ public class PostController {
     @GetMapping(value = {"/comMyPagePost"})
     public String comMyPagePost(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model){
         log.info("............"+pageRequestDTO);
-        pageRequestDTO.setAuthType(getSessionInfo(httpServletRequest,"Type"));
-        pageRequestDTO.setAuth(getSessionInfo(httpServletRequest,"sessionId"));
+        String sessionType = getSessionInfo(httpServletRequest,"Type");
+        if(sessionType != null){
+            pageRequestDTO.setAuthType(getSessionInfo(httpServletRequest,"Type"));
+            pageRequestDTO.setAuth(getSessionInfo(httpServletRequest,"sessionId"));
+        } else {
+            throw new SessionNotFoundException();
+        }
         PageResultDTO<Post, PostComMyPageDTO> result = postService.getPagingPostListInComMyPage(pageRequestDTO);
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
@@ -135,8 +146,12 @@ public class PostController {
     public String readPost(@PathVariable(name = "postId") Long postId, HttpServletRequest httpServletRequest, PageRequestDTO pageRequestDTO, Model model){
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         model.addAttribute("dto",postDetailsDTO);
-        Boolean isCompanySession = getSessionInfo(httpServletRequest, "Type") != null;
-        model.addAttribute("isCompanySession", isCompanySession);
+        String comLoginId = getSessionInfo(httpServletRequest, "sessionId");
+        if(comLoginId != null){
+            if(Objects.equals(companyService.loginIdCheck(comLoginId).orElseThrow(RuntimeException::new).getComName(), postDetailsDTO.getComName())){
+                model.addAttribute("isCompanySession", true);
+            }
+        }
         return "/post/postDetailViewWithMap";
     }
 
@@ -156,7 +171,7 @@ public class PostController {
                 throw new SessionCompanyAccountNotFound();
             }
         } else{
-            throw new SessionNotFoundException();
+            return null;
         }
     }
 }

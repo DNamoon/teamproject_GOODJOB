@@ -267,8 +267,13 @@ let searchPage = {
 let postInsertForm ={
     init(){
       const _this = this;
-      _this.setDateDefaultToNow();
       _this.setSaveBtn();
+      // _this.setInputDateDefaultToday()
+    },
+    setInputDateDefaultToday(){
+        const startDate = document.getElementById('postStartDate').valueAsDate = new Date();
+        const endDate = document.getElementById('postEndDate').valueAsDate = new Date();
+
     },
     setSaveBtn(){
         const _this = this;
@@ -286,11 +291,11 @@ let postInsertForm ={
                 console.log(dataWithFile)
                 if(response.ok){
                     console.log(response);
-                    response.json().then(id => {
+                    response.json().then(json => {
                         console.log("요청 성공")
                         alert("저장에 성공하였습니다.")
-                        console.log(id);
-                        location.replace(`${common.postPath.path}${common.postPath.readPost}${id}`)
+                        console.log(json.id);
+                        location.replace(`${common.postPath.path}${common.postPath.readPost}${json.id}`)
                     })
                 } else {
                     response.json().then(data =>{
@@ -422,10 +427,6 @@ let postInsertForm ={
     },
     redirectToRegisterPage(redirectedFrom){
         location.href=`/${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
-    },
-    setDateDefaultToNow(){
-        document.querySelector("#postStartDate").valueAsDate=new Date();
-        document.querySelector("#postEndDate").valueAsDate=new Date();
     }
 }
 let postUpdateForm = {
