@@ -39,18 +39,26 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             addConstraintViolation(context,"Invalid value","postSalaryId");
             invalidCount +=1;
         }
+        if(value.getPostOccCode()==0){
+            addConstraintViolation(context,"Not Selected","postOccCode");
+            invalidCount +=1;
+        }
+        if(value.getPostSalaryId()==0){
+            addConstraintViolation(context,"Not Selected","postSalaryId");
+            invalidCount +=1;
+        }
         if(!Arrays.asList(new String[]{"남자", "여자","성별무관"}).contains(value.getPostGender())){
             addConstraintViolation(context, "Gender values must be either male, female, or gender-independent","postGender");
             invalidCount += 1;
         }
-        if(value.getPostStartDate().getTime() < nowDate.getTime()){
-            addConstraintViolation(context, "The start date must be after today.","postStartDate");
-            invalidCount += 1;
-        }
-        if(value.getPostEndDate().getTime() < nowDate.getTime()){
-            addConstraintViolation(context, "The end date must be after today.","postEndDate");
-            invalidCount += 1;
-        }
+//        if(value.getPostStartDate().getTime() < nowDate.getTime()){
+//            addConstraintViolation(context, "The start date must be after today.","postStartDate");
+//            invalidCount += 1;
+//        }
+//        if(value.getPostEndDate().getTime() < nowDate.getTime()){
+//            addConstraintViolation(context, "The end date must be after today.","postEndDate");
+//            invalidCount += 1;
+//        }
         if(value.getPostStartDate().getTime() > value.getPostEndDate().getTime()){
             addConstraintViolation(context, "The start date must be before the end date.","postStartDate");
             invalidCount += 1;
