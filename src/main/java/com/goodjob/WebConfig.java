@@ -31,6 +31,10 @@ public class WebConfig implements WebMvcConfigurer {
                         "/member/login","/member/signUp","/member/checkId","/member/signupEmail","/member/checkEmail"
                         ,"/member/sendPw");
 
+        registry.addInterceptor(new LoginInterceptor())
+                .order(4)
+                .addPathPatterns("/resume/**","/status/**") // 세션필요한
+                .excludePathPatterns("/css/**","/js/**","/login","/*.css","/*.js","/assets/**");  //세션 없는
     }
     // 썸머노트(텍스트 에디터)에 대한 요청 응답 핸들러
     @Override

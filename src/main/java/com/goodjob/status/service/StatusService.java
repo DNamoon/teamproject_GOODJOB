@@ -60,8 +60,8 @@ public interface StatusService {
                 .statResumeId(status.getStatResumeId().getResumeId())
                 .statPass(status.getStatPass())
                 .statApplyDate(status.getStatApplyDate())
-                .applierId(status.getStatResumeId().getResumeMemId().getMemLoginId())
-                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+//                .applierId(status.getStatResumeId().getResumeMemId().getMemLoginId())
+                .applierName(status.getStatResumeId().getResumeMemName())
                 .postTitle(status.getStatPostId().getPostTitle())
                 .postOccupation(status.getStatPostId().getPostOccCode().getOccName())
                 .postEndDate(status.getStatPostId().getPostEndDate())
@@ -74,7 +74,7 @@ public interface StatusService {
         SendMailDTO sendMailDTO = SendMailDTO.builder()
                 .statPass(status.getStatPass())
                 .applierEmail(status.getStatResumeId().getResumeMemEmail())
-                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .applierName(status.getStatResumeId().getResumeMemName())
                 .companyName(status.getStatPostId().getPostComId().getComName())
                 .postName(status.getStatPostId().getPostTitle())
                 .build();
@@ -84,7 +84,7 @@ public interface StatusService {
 
     default IntervieweeListDTO entityToIntervieweeListDTO(Status status){
         IntervieweeListDTO intervieweeListDTO = IntervieweeListDTO.builder()
-                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .applierName(status.getStatResumeId().getResumeMemName())
                 .statPass(status.getStatPass())
                 .statId(status.getStatId())
                 .postOccupation(status.getStatPostId().getPostOccCode().getOccName())
@@ -98,7 +98,7 @@ public interface StatusService {
     default SendMailToIntervieweeDTO entityToSendMailToIntervieweeDTO(Status status){
         SendMailToIntervieweeDTO sendMailToIntervieweeDTO = SendMailToIntervieweeDTO.builder()
                 .applierEmail(status.getStatResumeId().getResumeMemEmail())
-                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .applierName(status.getStatResumeId().getResumeMemName())
                 .companyName(status.getStatPostId().getPostComId().getComName())
                 .postName(status.getStatPostId().getPostTitle())
                 .interviewDate(status.getStatInterviewDate())

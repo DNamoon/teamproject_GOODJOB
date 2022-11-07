@@ -33,6 +33,7 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     void setDelete(Long resumeId);
     @Transactional
     @Modifying
-    @Query("update Resume r set r.resumeMemId = null where r.resumeId =:resumeId")
-    void setMemberIdNull(Long resumeId);
+    @Query("update Resume r set r.resumeMemId = null where r.resumeMemId.memId =:memId")
+    void setMemberIdNull(Long memId);
+    int countResumeByResumeMemId_MemId(Long memId);
 }
