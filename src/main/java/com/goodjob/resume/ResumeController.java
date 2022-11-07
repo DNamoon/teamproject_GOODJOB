@@ -156,7 +156,6 @@ public class ResumeController {
         String id = (String)session.getAttribute("sessionId");
 
         model.addAttribute("resumeId", resumeId);
-        model.addAttribute("memberInfo", memberService.bringMemInfo(id));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
 
@@ -206,7 +205,6 @@ public class ResumeController {
     @GetMapping("/resumeRead/{memId}/{resumeId}")
     public String resumeReadForm(@PathVariable("memId") String memId, @PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
 
-        model.addAttribute("memberInfo", memberService.bringMemInfo(memId));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));

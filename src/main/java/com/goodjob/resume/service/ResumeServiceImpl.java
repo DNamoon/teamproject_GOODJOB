@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +33,8 @@ public class ResumeServiceImpl implements ResumeService {
         log.info("=========== 새 이력서 생성 ===========");
         Member member = memberRepository.findLoginInfo(loginId);
         Resume resume = Resume.builder()
-                .resumeMemId(member).resumeMemAddress(member.getMemAddress())
-                .resumeMemEmail(member.getMemEmail()).resumeMemPhone(member.getMemPhone())
+                .resumeMemId(member).resumeMemAddress(member.getMemAddress()).resumeMemName(member.getMemName()).resumeMemGender(member.getMemGender())
+                .resumeMemEmail(member.getMemEmail()).resumeMemPhone(member.getMemPhone()).resumeMemBirthDate(member.getMemBirthDate())
                 .build();
 
         resumeRepository.save(resume);
@@ -49,7 +47,7 @@ public class ResumeServiceImpl implements ResumeService {
         String mergeAddress = resumeMemberDTO.getMemFirstAddress() + '@' + resumeMemberDTO.getMemLastAddress();
         String mergeEmail = resumeMemberDTO.getMemFirstEmail() + '@' + resumeMemberDTO.getMemLastEmail();
 
-        Resume resume = dtoToEntity(resumeMemberDTO, mergePhoneNum, mergeAddress, mergeEmail);
+//        Resume resume = dtoToEntity(resumeMemberDTO, mergePhoneNum, mergeAddress, mergeEmail);
 
         log.info("=========== 이력서 인적사항 수정 ===========");
         resumeRepository.updateMemberInfo(mergePhoneNum, mergeEmail, mergeAddress, resumeId);

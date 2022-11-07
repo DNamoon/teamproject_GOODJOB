@@ -6,6 +6,7 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.repository.MemberRepository;
+import com.goodjob.resume.repository.ResumeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final ResumeRepository resumeRepository;
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -139,6 +141,8 @@ public class MemberServiceImpl implements MemberService {
     //회원 탈퇴
     @Override
     public void deleteById(Long memId) {
+        //박채원 22.11.07 추가 (이하 1줄) - 회원탈퇴 전에 이력서의 memId를 null으로 바꿈
+        resumeRepository.setMemberIdNull(memId);
         memberRepository.deleteById(memId);
     }
 

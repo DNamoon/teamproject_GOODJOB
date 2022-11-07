@@ -16,7 +16,6 @@
                         &nbsp;
                         <form role="form" id="contact-form" th:method="get" autocomplete="off"
                               th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
-                            <input type="hidden" th:value="${memberInfo.memId}" name="memId">
                             <input type="hidden" th:value="${resumeId}" name="resumeId">
                             <div class="card-body">
                         <span style="float: right; font-size: 14px;"><span
@@ -28,14 +27,14 @@
                                         <label>성명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" name="memName"
-                                                   th:value="${memberInfo.memName}" readonly>
+                                                   th:value="${resumeMemInfo.memName}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6" style="width:400px">
                                         <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="date"
-                                                   th:value="${memberInfo.memBirthDate}"
+                                                   th:value="${resumeMemInfo.memBirthDate}"
                                                    name="memBirthDate" readonly>
                                         </div>
                                     </div>
@@ -86,12 +85,12 @@
                                         <div class="input-group mb-4">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="memGender" value="남"
-                                                       th:checked="${memberInfo.memGender eq '남'}" id="genderM">
+                                                       th:checked="${resumeMemInfo.memGender eq '남'}" id="genderM">
                                                 <label class="form-check-label">남자</label>
                                             </div>&nbsp;&nbsp;
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="memGender" value="여"
-                                                       th:checked="${memberInfo.memGender eq '여'}" id="genderF">
+                                                       th:checked="${resumeMemInfo.memGender eq '여'}" id="genderF">
                                                 <label class="form-check-label">여자</label>
                                             </div>
                                         </div>

@@ -28,8 +28,8 @@ public class Member {
     @Column(unique = true)
     private String memLoginId;
 
-    @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
-    private List<Resume> memResume = new ArrayList<>();
+//    @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
+//    private List<Resume> memResume = new ArrayList<>();
     // 오성훈 22.10.30
     @OneToMany(mappedBy = "inquiryPostMemberId", cascade = CascadeType.ALL)
     private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();

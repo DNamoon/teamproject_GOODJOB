@@ -17,17 +17,18 @@
                         <form role="form" id="contact-form" method="post" autocomplete="off">
                             <input type="hidden" th:value="${resumeId}" name="resumeId">
                             <div class="card-body">
-<!--                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>-->
+                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
                                 <h4 class="text-left">| 자격증</h4>
                                 &nbsp;
                                 <div class="row" style="float: inline-start;" th:each="certiInfo : ${certiInfo}">
                                     <div class="col-md-6" style="width: 400px;">
                                         <label>자격증명</label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control" type="text" name="certificateName"
                                                    id="certificateName0"
                                                    th:value="${certiInfo.certificateName}" readonly>
                                         </div>
+                                        <label id="certiNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -129,13 +130,11 @@
                                     <div style="height: 50px;"></div>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
-                                            <button type="button" class="btn bg-gradient-dark w-100"
-                                                    onclick="getListToPrev()">이전
+                                            <button type="button" class="btn bg-gradient-dark w-100" id="goBackStep1">이전
                                             </button>
                                         </div>
                                         <div class="col-md-6 mx-auto">
-                                            <button type="button" class="btn bg-gradient-dark w-100"
-                                                    onclick="getListToNext()">저장 후
+                                            <button type="button" class="btn bg-gradient-dark w-100" id="submitStep2">저장 후
                                                 STEP 3로
                                             </button>
                                         </div>

@@ -200,6 +200,18 @@ $(document).ready(function(){
             $("#step1Form").submit();
         }
     });
+
+    $("#goBackStep1").click(function(){
+        if(checkCertiNCareerBlank()){
+            getListToPrev();
+        }
+    });
+
+    $("#submitStep2").click(function(){
+        if(checkCertiNCareerBlank()){
+            getListToNext();
+        }
+    });
 });
 
 //주소찾기
@@ -638,8 +650,32 @@ function rangeCredit(){
     }
 }
 
+function confirmValidStep1(){
+    if($("#schoolName").val() == ''){
+        $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv" style="color: red;">학교명을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv"></label>');
+    }
+
+    if($("#majorName").val() == '') {
+        $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv" style="color: red;">전공을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv"></label>');
+    }
+    return true;
+}
+
 //자격증명이 있을 때 취득날짜를 선택안한 경우, 회사명이 있을 때 업무,날짜가 없는 경우 방지
 function checkCertiNCareerBlank(){
+    if($("input[name=certificateName]").val() == ''){
+        $("#certiNameValiDiv").replaceWith('<label id="certiNameValiDiv" style="color: red;">자격증명을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#certiNameValiDiv").replaceWith('<label id="certiNameValiDiv"></label>');
+    }
+    return true;
 }
 
 
