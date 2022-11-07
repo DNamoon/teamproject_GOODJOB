@@ -11,13 +11,13 @@ import lombok.Data;
 public class PostDetailsDTO {
     private Long postId; // 공고 pk
     private String title; // 공고 제목
-    private String regionName; // 공고 근무지
     private String content; // 공고 내용
     private String startDate; // 공고 시작일
     private String endDate; // 공고 마감일
     private String remainDay; // d-day
     private String salary; // 공고 연봉대
-    private String postAddress; // 주소1
+    private String recruitNum; // 모집 인원
+    private String postAddress1; // 주소1
     private String postAddress2; // 주소2
 
     private String occName; // 공고 직종명

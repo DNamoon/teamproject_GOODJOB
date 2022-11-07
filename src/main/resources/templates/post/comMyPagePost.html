@@ -100,39 +100,51 @@
             <article class = "comMyPage-post-postList">
                 <table class="row p-0 m-0">
                     <tbody class="col-lg-12">
-                    <th:block th:each="dto:${result.dtoList}">
-                        <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" >
-                            <td class="col-lg-2 p-2">
-                                <figure>
-                                    <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="img-fluid d-block comMypage-post-img">
-                                </figure>
+                    <th:block th:if="${result.totalCount}!=0">
+                        <th:block th:each="dto:${result.dtoList}">
+                            <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" >
+                                <td class="col-lg-2 p-2">
+                                    <figure>
+                                        <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="img-fluid d-block comMypage-post-img">
+                                    </figure>
 
-                            </td>
-                            <td class="col-lg-6 comMyPage-post-table_row-content p-3" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|" >
-                                <ul class="nav flex-column">
-                                    <li class="nav-item mb-2" style="color: #e6721d;font-size:15px">[[${dto.endDate}]]</li>
-                                    <li class="nav-item mb-2"><h5>[[${dto.title}]]</h5></li>
-                                    <li class="nav-item mb-2"><span style="font-size:14px">[[${dto.comName}]]</span></li>
-                                    <li class="nav-item mb-2">[[${dto.recruitNum}]]명 / [[${dto.gender}]] / [[${dto.salaryRange}]]</li>
-                                    <li class="nav-item mb-2">[[${dto.occName}]]</li>
-                                    <li class="nav-item mb-2">[[${dto.region}]]</li>
-                                </ul>
-                            </td>
-                            <td class="col-lg-3 h-100">
-                                <ul class="nav flex-column align-items-end">
-                                    <li class="nav-item mb-2" style="color: #333;font-size:15px">모집개시일: [[${dto.startDate}]]</li>
-                                    <li class="nav-item mb-2" style="color: #333;font-size:15px">조회수: [[${dto.count}]]</li>
-                                </ul>
-                            </td>
-                            <td class="col-lg-1 h-100 ">
-                                <ul class="nav flex-column  align-items-center justify-content-evenly">
-                                    <li><a th:onclick="|javascript:comMyPagePost.deleteByPostIdWithAjax('${dto.postId}')|"><span class="material-symbols-outlined">delete</span></a></li>
-                                    <li><a th:onclick="|javascript:comMyPagePost.updatePost('${dto.postId}')|"><span class="material-symbols-outlined">edit_note</span></a></li>
-                                    <li><a th:onclick="|javascript:comMyPagePost.showApplierList('${dto.postId}')|"><span class="material-symbols-outlined">folder_shared</span></a></li>
+                                </td>
+                                <td class="col-lg-6 comMyPage-post-table_row-content p-3" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|" >
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item mb-2" style="color: #e6721d;font-size:15px">[[${dto.endDate}]]</li>
+                                        <li class="nav-item mb-2"><h5>[[${dto.title}]]</h5></li>
+                                        <li class="nav-item mb-2"><span style="font-size:14px">[[${dto.comName}]]</span></li>
+                                        <li class="nav-item mb-2">[[${dto.recruitNum}]]명 / [[${dto.gender}]] / [[${dto.salaryRange}]]</li>
+                                        <li class="nav-item mb-2">[[${dto.occName}]]</li>
+                                        <li class="nav-item mb-2">[[${dto.region}]]</li>
+                                    </ul>
+                                </td>
+                                <td class="col-lg-3 h-100">
+                                    <ul class="nav flex-column align-items-end">
+                                        <li class="nav-item mb-2" style="color: #333;font-size:15px">모집개시일: [[${dto.startDate}]]</li>
+                                        <li class="nav-item mb-2" style="color: #333;font-size:15px">조회수: [[${dto.count}]]</li>
+                                    </ul>
+                                </td>
+                                <td class="col-lg-1 h-100 ">
+                                    <ul class="nav flex-column  align-items-center justify-content-evenly">
+<!--                                        <li><a th:onclick="|javascript:comMyPagePost.deleteByPostIdWithAjax('${dto.postId}')|"><span class="material-symbols-outlined">delete</span></a></li>-->
+                                        <li><a th:onclick="|javascript:comMyPagePost.updatePost('${dto.postId}')|"><span class="material-symbols-outlined">edit_note</span></a></li>
+                                        <li><span class="material-symbols-outlined">folder_shared</span></li>
 
-                                </ul>
-                            </td>
-                        </tr>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                    <th:block th:if="${result.totalCount}==0">
+                        <div class="empty_box">
+                            <div style="margin:auto;text-align: center">
+                                <p class="empty_box-message">일치하는 자료가 없습니다</p>
+                                <a href="javascript:void(0);" onclick="postInsertForm.redirectToRegisterPage(comMyPagePost.comMyPagePostUri)">
+                                <p class="empty_box-message">새로운 공고를 등록</p>
+                                </a>
+                            </div>
+                        </div>
                     </th:block>
                     </tbody>
                 </table>

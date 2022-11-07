@@ -54,22 +54,22 @@
                             <div class="row">
                                 <div class="col mx-auto">
                                     <button type="button" class="btn btn-outline-dark"
-                                            style="border-radius: 3rem" onclick="postJS.list('changeContentDiv',1,8,'count')">#인기있는
+                                            style="border-radius: 3rem" onclick="postJS.insertPostListCard('changeContentDiv',1,8,'count')">#인기있는
                                     </button>
                                 </div>
                                 <div class="col mx-auto">
                                     <button type="button" class="btn btn-outline-dark"
-                                            style="border-radius: 3rem" onclick="postJS.list('changeContentDiv',1,8,'salary')">#연봉이 높은
+                                            style="border-radius: 3rem" onclick="postJS.insertPostListCard('changeContentDiv',1,8,'salary')">#연봉이 높은
                                     </button>
                                 </div>
                                 <div class="col mx-auto">
                                     <button type="button" class="btn btn-outline-dark"
-                                            style="border-radius: 3rem" onclick="postJS.list('changeContentDiv',1,8,'new')">#최근등록된
+                                            style="border-radius: 3rem" onclick="postJS.insertPostListCard('changeContentDiv',1,8,'new')">#최근등록된
                                     </button>
                                 </div>
                                 <div class="col mx-auto">
                                     <button type="button" class="btn btn-outline-dark"
-                                            style="border-radius: 3rem" onclick="postJS.list('changeContentDiv',1,8,'end')">#마감이임박한
+                                            style="border-radius: 3rem" onclick="postJS.insertPostListCard('changeContentDiv',1,8,'end')">#마감이임박한
                                     </button>
                                 </div>
                             </div>
@@ -78,28 +78,9 @@
                         <div class="container" style="height: 3rem;"></div>
                         <div class="container text-center ">
                             <h4>인기있는 공고 TOP8</h4>
-                            <hr>
-                            <div class="row row-cols-1 row-cols-md-4 g-4 p-0 changeContentDiv">
-                                <th:block th:each="dto:${result.dtoList}">
-                                    <div class="post-wrapper">
-                                        <div class="col p-0">
-                                            <div class="p-0 m-2 card-css" th:onclick="|javascript:comMyPagePost.readPost('${dto.id}')|" >
-                                                <div class="w-100 p-0 h-50 img-css" >
-                                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
-                                                </div>
+                            <div class="container" style="height: 3rem;"></div>
+                            <div class="row row-cols-1 row-cols-md-4 g-4 p-0 my-0 changeContentDiv">
 
-                                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
-                                                    <p class="card-title-post">[[${dto.title}]]</p>
-                                                    <p class="card-company-post">[[${dto.comName}]]</p>
-                                                    <p class="card-text-post">연봉 | [[${dto.salaryRange}]]</p>
-                                                    <p class="card-text-post">위치 | [[${dto.regionName}]]</p>
-                                                    <p class="card-text-post">직종 | [[${dto.occName}]]</p>
-                                                    <p class="card-dDay-post">[[${dto.remainDay}]]</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th:block>
                             </div>
                         </div>
 
@@ -137,6 +118,9 @@
                     </div>
                 </div>
             </div>
+            <script>
+                postJS.init();
+            </script>
         </section>
     </th:block>
 </th:block>
