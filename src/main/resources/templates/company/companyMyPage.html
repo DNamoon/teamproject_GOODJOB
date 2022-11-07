@@ -66,9 +66,9 @@
                                         <label th:for="comEmail">이메일</label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" placeholder="goodjob"
-                                                   name="comEmail1" id="email" th:value="${companyInfo.comEmail1}" onblur="emailDuplication()"
+                                                   name="comEmail1" id="email" th:value="${companyInfo.comEmail1}" onkeyup="emailDuplicationForUpdate()"
                                                    required> &nbsp;@ &nbsp;&nbsp;
-                                            <select class="form-select" id="email2" name="comEmail2" onchange="emailDuplication()">
+                                            <select class="form-select" id="email2" name="comEmail2" onchange="emailDuplicationForUpdate()">
                                                 <option selected th:value="${companyInfo.comEmail2}">
                                                     [[${companyInfo.comEmail2}]] (기본정보)
                                                 </option>

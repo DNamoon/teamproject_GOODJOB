@@ -251,7 +251,9 @@ function passwordChange()  {
         return false;
     } else {
         if(pw1 == pw2){
-            $('#changePassword').submit();
+            Swal.fire("변경 완료","비밀번호가 변경되었습니다.","success").then(function () {
+                $('#changePassword').submit();
+            })
         } else {
             Swal.fire("비밀번호 불일치","입력하신 비밀번호를 확인해주세요.","error");
         }

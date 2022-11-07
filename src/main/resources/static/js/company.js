@@ -359,7 +359,7 @@ function sample6_execDaumPostcode() {
 //view 유효성 검사
 
 //view - 사업자 등록번호 양식 일치 3-2-5
-$('#comBusiNum').blur(function (){
+$('#comBusiNum').keyup(function (){
     let busiNum = $(this).val();
     let regExp = /^\d{3}-\d{2}-\d{5}$/;
     let busiNum_error = $('#busiNum_error');
@@ -374,7 +374,7 @@ $('#comBusiNum').blur(function (){
 })
 
 //view - 전화번호 양식 일치(2~3)-(3~4)-4
-$('#phone').blur(function (){
+$('#phone').keyup(function (){
     let phone = $('#phone').val();
     let regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
     let phone_error = $('#phone_error');
@@ -387,33 +387,67 @@ $('#phone').blur(function (){
         phone_error.show().text("올바른 형식입니다.");
     }
 })
+//
+// //view - 이메일 양식일치
+// $('#email').keyup(function (){
+//     let email = $('#email').val();
+//     let email2 = $('#email2').val();
+//     let emailCheck = email + "@" + email2;
+//
+//     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
+//     let emailError = $('#email_error');
+//     emailError.css("color","#ff0000");
+//
+//     if(!regExp.test(email)) {
+//         emailError.show().text("올바른 이메일 양식이 아닙니다!")
+//     } else {
+//         emailError.show().text("");
+//     }
+//
+// })
 
-//view - 이메일 양식일치
-$('#email').keyup(function (){
+//22.11.07 회원정보 수정용 이메일 중복 검사(본인 이메일은 pass)
+function emailDuplicationForUpdate() {
     let email = $('#email').val();
     let email2 = $('#email2').val();
     let emailCheck = email + "@" + email2;
+    let emailError = $('#email_error');
 
+    $.ajax({
+        type:'get',
+        url:"/com/emailCheck2",
+        data: {emailCheck:emailCheck},
+        success:function (result) {
+            console.log(result)
+            if (result[0] == "null") {
+                emailError.css('color', '#54b254');
+                emailError.html("사용 가능한 이메일입니다.");
+            } else if (result[0] == "com") {
+                emailError.css('color', '#ff0000');
+                emailError.html("이미 기업회원으로 가입한 이메일입니다.");
+            } else if (result[0] == "mem") {
+                emailError.css('color', '#ff0000');
+                emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+            }
+        }
+    })
+}
+
+
+//view - 이메일 중복 검사 22.11.06
+//view - 이메일 양식 검사 후 중복 검사 로 변경.
+function emailDuplication(){
+
+    let email = $('#email').val();
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
     let emailError = $('#email_error');
-    emailError.css("color","#ff0000");
-
-    if(!regExp.test(email)) {
+    emailError.css("color", "#ff0000");
+    if (!regExp.test(email)) {
         emailError.show().text("올바른 이메일 양식이 아닙니다!")
     } else {
         emailError.show().text("");
-    }
-
-})
-
-//view - 이메일 중복 검사 22.11.06
-function emailDuplication(){
-
-        let email = $('#email').val();
-        let email2 = $('#email2').val();
-        let emailCheck = email + "@" + email2;
-        let emailError = $('#email_error');
-
         $.ajax({
             type: "get",
             url: "/com/emailCheck",
@@ -422,16 +456,18 @@ function emailDuplication(){
                 console.log(result)
                 if (result[0] == "null") {
                     emailError.css('color', '#54b254');
-                    emailError.html("가입 가능한 이메일입니다.");
-                } else if(result[0] == "com") {
+                    emailError.html("사용 가능한 이메일입니다.");
+                } else if (result[0] == "com") {
                     emailError.css('color', '#ff0000');
                     emailError.html("이미 기업회원으로 가입한 이메일입니다.");
-                } else if(result[0] == "mem") {
+                } else if (result[0] == "mem") {
                     emailError.css('color', '#ff0000');
                     emailError.html("이미 개인회원으로 가입한 이메일입니다.");
                 }
             }
         });
+    }
+
 }
 
 
@@ -719,7 +755,7 @@ function btn_change_info(){
     let emailCheck = email + "@" + email2;
     $.ajax({
         type: "get",
-        url: "/com/emailCheck",
+        url: "/com/emailCheck2",
         async: false,
         data: {emailCheck: emailCheck},
         success: function (result) {

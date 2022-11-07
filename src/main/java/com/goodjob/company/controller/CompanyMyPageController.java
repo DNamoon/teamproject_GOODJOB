@@ -6,6 +6,7 @@ package com.goodjob.company.controller;
 import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
+import com.goodjob.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +30,37 @@ public class CompanyMyPageController {
     private final CompanyService companyService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final MemberService memberService;
+
+    //22.11.07 - 회원정보 수정용 이메일 중복확인.
+    @ResponseBody
+    @RequestMapping(value = "emailCheck2", method = RequestMethod.GET)
+    public List<String> emailCheck2(@RequestParam("emailCheck") String email,HttpSession session){
+
+        Company com = getSessionLoginId(session);
+        String dbEmail = com.getComEmail();
+
+        List<String> result2 = new ArrayList();
+        log.info("???DB에서 찾은 값 e: "+dbEmail+"======입력값: " +email);
+
+        if(dbEmail.equals(email)) {
+            log.info("??? 같은 값이라고 이야기 할까? 과연? DB에 이메일 있나 체크" + dbEmail +"=======입력값:"+email);
+            result2.add("null");
+        } else {
+            String result = memberService.checkEmail(email);
+            if(result == "com") {
+                log.info("??? 여기에 찍히고 있는건가? e가 아니면???" +dbEmail+"=======입력값"+email);
+                result2.add("com");
+            } else if(result == "mem") {
+                result2.add("mem");
+            } else {
+                result2.add("null");
+            }
+        }
+
+        return  result2;
+    }
 
     @GetMapping("/myPagePost")
     public String myPageForm(){
@@ -92,7 +126,7 @@ public class CompanyMyPageController {
 
 
     //ho - 22.10.28 회원 비밀번호 변경 페이지
-    @GetMapping("changePassword")
+    @GetMapping("/changePassword")
     public String changePasswordForm(){
         return "/company/changePassword";
     }
