@@ -33,6 +33,7 @@ public class HomeController {
 
     @GetMapping("/search")
     public String search(PageRequestDTO pageRequestDTO, Model model) {
+        log.info("================================="+pageRequestDTO);
         pageRequestDTO.setSize(12);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
         model.addAttribute("occuAll",occuService.searchOccName());
@@ -88,6 +89,7 @@ public class HomeController {
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("================================="+pageRequestDTO);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
+        log.info(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
