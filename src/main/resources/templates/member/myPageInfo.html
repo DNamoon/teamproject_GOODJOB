@@ -131,10 +131,10 @@
                                 </div>
                                 <div class="modal-body">
                                     <label text="비밀번호"> </label>
-                                   <p style="color: red">* 회원탈퇴 시 작성된 이력서 및 지원이력은 모두 삭제됩니다.</p>
-                                    <input id="deletePw" type="text" name="deletePw" class="form-control">
+                                   <p style="color: red">* 회원탈퇴 시 기존 작성된 이력서는 삭제되고 지원이력은 보관됩니다.</p>
+                                    <input id="deletePw" type="password" name="deletePw" class="form-control">
                                     <div class="d-flex justify-content-center">
-                                        <button id="deletebtn" type="button" class="btn bg-gradient-dark mt-3">확인</button>
+                                        <button id="deletebtn" type="button"onclick="deleteMember()" class="btn bg-gradient-dark mt-3">확인</button>
                                     </div>
                                 </div>
                             </div>
