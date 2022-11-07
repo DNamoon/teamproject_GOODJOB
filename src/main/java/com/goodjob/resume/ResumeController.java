@@ -193,7 +193,7 @@ public class ResumeController {
         ObjectMapper mapper = new ObjectMapper();
 
         List<String> resumeIdList = mapper.readValue(resumeIdJson, new TypeReference<List<String>>(){});
-        resumeService.deleteResume(resumeIdList);
+        resumeService.setDeleteResume(resumeIdList);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 

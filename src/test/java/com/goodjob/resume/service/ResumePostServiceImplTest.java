@@ -50,7 +50,7 @@ class ResumeServiceImplTest implements ResumeService{
     }
 
     @Override
-    public void deleteResume(List<String> resumeId) {
+    public void setDeleteResume(List<String> resumeId) {
 
     }
 

@@ -52,6 +52,9 @@ public class Resume {
     @Column(length = 45)
     private String resumeMemAddress;
 
+    @Column
+    private boolean deleted;
+
     @ManyToOne
     @JoinColumn(name = "resumeMemId", nullable = false)
     private Member resumeMemId;

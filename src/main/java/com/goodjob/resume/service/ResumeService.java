@@ -16,7 +16,7 @@ public interface ResumeService {
     void updateResumeMemberInfo(ResumeMemberDTO resumeMemberDTO, Long resumeId);
     ResumeDTO bringResumeInfo(Long resumeId);
     List<ResumeListDTO> getResumeList(String loginId);
-    void deleteResume(List<String> resumeId);
+    void setDeleteResume(List<String> resumeId);
     void changeTitle(Long resumeId, String title);
 
     default Resume dtoToEntity(ResumeMemberDTO resumeMemberDTO, String mergePhoneNum, String mergeAddress, String mergeEmail){
@@ -41,6 +41,7 @@ public interface ResumeService {
                 .memFirstPhoneNum(firstPhoneNum)
                 .memMiddlePhoneNum(middlePhoneNum)
                 .memLastPhoneNum(lastPhoneNum)
+                .deleted(false)
                 .build();
 
         return resumeDTO;
