@@ -546,10 +546,7 @@ function btnRexExp() {
 
     if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true") {
         // $('#contact-form').submit();
-        Swal.fire("회원가입 완료",comLoginId+"님 회원가입을 축하드립니다!","success")
-            .then(function (){  //alert창 확인 누르면 submit
-                $('#contact-form').submit();
-            });
+
     } else {
     }
 }

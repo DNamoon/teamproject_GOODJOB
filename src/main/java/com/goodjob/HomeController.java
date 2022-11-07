@@ -45,7 +45,7 @@ public class HomeController {
     }
     @GetMapping(value = {"/"})
     public String main(PageRequestDTO pageRequestDTO, Model model,
-                       @ModelAttribute("havePass") String havePass, @RequestParam(value = "param")@Nullable Integer check){
+                       @ModelAttribute("havePass") String havePass, @RequestParam(value = "param")@Nullable String check){
         pageRequestDTO.setSize(8);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
         model.addAttribute("result",result);
@@ -55,12 +55,15 @@ public class HomeController {
             havePass = "false";
         }
         model.addAttribute("havePass", havePass);
+        System.out.println("1111111 "+check);
         //김도현 22.11.07추가 (회원가입 확인)
-        if (check != null) {
-            if (check == 1) {
+        if (check != null && check.equals("1")) {
 
                 model.addAttribute("signupMsg", check);
-            }
+
+        }else{
+            check = "0";
+            model.addAttribute("signupMsg", check);
         }
         return "mainPage";
     }

@@ -91,7 +91,7 @@ public class MemberController {
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem = memberDTO.toEntity();
         memberService.register(mem);
-        redirectAttributes.addAttribute("param", 1);
+        redirectAttributes.addAttribute("param", "1");
         return "redirect:/";
     }
 

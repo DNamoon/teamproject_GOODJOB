@@ -10,6 +10,7 @@ let common = {
 // mainPage.html JS
 $(document).ready(function(){
     havePass();
+    signupCheck();
 })
 
 function havePass(){
@@ -25,6 +26,11 @@ function havePass(){
         url: "/status/changeStatShow",
         type: "post"
     })
+}
+function signupCheck() {
+    if ($("#signupcheck").val() === "1") {
+            Swal.fire("회원가입 ",'회원가입이 완료되었습니다.',"success");
+    }
 }
 
 // mainPage.html 에서 쓰이는 JS
