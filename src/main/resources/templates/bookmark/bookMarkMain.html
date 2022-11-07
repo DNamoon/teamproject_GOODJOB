@@ -19,7 +19,7 @@
                                 </figure>
 
                             </td>
-                            <td class="col-lg-6 comMyPage-post-table_row-content p-3">
+                            <td class="col-lg-6 comMyPage-post-table_row-content p-3" th:onclick="|javascript:comMyPagePost.readPost('${bookmark.bookMarkPostId.postId}')|">
                                 <ul class="nav flex-column">
                                     <li class="nav-item mb-2"><h5>[[${bookmark.bookMarkPostId.postTitle}]]</h5></li>
                                     <li class="nav-item mb-2">[[${bookmark.bookMarkPostId.address.address1}]]
@@ -33,13 +33,13 @@
                             </td>
                             <td class="col-lg-3 h-100">
                                 <ul class="nav flex-column align-items-end">
-                                    <li class="nav-item mb-2" style="color: #333;font-size:15px">D-day:</li>
-                                    <li class="nav-item mb-2" style="color: #333;font-size:15px">지원상태:</li>
+                                    <li class="nav-item mb-2" style="color: #333;font-size:15px"></li>
+                                    <li class="nav-item mb-2" style="color: #333;font-size:15px"></li>
                                 </ul>
                             </td>
                             <td class="col-lg-1 h-100 ">
                                 <ul class="nav flex-column  align-items-center justify-content-evenly">
-                                    <li><a th:onclick=""><span class="material-symbols-outlined">delete</span></a></li>
+                                    <li><a th:onclick="|javascipt:deleteBookMark('${bookmark.bookMarkId}')|"><span class="material-symbols-outlined">delete</span></a></li>
                                 </ul>
                             </td>
                         </tr>
@@ -48,5 +48,25 @@
                 </table>
             </article>
         </div>
+        <script>
+
+            function deleteBookMark(bookMarkId) {
+                $.ajax({
+                    url: "/member/bookmark/delete",
+                    type: "post",
+                    data: {bookMarkId: bookMarkId},
+                    success: function (data, status, xhr) {
+                        alert(data);
+                        location.href = '/member/bookmark';
+                    },
+                    error: function (xhr, status, error) {
+                    },
+                    complete: function (xhr, status) {
+                    }
+                });
+            };
+
+            comMyPagePost.init();
+        </script>
     </th:block>
 </th:block>

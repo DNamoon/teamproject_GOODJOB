@@ -256,4 +256,9 @@ public class postServiceImpl implements PostService {
     public List<String> searchSalaryRange(){
         return  postRepository.salaryRange();
     }
+
+    @Override
+    public Optional<Post> findOne(Long postId) {
+        return postRepository.findById(postId);
+    }
 }

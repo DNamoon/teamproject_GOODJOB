@@ -46,7 +46,7 @@ public interface EntityDtoMapper {
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         String remainDay = String.valueOf(difDay/ (24*60*60));
-        remainDay = "D - "+remainDay;
+        remainDay = "D"+remainDay;
         return PostDetailsDTO.builder()
                 .postId(post.getPostId())
                 .title(post.getPostTitle())

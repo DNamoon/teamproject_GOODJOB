@@ -129,5 +129,4 @@ public class AdminTest {
         }
         System.out.println("customerInquiryPostRepository.countByInquiryPostStatus(\"0\") = " + customerInquiryPostRepository.countByInquiryPostStatus("0"));
     }
-
 }

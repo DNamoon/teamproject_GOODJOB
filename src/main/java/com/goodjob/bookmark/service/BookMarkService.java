@@ -13,4 +13,8 @@ public interface BookMarkService {
     Optional<BookMark> saveBookMark(BookMarkDTO bookMarkDTO);
 
     Page<BookMark> findAllByMember(Pageable pageable,Member member);
+
+    boolean existsPostByMember(String loginId, Long postId);
+
+    void deleteBookMark(Long bookMarkId);
 }

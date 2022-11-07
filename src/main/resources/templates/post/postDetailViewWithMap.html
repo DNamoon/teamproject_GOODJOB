@@ -47,7 +47,7 @@
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
-<!--                                        <div class="" style="min-height: 50rem;">-->
+                                        <!--                                        <div class="" style="min-height: 50rem;">-->
                                         <div class="">
                                             [[${dto.content}]]
                                         </div>
@@ -182,20 +182,50 @@
                                         <h6 class="text-secondary">[[${dto.regionName}]]</h6>
                                     </div>
                                 </div>
-                                <div class="d-flex flex-fill mt-3">
-                                    <div class="col-6">
-                                        <a role="button" class="btn"
-                                           style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;"><i
-                                                class="bi bi-bookmark"></i>북마크</a>
+                                <th:block>
+                                    <div class="d-flex flex-fill mt-3">
+                                        <th:block th:if="${#session.getAttribute('sessionId') == null}">
+                                            <div class="col-6">
+                                                <button role="button" class="btn"
+                                                        th:onclick="|location.href='@{/login}'|"
+                                                        style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;">
+                                                    <i
+                                                            class="bi bi-bookmark"></i>북마크
+                                                </button>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${existsBookmarkByMember && #session.getAttribute('Type') eq 'member'}">
+                                            <div class="col-6">
+                                                <button role="button" class="btn" disabled="disabled"
+                                                        style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;">
+                                                    <i class="bi bi-bookmark-check"></i>북마크
+                                                </button>
+                                            </div>
+                                        </th:block>
+                                        <th:block
+                                                th:if="${!existsBookmarkByMember && #session.getAttribute('sessionId') ne null && #session.getAttribute('Type') eq 'member'}">
+                                            <div class="col-6">
+                                                <a role="button" class="btn"
+                                                   th:onclick="|javascript:saveBookMark('${dto.postId}')|"
+                                                   style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;"><i
+                                                        class="bi bi-bookmark"></i>북마크</a>
+                                            </div>
+                                        </th:block>
+                                        <div class="col-6">
+                                            <!--                                        <a role="button" class="btn"-->
+                                            <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
+                                            <input type="hidden" th:value="${dto.postId}" id="postId">
+                                            <th:block th:if="${#session.getAttribute('Type') == 'member'}">
+                                            <button type="button" class="btn btn-primary applyBtn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#selectResumeModal"
+                                                    style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">
+                                                지원하기
+                                            </button>
+                                            </th:block>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-<!--                                        <a role="button" class="btn"-->
-<!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
-                                        <input type="hidden" th:value="${dto.postId}" id="postId">
-                                        <button type="button" class="btn btn-primary applyBtn" data-bs-toggle="modal"
-                                                data-bs-target="#selectResumeModal" style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</button>
-                                    </div>
-                                </div>
+                                </th:block>
                             </div>
                         </div>
                     </div>
@@ -210,30 +240,30 @@
                             <h4>추천공고</h4>
                         </div>
                     </div>
-                    <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4" >
+                    <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4">
                         <th:block th:each="dto2:${result.dtoList}">
-                        <div class="col-3 p-0" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
-                            <div class="p-0 m-2 card-css ">
+                            <div class="col-3 p-0" th:onclick="|javascript:comMyPagePost.readPost('${dto.postId}')|">
+                                <div class="p-0 m-2 card-css ">
 
-                                <div class="w-100 p-0 h-50 img-css">
-                                    <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"
-                                         class=" w-100 h-100 card-img-post">
-                                </div>
+                                    <div class="w-100 p-0 h-50 img-css">
+                                        <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08"
+                                             class=" w-100 h-100 card-img-post">
+                                    </div>
 
-                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
-                                    <p class="card-title-post">[[${dto2.title}]]</p>
-                                    <p class="card-company-post">[[${dto2.comName}]]</p>
-                                    <p class="card-text-post">연봉 | [[${dto2.salaryRange}]]</p>
-                                    <p class="card-text-post">위치 | [[${dto2.regionName}]]</p>
-                                    <p class="card-text-post">직종 | [[${dto2.occName}]]</p>
-                                    <p class="card-dDay-post">[[${dto2.remainDay}]]</p>
+                                    <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+                                        <p class="card-title-post">[[${dto2.title}]]</p>
+                                        <p class="card-company-post">[[${dto2.comName}]]</p>
+                                        <p class="card-text-post">연봉 | [[${dto2.salaryRange}]]</p>
+                                        <p class="card-text-post">위치 | [[${dto2.regionName}]]</p>
+                                        <p class="card-text-post">직종 | [[${dto2.occName}]]</p>
+                                        <p class="card-dDay-post">[[${dto2.remainDay}]]</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </th:block>
 
                     </div>
-                 </div>
+                </div>
             </div>
 
 
@@ -295,7 +325,7 @@
                 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aedf851b3363925087804b263c52a803&libraries=services"></script>
         <script type="text/javascript" src="/js/osh/kakaoMap.js"></script>
         <script type="text/javascript" src="/js/applyJS.js"></script>
-        <script>
+        <script th:inline="javascript">
             function getURI() {
                 const url = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 $('#setURI').html(url);
@@ -307,6 +337,25 @@
                 let promise = navigator.clipboard.writeText(copyText);
                 $('#copy_icon').attr('class', 'bi bi-clipboard-check fs-4 m-0')
             })
+
+            function saveBookMark(postId) {
+                let memberId = [[${#session.getAttribute('sessionId')}]];
+                $.ajax({
+                    url: "/member/bookmark/save",
+                    type: "post",
+                    data: {postId: postId, memberId: memberId},
+                    success: function (data, status, xhr) {
+                        alert(data);
+                        location.href = '/post/readPost/' + postId;
+                    },
+                    error: function (xhr, status, error) {
+                        alert('등록에 실패했습니다.');
+                    },
+                    complete: function (xhr, status) {
+                    }
+                    ////////////////////
+                });
+            };
 
         </script>
 

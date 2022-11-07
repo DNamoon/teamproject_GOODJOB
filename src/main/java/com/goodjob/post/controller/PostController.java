@@ -1,12 +1,15 @@
 package com.goodjob.post.controller;
 
+import com.goodjob.bookmark.service.BookMarkService;
 import com.goodjob.company.service.CompanyService;
+import com.goodjob.member.service.MemberService;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,8 +27,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final OccupationService occupationService;
-    private final CompanyService companyService;
+    private final MemberService memberService;
+    private final BookMarkService bookMarkService;
 
     @GetMapping("/savePost")
     public String postSaveForm(String redirectedFrom ,HttpServletRequest httpServletRequest, Model model){
@@ -86,7 +89,11 @@ public class PostController {
     // postId 값으로 개별 공고를 조회하는 페이지로 이동하는 메소드
     @GetMapping(value = {"/readPost/{postId}"})
     @Transactional
-    public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model){
+    public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model,@SessionAttribute(required = false,name = "sessionId")String sessionId){
+        // 오성훈 추가
+        boolean existsBookmarkByMember = bookMarkService.existsPostByMember(sessionId, postId);
+        model.addAttribute("existsBookmarkByMember",existsBookmarkByMember);
+
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         model.addAttribute("dto",postDetailsDTO);
         pageRequestDTO.setPage(1);
