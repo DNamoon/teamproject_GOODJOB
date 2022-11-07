@@ -140,6 +140,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void deleteById(Long memId) {
         memberRepository.deleteById(memId);
+        System.out.println("delete"+memId);
     }
 
     //22.11.01 ho 추가. 아이디 찾기
