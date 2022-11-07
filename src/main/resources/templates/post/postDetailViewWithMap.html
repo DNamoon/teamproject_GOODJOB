@@ -223,6 +223,13 @@
                                                 지원하기
                                             </button>
                                             </th:block>
+                                            <th:block th:if="${#session.getAttribute('sessionId') == null}">
+                                                <button type="button" class="btn btn-primary"
+                                                        th:onclick="|location.href='/login'|"
+                                                        style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">
+                                                    지원하기
+                                                </button>
+                                            </th:block>
                                         </div>
                                     </div>
                                 </th:block>
@@ -287,6 +294,7 @@
                         <a th:href="${#request.requestURI}"><p id="setURI"></p></a>
                     </div>
                     <div class="modal-footer">
+                        <h6 style="font-size: 0.8rem;color: #0c63e4" id="copy_success"></h6>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
@@ -332,10 +340,10 @@
             }
 
             $('#copy_btn').click(function () {
-
                 const copyText = document.getElementById('setURI').textContent;
-                let promise = navigator.clipboard.writeText(copyText);
-                $('#copy_icon').attr('class', 'bi bi-clipboard-check fs-4 m-0')
+                navigator.clipboard.writeText(copyText);
+                $('#copy_icon').attr('class', 'bi bi-clipboard-check fs-4 m-0');
+                $('#copy_success').text('복사완료');
             })
 
             function saveBookMark(postId) {
@@ -353,7 +361,6 @@
                     },
                     complete: function (xhr, status) {
                     }
-                    ////////////////////
                 });
             };
 

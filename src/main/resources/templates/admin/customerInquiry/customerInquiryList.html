@@ -105,7 +105,7 @@
                                             <!-- Example single danger button -->
                                             <div class="btn-group">
                                                 <button type="button"
-                                                        class="btn bg-gradient-primary btn-sm dropdown-toggle"
+                                                        class="btn bg-gradient-dark btn-sm dropdown-toggle"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                     카테고리정렬
                                                 </button>
@@ -124,13 +124,13 @@
                                                     </h6></li>
                                                 </ul>
                                             </div>
-                                            <a role="button" class="btn btn-info btn-sm"
+                                            <a role="button" class="btn bg-gradient-dark btn-sm"
                                                th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostComId')}">기업만보기</a>
-                                            <a role="button" class="btn btn-info btn-sm"
+                                            <a role="button" class="btn bg-gradient-dark btn-sm"
                                                th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostMemberId')}">회원만보기</a>
-                                            <a role="button" class="btn btn-info btn-sm"
+                                            <a role="button" class="btn bg-gradient-dark btn-sm"
                                                th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostStatus')}">미답변만보기</a>
-                                            <a role="button" class="btn btn-info btn-sm"
+                                            <a role="button" class="btn bg-gradient-dark btn-sm"
                                                th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostPublishedDate')}">등록일정렬</a>
                                         </div>
                                         <div class="col-5 d-flex ms-4">
@@ -147,7 +147,7 @@
                                                 </div>
                                                 <div class="col-2">
                                                     <input type="submit" class="btn bg-gradient-dark form-control"
-                                                           style="height: 2.2rem;--bs-btn-padding-y: 0.2rem;">
+                                                           style="height: 2.2rem;--bs-btn-padding-y: 0.2rem;" value="검색">
                                                 </div>
                                             </form>
                                         </div>
@@ -193,8 +193,9 @@
                 url: "/admin/inquiryPost/delete",
                 type: "post",
                 data: {inquiryPostId: inquiryPostId},
-                success: function () {
+                success: function (data) {
                     alert("삭제되었습니다");
+                    location.href = data;
                 }
             })
         }

@@ -94,8 +94,9 @@ public class AdminRestController {
     }
 
     @PostMapping("/inquiryPost/delete")
-    public void deleteInquiryPost(@Param("inquiryPostId") Long inquiryPostId) {
+    public String deleteInquiryPost(@Param("inquiryPostId") Long inquiryPostId) {
         customerInquiryService.deleteByInquiryPostId(inquiryPostId);
+        return "/admin/customerInquiry/1?sort=inquiryPostId";
     }
 
     @PostMapping("/logout")

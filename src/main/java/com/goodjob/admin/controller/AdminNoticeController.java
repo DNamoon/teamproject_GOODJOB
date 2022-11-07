@@ -1,4 +1,4 @@
-package com.goodjob.bookmark.contoroller;
+package com.goodjob.admin.controller;
 
 import com.goodjob.notice.Notice;
 import com.goodjob.notice.NoticeDTO;
@@ -28,8 +28,8 @@ public class AdminNoticeController {
     private final NoticeService noticeService;
 
     //JPA 페이징 관련 메소드
-    @GetMapping("/{pageNum}")
-    public String noticeListForm(@PathVariable int pageNum, Model model) {
+    @GetMapping({"/{pageNum}",""})
+    public String noticeListForm(@PathVariable(required = false) int pageNum, Model model) {
         pageNum = (pageNum == 0) ? 0 : (pageNum - 1);
         Sort sort = Sort.by("noticeId").descending();
         Pageable pageable = PageRequest.of(pageNum, 10, sort);
@@ -53,7 +53,7 @@ public class AdminNoticeController {
                 .build();
 
         noticeService.insertNotice(notice);
-        return "redirect:/admin";
+        return "redirect:/admin/notice/1";
     }
 
     @GetMapping("/{noticeId}/update")
@@ -84,13 +84,16 @@ public class AdminNoticeController {
     }
 
     @PostMapping("/delete")
-    public void deleteNotice(@Param("noticeId") Long noticeId) {
+    @ResponseBody
+    public String deleteNotice(@Param("noticeId") Long noticeId) {
         noticeService.deleteNotice(noticeId);
+        return "/admin/notice/1";
     }
 
     @PostMapping("/changeStatus")
-    public void updateNoticeStatus(@Param("noticeId") Long noticeId) {
-        log.info("noticeId={}",noticeId);
+    @ResponseBody
+    public String updateNoticeStatus(@Param("noticeId") Long noticeId) {
         noticeService.updateNoticeStatus(noticeId);
+        return "/admin/notice/1";
     }
 }

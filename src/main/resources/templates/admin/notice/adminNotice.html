@@ -13,7 +13,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h6 class="text-2xl m-lg-1">공고 관리 게시판</h6>
+                            <h6 class="text-2xl m-lg-1">공지사항</h6>
                         </div>
                         <div class="d-flex flex-row justify-content-end">
                             <a th:text="글쓰기" role="button" class="text-white btn mx-4"
@@ -68,10 +68,12 @@
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             <th:block>
-                                                <span th:if="${notice.noticeStatus eq '0'}" class="badge rounded-pill badge-sm bg-gradient-success">게시중</span>
+                                                <span th:if="${notice.noticeStatus eq '0'}"
+                                                      class="badge rounded-pill badge-sm bg-gradient-dark">게시중</span>
                                             </th:block>
                                             <th:block>
-                                                <span th:if="${notice.noticeStatus eq '1'}" class="badge rounded-pill badge-sm bg-gradient-warning">미게시</span>
+                                                <span th:if="${notice.noticeStatus eq '1'}"
+                                                      class="badge rounded-pill badge-sm bg-gradient-faded-secondary-vertical">미게시</span>
                                             </th:block>
                                         </td>
 
@@ -137,9 +139,9 @@
                 url: "/admin/notice/delete",
                 type: "post",
                 data: {noticeId: noticeId},
-                success: function () {
+                success: function (data) {
                     alert("삭제되었습니다");
-                    location.href = "/admin/notice/1";
+                    location.href = data;
                 }
             })
         }
@@ -151,33 +153,16 @@
                 url: "/admin/notice/changeStatus",
                 type: "post",
                 data: {noticeId: noticeId},
-                success: function () {
-                    location.href = "/admin/notice/1";
-                }
+                success: function (data) {
+                    location.href = data;
+                }, error: function (){
+                    alert("asd")
+                },
             })
         }
     }
 
-    $(document).ready(function () {
-        let pageIndex = [[${noticeList.getNumber()}]] + 1
-        let pageNum = [[${pageNum}]];
-        let a
-        $(".pageIndex a").each(function () {
-            let val = $(".pageIndex a").text();
-            let val2 = this.getAttribute('id');
-            var idx = parseInt($(this).parent().index());
-            var thistitle = parseInt($(this).text())
-            // console.log(pageIndex)
-            // console.log(thistitle)
-            // console.log(val2)
-            // console.log(pageNum)
-            // console.log(text)
-            console.log(val)
-            if (pageNum == val2) {
-                // $(".pageIndex a").eq(pageNum).addClass("fs-1");
-            }
-        });
-    });
+
 </script>
 </body>
 </html>
