@@ -53,14 +53,14 @@
                                         <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input type="text" placeholder="Password는 3~25자 사이여야 합니다."
-                                                   class="form-control" id="pw1" th:field="*{pw}" required>
+                                                   class="form-control" id="pw1" th:field="*{pw}" onkeyup="test()" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="pw2" th:field="*{pw2}"
-                                                   onkeyup="test()" required>
+                                                   onkeyup="test()"  required>
                                         </div>
                                         <label id="confirmMsg"></label>
                                     </div>
@@ -69,7 +69,7 @@
                                         <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input type="tel" class="form-control" placeholder="000-0000-0000"
-                                                   th:field="*{memPhone}" required>
+                                                   th:field="*{memPhone}" required onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"/>
                                         </div>
                                     </div>
                                     <!--                    이메일 양식 지정-->
@@ -79,7 +79,7 @@
                                             <input type="text" class="form-control w-40" th:field="*{memEmail1}"
                                                    placeholder="goodjob" id="signUpEmail"
                                                    required> &nbsp;@ &nbsp;&nbsp;
-                                            <select id="emailSelect" class="form-control w-40" th:field="*{memEmail2}" onchange="emailCheckMassage()">
+                                            <select id="emailSelect" class="form-control w-40" th:field="*{memEmail2}" onchange="emailCheckMassage()" required>
                                                 <option value="">선택해주세요.</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="daum.net">daum.net</option>

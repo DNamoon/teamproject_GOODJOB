@@ -8,6 +8,26 @@ let common = {
     }
 }
 // mainPage.html JS
+$(document).ready(function(){
+    havePass();
+})
+
+function havePass(){
+    if($("#havePass").val() === 'true'){
+        Swal.fire({
+            title: '서류 합격을 축하드립니다',
+            text: '이후 전형에 대한 안내는 이력서의 이메일을 확인해주세요',
+            icon: 'info'
+        });
+    }
+
+    $.ajax({
+        url: "/status/changeStatShow",
+        type: "post"
+    })
+}
+
+// mainPage.html 에서 쓰이는 JS
 let postJS = {
     init(){
       const _this = this;
@@ -157,6 +177,9 @@ let comMyPagePost = {
     },
     updatePost(postId){
         location.href=`/post/updatePost/${postId}`;
+    },
+    showApplierList(postId){   //박채원 22.11.01 추가
+        location.href=`/com/myPageApplier/${postId}`;
     }
 
 }

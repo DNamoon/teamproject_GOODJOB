@@ -45,6 +45,11 @@ public class MemberServiceImpl implements MemberService {
     public Member register(Member member) {
         return memberRepository.save(member);
     }
+
+    @Override
+    public int checkId2(String comLoginId) {
+        return memberRepository.checkId2(comLoginId);
+    }
     @Override
     public Long countByMemLoginId(String memLoginId) {
         Long result = memberRepository.countByMemLoginId(memLoginId);
@@ -124,15 +129,44 @@ public class MemberServiceImpl implements MemberService {
     /** 비밀번호 변경 **/
     @Override
     public void changePassword(String changePw, Long id) {
-         String encryptPassword = passwordEncoder.encode(changePw);
-         Member member = memberRepository.findByMemId(id);
-         member.updatePassword(encryptPassword);
-         memberRepository.save(member);
+        System.out.println(changePw+">>>>"+id);
+        String encryptPassword = passwordEncoder.encode(changePw);
+        Member member = memberRepository.findByMemId(id);
+        member.updatePassword(encryptPassword);
+        memberRepository.save(member);
         }
 
     //회원 탈퇴
     @Override
     public void deleteById(Long memId) {
         memberRepository.deleteById(memId);
+    }
+
+    //22.11.01 ho 추가. 아이디 찾기
+    @Override
+    public String findId(String name, String email) {
+        MemberDTO memberDTO = getMemberDTOForFindId(name, email);
+        Member member = memberDTO.toEntityForFindId();
+        String newName = member.getMemName();
+        System.out.println("??? 개인 아이디 찾기 받아오는 name : " + newName);
+        String newEmail = member.getMemEmail();
+        System.out.println("??? 개인 아이디 찾기 받아오는 email : " + newEmail);
+
+        Long num = memberRepository.countByMemNameAndMemEmail(newName, newEmail);
+        System.out.println("이름과 이메일로 카운트하는 수 num = " + num);
+        if(num == 0) {
+            return "fail";
+        } else {
+            Member mem = memberRepository.findByMemNameAndMemEmail(newName, newEmail);
+            return mem.getMemLoginId();
+        }
+    }
+
+    //22.11.01 ho 추가. 아이디 찾기용 MemberDTO 만들기 메서드.
+    private MemberDTO getMemberDTOForFindId(String name, String email){
+        return MemberDTO.builder()
+                .memName(name)
+                .memEmail1(email)
+                .build();
     }
 }

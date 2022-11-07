@@ -25,7 +25,7 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public void registerCareerInfo(List<CareerDTO> list) {
-        if(careerRepository.countCareerByResumeId(list.get(0).getResumeId()) == 0){
+        if(careerRepository.countCareerByResume_ResumeId(list.get(0).getResumeId()) == 0){
             for (int i = 0; i < list.size(); i++) {
                 Career career = dtoToEntity(list.get(i));
                 log.info("=========== 이력서 경력사항 등록 ===========");
@@ -42,7 +42,7 @@ public class CareerServiceImpl implements CareerService {
 
     @Override
     public List<CareerDTO> bringCareerInfo(Long resumeId) {
-        List<Career> careerList = careerRepository.findCareerInfoByResumeId(resumeId);
+        List<Career> careerList = careerRepository.findCareerByResume_ResumeId(resumeId);
         List<CareerDTO> careerDTOList = new ArrayList<CareerDTO>();
         for(Career career : careerList){
             careerDTOList.add(entityToDTO(career));

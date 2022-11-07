@@ -62,7 +62,12 @@ public class MemMyPageController {
     }
 
     @PostMapping("/myPageInfo")
-    public String infoUpdate(MemberDTO memberDTO){
+    public String infoUpdate(@Valid MemberDTO memberDTO, BindingResult result){
+//        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
+//            result.rejectValue("","emailInCorrect",
+//                    "이미 가입된 이메일입니다.");
+//            return "member/myPageInfo";
+//        }
         memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
     }
@@ -70,36 +75,23 @@ public class MemMyPageController {
     //회원탈퇴 (비밀번호 확인 후 회원 정보 삭제,이력서 정보 같이 삭제)
     @ResponseBody
     @RequestMapping("/delete")
-    public String deleteMember(@Param("deletePw")String deletePw, @Param("id")String loginId, @Param("memId")Long memId,HttpServletRequest request) {
+    public String deleteMember(@Param("deletePw")String deletePw, @Param("id")String loginId, @Param("memId")Long memId,HttpSession session) {
         Optional<Member> mem = memberService.loginIdCheck(loginId);
         if (mem.isPresent()) {
             Member member = mem.get();
             if (passwordEncoder.matches(deletePw,member.getMemPw())) {
                 memberService.deleteById(memId);
-                HttpSession session = request.getSession(false);
                 session.invalidate();
                 return "0";
             }
         }
         return "1";
     }
-
-    //비밀번호 변경 비번 확인
-//    @ResponseBody
-//    @RequestMapping("/changePw")
-//    public String changePwCheck(@Param("checkPw")String checkPw, @Param("id")String loginId){
-//        Optional<Member> mem = memberService.loginIdCheck(loginId);
-//        if (mem.isPresent()) {
-//            Member member = mem.get();
-//            if (passwordEncoder.matches(checkPw,member.getMemPw())) {
-//                return "0";
-//            }
-//        }
-//        return "";
-//    }
+    // 비밀번호 변경 전 기존 비밀번호 확인
     @PostMapping("/changePw")
     @ResponseBody
-    public String changePwCheck(@RequestParam("checkPw")String checkPw,@RequestParam("id")String loginId){
+    public String changePwCheck(@RequestParam("checkPw")String checkPw, @RequestParam("id")String loginId){
+        System.out.println("pw"+checkPw+"////id"+loginId);
         Optional<Member> mem = memberService.loginIdCheck(loginId);
         if (mem.isPresent()) {
             Member member = mem.get();
@@ -112,21 +104,27 @@ public class MemMyPageController {
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
-    public String changePwForm(@RequestParam("loginId")String loginId,@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO){
-        System.out.println("8888"+loginId);
-        memberDTO.setMemId(memberService.memInfo(loginId).getMemId());
+    public String changePwForm(MemberDTO memberDTO){
         return "member/memChangePassword";
     }
 
-    @PostMapping("/changePassword")
-    public String changePw(@Param("pw2")String pw2, @Param("memId")Long memId, Model model, HttpServletRequest session,
-                           @Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
+    @RequestMapping(value="/changePassword",method = RequestMethod.POST)
+    public String changePw(@Valid MemberDTO memberDTO, BindingResult result, HttpSession session,Model model) {
         if(result.hasErrors()){
+            return "member/signup";
+        }
+        String id = (String)session.getAttribute("sessionId");
+        MemberDTO mem = memberService.memInfo(id);
+        model.addAttribute("changePwMem",mem.getMemId());
+        //비밀번호 일치하지 않을 시 에러 발생
+        if(!memberDTO.getPw().equals(memberDTO.getPw2())){
+            result.rejectValue("","passwordInCorrect",
+                    "입력하신 비밀번호가 일치하지 않습니다.");
             return "member/memChangePassword";
         }
-        memberService.changePassword(pw2,memId);
-        String id = (String)session.getAttribute("sessionId");
-        model.addAttribute("memberInfo",memberService.memInfo(id));
+                System.out.println("chchchch"+memberDTO.getPw2());
+        memberService.changePassword(memberDTO.getPw2(),mem.getMemId());
+        model.addAttribute("memberInfo",mem);
         return "member/myPageInfo";
     }
 

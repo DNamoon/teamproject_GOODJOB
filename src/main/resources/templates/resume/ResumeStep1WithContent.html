@@ -162,8 +162,9 @@
                                         <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" name="schoolName" id="schoolName"
-                                                   th:value="${schoolInfo.schoolName}" readonly required>
+                                                   th:value="${schoolInfo.schoolName}" readonly>
                                         </div>
+                                        <label id="schoolNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -187,8 +188,9 @@
                                         <label>전공<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" name="majorName" id="majorName"
-                                                   th:value="${schoolInfo.majorName}" required readonly>
+                                                   th:value="${schoolInfo.majorName}" readonly>
                                         </div>
+                                        <label id="majorNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -199,7 +201,7 @@
                                     <div class="col-md-6" style="width: 150px;">
                                         <label>학점</label>
                                         <div class="input-group mb-4">
-                                            <input class="form-control" type="text" name="eduGetCredit"
+                                            <input class="form-control" type="text" id="eduGetCredit" name="eduGetCredit"
                                                    th:value="${schoolInfo.eduGetCredit}" onchange="rangeCredit()">
                                         </div>
                                     </div>
@@ -223,7 +225,7 @@
                                 </div>
                                 <div style="height: 50px;"></div>
                                 <div class="col-md-6 mx-auto">
-                                    <button type="submit" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
+                                    <button type="submit" id="submitStep1" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
                                 </div>
                             </div>
                         </form>

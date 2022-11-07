@@ -53,6 +53,8 @@ public interface MemberService {
     //회원정보 db저장
     Member register(Member member);
 
+    int checkId2(String comLoginId);
+
     //회원가입 시 아이디 중복 여부 확인
     Long countByMemLoginId(String memLoginId);
 
@@ -73,4 +75,7 @@ public interface MemberService {
     String getTmpPassword();
 
     void changePassword(String changePw, Long memId);
+
+    //22.11.01 ho 추가. 아이디 찾기
+    String findId(String name, String email);
 }

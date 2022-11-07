@@ -8,10 +8,9 @@ import java.util.List;
 
 /**
  * 박채원 22.10.04 작성
+ * 박채원 22.11.06 수정 - 검색어로 전공찾는 메소드 수정
  */
 
 public interface MajorNameRepository extends JpaRepository<MajorName, String> {
-
-    @Query("select m from MajorName m where m.majName like %:keyword%")
-    List<MajorName> findMajorName(String keyword);
+    List<MajorName> findMajorNameByMajNameContainingAndMajNameNotContaining(String keyword, String noAnswer);
 }

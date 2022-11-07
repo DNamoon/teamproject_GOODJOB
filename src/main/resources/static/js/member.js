@@ -9,12 +9,10 @@
              if(result != 0){ //cnt가 1이 아니면(=0일 경우) -> 이미 존재하는 아이디
                  $('#checkMassage').css('color','red')
                  $('#checkMassage').html("사용할 수 없는 아이디입니다.")
-                 $("#btn").prop('disabled',true);
 
              } else { // cnt가 1일 경우 -> 사용 가능한 아이디
                  $('#checkMassage').css('color','blue')
                  $('#checkMassage').html("사용할 수 있는 아이디입니다.")
-                 $("#btn").prop('disabled',false);
              }
          }
      });
@@ -31,11 +29,9 @@ function emailCheckMassage(){
             if(result == "false"){
                 $('#emailCheckMassage').css('color','blue')
                 $('#emailCheckMassage').html("가입 가능한 이메일입니다.")
-                $("#btn").prop('disabled',false);
             } else {
                 $('#emailCheckMassage').css('color','red')
                 $('#emailCheckMassage').html("이미 가입된 이메일입니다.")
-                $("#btn").prop('disabled',true);
             }
         }
     });
@@ -63,17 +59,24 @@ function emailCheckMassage(){
  function test() {
      var p1 = document.getElementById('pw1').value;
      var p2 = document.getElementById('pw2').value;
-     if(p1 != p2){
+     var regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g;
+
+     if(!regExp.test(p1)) {
          $('#confirmMsg').css('color','red')
-         $('#confirmMsg').html("비밀번호 불일치")
-         $("#btn").prop('disabled',true);
-
-     } else { // cnt가 1일 경우 -> 사용 가능한 아이디
-         $('#confirmMsg').css('color','blue')
-         $('#confirmMsg').html("비밀번호 일치")
-         $("#btn").prop('disabled',false);
+         $('#confirmMsg').html("비밀번호 양식을 확인해주세요.")
+         return false;
+     } else {
+         if(p1 != p2){
+             $('#confirmMsg').css('color','red')
+             $('#confirmMsg').html("비밀번호 불일치")
+             return false;
+         } else {
+             $('#confirmMsg').css('color','blue')
+             $('#confirmMsg').html("비밀번호 일치")
+             return true;
+         }
      }
-
+     return true;
  }
  // login 페이지 기업 or 개인 회원 체크
  function checkOnlyOneLogin(element) {
@@ -149,10 +152,10 @@ $(document).ready(function() {
                         title: '회원탈퇴',         // Alert 제목
                         text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
                     }).then(function (){
-                        location.href="/";
+                        location.replace('/'); //뒤로가기 불가능
                     });
                 }else {
-                    alert("비밀번호를 확인해주세요.")
+                    Swal.fire("ERROR","비밀번호를 확인해주세요.","error");
                 }
             }
         })
@@ -166,7 +169,7 @@ $(document).ready(function() {
 });
 function checkEmail(){
     const email = $('#email').val();
-    console.log(email);
+    // console.log(email);
     if(!email || email.trim() === ""){
         alert("이메일을 입력해주세요.")
     } else {
@@ -178,18 +181,22 @@ function checkEmail(){
             },
             dataType: "text",
         }).done(function(result){
-            console.log("result :" + result);
+            // console.log("result :" + result);
             if (result == "com") {
                 sendEmail("com");
-                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
+
+                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             } else if(result == "mem") {
                 sendEmail("mem");
-             alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+
+                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             }
             else if (result == "false") {
-               alert("가입정보가 없는 이메일입니다.")
+                Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
+               // alert("가입정보가 없는 이메일입니다.")
             }
         }).fail(function(error){
             alert(JSON.stringify(error));
@@ -199,7 +206,6 @@ function checkEmail(){
 //임시비밀번호 메일발송
 function sendEmail(type){
     const memberEmail = $('#email').val();
-
     $.ajax({
         type: 'POST',
         url: '/member/sendPw',
@@ -207,7 +213,7 @@ function sendEmail(type){
             'memberEmail' : memberEmail,
             'mailType': type
         },success: function(result){
-            console.log(result);
+            Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
         },
         error: function(error){
             alert("ㅇㅇㅇㅇㅇㅇ"+JSON.stringify(error));
@@ -220,14 +226,34 @@ $(document).ready(function() {
         $.ajax({
             type: "post",
             url: "/member/changePw",
-            data: "loginId=" + $("#id").val() + "&checkPw=" + $('#checkPw').val(),
+            data: "id=" + $("#id").val() + "&checkPw=" + $('#checkPw').val(),
             success: function (data) {
                 if (data == "0") {
-                    document.getElementById("changePwForm").submit();
+                    location.href="/member/changePassword"
                 } else {
                     alert("비밀번호를 확인해주세요.")
                 }
+            },
+            error: function (test) {
+                alert(test);
             }
         })
     })
 });
+//비밀번호 변경 유효성 검사
+function passwordChange()  {
+    const pw1 = $('#pw1').val();
+    const pw2 = $('#pw2').val();
+    const regExpch = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g;
+
+    if (!regExpch.test(pw1)) {
+        Swal.fire("비밀번호 사용 불가","비밀번호는 3~25자로 최소 하나의 문자, 숫자, 특수문자가 들어가야 합니다.","error");
+        return false;
+    } else {
+        if(pw1 == pw2){
+            $('#changePassword').submit();
+        } else {
+            Swal.fire("비밀번호 불일치","입력하신 비밀번호를 확인해주세요.","error");
+        }
+    }
+}
