@@ -40,10 +40,14 @@ public class MemberController {
 
     //ID 중복확인
     @ResponseBody
-    @RequestMapping(value="/checkId",method = RequestMethod.GET)
-    public Long checkIdDuplication(@RequestParam("id") String id) {
-        Long result = memberService.countByMemLoginId(id);
-        return result;
+    @RequestMapping(value="/checkId",method = RequestMethod.POST)
+    public int checkIdDuplication(@RequestParam("id") String id) {
+        int result = memberService.checkId2(id);
+            if(result != 0) {
+                return 1;	// 중복 아이디가 존재
+            } else {
+                return 2;	// 중복 아이디 x
+            }
     }
 
     //email 중복확인
@@ -58,6 +62,7 @@ public class MemberController {
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
     public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
+
         if(result.hasErrors()){
             return "member/signup";
             }

@@ -50,9 +50,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; (최소 1개의 영문, 숫자, 특수문자를 포함해야합니다.)</span></label>
                                         <div class="input-group mb-4">
-                                            <input type="text" placeholder="Password는 3~25자 사이여야 합니다."
+                                            <input type="text" placeholder="비밀번호는 3~25자 사이여야 합니다."
                                                    class="form-control" id="pw1" th:field="*{pw}" onkeyup="test()" required>
                                         </div>
                                     </div>
@@ -66,17 +66,18 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                        <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; ( - 을 포함하여 입력해주세요.)</span></label>
                                         <div class="input-group">
-                                            <input type="tel" class="form-control" placeholder="000-0000-0000"
-                                                   th:field="*{memPhone}" required onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"/>
+                                            <input type="tel" class="form-control" placeholder="000-0000-0000" id="phone"
+                                                   th:field="*{memPhone}" onkeyup="checkPhone()" required  />
                                         </div>
+                                        <label id="phone_error"></label>
                                     </div>
                                     <!--                    이메일 양식 지정-->
                                     <div class="col-md-6">
                                         <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control w-40" th:field="*{memEmail1}"
+                                            <input type="text" class="form-control w-40" th:field="*{memEmail1}" onchange="emailCheckMassage()"
                                                    placeholder="goodjob" id="signUpEmail"
                                                    required> &nbsp;@ &nbsp;&nbsp;
                                             <select id="emailSelect" class="form-control w-40" th:field="*{memEmail2}" onchange="emailCheckMassage()" required>
@@ -103,7 +104,7 @@
                                                 onclick="execPostCode()">주소찾기
                                         </button>
                                     </div>
-                                    <div class="col-md-6" style="width: 330px;">
+                                    <div class="col-md-4" style="margin-left: 0px;">
                                         <label>상세주소</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="userDetailAddress"

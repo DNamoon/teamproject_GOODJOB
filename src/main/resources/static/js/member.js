@@ -2,18 +2,24 @@
 //id 중복 확인
  function checkMassage(){
      const id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
+     let regExp = /^[a-z0-9_-]{3,15}$/;
      $.ajax({
+         type : "post",
          url:'/member/checkId?id='+id, //Controller에서 요청 받을 주소
          success:function(result){ //컨트롤러에서 값을 받는다
              console.log(result)
-             if(result != 0){
-                 $('#checkMassage').css('color','red')
-                 $('#checkMassage').html("사용할 수 없는 아이디입니다.")
-
-             } else {
-                 $('#checkMassage').css('color','blue')
-                 $('#checkMassage').html("사용할 수 있는 아이디입니다.")
-             }
+                if(!regExp.test(id)){
+                    $('#checkMassage').css('color','red')
+                    $('#checkMassage').html("아이디는 3~15자의 영문 소문자와 숫자,특수기호(_),(-)만 사용 가능합니다.")
+                } else {
+                    if (result != 2) {
+                        $('#checkMassage').css('color', 'blue')
+                        $('#checkMassage').html("사용할 수 있는 아이디입니다.")
+                    } else {
+                        $('#checkMassage').css('color', 'red')
+                        $('#checkMassage').html("이미 존재하는 아이디입니다.")
+                    }
+                }
          }
      });
  };
@@ -49,7 +55,6 @@ function emailCheckMassage(){
                  } else {
                      addr = data.jibunAddress;
                  }
-
                  document.getElementById("userAddress").value = '(' + data.zonecode + ') ' + addr;
                  document.getElementById("userDetailAddress").focus();
              }
@@ -79,6 +84,20 @@ function emailCheckMassage(){
      }
      return true;
  }
+ // 전화번호 양식 확인
+function checkPhone(){
+    let phone = $('#phone').val();
+    let regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+    let phone_error = $('#phone_error');
+
+    if(!regExp.test(phone)) {
+        phone_error.css("color",'red');
+        phone_error.show().text("형식이 맞지 않습니다. 다시 확인해주세요.");
+    }else {
+        phone_error.css("color",'blue');
+        phone_error.show().text("올바른 형식입니다.");
+    }
+}
  // login 페이지 기업 or 개인 회원 체크
  function checkOnlyOneLogin(element) {
      //checkbox 중복 선택 불가
@@ -131,15 +150,17 @@ $(document).ready(function() {
             data: "loginId="+$("#id").val()+"&pw="+$('#pw').val(),
             success: function (data) {
               if(data=="0"){
-                document.getElementById("formUpdate").submit();
+                  Swal.fire("회원정보를 수정합니다!","","success").then(function () {
+                      document.getElementById("formUpdate").submit();
+                  })
             }else {
-                alert("비밀번호를 확인해주세요.")
+                  Swal.fire("비밀번호를 확인해주세요","","error");
             }
         }
      })
     })
 });
-//회원삭제 function
+//회원탈퇴 function
 $(document).ready(function() {
     $("#deletebtn").click(function () {
         $.ajax({
@@ -184,20 +205,20 @@ function checkEmail(){
         }).done(function(result){
             // console.log("result :" + result);
             if (result == "com") {
-                sendEmail("com");
+                sendEmail("com")
                 // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
 
-                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             } else if(result == "mem") {
                 sendEmail("mem");
 
-                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 window.location.href="/login";
             }
             else if (result == "false") {
-                Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
-               // alert("가입정보가 없는 이메일입니다.")
+                // Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
+               alert("가입정보가 없는 이메일입니다.")
             }
         }).fail(function(error){
             alert(JSON.stringify(error));
