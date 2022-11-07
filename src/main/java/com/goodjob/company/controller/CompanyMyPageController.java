@@ -28,14 +28,16 @@ public class CompanyMyPageController {
 
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/myPagePost")
-    public String myPageForm(){
-        return "/company/companyMyPagePostList";
+    @GetMapping("/myPageApplier/{postId}")
+    public String myPageApplierList(@PathVariable("postId") Long postId, Model model){
+        model.addAttribute("postId", postId);
+        return "/company/companyMyPageResumeApplyList";
     }
 
-    @GetMapping("/myPageApplier")
-    public String myPageApplierList(){
-        return "/company/companyMyPageApplyList";
+    @GetMapping("/myPageInterviewee/{postId}")
+    public String myPageIntervieweeList(@PathVariable("postId") Long postId, Model model){
+        model.addAttribute("postId", postId);
+        return "/company/companyMyPageIntervieweeList";
     }
 
     //ho - 22.10.17 마이페이지 세션 넘기기+

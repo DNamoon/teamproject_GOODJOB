@@ -27,7 +27,7 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public void registerCertiInfo(List<CertificationDTO> list) {
-        if (certificationRepository.countCertiByResumeId(list.get(0).getResumeId()) == 0){
+        if (certificationRepository.countCertificationByResume_ResumeId(list.get(0).getResumeId()) == 0){
             for (int i = 0; i < list.size(); i++) {
                 Certification certification = dtoToEntity(list.get(i));
                 log.info("=========== 이력서 자격증항목 등록 ===========");
@@ -44,7 +44,7 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public int existOrNotResumeId(Long resumeId) {
-        if(certificationRepository.countCertiByResumeId(resumeId) == 0){
+        if(certificationRepository.countCertificationByResume_ResumeId(resumeId) == 0){
             return 0;
         }
         return 1;
@@ -52,7 +52,7 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public List<CertificationDTO> bringCertiInfo(Long resumeId) {
-        List<Certification> certificationList = certificationRepository.findCertiInfoByResumeId(resumeId);
+        List<Certification> certificationList = certificationRepository.findCertificationByResume_ResumeId(resumeId);
         List<CertificationDTO> certificationDTOList = new ArrayList<CertificationDTO>();
         for(Certification certification : certificationList){
             certificationDTOList.add(entityToDTO(certification));
@@ -63,7 +63,7 @@ public class CertificationServiceImpl implements CertificationService {
 
     @Override
     public List<CertificateName> findCertiName(String keyword) {
-        return certificationNameRepository.findCertiName(keyword);
+        return certificationNameRepository.findCertificateNameByCertiNameContaining(keyword);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.goodjob.post.fileupload;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Embeddable;
 

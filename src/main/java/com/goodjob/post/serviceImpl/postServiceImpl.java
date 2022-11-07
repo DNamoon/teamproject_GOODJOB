@@ -1,6 +1,5 @@
 package com.goodjob.post.serviceImpl;
 
-import antlr.StringUtils;
 import com.goodjob.company.Company;
 import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
@@ -21,18 +20,18 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -94,10 +93,10 @@ public class postServiceImpl implements PostService {
 
     @Override
     public Long savePost(PostInsertDTO postInsertDTO) throws IOException {
-        Address address = new Address(postInsertDTO.getPostcode(), postInsertDTO.getPostAddress(), postInsertDTO.getPostDetailAddress(),postInsertDTO.getEtc());
+        Address address = new Address(HtmlUtils.htmlEscape(postInsertDTO.getPostcode()), HtmlUtils.htmlEscape(postInsertDTO.getPostAddress()), HtmlUtils.htmlEscape(postInsertDTO.getPostDetailAddress()),HtmlUtils.htmlEscape(postInsertDTO.getEtc()+""));
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
-        List<UploadFile> uploadFiles = fileService.storeFiles(postInsertDTO.getPostImg());
+        List<UploadFile> uploadFiles =  fileService.storeFiles(postInsertDTO.getPostImg());
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && salary.isPresent()){
             Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),salary.get(),uploadFiles,address));
@@ -123,7 +122,7 @@ public class postServiceImpl implements PostService {
     }
 
     // pageRequestDTO 의 sort 값에 따라 공고 리스트의 정렬에 필요한 Sort를 리턴해주는 메솓즈
-    // getList()와 getListInMain() 에 사용한다.
+    // getPagingPostList()와  getPagingPostListInComMyPage() 에 사용한다.
     private Sort decideSort(PageRequestDTO pageRequestDTO){
         switch (pageRequestDTO.getSort()) {
             case "new":
@@ -136,6 +135,128 @@ public class postServiceImpl implements PostService {
                 return Sort.by("postEndDate").ascending();
         }
         return  null;
+    }
+
+    private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO){
+        QPost qPost = QPost.post;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        // 세션의 authType = "company" 이라면 로그인한 기업회원의 글만
+        // 가져오는 조건 추가.
+        if(pageRequestDTO.getAuthType()!=null){
+            if(pageRequestDTO.getAuthType().equals("company")){
+                booleanBuilder.and(qPost.postComId.comLoginId.eq(pageRequestDTO.getAuth()));
+            }
+        }
+
+        // 모집상태(모집중, 모집시작 전, 모집 종료, 전체) 조건을 추가하는 코드(기본은 모집중)
+        booleanBuilder.and(getOutOfDateState(pageRequestDTO,qPost));
+        // pageRequestDTO에 type이 있고 keyword가 있으면 post 테이블 postTitle 컬럼과 compnay 테이블 comName 컬럼에서 해당 값과 일치하는 조건을 추가한다.
+        BooleanBuilder booleanBuilderWithTitleComName = getConditionsWithSearchTypeKeyword(pageRequestDTO,qPost);
+        if(booleanBuilderWithTitleComName!=null){
+            booleanBuilder.and(booleanBuilderWithTitleComName);
+        }
+        // pageRequestDTO filterOccupation 값이 있으면 occupation 테이블 occName 컬럼에서 해당 값과 일치하는 조건을 추가한다.
+        if (!(pageRequestDTO.getFilterOccupation()==null||pageRequestDTO.getFilterOccupation().isEmpty())){
+            booleanBuilder.and(qPost.postOccCode.occName.eq(pageRequestDTO.getFilterOccupation()));
+        }
+        // pageRequestDTO filterAddress 값이 있으면 post 테이블 address1 컬럼에서 해당 값과 일치하는 조건을 추가한다.
+        BooleanBuilder booleanBuilderWithAddress = getConditionsWithAddress(pageRequestDTO,qPost);
+        if(booleanBuilderWithAddress!=null){
+            booleanBuilder.and(booleanBuilderWithAddress);
+        }
+        // pageRequestDTO filterSalary 값이 있으면 postSalary 테이블 salaryRange 컬럼에서 해당 값과 일치하는 조건을 추가한다.
+        if (!(pageRequestDTO.getFilterSalary()==null||pageRequestDTO.getFilterSalary().isEmpty())){
+            booleanBuilder.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
+        }
+
+        System.out.println("불리언 빌더(final)============최종 쿼리 조건 : "+booleanBuilder);
+        return booleanBuilder;
+    }
+
+    private BooleanBuilder getConditionsWithAddress(PageRequestDTO pageRequestDTO, QPost qPost){
+        if (!(pageRequestDTO.getFilterAddress()==null||pageRequestDTO.getFilterAddress().isEmpty())){
+            BooleanBuilder bd = new BooleanBuilder();
+            String addressKeyword = pageRequestDTO.getFilterAddress();
+            List<String> addressKeywordList = tokenizerStringToList(addressKeyword," ");
+            List<String> addressDepth1 = new ArrayList<>(Arrays.asList("서울","경기","인천","강원","대전","세종","부산","울산","대구","광주","제주"));
+            List<String> addressDepth1_do = new ArrayList<>(Arrays.asList("경상남","경상북","충청남","충청북","전라남","전라북"));
+            addressKeywordList.forEach(log::info);
+            addressKeywordList = addressKeywordList.stream().map(e->{
+                bd.or(qPost.address.address1.contains(e));
+                for(String str : addressDepth1){
+                    if(e.startsWith(str)){
+                        e = str;
+                        log.info("e : "+e);
+                    };
+                }
+                for(String str : addressDepth1_do){
+                    if(e.startsWith(str)){
+                       e =String.valueOf(str.charAt(0))+String.valueOf(str.charAt(2));
+                       log.info("e : "+e);
+                    };
+                }
+                return e;
+            }).collect(Collectors.toList());
+            addressKeywordList.forEach(log::info);
+            log.info("================"+addressKeywordList);
+            addressKeywordList.forEach(e -> {
+                bd.or(qPost.address.address1.contains(e));
+            });
+            bd.or(qPost.address.address1.contains(addressKeyword));
+            return bd;
+        }
+        return null;
+    }
+    // 공고 리스트를 얻을 시 조건을 추가한다.( 검색어 포함 )
+    private BooleanBuilder getConditionsWithSearchTypeKeyword(PageRequestDTO pageRequestDTO,QPost qPost){
+        String type = pageRequestDTO.getType();
+        String keyword = pageRequestDTO.getKeyword();
+        BooleanBuilder bd = new BooleanBuilder();
+       if(!(keyword == null || keyword.isEmpty())) {
+           List<String> keywordList = tokenizerStringToList(pageRequestDTO.getKeyword()," ");
+           switch (type) {
+                case "title":
+                    // 검색 조건으로 type = "title" 인 경우, 공고 제목에 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    bd.or(qPost.postTitle.contains(keyword));
+                    break;
+                case "company":
+                    // 검색 조건으로 type = "company" 인 경우, 기업명으로 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    bd.or(qPost.postComId.comName.contains(keyword));
+                    break;
+                case "occupation":
+                    // 검색 조건으로 type = "occupation" 인 경우, 직종명으로 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    bd.or(qPost.postOccCode.occName.contains(keyword));
+                    break;
+                case "region":
+                    // 검색 조건으로 type = "region" 인 경우, 지역명으로 keyword 를 가지는 글만
+                    // 가져오는 조건 추가
+                    bd.or(qPost.address.address1.contains(keyword));
+                    break;
+                case "titleCompanyName":
+                    // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
+                    // keyword 를 가지는 글만 가져오는 조건 추가
+                    keywordList.forEach(e -> {
+                        bd.or(qPost.postTitle.contains(e).or(qPost.postComId.comName.contains(e)));
+                    });
+                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
+                    break;
+            }
+            return bd;
+        }
+       return null;
+    }
+
+    // String을 ArrayList로 변환해주는 메소드
+    private List<String> tokenizerStringToList(String keyword,String delim){
+        List<String> list = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(keyword,delim);
+        while(st.hasMoreTokens()){
+            list.add(st.nextToken());
+        }
+        return list;
     }
 
     // 공고 리스트를 PageRequestDTO의 sort 값에 따라 정렬을 다르게하는 조건을 리턴해주는 메소드.
@@ -154,103 +275,17 @@ public class postServiceImpl implements PostService {
         BooleanExpression endDateBeforeNow = qPost.postEndDate.before(java.sql.Date.valueOf(curDateEnd));
         switch (pageRequestDTO.getOutOfDateState()) {
             case "active":
-                booleanBuilder.and(startDateBeforeNow).and(endDateAfterNow);
-                break;
+                return booleanBuilder.and(startDateBeforeNow).and(endDateAfterNow);
             case "beforeStart":
-                booleanBuilder.and(startDateAfterNow);
-                break;
+                return booleanBuilder.and(startDateAfterNow);
             case "afterEnd":
-                booleanBuilder.and(endDateBeforeNow);
-                break;
+                return booleanBuilder.and(endDateBeforeNow);
             case "beforeAfter":
-                booleanBuilder.and(startDateAfterNow.or(endDateBeforeNow));
-                break;
+                return booleanBuilder.and(startDateAfterNow.or(endDateBeforeNow));
             case "all":
                 break;
         }
         return null;
-    }
-
-    private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO){
-        QPost qPost = QPost.post;
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        // 세션의 authType = "company" 이라면 로그인한 기업회원의 글만
-        // 가져오는 조건 추가.
-        if(pageRequestDTO.getAuthType()!=null){
-            if(pageRequestDTO.getAuthType().equals("company")){
-                booleanBuilder.and(qPost.postComId.comLoginId.eq(pageRequestDTO.getAuth()));
-            }
-        }
-        // 기업 필터 코드 끝.
-
-        // 반드시 postId가 0보다 커야하는 조건을 추가한다.
-        String type = pageRequestDTO.getType();
-        String keyword = pageRequestDTO.getKeyword();
-        BooleanExpression booleanExpression = qPost.postId.gt(0);
-        //
-
-
-        // (모집중, 모집시작 전, 모집 종료, 전체) 중의 하나의 조건을 추가하는 코드
-        booleanBuilder.and(booleanExpression).and(getOutOfDateState(pageRequestDTO,qPost));
-
-
-
-        // ==================         직종, 주소, 연봉 필터링 ============================
-        BooleanBuilder booleanBuilderWithFilter = new BooleanBuilder();
-        if (!(pageRequestDTO.getFilterOccupation()==null||pageRequestDTO.getFilterOccupation().isEmpty())){
-            booleanBuilderWithFilter.and(qPost.postOccCode.occName.eq(pageRequestDTO.getFilterOccupation()));
-        }
-//        if (!(pageRequestDTO.getFilterRegion()==null||pageRequestDTO.getFilterRegion().isEmpty())){
-//            booleanBuilderWithFilter.and(qPost.postRegion.regName.eq(pageRequestDTO.getFilterRegion()));
-//        }
-        if (!(pageRequestDTO.getFilterAddress()==null||pageRequestDTO.getFilterAddress().isEmpty())){
-            booleanBuilderWithFilter.and(qPost.address.address1.contains(pageRequestDTO.getFilterAddress()));
-        }
-        if (!(pageRequestDTO.getFilterSalary()==null||pageRequestDTO.getFilterSalary().isEmpty())){
-            booleanBuilderWithFilter.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
-        }
-        booleanBuilder.and(booleanBuilderWithFilter);
-        // ==================         직종, 주소, 연봉 필터링 ============================
-
-        // 검색 조건 처리 코드
-        if((type == null || type.trim().length() == 0 )){
-            return booleanBuilder;
-        } else if(!(keyword == null || keyword.isEmpty())) {
-            BooleanBuilder booleanBuilderWithSearch = new BooleanBuilder();
-            switch (type) {
-                case "title":
-                    // 검색 조건으로 type = "title" 인 경우, 공고 제목에 keyword 를 가지는 글만
-                    // 가져오는 조건 추가
-                    booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword));
-                    break;
-                case "company":
-                    // 검색 조건으로 type = "company" 인 경우, 기업명으로 keyword 를 가지는 글만
-                    // 가져오는 조건 추가
-                    booleanBuilderWithSearch.or(qPost.postComId.comName.contains(keyword));
-                    break;
-                case "occupation":
-                    // 검색 조건으로 type = "occupation" 인 경우, 직종명으로 keyword 를 가지는 글만
-                    // 가져오는 조건 추가
-                    booleanBuilderWithSearch.or(qPost.postOccCode.occName.contains(keyword));
-                    break;
-                case "region":
-                    // 검색 조건으로 type = "region" 인 경우, 지역명으로 keyword 를 가지는 글만
-                    // 가져오는 조건 추가
-                    booleanBuilderWithSearch.or(qPost.postRegion.regName.contains(keyword));
-                    break;
-                case "titleCompanyName":
-                    // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
-                    // keyword 를 가지는 글만 가져오는 조건 추가
-                    booleanBuilderWithSearch.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
-                    break;
-            }
-            booleanBuilder.and(booleanBuilderWithSearch);
-        }
-
-        // 검색 조건 처리 코드 끝
-
-        System.out.println("불리언 빌더============최종 쿼리 조건 : "+booleanBuilder);
-        return booleanBuilder;
     }
 
     @Override

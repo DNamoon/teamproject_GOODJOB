@@ -1,12 +1,12 @@
 package com.goodjob;
 
-import com.goodjob.company.service.CompanyService;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.service.OccupationService;
 import com.goodjob.post.postdto.PageRequestDTO;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.post.postdto.PostCardDTO;
 import com.goodjob.post.service.PostService;
+import com.goodjob.status.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequiredArgsConstructor
 @Log4j2
@@ -24,6 +26,7 @@ public class HomeController {
 
     private final OccupationService occuService;
     private final PostService postService;
+    private final StatusService statusService;
 
 
     @GetMapping("/login")
@@ -41,10 +44,18 @@ public class HomeController {
         return "searchPage";
     }
     @GetMapping(value = {"/"})
-    public String main(PageRequestDTO pageRequestDTO, Model model, @RequestParam(value = "param")@Nullable Integer check) {
+    public String main(PageRequestDTO pageRequestDTO, Model model,
+                       @ModelAttribute("havePass") String havePass, @RequestParam(value = "param")@Nullable Integer check){
         pageRequestDTO.setSize(8);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
-        model.addAttribute("result", result);
+        model.addAttribute("result",result);
+
+        //박채원 22.11.02 추가 (이하 4줄) - memberController의 login 메소드에서 넘긴 파라미터 값을 받기 위함
+        if(havePass.isBlank()){
+            havePass = "false";
+        }
+        model.addAttribute("havePass", havePass);
+        //김도현 22.11.07추가 (회원가입 확인)
         if (check != null) {
             if (check == 1) {
 
@@ -61,6 +72,7 @@ public class HomeController {
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("================================="+pageRequestDTO);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
+        log.info(result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

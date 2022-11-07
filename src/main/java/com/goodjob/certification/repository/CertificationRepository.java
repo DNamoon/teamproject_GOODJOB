@@ -11,18 +11,13 @@ import java.util.List;
 
 /**
  * 박채원 22.10.03 작성
+ * 박채원 22.11.06 수정
  */
 
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
 
-    @Query("select c.resume.resumeId from Certification c where c.resume.resumeId =:resumeId")
-    Long findByResumeId(Long resumeId);
-
-    @Query("select count(c) from Certification c where c.resume.resumeId =:resumeId")
-    int countCertiByResumeId(Long resumeId);
-
-    @Query("select c from Certification c where c.resume.resumeId =:resumeId")
-    List<Certification> findCertiInfoByResumeId(Long resumeId);
+    int countCertificationByResume_ResumeId(Long resumeId);
+    List<Certification> findCertificationByResume_ResumeId(Long resumeId);
 
     @Transactional
     @Modifying

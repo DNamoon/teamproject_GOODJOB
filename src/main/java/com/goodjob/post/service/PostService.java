@@ -35,4 +35,5 @@ public interface PostService extends EntityDtoMapper {
     void deletePost(Long postId);
 
     List<String> searchSalaryRange();
+
 }
