@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -61,7 +63,7 @@ public class MemberController {
 
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
-    public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
+    public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result, RedirectAttributes redirectAttributes) {
 
         if(result.hasErrors()){
             return "member/signup";
@@ -87,6 +89,7 @@ public class MemberController {
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem = memberDTO.toEntity();
         memberService.register(mem);
+        redirectAttributes.addAttribute("param", 1);
         return "redirect:/";
     }
 

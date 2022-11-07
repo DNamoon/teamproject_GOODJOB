@@ -12,7 +12,7 @@
                     $('#checkMassage').css('color','red')
                     $('#checkMassage').html("아이디는 3~15자의 영문 소문자와 숫자,특수기호(_),(-)만 사용 가능합니다.")
                 } else {
-                    if (result != 2) {
+                    if (result == 2) {
                         $('#checkMassage').css('color', 'blue')
                         $('#checkMassage').html("사용할 수 있는 아이디입니다.")
                     } else {
@@ -98,6 +98,11 @@ function checkPhone(){
         phone_error.show().text("올바른 형식입니다.");
     }
 }
+//회원가입 완료 알림
+function checkAll() {
+
+}
+
  // login 페이지 기업 or 개인 회원 체크
  function checkOnlyOneLogin(element) {
      //checkbox 중복 선택 불가
@@ -161,28 +166,66 @@ $(document).ready(function() {
     })
 });
 //회원탈퇴 function
-$(document).ready(function() {
-    $("#deletebtn").click(function () {
-        $.ajax({
-            type: "post",
-            url: "/member/delete",
-            data: "memId="+$("#memId").val()+"&loginId="+$("#id").val()+"&deletePw="+$('#deletePw').val(),
-            success: function (data) {
-                if(data=="0"){
-                    Swal.fire({
-                        icon: 'success',                         // Alert 타입
-                        title: '회원탈퇴',         // Alert 제목
-                        text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
-                    }).then(function (){
-                        location.replace('/'); //뒤로가기 불가능
-                    });
-                }else {
-                    Swal.fire("ERROR","비밀번호를 확인해주세요.","error");
-                }
+// $(document).ready(function() {
+//     $("#deletebtn").click(function () {
+//         $.ajax({
+//             type: "post",
+//             url: "/member/delete",
+//             data: "memId="+$("#memId").val()+"&loginId="+$("#id").val()+"&deletePw="+$('#deletePw').val(),
+//             success: function (data) {
+//                 if(data=="0"){
+//                     Swal.fire({
+//                         icon: 'success',                         // Alert 타입
+//                         title: '회원탈퇴',         // Alert 제목
+//                         text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
+//                     }).then(function (){
+//                         location.replace('/'); //뒤로가기 불가능
+//                     });
+//                 }else {
+//                     Swal.fire("ERROR","비밀번호를 확인해주세요.","error");
+//                 }
+//             }
+//         })
+//     })
+// });
+function deleteMember() {
+    Swal.fire({
+        title: "정말 탈퇴하시겠습니까?",
+        text: "회원탈퇴 시 기존 작성된 이력서는 삭제되고 지원이력은 보관됩니다.",
+        icon: "warning",
+        confirmButtonText: "예",
+        cancelButtonText: "아니요",
+        closeOnConfirm: true,
+        showCancelButton: true,
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/member/delete",
+                    data: "memId=" + $("#memId").val() + "&loginId=" + $("#id").val() + "&deletePw=" + $('#deletePw').val(),
+
+                    success: function (data) {
+                        if(data=="0"){
+                            Swal.fire({
+                                icon: 'success',                         // Alert 타입
+                                title: '회원탈퇴',         // Alert 제목
+                                text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
+                            }).then(function (){
+                                location.replace('/'); //뒤로가기 불가능
+                            });
+                        } else {
+                            Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
+                        }
+                    }, error: function (e) {
+                        console.log(e)
+                    }
+                });
+            } else if (result.isCancled) {
+                Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
             }
         })
-    })
-});
+}
 //비밀번호 찾기
 $(document).ready(function() {
     $('#checkEmail').on('click', function () {

@@ -1,5 +1,14 @@
 <th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <script th:inline="javascript">
+
+          let signup = [[${signupMsg}]];
+          console.log("signup"+signup);
+            if(signup==1){
+                Swal.fire("회원가입 ",'회원가입이 완료되었습니다.',"success");
+            }
+
+        </script>
         <section>
             <div class="container py-4 flex-wrap">
                 <div class="row">
