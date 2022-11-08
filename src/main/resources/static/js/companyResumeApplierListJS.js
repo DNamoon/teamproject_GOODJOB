@@ -8,7 +8,7 @@ $(document).ready(function () {
 function getApplierList(postId, pageNum) {
     $.getJSON('/status/getApplierList/' + postId + '/' + pageNum, function (result){
         var list = '';
-        // $(".postTitle").text("공고명 [" + result.dtoList[0].postTitle + "] 의 서류 지원자입니다.");
+        $(".postTitle").text("공고명 [ " + $("#postTitle").val() + " ] 의 서류 지원자입니다.");
 
         if(result.dtoList.length > 0){
             $.each(result.dtoList, function (applyIdx, applier) {

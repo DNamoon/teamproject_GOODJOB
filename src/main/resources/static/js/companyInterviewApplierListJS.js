@@ -8,8 +8,8 @@ $(document).ready(function () {
 function getApplierList(postId, pageNum) {
     $.getJSON('/status/getIntervieweeList/' + postId + '/' + pageNum, function (result){
         var list = '';
-        $(".postTitle").text("공고명 [" + result.dtoList.applierName + "] 의 서류 합격자입니다.");
-        
+        $(".postTitle").text("공고명 [ " + $("#postTitle").val() + " ] 의 서류 합격자입니다.");
+
         if(result.dtoList.length > 0){
             $.each(result.dtoList, function (applyIdx, applier) {
                 list += '    <tr>\n' +

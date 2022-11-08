@@ -32,4 +32,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
     @Query("select s.salaryRange from PostSalary s ")
     List<String> salaryRange();
 
+    //박채원 22.11.08 추가
+    Post findPostByPostId(Long postId);
 }
