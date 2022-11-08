@@ -105,13 +105,13 @@
                                                    name="memFirstEmail">
                                         </div>
                                     </div>
-                                    <div class="col-mb-6" style="width: 5px;">
+                                    <div class="col-mb-2" style="width: 5px;">
                                         <label>&nbsp;</label>
                                         @
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div class="col-md-6" style="width: 265px;">
-                                        <label>&nbsp;</label>
+                                    <div class="col-md-5" style="width: 460px;">
+                                        <label style="float: right;color: red;">이메일을 작성하지 않을 시 합격 연락에 제한이 있을 수 있습니다.</label>
                                         <div class="input-group mb-4">
                                             <select class="form-select" id="endEmail" name="memLastEmail">
                                                 <option th:value="${resumeMemInfo.memLastEmail}">
@@ -123,12 +123,8 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="width: 300px;">
-                                        <label>&nbsp;</label>
-                                        <span style="float: right; font-size: 14px;">이메일을 작성하지 않을 경우 합격 시 연락에 제한이 있을 수 있습니다.</span>
-                                    </div>
-                                    <div class="row" style="float: inline-start;">
-                                        <div class="col-md-6">
+                                    <div class="row" style="float: inline-start; padding-right: 0px;">
+                                        <div class="col-md-6" style="width: 500px">
                                             <label>주소</label>
                                             <div class="input-group mb-4">
                                                 <input class="form-control" type="text" id="userAddress"
@@ -143,7 +139,7 @@
                                                     onclick="execPostCode()">주소찾기
                                             </button>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-5" style="width: 310px; padding-right: 0px;">
                                             <label>상세주소</label>
                                             <div class="input-group mb-4">
                                                 <input class="form-control" type="text" id="userDetailAddress"
