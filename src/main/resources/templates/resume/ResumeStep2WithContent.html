@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>RESUME STEP1</title>
+        <title>RESUME STEP2</title>
     </head>
     <th:block th:fragment="content">
         <section>
@@ -74,7 +74,7 @@
                                     <div th:each="careerInfo : ${careerInfo}">
                                         <div>
                                             <div class="row" style="float: inline-start;">
-                                                <div class="col-md-6" style="width: 400px;">
+                                                <div class="col-md-6">
                                                     <label>회사명</label>
                                                     <div class="input-group mb-4">
                                                         <input class="form-control" type="text" name="careerCompanyName"
@@ -83,18 +83,18 @@
                                                     <input type="hidden" th:value="${careerInfo.careerId}"
                                                            name="careerId">
                                                 </div>
-                                                <div class="col-md-6" style="width: 200px;">
+                                                <div class="col-md-2" style="width: 200px;">
                                                     <label>근무기간</label>
                                                     <div class="input-group mb-4">
                                                         <input class="form-control" type="date" name="careerJoinedDate"
                                                                th:value="${careerInfo.careerJoinedDate}">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" style="width: 5px;">
+                                                <div class="col-md-2" style="width: 5px;">
                                                     <label>&nbsp;</label>
                                                     ~
                                                 </div>
-                                                <div class="col-md-6" style="width: 200px;">
+                                                <div class="col-md-2" style="width: 200px;">
                                                     <label>&nbsp;</label>
                                                     <div class="input-group mb-4">
                                                         <input class="form-control careerRetireDate" type="date"
@@ -103,7 +103,7 @@
                                                                onclick="rangeDate(this)">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div style="width: 10px">
                                                     <label>&nbsp;</label>
                                                     <button type="button" class="btn-close" id="deleteCareerBtn"
                                                             th:careerId="${careerInfo.careerId}"
