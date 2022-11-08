@@ -29,7 +29,9 @@ function havePass(){
 }
 function signupCheck() {
     if ($("#signupcheck").val() === "1") {
-            Swal.fire("회원가입 ",'회원가입이 완료되었습니다.',"success");
+            Swal.fire("회원가입 ",'회원가입이 완료되었습니다.',"success").then(function () {
+                location.replace('/');
+            })
     }
 }
 
