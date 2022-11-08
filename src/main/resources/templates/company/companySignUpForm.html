@@ -106,7 +106,8 @@ ho - 22.10.17 로그인 폼 기업/개인 통일 위해 로그인, 비밀번호 
                                                    placeholder="goodjob"
                                                    name="email" id="email"
                                                    required> &nbsp;@ &nbsp;&nbsp;
-                                            <select class="form-control border ps-2" id="email2" th:field="*{comEmail2}" onchange="emailDuplication()">
+                                            <select class="form-control border ps-2" id="email2" th:field="*{comEmail2}" onchange="emailDuplication()" required>
+                                                <option value="">선택해주세요.</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="daum.net">daum.net</option>
                                                 <option value="gmail.com">gmail.com</option>

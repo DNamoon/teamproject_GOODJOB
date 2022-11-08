@@ -85,6 +85,7 @@ public class CompanyDTO {
     private String comAddress4;  // 회사주소(참고항목)
     @NotBlank
     private String comEmail1;
+    @NotBlank(message = "이메일을 선택해주세요.")
     private String comEmail2;
 
     //22.10.29 - 아이디 찾기 때 사용하는 엔티티 변환 메서드. 기존 toEntity 메서드 if문 때문에 에러 발생.
