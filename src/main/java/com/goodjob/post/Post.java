@@ -75,4 +75,5 @@ public class Post {
 //    private String postAddress; // 주소1
 
 //    private String postDetailAddress; // 주소2
+
 }

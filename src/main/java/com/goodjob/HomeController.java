@@ -40,7 +40,6 @@ public class HomeController {
         model.addAttribute("occuAll",occuService.searchOccName());
         model.addAttribute("salaryRange",postService.searchSalaryRange());
         model.addAttribute("result",result);
-        log.info(result);
         return "searchPage";
     }
     @GetMapping(value = {"/"})
@@ -75,7 +74,7 @@ public class HomeController {
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("================================="+pageRequestDTO);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
-        log.info(result);
+//        result.getDtoList().forEach(e->log.info(e.getAttachmentFileName()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

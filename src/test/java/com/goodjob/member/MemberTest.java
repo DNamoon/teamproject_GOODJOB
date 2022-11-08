@@ -50,4 +50,12 @@ class MemberTest {
         
         return "member/myPageForm";
     }
+
+    @Test
+    public void deleteMem(){
+        String id = "aeoo1112";
+        Member member = Member.builder().memLoginId(id).build();
+        memberRepository.delete(member);
+        System.out.println("삭제완료");
+    }
 }

@@ -30,10 +30,6 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long comId;
 
-//    @OneToOne
-//    @JoinColumn(name = "comRegCode")
-//    private Region comRegCode; // 지역분류코드
-
     @Column(unique = true, columnDefinition = "varbinary(128)")  //로그인 아이디 중복 허용 안 하기 위해서 엔티티에서 제한.
     private String comLoginId;
 

@@ -25,7 +25,7 @@ public interface PostService extends EntityDtoMapper {
     Long savePost(PostInsertDTO postInsertDTO) throws IOException;
 
 
-    PostDetailsDTO readPost(Long postId);
+    PostDetailsDTO readPost(Long postId) throws IOException;
 
     PostInsertDTO getPostById(Long postId);
 

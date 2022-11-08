@@ -53,6 +53,7 @@ $(document).ready(function(){
                         $("#schoolName").attr("value", $("input:radio[name='selectSchoolName']:checked").val());
                         $(".schoolList").empty();
                         $(".findSchoolName").empty();
+                        confirmValidSchool();
                     });
                 }else{
                     $(".schoolList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
@@ -62,6 +63,7 @@ $(document).ready(function(){
         $(".close").click(function(){
             $(".schoolList").empty();
             $(".findSchoolName").empty();
+            confirmValidSchool();
         })
     });
 
@@ -84,6 +86,7 @@ $(document).ready(function(){
                         $("#majorName").attr("value", $("input:radio[name='selectMajorName']:checked").val());
                         $(".majorList").empty();
                         $(".findMajorName").empty();
+                        confirmValidMajor();
                     });
                 }else{
                     $(".majorList").append('<h6 class="text-center">검색결과가 없습니다.</h6>');
@@ -93,6 +96,7 @@ $(document).ready(function(){
         $(".close").click(function(){
             $(".majorList").empty();
             $(".findMajorName").empty();
+            confirmValidMajor();
         })
     });
 
@@ -195,9 +199,21 @@ $(document).ready(function(){
 
     //입력 검증하고 step2로 이동
     $("#submitStep1").click(function(){
-        if(confirmValidStep1()){
+        if(confirmValidSchool() && confirmValidGradDate() && confirmValidMajor()){
             $("#step1Form").attr("action", "/resume/resumeStep2/" + $("#resumeId").val());
             $("#step1Form").submit();
+        }
+    });
+
+    $("#goBackStep1").click(function(){
+        if(checkCertiNCareerBlank()){
+            getListToPrev();
+        }
+    });
+
+    $("#submitStep2").click(function(){
+        if(checkCertiNCareerBlank()){
+            getListToNext();
         }
     });
 });
@@ -456,34 +472,34 @@ function addCareerInfo() {
 
     careerInfo += '<div>';
     careerInfo += '<div class="row" style="float: inline-start;">';
-    careerInfo += '<div class="col-md-6" style="width: 400px;">';
+    careerInfo += '<div class="col-md-6">';
     careerInfo += '<label>회사명</label>';
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control" type="text" name="careerCompanyName">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 200px;">';
+    careerInfo += '<div class="col-md-2" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control careerJoinedDate" id="careerJoinedDate" type="date" name="careerJoinedDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 5px;">';
+    careerInfo += '<div class="col-md-2" style="width: 5px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '~';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 200px;">';
+    careerInfo += '<div class="col-md-2" style="width: 200px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" max="" min="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-2">';
+    careerInfo += '<div style="width: 10px">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<button type="button" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerInfo(this)"></button>';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
+    careerInfo += '<div class="form-group mb-4">';
     careerInfo += '<label>주요업무</label>';
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
@@ -502,35 +518,35 @@ function addCareerInfoWC(data) {
 
     careerInfo += '<div>';
     careerInfo += '<div class="row" style="float: inline-start;">';
-    careerInfo += '<div class="col-md-6" style="width: 400px;">';
+    careerInfo += '<div class="col-md-6">';
     careerInfo += '<label>회사명</label>';
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control" type="text" name="careerCompanyName">';
     careerInfo += '</div>';
     careerInfo += '<input type="hidden" value="' + data + '" name="careerId">';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 200px;">';
+    careerInfo += '<div class="col-md-2" style="width: 200px;">';
     careerInfo += '<label>근무기간</label>';
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control careerJoinedDate" id="careerJoinedDate" type="date" name="careerJoinedDate">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 5px;">';
+    careerInfo += '<div class="col-md-2" style="width: 5px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '~';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-6" style="width: 200px;">';
+    careerInfo += '<div class="col-md-2" style="width: 200px;">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<div class="input-group mb-4">';
     careerInfo += '<input class="form-control careerRetireDate" type="date" name="careerRetireDate" min="" max="" onclick="rangeDate(this)">';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="col-md-2">';
+    careerInfo += '<div style="width: 10px">';
     careerInfo += '<label>&nbsp;</label>';
     careerInfo += '<button type="button" id="deleteCareerBtn" class="btn-close" style="background-color: #96a2b8; display: block;" onclick="deleteCareerWC(this,' + data + ')"></button>';
     careerInfo += '</div>';
     careerInfo += '</div>';
-    careerInfo += '<div class="form-group mb-4" style="width: 1000px">';
+    careerInfo += '<div class="form-group mb-4">';
     careerInfo += '<label>주요업무</label>';
     careerInfo += '<textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요." id="message" rows="3" name="careerTask"></textarea>';
     careerInfo += '</div>';
@@ -563,6 +579,9 @@ function WinPrint() {
         document.body.innerHTML = g_oBeforeBody;
     };
     window.print();
+
+    $(".buttonDiv").replaceWith('<button class="btn btn-secondary" type="button" onclick="WinPrint()">인쇄</button>\n' +
+        '        <button class="btn btn-danger" type="button" onclick="WinClose()">닫기</button>');
 }
 
 //입력검증
@@ -638,8 +657,45 @@ function rangeCredit(){
     }
 }
 
+function confirmValidGradDate(){
+    if($("input[name=eduGraduationDate]").val() == ''){
+        $("#graduDateValiDiv").replaceWith('<label id="graduDateValiDiv" style="color: red;">졸업년월을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#graduDateValiDiv").replaceWith('<label id="graduDateValiDiv"></label>');
+    }
+    return true;
+}
+
+function confirmValidSchool(){
+    if($("#schoolName").val() == ''){
+        $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv" style="color: red;">학교명을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#schoolNameValiDiv").replaceWith('<label id="schoolNameValiDiv"></label>');
+    }
+    return true;
+}
+
+function confirmValidMajor(){
+    if($("#majorName").val() == '') {
+        $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv" style="color: red;">전공을 입력해주세요.</label>');
+        return false;
+    }else{
+        $("#majorNameValiDiv").replaceWith('<label id="majorNameValiDiv"></label>');
+    }
+    return true;
+}
 //자격증명이 있을 때 취득날짜를 선택안한 경우, 회사명이 있을 때 업무,날짜가 없는 경우 방지
 function checkCertiNCareerBlank(){
+    if($("input[name=certificateName]").val() == ''){
+        $("#certiNameValiDiv").replaceWith('<label id="certiNameValiDiv" style="color: red;">자격증명을 입력해주세요.</label>');
+        $("input[name=certificateName]").focus();
+        return false;
+    }else{
+        $("#certiNameValiDiv").replaceWith('<label id="certiNameValiDiv"></label>');
+    }
+    return true;
 }
 
 
