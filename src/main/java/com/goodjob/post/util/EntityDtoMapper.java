@@ -9,8 +9,10 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.salary.PostSalary;
+import org.springframework.core.io.Resource;
 import org.springframework.web.util.HtmlUtils;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,7 +47,7 @@ public interface EntityDtoMapper {
         }
 
     }
-    default PostDetailsDTO entityToDtoForRead(Post post){
+    default PostDetailsDTO entityToDtoForRead(Post post, List<File> fileList){
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         String remainDay = String.valueOf(difDay/ (24*60*60));
@@ -58,6 +60,8 @@ public interface EntityDtoMapper {
                 .endDate(post.getPostEndDate().toString())
                 .remainDay(remainDay)
                 .salary(post.getPostSalary().getSalaryRange())
+                .postGender(post.getPostGender())
+                .attachment(fileList)
                 .recruitNum(HtmlUtils.htmlUnescape(post.getPostRecruitNum()))
                 .postAddress1(HtmlUtils.htmlUnescape(post.getAddress().getAddress1()))
                 .postAddress2(HtmlUtils.htmlUnescape(post.getAddress().getAddress2()))

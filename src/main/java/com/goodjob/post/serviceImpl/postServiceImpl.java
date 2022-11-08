@@ -20,13 +20,13 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
@@ -105,11 +105,12 @@ public class postServiceImpl implements PostService {
         return null;
     }
     @Override
-    public PostDetailsDTO readPost(Long postId){
+    public PostDetailsDTO readPost(Long postId) throws IOException {
         Optional<Post> result = postRepository.findById(postId);
+        List<File> fileList = fileService.getFiles(result.get().getPostImg());
         // 게시글 조회 후 조회수를 +1 한다.
         postRepository.increasePostCount(postId);
-        return result.map(this::entityToDtoForRead).orElse(null);
+        return result.map((Post post) -> entityToDtoForRead(post,fileList)).orElse(null);
     }
     @Override
     public PostInsertDTO getPostById(Long postId){

@@ -12,8 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private String connectPath = "/Users/oh/Desktop/goodjobimg/**";
-    private String resourcePath = "file:///Users/oh/Desktop/goodjobimg/";
+    private String connectPath = "/file/**";
+    private String resourcePath = "file:///"+"C:/goodjobimg"+"/";
 
     //인터셉터 추가 메소드
     @Override

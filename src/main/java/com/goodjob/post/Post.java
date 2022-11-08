@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
+@ToString
 public class Post {
 
     @Id
@@ -51,9 +52,9 @@ public class Post {
     @Column
     private String postGender; // 성별
 
-    @ManyToOne
-    @JoinColumn(name = "regCode")
-    private Region postRegion;
+//    @ManyToOne
+//    @JoinColumn(name = "regCode")
+//    private Region postRegion;
 
     @ManyToOne
     @JoinColumn(name = "salaryId")
@@ -80,7 +81,7 @@ public class Post {
 
 
     // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
-    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, PostSalary postSalary) {
+    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, List<UploadFile> postImg, PostSalary postSalary) {
         this.postTitle = postTitle;
         this.postOccCode = postOccCode;
         this.postComId = postComId;
@@ -89,7 +90,6 @@ public class Post {
         this.postStartDate = postStartDate;
         this.postEndDate = postEndDate;
         this.postGender = postGender;
-        this.postRegion = postRegion;
         this.postImg = postImg;
         this.postSalary = postSalary;
     }

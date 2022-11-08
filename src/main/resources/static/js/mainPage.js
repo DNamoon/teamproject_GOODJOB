@@ -56,14 +56,12 @@ let postJS = {
         // console.log(document.querySelector(".postDetailOccName").textContent)
         fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary))
             .then(data => {
-                console.log("data :" + data);
                 // ajax 받아오기 전에 자식노드들 삭제
                 while(changeContentDiv.hasChildNodes()){
                     changeContentDiv.removeChild(changeContentDiv.firstChild);
                 }
                 if(data.totalCount !==0){
                     for(let dto of data.dtoList){
-                        console.log(dto);
                         changeContentDiv.appendChild(this.makePostListHtml(dto));
                     }
                 } else {
