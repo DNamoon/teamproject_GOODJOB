@@ -1,7 +1,8 @@
 package com.goodjob.post.controller;
 
-import com.goodjob.company.Company;
+import com.goodjob.bookmark.service.BookMarkService;
 import com.goodjob.company.service.CompanyService;
+import com.goodjob.member.service.MemberService;
 import com.goodjob.post.Post;
 import com.goodjob.post.Test;
 import com.goodjob.post.error.SessionCompanyAccountNotFound;
@@ -14,6 +15,7 @@ import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final MemberService memberService;
+    private final BookMarkService bookMarkService;
     private final OccupationService occupationService;
     private final CompanyService companyService;
     private final FileService fileService;
@@ -160,7 +164,11 @@ public class PostController {
     // postId 값으로 개별 공고를 조회하는 페이지로 이동하는 메소드
     @GetMapping(value = {"/readPost/{postId}"})
     @Transactional
-    public String readPost(@PathVariable(name = "postId") Long postId, HttpServletRequest httpServletRequest, PageRequestDTO pageRequestDTO, Model model) throws IOException {
+    public String readPost(@PathVariable(name = "postId") Long postId, PageRequestDTO pageRequestDTO, Model model,@SessionAttribute(required = false,name = "sessionId")String sessionId, HttpServletRequest httpServletRequest) throws IOException {
+        // 오성훈 추가
+        boolean existsBookmarkByMember = bookMarkService.existsPostByMember(sessionId, postId);
+        model.addAttribute("existsBookmarkByMember",existsBookmarkByMember);
+
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         log.info("==========="+postDetailsDTO.getAttachment());
         model.addAttribute("dto",postDetailsDTO);

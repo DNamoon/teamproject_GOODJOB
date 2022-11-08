@@ -8,16 +8,16 @@ import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 22.10.30 오성훈 고객문의 컨트롤러 URI는 고민 후 간결하게 변경할 예정
@@ -43,7 +43,18 @@ public class CustomerInquiryController {
     }
 
     @GetMapping("/qna")
-    public String customerInquiryQNA() {
+    public String customerInquiryQNA(Model model, HttpServletRequest request) {
+        if (request.getSession(false).getAttribute("Type") == null) {
+            log.info("request.getSession(false) is null");
+
+            return "/customerInquiry/customerInquiryQNA";
+        }
+        if (request.getSession(false) != null) {
+            Sort sort = Sort.by("inquiryPostId").descending();
+            Pageable pageable = PageRequest.of(0, 5, sort);
+            model.addAttribute("inquiryPostList", customerInquiryService.findInquiryListById(pageable, request));
+            return "/customerInquiry/customerInquiryQNA";
+        }
         return "/customerInquiry/customerInquiryQNA";
     }
 
@@ -57,7 +68,7 @@ public class CustomerInquiryController {
                     .inquiryPostContent(customerInquiryDTO.getInquiryPostContent())
                     .inquiryPostTitle(customerInquiryDTO.getInquiryPostTitle())
                     .inquiryPostWriter((String) session.getAttribute("sessionId"))
-                    .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
+                    .inquiryPostPublishedDate(LocalDateTime.now())
                     .inquiryPostStatus("0")
                     .build();
             customerInquiryService.saveInquiry(inquiryPostByCompany);
@@ -70,7 +81,7 @@ public class CustomerInquiryController {
                     .inquiryPostContent(customerInquiryDTO.getInquiryPostContent())
                     .inquiryPostTitle(customerInquiryDTO.getInquiryPostTitle())
                     .inquiryPostWriter((String) session.getAttribute("sessionId"))
-                    .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
+                    .inquiryPostPublishedDate(LocalDateTime.now())
                     .inquiryPostStatus("0")
                     .build();
             customerInquiryService.saveInquiry(inquiryPostByMember);

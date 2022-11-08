@@ -1,6 +1,5 @@
 package com.goodjob.resume;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goodjob.career.dto.CareerDTO;
@@ -14,7 +13,6 @@ import com.goodjob.education.dto.EducationDTO;
 import com.goodjob.education.service.EducationService;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.service.MemberService;
-import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
@@ -29,7 +27,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.02 작성

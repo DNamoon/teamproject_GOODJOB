@@ -1,4 +1,5 @@
 package com.goodjob.resume.service;
+
 import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.resume.Resume;

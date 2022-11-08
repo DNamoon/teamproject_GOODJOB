@@ -9,7 +9,6 @@
 package com.goodjob.company.repository;
 
 import com.goodjob.company.Company;
-import com.goodjob.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
