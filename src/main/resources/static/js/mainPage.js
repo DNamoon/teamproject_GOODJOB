@@ -198,6 +198,7 @@ let searchPage = {
     init(){
         const _this=this;
         _this.infiniteScroll();
+        _this.preventSearchEnter()
     },
     searchPageUri:"searchPage",
 
@@ -205,7 +206,6 @@ let searchPage = {
         const _this = this;
         const controller = new AbortController();
         let page = 2;
-        console.log("셋팅 시작")
 
         document.addEventListener('scroll',onScroll,{signal:controller.signal})
         function onScroll () {
@@ -215,17 +215,21 @@ let searchPage = {
             const keyword = document.querySelector("#search").value;
 
             if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                console.log("무한스크롤 작동")
                 setTimeout(function(){
                     _this.insertPostListCard("infinite",page,8,"new",occ,addr,sal,keyword)
                 }, 500)
                 page += 1;
             }
             if(document.querySelector(".empty_box")!==null){
-                console.log("삭제 발동2")
                 controller.abort();
             }
         }
+    },
+    preventSearchEnter(){
+        $("#search").keydown(function(evt){
+            if(evt.keyCode === 13)
+                return false;
+        })
     },
 
     pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary,keyword){

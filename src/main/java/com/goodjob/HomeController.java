@@ -40,7 +40,6 @@ public class HomeController {
         model.addAttribute("occuAll",occuService.searchOccName());
         model.addAttribute("salaryRange",postService.searchSalaryRange());
         model.addAttribute("result",result);
-        log.info(result);
         return "searchPage";
     }
     @GetMapping(value = {"/"})
