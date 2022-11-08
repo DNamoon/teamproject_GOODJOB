@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Date;
 
@@ -17,21 +18,33 @@ import java.sql.Date;
 @Builder
 public class MemberDTO {
     private Long memId;
-    @Size(min = 3, max = 15, message = "ID는 3~15자 사이여야 합니다.")
+
     @NotBlank(message = "사용자 ID는 필수항목입니다.")
+    @Pattern(regexp = "[a-z0-9_-]{3,15}"
+            ,message = "아이디는 3~15자의 영문 소문자와 숫자,특수기호(_),(-)만 사용 가능합니다.")
     private String loginId;
 
-    @Size(min = 3, max = 25, message = "Password는 3~25자 사이여야 합니다.")
+    @NotBlank(message = "비밀번호는 필수항목입니다.")
+    @Pattern(regexp="(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{3,25}",
+             message = "비밀번호는 3~25자로 최소 1개의 영문자, 숫자, 특수문자가 들어가야 합니다.")
     private String pw;
     private String pw2;
+    @NotBlank(message = "전화번호는 필수항목입니다.")
+    @Pattern(regexp="\\d{2,3}-\\d{3,4}-\\d{4}", message = "전화번호 형식이 맞지 않습니다. 다시 확인해주세요.")
     private String memPhone;
+    @NotBlank(message = "이메일은 필수항목입니다.")
     private String memEmail1;
     private String memEmail2;
+    @NotBlank(message = "이름은 필수항목입니다.")
     private String memName;
+    @NotBlank(message = "생년월일은 필수항목입니다.")
     private Date memBirthDate;
+    @NotBlank(message = "주소는 필수항목입니다.")
     private String memAddress;
     private String detailAddress;
+    @NotBlank(message = "성별은 필수항목입니다.")
     private String memGender;
+    @NotBlank(message = "개인정보 수집 동의는 필수항목입니다.")
     private String memTerms;
 
     public Member toEntity() {
