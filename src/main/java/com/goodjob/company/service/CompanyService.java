@@ -11,10 +11,8 @@ package com.goodjob.company.service;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
-import com.goodjob.company.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +31,6 @@ public class CompanyService {
 
     //22.10.09 - 비밀번호 암호화를 위해 추가
     private final PasswordEncoder passwordEncoder;
-    private final RegionRepository regionRepository;
 
 
     //비밀번호 변경
@@ -193,9 +189,6 @@ public class CompanyService {
         System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());
         System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
-    }
-    public List<String> searchRegName(){
-        return regionRepository.regName();
     }
 
     //22.10.25 - ho 기업회원 탈퇴

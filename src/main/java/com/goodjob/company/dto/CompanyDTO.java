@@ -25,7 +25,6 @@ package com.goodjob.company.dto;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -53,10 +52,6 @@ public class CompanyDTO {
     //비밀번호가 일치하지 않으면 넘어가지 않도록 하기 위해 엔티티와는 별개로 DTO에만 comPw2 추가
     //@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
     private String comPw2;
-//    @NotBlank
-//    private Region comRegCode;
-//    @NotBlank
-//    private Comdiv comComdivCode;
     @NotBlank
     private String comComdivCode;
 

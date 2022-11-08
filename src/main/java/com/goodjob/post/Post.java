@@ -2,7 +2,6 @@ package com.goodjob.post;
 
 import com.goodjob.bookmark.BookMark;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.post.fileupload.UploadFile;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.salary.PostSalary;
@@ -53,10 +52,6 @@ public class Post {
     private String postGender; // 성별
 
     @ManyToOne
-    @JoinColumn(name = "regCode")
-    private Region postRegion;
-
-    @ManyToOne
     @JoinColumn(name = "salaryId")
     private PostSalary postSalary; // 연봉
 
@@ -80,20 +75,4 @@ public class Post {
 //    private String postAddress; // 주소1
 
 //    private String postDetailAddress; // 주소2
-
-
-    // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
-    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, Region postRegion, List<UploadFile> postImg, PostSalary postSalary) {
-        this.postTitle = postTitle;
-        this.postOccCode = postOccCode;
-        this.postComId = postComId;
-        this.postContent = postContent;
-        this.postRecruitNum = postRecruitNum;
-        this.postStartDate = postStartDate;
-        this.postEndDate = postEndDate;
-        this.postGender = postGender;
-        this.postRegion = postRegion;
-        this.postImg = postImg;
-        this.postSalary = postSalary;
-    }
 }

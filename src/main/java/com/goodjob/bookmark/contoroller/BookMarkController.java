@@ -32,7 +32,7 @@ public class BookMarkController {
     public String bookMarkHome(Model model, HttpServletRequest request) {
         String loginId = (String) request.getSession(false).getAttribute("sessionId");
         Member member = memberService.loginIdCheck(loginId).orElse(null);
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("bookMarkId").descending());
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("bookMarkId").descending());
         Page<BookMark> bookMarks = bookMarkService.findAllByMember(pageable, member);
         model.addAttribute("bookMarks", bookMarks);
         return "bookmark/bookMarkMain";

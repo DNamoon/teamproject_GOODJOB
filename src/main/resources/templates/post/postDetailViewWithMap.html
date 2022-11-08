@@ -9,24 +9,30 @@
             <div class="col p-0 d-flex">
                 <div class="col-9 ps-0">
                     <div class="ps-5">
-                        <div class="d-flex flex-row mt-2 ps-5 carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
+                        <div class="d-flex flex-row mt-2 ps-5 carousel slide" id="carouselExampleControls"
+                             data-bs-ride="carousel">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" class="d-block w-100" alt="...">
+                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80"
+                                         class="d-block w-100" alt="...">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="d-block w-100" alt="...">
+                                    <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg"
+                                         class="d-block w-100" alt="...">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" class="d-block w-100" alt="...">
+                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80"
+                                         class="d-block w-100" alt="...">
                                 </div>
                             </div>
                             <div class="carousel-indicators">
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExampleControls" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -107,7 +113,8 @@
                                                 <h6 class="text-secondary">근무지역</h6>
                                             </div>
                                             <div class="col-10">
-                                                <h6 class="post-details-postAddress">[[${dto.postAddress1}]] [[${dto.postAddress2}]]</h6>
+                                                <h6 class="post-details-postAddress">[[${dto.postAddress1}]]
+                                                    [[${dto.postAddress2}]]</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -161,8 +168,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <div class="col-3 p-0 justify-content-center">
@@ -214,7 +219,8 @@
                                                 </button>
                                             </div>
                                         </th:block>
-                                        <th:block th:if="${existsBookmarkByMember && #session.getAttribute('Type') eq 'member'}">
+                                        <th:block
+                                                th:if="${existsBookmarkByMember && #session.getAttribute('Type') eq 'member'}">
                                             <div class="col-6">
                                                 <button role="button" class="btn" disabled="disabled"
                                                         style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;">
@@ -236,12 +242,12 @@
                                             <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
                                             <input type="hidden" th:value="${dto.postId}" id="postId">
                                             <th:block th:if="${#session.getAttribute('Type') == 'member'}">
-                                            <button type="button" class="btn btn-primary applyBtn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#selectResumeModal"
-                                                    style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">
-                                                지원하기
-                                            </button>
+                                                <button type="button" class="btn btn-primary applyBtn"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#selectResumeModal"
+                                                        style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">
+                                                    지원하기
+                                                </button>
                                             </th:block>
                                             <th:block th:if="${#session.getAttribute('sessionId') == null}">
                                                 <button type="button" class="btn btn-primary"
@@ -257,68 +263,70 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <div class="post-wrapper ps-5 mt-5">
-                <div class="ps-5">
-                    <div class="col-12">
-                        <div class="col-3">
-                            <h4>추천공고</h4>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4" >
-
         </div>
-                </div>
-        <div class="modal" tabindex="-1" id="exampleModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-10">
-                            <h5 class="modal-title">공유하기</h5>
-                        </div>
-                        <div class="col-2">
-                            <a role="button" id="copy_btn" class="btn btn-link m-0 border"
-                               style="color: #0022ff">
-                                <i id="copy_icon" class="bi bi-clipboard fs-4"
-                                   style="border-radius: 2rem"></i></a>
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body mt-3">
-                        <a th:href="${#request.requestURI}"><p id="setURI"></p></a>
-                    </div>
-                    <div class="modal-footer">
-                        <h6 style="font-size: 0.8rem;color: #0c63e4" id="copy_success"></h6>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+
+        <div class="post-wrapper ps-5 mt-5">
+            <div class="ps-5">
+                <div class="col-12">
+                    <div class="col-3">
+                        <h4>추천공고</h4>
                     </div>
                 </div>
+                <div class="d-flex flex-row col changePostDiv row row-cols-1 row-cols-md-4">
+
+                </div>
             </div>
-
-
-        </div>
-        <!-- 박채원 22.10.26 추가 - 지원하기 버튼 눌렀을 때 뜨는 이력서 선택 모달 -->
-        <div class="modal fade" id="selectResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">이력서 선택</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal" tabindex="-1" id="exampleModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="col-10">
+                                <h5 class="modal-title">공유하기</h5>
+                            </div>
+                            <div class="col-2">
+                                <a role="button" id="copy_btn" class="btn btn-link m-0 border"
+                                   style="color: #0022ff">
+                                    <i id="copy_icon" class="bi bi-clipboard fs-4"
+                                       style="border-radius: 2rem"></i></a>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body mt-3">
+                            <a th:href="${#request.requestURI}"><p id="setURI"></p></a>
+                        </div>
+                        <div class="modal-footer">
+                            <h6 style="font-size: 0.8rem;color: #0c63e4" id="copy_success"></h6>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="row" style="">
-                            <div class="resumeList">
+                </div>
+            </div>
+            <!-- 박채원 22.10.26 추가 - 지원하기 버튼 눌렀을 때 뜨는 이력서 선택 모달 -->
+            <div class="modal fade" id="selectResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">이력서 선택</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" style="">
+                                <div class="resumeList">
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn bg-gradient-primary doneSelectResume" data-bs-dismiss="modal">
-                            완료
-                        </button>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
+                            <button type="button" class="btn bg-gradient-primary doneSelectResume"
+                                    data-bs-dismiss="modal">
+                                완료
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
