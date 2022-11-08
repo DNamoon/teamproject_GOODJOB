@@ -137,7 +137,6 @@ public class CompanyService {
         String comBusiNum = company.getComBusiNum();
         String comPhone = company.getComPhone();
         Comdiv comComdivCode = company.getComComdivCode();
-        Region comRegCode = company.getComRegCode();
 
         String comEmail = company.getComEmail();
         String[] email = comEmail.split("@");
@@ -157,10 +156,10 @@ public class CompanyService {
             String[] newAddress = Arrays.copyOf(address, address.length + 1);
             newAddress[address.length] = "null";
 
-            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, comRegCode, email, comInfo, newAddress);
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, newAddress);
 
         } else {
-            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, comRegCode, email, comInfo, address);
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, address);
         }
 
 
@@ -168,7 +167,7 @@ public class CompanyService {
 
     /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
      * 메서드 추가 */
-    private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, Region comRegCode, String[] email, String comInfo, String[] address) {
+    private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, String[] email, String comInfo, String[] address) {
         CompanyDTO dto = CompanyDTO.builder()
                 .loginId(comLoginId)
                 .comName(comName)
@@ -176,8 +175,6 @@ public class CompanyService {
                 .comPhone(comPhone)
                 .comComdivCode(comComdivCode.getComdivCode())
                 .comComdivName(comComdivCode.getComdivName())
-                .comRegCode(comRegCode.getRegCode())
-                .comRegName(comRegCode.getRegName())
                 .comEmail1(email[0])
                 .comEmail2(email[1])
                 .comAddress1(address[0])
