@@ -86,21 +86,23 @@ public class CompanyController {
         companyService.createCompanyUser(companyDTO);
 
         //22.10.27 회원가입시 alert 환영메시지 후 메인페이지 이동
-        try {
-            response.setContentType("text/html; charset=utf-8");
-            PrintWriter w = response.getWriter();
-            w.write("<script>alert('"+companyDTO.getLoginId()+"님 가입을 환영합니다!');</script>");
-//            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
-//                    ".then(function(){location.href='/';</script>");
-            w.write("<script>location.href='/';</script>");
-            w.flush();
-            w.close();
-            return null;
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        //return "redirect:/";
+//        try {
+//            response.setContentType("text/html; charset=utf-8");
+//            PrintWriter w = response.getWriter();
+//            w.write("<script>alert('"+companyDTO.getLoginId()+"님 가입을 환영합니다!');</script>");
+////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
+////                    ".then(function(){location.href='/';</script>");
+//            w.write("<script>location.href='/';</script>");
+//            w.flush();
+//            w.close();
+//            return null;
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+
+        model.addAttribute("loginId","["+companyDTO.getLoginId()+"]님의 회원가입을 축하드립니다!");
+        return "/company/companySignUpView";
     }
 
     //회원가입 아이디 증복확인시 $.ajax 사용하기 위한 코드
@@ -108,7 +110,7 @@ public class CompanyController {
     @RequestMapping(value = "/check", method = RequestMethod.POST)
     public String memberIdChkPOST(String comLoginId) throws Exception{
         int result = companyService.checkId2(comLoginId);
-
+        log.info("???? : "+result);
         if(result != 0) {
             return "fail";	// 중복 아이디가 존재
         } else {
@@ -303,4 +305,21 @@ public class CompanyController {
 //
 //    }
 
+    //22.11.06 이메일 중복 검사
+    @ResponseBody
+    @RequestMapping(value = "/emailCheck", method = RequestMethod.POST)
+    public List<String> emailCheck(@RequestParam("emailCheck") String email) {
+        String result = memberService.checkEmail(email);
+        List<String> result2 = new ArrayList();
+
+        if(result == "com") {
+            result2.add("com");
+        } else if(result == "mem") {
+            result2.add("mem");
+        } else {
+            result2.add("null");
+        }
+
+        return result2;
+    }
 }
