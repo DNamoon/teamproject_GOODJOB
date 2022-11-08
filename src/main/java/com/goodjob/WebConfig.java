@@ -12,8 +12,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private String connectPath = "/Users/oh/Desktop/goodjobimg/**";
-    private String resourcePath = "file:///Users/oh/Desktop/goodjobimg/";
+//    private String connectPath = "/Users/oh/Desktop/goodjobimg/**";
+//    private String resourcePath = "file:///Users/oh/Desktop/goodjobimg/";
+    private String connectPath = "/Users/kesia/Desktop/goodjobimg/**";
+    private String resourcePath = "file:///Users/kesia/Desktop/goodjobimg/";
 
     //인터셉터 추가 메소드
     @Override
@@ -26,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new LoginInterceptor())
                 .order(2)
+                .addPathPatterns("/member/**")
                 .excludePathPatterns("/css/**","/js/**","/login","/*.css","/*.js","/assets/**",
                         "/member/login","/member/signUp","/member/checkId","/member/signupEmail","/member/checkEmail"
                         ,"/member/sendPw");

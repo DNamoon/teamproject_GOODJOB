@@ -39,9 +39,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>이름<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group">
                                             <input class="form-control" type="text" th:field="*{memName}" required>
                                         </div>
+                                        <label></label>
                                     </div>
                                     <div class="col-md-6">
                                         <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
@@ -77,10 +78,10 @@
                                     <div class="col-md-6">
                                         <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control w-40" th:field="*{memEmail1}" onchange="emailCheckMassage()"
+                                            <input type="text" class="form-control w-40 border" th:field="*{memEmail1}" onchange="emailCheckMassage()"
                                                    placeholder="goodjob" id="signUpEmail"
-                                                   required> &nbsp;@ &nbsp;&nbsp;
-                                            <select id="emailSelect" class="form-control w-40" th:field="*{memEmail2}" onchange="emailCheckMassage()" required>
+                                                   required> &nbsp;@ &nbsp;
+                                            <select id="emailSelect" class="form-control w-40 border" th:field="*{memEmail2}" onchange="emailCheckMassage()" required>
                                                 <option value="">선택해주세요.</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="daum.net">daum.net</option>
@@ -89,8 +90,6 @@
                                         </div>
                                         <label id="emailCheckMassage"></label>
                                     </div>
-
-                                    <label>&nbsp;</label>
                                     <div class="col-md-6">
                                         <label>주소</label>
                                         <div class="input-group mb-4">
