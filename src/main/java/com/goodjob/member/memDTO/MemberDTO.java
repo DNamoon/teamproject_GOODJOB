@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Date;
@@ -37,7 +38,7 @@ public class MemberDTO {
     private String memEmail2;
     @NotBlank(message = "이름은 필수항목입니다.")
     private String memName;
-    @NotBlank(message = "생년월일은 필수항목입니다.")
+    @NotNull(message = "생년월일은 필수항목입니다.")
     private Date memBirthDate;
     @NotBlank(message = "주소는 필수항목입니다.")
     private String memAddress;

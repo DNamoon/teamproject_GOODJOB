@@ -50,7 +50,7 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     @Transactional
     @Modifying
     @Query("update Company c set c.comName =:#{#c.comName}, c.comBusiNum =:#{#c.comBusiNum}, c.comPhone =:#{#c.comPhone}," +
-            "c.comComdivCode.comdivCode =:#{#c.comComdivCode.comdivCode}, c.comRegCode.regCode =:#{#c.comRegCode.regCode}, c.comEmail =:#{#c.comEmail}," +
+            "c.comComdivCode.comdivCode =:#{#c.comComdivCode.comdivCode}, c.comEmail =:#{#c.comEmail}," +
             " c.comAddress =:#{#c.comAddress} where c.comLoginId =:#{#c.comLoginId}")
     int updateInfo(@Param("c") Company company);
 

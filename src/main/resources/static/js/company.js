@@ -1,5 +1,78 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+function deleteCompany2() {
+    const password = $('#delete_password_confirm').val();
+    $.ajax({
+        type:"post",
+        url:"/com/delete",
+        data: {pw:password},
+        success:function (confirm) {
+            if(confirm == "1") {
+                Swal.fire({
+                    title: "정말 탈퇴하시겠습니까?",
+                    text: "회원탈퇴 시 어떤방법으로도 계정이 복구되지 않습니다.",
+                    icon: "warning",
+                    confirmButtonText: "예",
+                    cancelButtonText: "아니요",
+                    closeOnConfirm: true,
+                    showCancelButton: true,
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = "/com/deleteConfirm";
+                        } else if (!result.isConfirmed) {
+                            Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
+                        }
+                    })
+            }  else {
+                Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
+            }
+        }
+    })
+}
+
+//22.11.07 - 회원 탈퇴 전 한번 더 확인하도록 수정.
+function deleteCompany() {
+    const password = $('#delete_password_confirm').val();
+
+    Swal.fire({
+        title: "정말 탈퇴하시겠습니까?",
+        text: "회원탈퇴 시 어떤방법으로도 계정이 복구되지 않습니다.",
+        icon: "warning",
+        confirmButtonText: "예",
+        cancelButtonText: "아니요",
+        closeOnConfirm: true,
+        showCancelButton: true,
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/com/delete",
+                    data: {pw: password},
+
+                    success: function (data) {
+                        if(data=="1"){
+                            Swal.fire({
+                                icon: 'success',                         // Alert 타입
+                                title: '회원탈퇴',         // Alert 제목
+                                text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
+                            }).then(function (){
+                                location.replace('/'); //뒤로가기 불가능
+                            });
+                        } else {
+                            Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
+                        }
+                    }, error: function (e) {
+                        console.log(e)
+                    }
+                });
+            } else if (!result.isConfirmed) {
+                Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
+            }
+        })
+}
+
 //22.11.01 ho - 아이디 찾기(이름, 이메일로 찾기)
 $('#btn_findId').click(function (){
     findId();
@@ -166,31 +239,31 @@ $(document).ready(function(){
 });
 
 
-// 회원탈퇴
-$(document).ready(function(){
-    $('#delete_confirm').click(function (){
-        const password = $('#delete_password_confirm').val();
-
-        $.ajax({
-            type:"post",
-            url:"/com/delete",
-            data:"pw="+password,
-            success : function (result) {
-                if(result == 1) {
-                    Swal.fire("회원을 탈퇴합니다!","","success").then(function (){
-                        location.replace('/');  //.replace : 뒤로가기 불가능
-                        //$("#contact-form").submit();
-                        // location.href("/com/myPage");
-                    })
-                    //alert("회원을 탈퇴합니다.");
-                } else {
-                    Swal.fire("비밀번호를 확인해주세요!","","error");
-                    //alert("비밀번호를 확인해주세요");
-                }
-            }
-        });
-    });
-});
+// // 회원탈퇴
+// $(document).ready(function(){
+//     $('#delete_confirm').click(function (){
+//         const password = $('#delete_password_confirm').val();
+//
+//         $.ajax({
+//             type:"post",
+//             url:"/com/delete",
+//             data:"pw="+password,
+//             success : function (result) {
+//                 if(result == 1) {
+//                     Swal.fire("회원을 탈퇴합니다!","","success").then(function (){
+//                         location.replace('/');  //.replace : 뒤로가기 불가능
+//                         //$("#contact-form").submit();
+//                         // location.href("/com/myPage");
+//                     })
+//                     //alert("회원을 탈퇴합니다.");
+//                 } else {
+//                     Swal.fire("비밀번호를 확인해주세요!","","error");
+//                     //alert("비밀번호를 확인해주세요");
+//                 }
+//             }
+//         });
+//     });
+// });
 
 
 //22.10.24 ho - 회원정보 수정시 비밀번호 확인
@@ -356,8 +429,10 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
+//view 유효성 검사
+
 //view - 사업자 등록번호 양식 일치 3-2-5
-$('#comBusiNum').blur(function (){
+$('#comBusiNum').keyup(function (){
     let busiNum = $(this).val();
     let regExp = /^\d{3}-\d{2}-\d{5}$/;
     let busiNum_error = $('#busiNum_error');
@@ -372,7 +447,7 @@ $('#comBusiNum').blur(function (){
 })
 
 //view - 전화번호 양식 일치(2~3)-(3~4)-4
-$('#phone').blur(function (){
+$('#phone').keyup(function (){
     let phone = $('#phone').val();
     let regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
     let phone_error = $('#phone_error');
@@ -385,20 +460,99 @@ $('#phone').blur(function (){
         phone_error.show().text("올바른 형식입니다.");
     }
 })
+//
+// //view - 이메일 양식일치
+// $('#email').keyup(function (){
+//     let email = $('#email').val();
+//     let email2 = $('#email2').val();
+//     let emailCheck = email + "@" + email2;
+//
+//     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
+//     let emailError = $('#email_error');
+//     emailError.css("color","#ff0000");
+//
+//     if(!regExp.test(email)) {
+//         emailError.show().text("올바른 이메일 양식이 아닙니다!")
+//     } else {
+//         emailError.show().text("");
+//     }
+//
+// })
 
-//view - 이메일 양식일치
-$('#email').keyup(function (){
+//22.11.07 회원정보 수정용 이메일 중복 검사(본인 이메일은 pass) + 유효성검사 추가
+function emailDuplicationForUpdate() {
     let email = $('#email').val();
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+
     let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
     let emailError = $('#email_error');
-    emailError.css("color","#ff0000");
+    emailError.css("color", "#ff0000");
 
-    if(!regExp.test(email)) {
+    if (!regExp.test(email)) {
         emailError.show().text("올바른 이메일 양식이 아닙니다!")
     } else {
         emailError.show().text("");
+        $.ajax({
+            type: 'post',
+            url: "/com/emailCheck2",
+            data: {emailCheck: emailCheck},
+            success: function (result) {
+                console.log(result)
+                if (result[0] == "null") {
+                    emailError.css('color', '#54b254');
+                    emailError.html("사용 가능한 이메일입니다.");
+                } else if (result[0] == "com") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 기업회원으로 가입한 이메일입니다.");
+                } else if (result[0] == "mem") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+                }
+            }
+        })
+
     }
-})
+
+}
+
+
+//view - 이메일 중복 검사 22.11.06
+//view - 이메일 양식 검사 후 중복 검사 로 변경.
+function emailDuplication(){
+
+    let email = $('#email').val();
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+    let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
+    let emailError = $('#email_error');
+    emailError.css("color", "#ff0000");
+    if (!regExp.test(email)) {
+        emailError.show().text("올바른 이메일 양식이 아닙니다!")
+    } else {
+        emailError.show().text("");
+        $.ajax({
+            type: "post",
+            url: "/com/emailCheck",
+            data: {emailCheck: emailCheck},
+            success: function (result) {
+                console.log(result)
+                if (result[0] == "null") {
+                    emailError.css('color', '#54b254');
+                    emailError.html("사용 가능한 이메일입니다.");
+                } else if (result[0] == "com") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 기업회원으로 가입한 이메일입니다.");
+                } else if (result[0] == "mem") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+                }
+            }
+        });
+    }
+
+}
+
 
 
 //view - 비밀번호1,2 일치 여부 보여주는 function
@@ -448,6 +602,8 @@ $('#id_input').on("change keyup", function(){
     var idError = $('.id_error');
     idError.css("color", "#ff0000");
 
+    var submit = false;
+
     $.ajax({
         type : "post",
         url : "/com/check",
@@ -463,17 +619,19 @@ $('#id_input').on("change keyup", function(){
                     } else { //아이디 중복도 없고 정규식도 올바를 때
                         idError.css("color","#54b254");
                         idError.show().text("사용할 수 있는 아이디입니다!");
+                        submit = true;
                     }
                 }
             } else {  //중복되는 아이디가 있을 경우
                 idError.show().text("이미 존재하는 아이디입니다.");
             }
-
+            console.log(submit);
+            return submit;
         }
     });
 });
 
-//회원가입 유효성 검사
+//회원가입폼 유효성 검사
 function btnRexExp() {
 
     //아이디 정규식 확인용 변수
@@ -482,6 +640,7 @@ function btnRexExp() {
 
     //비밀번호 정규식 확인용 변수
     var password = $('#comPw1').val();
+    var passwordConfirm = $('#comPw2').val();
 
     //이메일 정규식 확인용 변수
     let email = $('#email').val();
@@ -520,6 +679,32 @@ function btnRexExp() {
         result3 = "true";
     }
 
+    //이메일 중복 확인
+    let result7 = "false";
+
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+    $.ajax({
+        type: "post",
+        url: "/com/emailCheck",
+        async: false,
+        data: {emailCheck: emailCheck},
+        success: function (result) {
+            console.log(result)
+            if (result[0] == "null") {
+                result7 = "true";
+            } else if(result[0] == "com") {
+
+            } else if(result[0] == "mem") {
+            }
+            return result7;
+        }
+    });
+    console.log("이메일 중복확인은 한번에 가자~~~" + result7);
+    if (result7 == "false") {
+        $('#email').focus();
+    }
+
     //비밀번호 정규식 확인
     var result2 = "false";
     let regExp2 = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{3,25}$/g; //최소 8자 최대 25자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
@@ -527,8 +712,48 @@ function btnRexExp() {
         $('#comPw1').focus();
         //Swal.fire("비밀번호 양식을 확인해주세요.","","error");
     } else {
-        result2 = "true";
+        if(password != passwordConfirm) {
+            $('#comPw2').focus();
+        } else {
+            result2 = "true";
+        }
     }
+
+    // 아이디 중복 확인
+    var result6 = "false";
+    var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
+    $.ajax({
+        type : "post",
+        url : "/com/check",
+        async:false,  //ajax는 비동기 방식이기 때문에 결과값을 전역변수에 저장하기 위해 추가!
+        data : data,
+        success : function(result){
+            if(result != 'fail'){  //중복되는 아이디가 없을 때
+                let regExp = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
+                if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
+                    console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?111111" + result6);
+                } else {
+                    if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
+                        console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?22222" + result6);
+                    } else { //아이디 중복도 없고 정규식도 올바를 때
+                        console.log("설마 여기로 떨어져??? 성공으로?");
+                        result6 = "true";
+                        console.log("그럼 왜 result6 안 바뀌어???" + result6)
+                    }
+                }
+            } else {  //중복되는 아이디가 있을 경우
+                console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?3333" + result6);
+            }
+
+            console.log("리턴되기 마지막 result6 !!! 왜 true가 아니냐!" + result6);
+            return result6;
+        }
+    });
+
+    if (result6 == "false") {
+          $('#id_input').focus();
+    }
+    console.log("버튼 눌렀을 때 아이디 중복 result6 값: " + result6);
 
     //아이디 정규식 확인
     var result1 = "false";
@@ -544,9 +769,12 @@ function btnRexExp() {
         }
     }
 
-    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true") {
-        // $('#contact-form').submit();
-
+    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true" && result6 == "true" && result7 == "true") {
+        //$('#contact-form').submit();
+        Swal.fire("회원가입 완료",comLoginId+"님 회원가입을 축하드립니다!","success")
+            .then(function (){  //alert창 확인 누르면 submit
+                $('#contact-form').submit();
+            });
     } else {
     }
 }
@@ -603,6 +831,31 @@ function btn_change_info(){
         result3 = "true";
     }
 
+    //이메일 중복 확인
+    let result7 = "false";
+
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+    $.ajax({
+        type: "post",
+        url: "/com/emailCheck2",
+        async: false,
+        data: {emailCheck: emailCheck},
+        success: function (result) {
+            console.log(result)
+            if (result[0] == "null") {
+                result7 = "true";
+            } else if(result[0] == "com") {
+
+            } else if(result[0] == "mem") {
+            }
+            return result7;
+        }
+    });
+
+    if (result7 == "false") {
+        $('#email').focus();
+    }
 
     //전화번호 확인용 변수
     let phone = $('#phone').val();
@@ -632,7 +885,7 @@ function btn_change_info(){
         result4 = "true";
     }
 
-    if(result3 != "false" && result4 != "false" && result5 != "false") {
+    if(result3 != "false" && result4 != "false" && result5 != "false" && result7!="false") {
         $('#modal_open_btn').attr("data-toggle", "modal");
         $("#confirmPasswordModal").modal();
     } else {
@@ -681,4 +934,3 @@ $("#userId").blur(function () {
         }
     });
 });
-

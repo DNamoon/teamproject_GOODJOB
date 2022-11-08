@@ -25,7 +25,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memId;
 
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "varbinary(128)")
     private String memLoginId;
 
     @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
@@ -40,10 +40,10 @@ public class Member {
     @Column
     private String memPhone;
 
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "varbinary(128)")
     private String memEmail;
 
-    @Column
+    @Column(columnDefinition = "varbinary(128)")
     private String memName;
 
     @Column
