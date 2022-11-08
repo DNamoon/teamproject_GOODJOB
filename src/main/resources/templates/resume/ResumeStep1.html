@@ -31,7 +31,7 @@
                                                    th:value="${memberInfo.memName}" readonly>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="width:400px">
+                                    <div class="col-md-6">
                                         <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="date"
@@ -103,21 +103,21 @@
                                 </div>
                             </div>
                             <div class="row" style="float: inline-start;">
-                                <div class="col-md-6" style="width: 400px;">
+                                <div class="col-md-6">
                                     <label>이메일</label>
                                     <div class="input-group mb-4">
                                         <input class="form-control" type="text" th:value="${memberInfo.memFirstEmail}"
                                                name="memFirstEmail">
                                     </div>
                                 </div>
-                                <div class="col-mb-6" style="width: 5px;">
+                                <div class="col-mb-2" style="width: 5px;">
                                     <label>&nbsp;</label>
                                     @
                                 </div>
                                 &nbsp;&nbsp;
-                                <div class="col-md-6" style="width: 215px;">
-                                    <label>&nbsp;</label>
-                                    <div class="input-group mb-4">
+                                <div class="col-md-5" style="width: 460px">
+                                    <label style="float: right;color: red;">이메일을 작성하지 않을 시 합격 연락에 제한이 있을 수 있습니다.</label>
+                                    <div class="input-group mb-4" style="margin-top: 33px">
                                         <select class="form-select" id="endEmail" name="memLastEmail">
                                             <option th:value="${memberInfo.memLastEmail}">[[${memberInfo.memLastEmail}]]
                                                 (기본정보)
@@ -128,8 +128,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 400px;">
+                                <div class="row" style="float: inline-start;padding-right: 0px;">
+                                    <div class="col-md-6" style="width: 500px">
                                         <label>주소</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="userAddress"
@@ -138,13 +138,13 @@
                                                    name="memFirstAddress">
                                         </div>
                                     </div>
-                                    <div class="col-md-2" style="margin-left: 0px;">
+                                    <div class="col-md-2">
                                         <label>&nbsp;</label>
                                         <button type="button" class="btn bg-gradient-dark w-100 findAddress"
                                                 onclick="execPostCode()">주소찾기
                                         </button>
                                     </div>
-                                    <div class="col-md-6" style="width: 330px;">
+                                    <div class="col-md-5" style="width: 310px; padding-right: 0px;">
                                         <label>상세주소</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="userDetailAddress"
@@ -162,7 +162,7 @@
                                 <h4 class="text-left">| 학적</h4>
                                 &nbsp;
                                 <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 400px;">
+                                    <div class="col-md-6">
                                         <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input class="form-control" type="text" name="schoolName" id="schoolName"
@@ -170,22 +170,23 @@
                                         </div>
                                         <label id="schoolNameValiDiv"></label>
                                     </div>
-                                    <div class="col-md-2" style="margin-left: 0px;">
+                                    <div class="col-md-2">
                                         <label>&nbsp;</label>
                                         <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
                                                 data-bs-target="#findSchoolModal">학교찾기
                                         </button>
                                     </div>
-                                    <div class="col-md-6" style="width: 325px;">
+                                    <div class="col-md-4">
                                         <label>졸업년월<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD"
-                                                   type="date" name="eduGraduationDate" max="" required>
+                                                   type="date" name="eduGraduationDate" max="" onchange="confirmValidGradDate()">
                                         </div>
+                                        <label id="graduDateValiDiv"></label>
                                     </div>
                                 </div>
                                 <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 400px;">
+                                    <div class="col-md-6">
                                         <label>전공<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input class="form-control" type="text" name="majorName" id="majorName"
@@ -193,7 +194,7 @@
                                         </div>
                                         <label id="majorNameValiDiv"></label>
                                     </div>
-                                    <div class="col-md-2" style="margin-left: 0px;">
+                                    <div class="col-md-2">
                                         <label>&nbsp;</label>
                                         <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
                                                 data-bs-target="#findMajorModal">전공찾기

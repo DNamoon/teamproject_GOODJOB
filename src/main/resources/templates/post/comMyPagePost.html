@@ -126,7 +126,7 @@
                                 <td class="col-lg-1 h-100 ">
                                     <ul class="nav flex-column  align-items-center justify-content-evenly">
                                         <li><a th:onclick="|javascript:comMyPagePost.updatePost('${dto.postId}')|"><span class="material-symbols-outlined">edit_note</span></a></li>
-                                        <li><span class="material-symbols-outlined">folder_shared</span></li>
+                                        <li><a th:onclick="|javascript:comMyPagePost.showApplierList('${dto.postId}')|"><span class="material-symbols-outlined">folder_shared</span></a></li>
 
                                     </ul>
                                 </td>
