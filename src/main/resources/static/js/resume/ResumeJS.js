@@ -658,7 +658,7 @@ function rangeCredit(){
 }
 
 function confirmValidGradDate(){
-    if($("#graduDateValiDiv").val() == ''){
+    if($("input[name=eduGraduationDate]").val() == ''){
         $("#graduDateValiDiv").replaceWith('<label id="graduDateValiDiv" style="color: red;">졸업년월을 입력해주세요.</label>');
         return false;
     }else{

@@ -18,6 +18,7 @@ public interface ResumeService {
     List<ResumeListDTO> getResumeList(String loginId);
     void setDeleteResume(List<String> resumeId);
     void changeTitle(Long resumeId, String title);
+    List<Integer> getResumeMenu(String loginId);
     default Resume dtoToEntity(ResumeMemberDTO resumeMemberDTO, String mergePhoneNum, String mergeAddress, String mergeEmail){
         Member member = Member.builder().memId(resumeMemberDTO.getMemId()).build();
 

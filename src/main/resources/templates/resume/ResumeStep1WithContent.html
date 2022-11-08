@@ -99,6 +99,7 @@
                                 <div class="row" style="float: inline-start;">
                                     <div class="col-md-6" style="width: 400px;">
                                         <label>이메일</label>
+                                        <span style="float: right; font-size: 14px;">이메일을 작성하지 않을 시 합격 시 연락에 제한이 있을 수 있습니다.</span>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text"
                                                    th:value="${resumeMemInfo.memFirstEmail}"
@@ -177,7 +178,7 @@
                                             <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD"
                                                    type="date"
                                                    name="eduGraduationDate" th:value="${schoolInfo.eduGraduationDate}"
-                                                   max="" onkeyup="confirmValidGradDate()">
+                                                   max="" onchange="confirmValidGradDate()">
                                         </div>
                                         <label id="graduDateValiDiv"></label>
                                     </div>

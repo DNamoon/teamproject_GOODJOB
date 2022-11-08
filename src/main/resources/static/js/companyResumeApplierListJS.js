@@ -21,9 +21,9 @@ function getApplierList(postId, pageNum) {
 
                 //공고 마감 날짜 + 30일이랑 오늘 날짜 비교해서 이전 날짜이면 이력서 열람 비활성화
                 if(addDay(applier.postEndDate, 30) >= new Date()){
-                    list += '    <td><a href="/resume/resumeRead/'+ applier.applierId +'/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm btn-info">이력서 열람</button></a></td>\n';
+                    list += '    <td><a href="/resume/resumeRead/'+ applier.applierId +'/'+ applier.statResumeId +'" target="_blank"><button class="btn btn-sm bg-gradient-dark">이력서 열람</button></a></td>\n';
                 }else{
-                    list += '    <td><button class="btn btn-sm btn-info" disabled>이력서 열람</button></td>\n';
+                    list += '    <td><button class="btn btn-sm bg-gradient-dark" disabled>이력서 열람</button></td>\n';
 
                 }
 
@@ -35,7 +35,7 @@ function getApplierList(postId, pageNum) {
                 }else if(applier.statPass === '서류불합격' || applier.statPass === '면접불합격'){
                     list += '      <td style="color: red;">' + applier.statPass + '</td>\n';
                 } else{
-                    list += '<td class="passBtn' + applier.statId + '"><button class="btn btn-sm btn-info" onclick="clickPass('+ applier.statId +')">합격</button>' +
+                    list += '<td class="passBtn' + applier.statId + '"><button class="btn btn-sm bg-gradient-dark" onclick="clickPass('+ applier.statId +')">합격</button>' +
                         '<button class="btn btn-sm btn-danger" onclick="clickUnPass('+ applier.statId +')">불합격</button>' +
                         '</td>';
                 }

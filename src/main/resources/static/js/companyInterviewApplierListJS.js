@@ -21,7 +21,7 @@ function getApplierList(postId, pageNum) {
                 if(applier.interviewPlace === null){
                     list += '      <td><input class="form-control" type="text" id="interviewPlace" placeholder="면접장소를 지정해주세요"></td>\n' +
                         '      <td><input class="form-control" type="datetime-local" id="interviewDate"></td>\n' +
-                        '      <td><button class="btn btn-sm btn-secondary" onclick="sendMail(this,' + applier.statId + ' )">메일전송</button></td>\n';
+                        '      <td><button class="btn btn-sm bg-gradient-dark" onclick="sendMail(this,' + applier.statId + ' )">메일전송</button></td>\n';
                 }else{
                     list += '      <td>' + applier.interviewPlace + '</td>\n' +
                         '      <td>' + applier.interviewDate + '</td>\n'+
@@ -35,7 +35,7 @@ function getApplierList(postId, pageNum) {
                     list += '      <td style="color: red;">' + applier.statPass + '</td>\n';
                 }
                 else{
-                    list += '<td class="passBtn' + applier.statId + '"><button class="btn btn-sm btn-info" onclick="clickPass('+ applier.statId +')">합격</button>' +
+                    list += '<td class="passBtn' + applier.statId + '"><button class="btn btn-sm bg-gradient-dark" onclick="clickPass('+ applier.statId +')">합격</button>' +
                         '<button class="btn btn-sm btn-danger" onclick="clickUnPass('+ applier.statId +')">불합격</button>' +
                         '</td>';
                 }

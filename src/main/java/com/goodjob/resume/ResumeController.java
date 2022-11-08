@@ -203,7 +203,7 @@ public class ResumeController {
     }
 
     @GetMapping("/resumeRead/{memId}/{resumeId}")
-    public String resumeReadForm(@PathVariable("memId") String memId, @PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+    public String resumeReadForm(@PathVariable("memId") String memId, @PathVariable("resumeId") Long resumeId, Model model){
 
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
@@ -212,6 +212,12 @@ public class ResumeController {
         model.addAttribute("selfIntroInfo", selfIntroductionService.bringSelfIntroInfo(resumeId));
 
         return "/resume/ResumeRead";
+    }
+
+    @ResponseBody
+    @GetMapping("/getMenuValue")
+    public List<Integer> getMenuValue(HttpSession session){
+        return resumeService.getResumeMenu((String) session.getAttribute("sessionId"));
     }
 
 //    @PutMapping("/changeTitle/{resumeId}")

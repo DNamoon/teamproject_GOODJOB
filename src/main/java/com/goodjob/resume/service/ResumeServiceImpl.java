@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,6 +88,16 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public void changeTitle(Long resumeId, String title) {
         resumeRepository.changeTitle(title, resumeId);
+    }
+
+    @Override
+    public List<Integer> getResumeMenu(String loginId) {
+        List<Integer> menuList = new ArrayList<>();
+        menuList.add(resumeRepository.countResumeByResumeMemId_MemLoginIdAndDeleted(loginId, false));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginId(loginId));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(loginId, "최종합격"));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(loginId, "불합격"));
+        return menuList;
     }
 
 //    @Override

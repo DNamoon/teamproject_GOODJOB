@@ -12,24 +12,23 @@
         <div class="container py-4">
             <div class="row">
                 <div class="col-lg-10 mx-auto">
-                    <div class="container text-center border-2">
+                    <div class="container text-center" style="border:2px solid #344767; padding-top: 24px; padding-bottom: 24px; border-radius: 1rem;">
                         <div class="row">
                             <div class="col">
                                 <h5 class="text-bold">작성중</h5>
-                                <a th:href="@{/member/myPageResume}"><h5 class="text-decoration-underline resumeCount">
-                                    0</h5></a>
+                                <a th:href="@{/member/myPageResume}"><h5 class="text-decoration-underline resumeCount"></h5></a>
                             </div>
                             <div class="col">
                                 <h5 class="text-bold">지원완료</h5>
-                                <a th:href="@{/member/myPageApply}"><h5 class="text-decoration-underline">0</h5></a>
+                                <a th:href="@{/member/myPageApply}"><h5 class="text-decoration-underline applyCount"></h5></a>
                             </div>
                             <div class="col">
                                 <h5 class="text-bold">최종합격</h5>
-                                <a href="#"><h5 class="text-decoration-underline">0</h5></a>
+                                <a href="#"><h5 class="text-decoration-underline passCount"></h5></a>
                             </div>
                             <div class="col">
                                 <h5 class="text-bold">불합격</h5>
-                                <a href="#"><h5 class="text-decoration-underline">0</h5></a>
+                                <a href="#"><h5 class="text-decoration-underline unPassCount"></h5></a>
                             </div>
                         </div>
                     </div>
