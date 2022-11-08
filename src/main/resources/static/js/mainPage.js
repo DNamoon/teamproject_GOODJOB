@@ -283,6 +283,38 @@ let postInsertForm ={
     setInputDateDefaultToday(){
         const startDate = document.getElementById('postStartDate').valueAsDate = new Date();
         const endDate = document.getElementById('postEndDate').valueAsDate = new Date();
+        maxDate();
+        rangeDate();
+
+        //입력검증
+        //이력서에서 근무기간 선택할 때 두번째 달력의 날짜가 첫번째 날짜보다 적게 입력되는거 방지
+        function rangeDate(){
+            document.querySelector("#postEndDate").addEventListener("click",()=>{
+                let endDate = document.querySelector("#postEndDate");
+                let startDate = document.querySelector("#postStartDate");
+                var minDate = startDate.value;
+                endDate.setAttribute("min", minDate);
+            })
+
+        }
+
+        //날짜 최댓값을 현재날짜로 제한
+        function maxDate(){
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = today.getMonth() + 1;  //1월이 0임
+            var dd = today.getDate();
+
+            if(dd < 10){
+                dd = '0' + dd;
+            }
+            if(mm < 10){
+                mm = '0' + mm;
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+            $("#postStartDate").attr("min", today);
+        }
 
     },
     setSaveBtn(){
@@ -537,3 +569,5 @@ const fetchJs = {
         return response.ok ? response : new Error(message);
     }
 }
+
+
