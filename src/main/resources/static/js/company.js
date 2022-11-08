@@ -1,5 +1,78 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
 
+function deleteCompany2() {
+    const password = $('#delete_password_confirm').val();
+    $.ajax({
+        type:"post",
+        url:"/com/delete",
+        data: {pw:password},
+        success:function (confirm) {
+            if(confirm == "1") {
+                Swal.fire({
+                    title: "정말 탈퇴하시겠습니까?",
+                    text: "회원탈퇴 시 어떤방법으로도 계정이 복구되지 않습니다.",
+                    icon: "warning",
+                    confirmButtonText: "예",
+                    cancelButtonText: "아니요",
+                    closeOnConfirm: true,
+                    showCancelButton: true,
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = "/com/deleteConfirm";
+                        } else if (!result.isConfirmed) {
+                            Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
+                        }
+                    })
+            }  else {
+                Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
+            }
+        }
+    })
+}
+
+//22.11.07 - 회원 탈퇴 전 한번 더 확인하도록 수정.
+function deleteCompany() {
+    const password = $('#delete_password_confirm').val();
+
+    Swal.fire({
+        title: "정말 탈퇴하시겠습니까?",
+        text: "회원탈퇴 시 어떤방법으로도 계정이 복구되지 않습니다.",
+        icon: "warning",
+        confirmButtonText: "예",
+        cancelButtonText: "아니요",
+        closeOnConfirm: true,
+        showCancelButton: true,
+    })
+        .then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/com/delete",
+                    data: {pw: password},
+
+                    success: function (data) {
+                        if(data=="1"){
+                            Swal.fire({
+                                icon: 'success',                         // Alert 타입
+                                title: '회원탈퇴',         // Alert 제목
+                                text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
+                            }).then(function (){
+                                location.replace('/'); //뒤로가기 불가능
+                            });
+                        } else {
+                            Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
+                        }
+                    }, error: function (e) {
+                        console.log(e)
+                    }
+                });
+            } else if (!result.isConfirmed) {
+                Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
+            }
+        })
+}
+
 //22.11.01 ho - 아이디 찾기(이름, 이메일로 찾기)
 $('#btn_findId').click(function (){
     findId();
@@ -166,31 +239,31 @@ $(document).ready(function(){
 });
 
 
-// 회원탈퇴
-$(document).ready(function(){
-    $('#delete_confirm').click(function (){
-        const password = $('#delete_password_confirm').val();
-
-        $.ajax({
-            type:"post",
-            url:"/com/delete",
-            data:"pw="+password,
-            success : function (result) {
-                if(result == 1) {
-                    Swal.fire("회원을 탈퇴합니다!","","success").then(function (){
-                        location.replace('/');  //.replace : 뒤로가기 불가능
-                        //$("#contact-form").submit();
-                        // location.href("/com/myPage");
-                    })
-                    //alert("회원을 탈퇴합니다.");
-                } else {
-                    Swal.fire("비밀번호를 확인해주세요!","","error");
-                    //alert("비밀번호를 확인해주세요");
-                }
-            }
-        });
-    });
-});
+// // 회원탈퇴
+// $(document).ready(function(){
+//     $('#delete_confirm').click(function (){
+//         const password = $('#delete_password_confirm').val();
+//
+//         $.ajax({
+//             type:"post",
+//             url:"/com/delete",
+//             data:"pw="+password,
+//             success : function (result) {
+//                 if(result == 1) {
+//                     Swal.fire("회원을 탈퇴합니다!","","success").then(function (){
+//                         location.replace('/');  //.replace : 뒤로가기 불가능
+//                         //$("#contact-form").submit();
+//                         // location.href("/com/myPage");
+//                     })
+//                     //alert("회원을 탈퇴합니다.");
+//                 } else {
+//                     Swal.fire("비밀번호를 확인해주세요!","","error");
+//                     //alert("비밀번호를 확인해주세요");
+//                 }
+//             }
+//         });
+//     });
+// });
 
 
 //22.10.24 ho - 회원정보 수정시 비밀번호 확인
@@ -406,31 +479,41 @@ $('#phone').keyup(function (){
 //
 // })
 
-//22.11.07 회원정보 수정용 이메일 중복 검사(본인 이메일은 pass)
+//22.11.07 회원정보 수정용 이메일 중복 검사(본인 이메일은 pass) + 유효성검사 추가
 function emailDuplicationForUpdate() {
     let email = $('#email').val();
     let email2 = $('#email2').val();
     let emailCheck = email + "@" + email2;
-    let emailError = $('#email_error');
 
-    $.ajax({
-        type:'get',
-        url:"/com/emailCheck2",
-        data: {emailCheck:emailCheck},
-        success:function (result) {
-            console.log(result)
-            if (result[0] == "null") {
-                emailError.css('color', '#54b254');
-                emailError.html("사용 가능한 이메일입니다.");
-            } else if (result[0] == "com") {
-                emailError.css('color', '#ff0000');
-                emailError.html("이미 기업회원으로 가입한 이메일입니다.");
-            } else if (result[0] == "mem") {
-                emailError.css('color', '#ff0000');
-                emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+    let regExp = /^[A-Z0-9a-z._%+-]{2,64}$/;
+    let emailError = $('#email_error');
+    emailError.css("color", "#ff0000");
+
+    if (!regExp.test(email)) {
+        emailError.show().text("올바른 이메일 양식이 아닙니다!")
+    } else {
+        emailError.show().text("");
+        $.ajax({
+            type: 'post',
+            url: "/com/emailCheck2",
+            data: {emailCheck: emailCheck},
+            success: function (result) {
+                console.log(result)
+                if (result[0] == "null") {
+                    emailError.css('color', '#54b254');
+                    emailError.html("사용 가능한 이메일입니다.");
+                } else if (result[0] == "com") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 기업회원으로 가입한 이메일입니다.");
+                } else if (result[0] == "mem") {
+                    emailError.css('color', '#ff0000');
+                    emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+                }
             }
-        }
-    })
+        })
+
+    }
+
 }
 
 
@@ -449,7 +532,7 @@ function emailDuplication(){
     } else {
         emailError.show().text("");
         $.ajax({
-            type: "get",
+            type: "post",
             url: "/com/emailCheck",
             data: {emailCheck: emailCheck},
             success: function (result) {
@@ -602,7 +685,7 @@ function btnRexExp() {
     let email2 = $('#email2').val();
     let emailCheck = email + "@" + email2;
     $.ajax({
-        type: "get",
+        type: "post",
         url: "/com/emailCheck",
         async: false,
         data: {emailCheck: emailCheck},
@@ -754,7 +837,7 @@ function btn_change_info(){
     let email2 = $('#email2').val();
     let emailCheck = email + "@" + email2;
     $.ajax({
-        type: "get",
+        type: "post",
         url: "/com/emailCheck2",
         async: false,
         data: {emailCheck: emailCheck},

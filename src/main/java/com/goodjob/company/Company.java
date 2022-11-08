@@ -34,7 +34,7 @@ public class Company {
 //    @JoinColumn(name = "comRegCode")
 //    private Region comRegCode; // 지역분류코드
 
-    @Column(unique = true)  //로그인 아이디 중복 허용 안 하기 위해서 엔티티에서 제한.
+    @Column(unique = true, columnDefinition = "varbinary(128)")  //로그인 아이디 중복 허용 안 하기 위해서 엔티티에서 제한.
     private String comLoginId;
 
     @Column
@@ -43,10 +43,10 @@ public class Company {
     @Column
     private String comPhone;
 
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "varbinary(128)")
     private String comEmail;
 
-    @Column
+    @Column(columnDefinition = "varbinary(128)")
     private String comName;
 
     @OneToOne

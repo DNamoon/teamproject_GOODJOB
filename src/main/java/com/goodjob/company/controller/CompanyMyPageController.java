@@ -35,7 +35,7 @@ public class CompanyMyPageController {
 
     //22.11.07 - 회원정보 수정용 이메일 중복확인.
     @ResponseBody
-    @RequestMapping(value = "emailCheck2", method = RequestMethod.GET)
+    @RequestMapping(value = "emailCheck2", method = RequestMethod.POST)
     public List<String> emailCheck2(@RequestParam("emailCheck") String email,HttpSession session){
 
         Company com = getSessionLoginId(session);
@@ -110,10 +110,21 @@ public class CompanyMyPageController {
         if(password == null || !passwordEncoder.matches(password,com.getComPw())){
             return "0";
         } else {
-            companyService.delete(comId);
-            session.invalidate();  //세션 만료시키기.
+//            companyService.delete(comId);
+//            session.invalidate();  //세션 만료시키기.
             return "1";
         }
+    }
+
+    //22.11.07 회원탈퇴 전 한번더 묻기.
+    @GetMapping(value = "/deleteConfirm")
+    public String deleteCompanyConfirm(HttpSession session) {
+        Company com = getSessionLoginId(session);
+        Long comId = com.getComId();
+        companyService.delete(comId);
+        session.invalidate();  //세션 만료시키기.
+
+        return "redirect:/";
     }
 
     //ho - 22.10.28 - 비밀번호 변경 ajax

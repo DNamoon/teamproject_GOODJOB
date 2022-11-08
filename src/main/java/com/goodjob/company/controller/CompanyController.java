@@ -307,7 +307,7 @@ public class CompanyController {
 
     //22.11.06 이메일 중복 검사
     @ResponseBody
-    @RequestMapping(value = "/emailCheck", method = RequestMethod.GET)
+    @RequestMapping(value = "/emailCheck", method = RequestMethod.POST)
     public List<String> emailCheck(@RequestParam("emailCheck") String email) {
         String result = memberService.checkEmail(email);
         List<String> result2 = new ArrayList();

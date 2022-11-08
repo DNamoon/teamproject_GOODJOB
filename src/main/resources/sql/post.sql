@@ -1,11 +1,11 @@
 #company 회원 insert
 INSERT INTO goodjob.company
-(comAddress, comBusiNum, comEmail, comInfo, comLoginId, comName, comPhone, comPw, comTerms, comComdivCode, comRegCode)
-VALUES('63534@제주특별자치도 서귀포시 가가로 14@1231123121231@ (상예동)', '1234', 'dfsfasdasd@naver.com', '1313122113212', 'test111', 'companyName111', '1231212412', '{bcrypt}$2a$10$Mqlic1x9A6s1gy/KITP3PepFC//9iHYdxa8BC2KxwcKN.u8C3KDHK', 'Y', 'Public', '064');
+(comAddress, comBusiNum, comEmail, comInfo, comLoginId, comName, comPhone, comPw, comTerms, comComdivCode)
+VALUES('63534@제주특별자치도 서귀포시 가가로 14@1231123121231@ (상예동)', '1234', 'dfsfasdasd@naver.com', '1313122113212', 'test111', 'companyName111', '1231212412', '{bcrypt}$2a$10$Mqlic1x9A6s1gy/KITP3PepFC//9iHYdxa8BC2KxwcKN.u8C3KDHK', 'Y', 'Public');
 INSERT INTO goodjob.company
-(comAddress, comBusiNum, comEmail, comInfo, comLoginId, comName, comPhone, comPw, comTerms, comComdivCode, comRegCode)
+(comAddress, comBusiNum, comEmail, comInfo, comLoginId, comName, comPhone, comPw, comTerms, comComdivCode)
 VALUES('04808@서울 성동구 자동차시장길 3@123123@ (용답동)', 'asdfdsafa', 'daafsdf@naver.com', '"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-', 'comsdafdskjlf', 'apple', 'asdfasfas', '{bcrypt}$2a$10$5xen5dR9jZoCA.JxV/PYrON6CGKQUR6lAUILUauMeg.ErcWINxRd2', 'Y', 'Middle', '02');
+', 'comsdafdskjlf', 'apple', 'asdfasfas', '{bcrypt}$2a$10$5xen5dR9jZoCA.JxV/PYrON6CGKQUR6lAUILUauMeg.ErcWINxRd2', 'Y', 'Middle');
 
 
 #최소 2개의 기업회원 데이터가 있어야 합니다.
