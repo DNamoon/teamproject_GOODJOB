@@ -13,8 +13,8 @@
                             <div class="carousel-inner">
                                 <th:block th:each="file:${dto.attachment}">
                                     <!--                                <img alt="image" th:src="@{/post/file/{fileName}(fileName=${file.getName()}) }">-->
-                                    <div class="carousel-item active">
-                                        <img th:src="@{/post/file/{fileName}(fileName=${file.getName()}) }" class="d-block w-100" alt="...">
+                                    <div class="carousel-item active" style="width: 80rem; height: 30rem">
+                                        <img th:src="@{/post/file/{fileName}(fileName=${file.getName()}) }" class="d-block img-fluid" alt="...">
                                     </div>
                                 </th:block>
                             </div>
