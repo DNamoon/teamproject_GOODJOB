@@ -11,4 +11,5 @@ import lombok.Data;
 public class ApplyDTO {
     private Long statPostId;
     private Long statResumeId;
+    private Short statShow;
 }

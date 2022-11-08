@@ -26,8 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new LoginInterceptor())
                 .order(2)
-                .addPathPatterns("/member/**","/resume/**")
-                .excludePathPatterns("/login","/*.css","/*.js","/assets/**", "/member/login","/member/signUp");
+                .addPathPatterns("/member/**")
+                .excludePathPatterns("/css/**","/js/**","/login","/*.css","/*.js","/assets/**",
+                        "/member/login","/member/signUp","/member/checkId","/member/signupEmail","/member/checkEmail"
+                        ,"/member/sendPw");
 
     }
     // 썸머노트(텍스트 에디터)에 대한 요청 응답 핸들러

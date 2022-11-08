@@ -4,21 +4,27 @@ import com.goodjob.post.Post;
 import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
-import com.goodjob.status.dto.ApplierListDTO;
-import com.goodjob.status.dto.ApplyListDTO;
+import com.goodjob.status.dto.*;
 
-import java.time.LocalDate;
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * 박채원 22.10.26 작성
  */
 
 public interface StatusService {
-    void applyResume(Long postId, Long resumeId);
+    void applyResume(Long postId, Long resumeId, String loginId) throws Exception;
     PageResultDTO<ApplyListDTO, Status> getApplyList(String loginId, int pageNum);
-    PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, int pageNum);
-    void changePass(Long statId);
-    void changeUnPass(Long statId);
+    PageResultDTO<ApplierListDTO, Status> getApplierList(String loginId, Long postId, int pageNum);
+    void changePass(Long statId, String result);
+    void changeUnPass(Long statId, String result);
+    SendMailDTO getApplierToSendMail(Long statId);
+    boolean havePass(String loginId);
+    void changeStatShow(String loginId);
+    PageResultDTO<IntervieweeListDTO, Status> getIntervieweeList(String loginId, Long postId, int pageNum);
+    void updateInterviewInfo(Long statId, String interviewPlace, LocalDateTime interviewDate);
+    SendMailToIntervieweeDTO getIntervieweeToSendMail(Long statId);
     default Status dtoToEntity(Long postId, Long resumeId){
         Post post = Post.builder().postId(postId).build();
         Resume resume = Resume.builder().resumeId(resumeId).build();
@@ -26,6 +32,7 @@ public interface StatusService {
         Status status = Status.builder()
                 .statPostId(post)
                 .statResumeId(resume)
+                .statShow(false)
                 .build();
 
         return status;
@@ -53,15 +60,51 @@ public interface StatusService {
                 .statResumeId(status.getStatResumeId().getResumeId())
                 .statPass(status.getStatPass())
                 .statApplyDate(status.getStatApplyDate())
-                .resumeTitle(status.getStatResumeId().getResumeTitle())
                 .applierId(status.getStatResumeId().getResumeMemId().getMemLoginId())
                 .applierName(status.getStatResumeId().getResumeMemId().getMemName())
-                .applierGender(status.getStatResumeId().getResumeMemId().getMemGender())
-                .applierAge(LocalDate.now().getYear() - status.getStatResumeId().getResumeMemId().getMemBirthDate().getYear())
                 .postTitle(status.getStatPostId().getPostTitle())
                 .postOccupation(status.getStatPostId().getPostOccCode().getOccName())
+                .postEndDate(status.getStatPostId().getPostEndDate())
                 .build();
 
         return applierListDTO;
+    }
+
+    default SendMailDTO entityToSendMailDTO(Status status){
+        SendMailDTO sendMailDTO = SendMailDTO.builder()
+                .statPass(status.getStatPass())
+                .applierEmail(status.getStatResumeId().getResumeMemEmail())
+                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .companyName(status.getStatPostId().getPostComId().getComName())
+                .postName(status.getStatPostId().getPostTitle())
+                .build();
+
+        return sendMailDTO;
+    }
+
+    default IntervieweeListDTO entityToIntervieweeListDTO(Status status){
+        IntervieweeListDTO intervieweeListDTO = IntervieweeListDTO.builder()
+                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .statPass(status.getStatPass())
+                .statId(status.getStatId())
+                .postOccupation(status.getStatPostId().getPostOccCode().getOccName())
+                .interviewPlace(status.getStatInterviewPlace())
+                .interviewDate(status.getStatInterviewDate())
+                .build();
+
+        return intervieweeListDTO;
+    }
+
+    default SendMailToIntervieweeDTO entityToSendMailToIntervieweeDTO(Status status){
+        SendMailToIntervieweeDTO sendMailToIntervieweeDTO = SendMailToIntervieweeDTO.builder()
+                .applierEmail(status.getStatResumeId().getResumeMemEmail())
+                .applierName(status.getStatResumeId().getResumeMemId().getMemName())
+                .companyName(status.getStatPostId().getPostComId().getComName())
+                .postName(status.getStatPostId().getPostTitle())
+                .interviewDate(status.getStatInterviewDate())
+                .interviewPlace(status.getStatInterviewPlace())
+                .build();
+
+        return sendMailToIntervieweeDTO;
     }
 }

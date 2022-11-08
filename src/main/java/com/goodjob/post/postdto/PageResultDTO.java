@@ -17,13 +17,17 @@ import java.util.stream.IntStream;
 public class PageResultDTO<EN,DTO> {
     private List<DTO> dtoList;
 
+
     // 총 페이지 번호
     private int totalPage;
 
+
     // 현재 페이지 번호
     private int page;
+
     // 목록 사이즈
     private  int size;
+
     // 시작 페이지 번호, 끝 페이지 번호
     private int start, end;
     // 조회된 총 데이터 수

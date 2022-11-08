@@ -38,4 +38,5 @@ public interface PostService extends EntityDtoMapper {
 
     // 오성훈 추가
     Optional<Post> findOne(Long postId);
+
 }
