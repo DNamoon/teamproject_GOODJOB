@@ -90,8 +90,8 @@ let postJS = {
         div3.classList.add("w-100","p-0","h-50","img-css");
         div3.setAttribute("onclick",`location.href="/post/readPost/${dto.id}"`)
         const img = document.createElement("img");
-        img.setAttribute("src","https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08");
-        img.classList.add("w-100","h-100","card-img-post");
+        img.setAttribute("src",`/post/file/${dto. attachmentFileName}`);
+        img.classList.add("w-100","h-100","card-img-post","img-thumbnail");
         div3.appendChild(img);
         const div4 = document.createElement("div");
         div4.classList.add("h-41", "align-self-auto","pt-3","m-0","card-body-css");
@@ -116,7 +116,7 @@ let postJS = {
         p5.innerHTML=`직종 | ${dto.occName}`;
         div4.appendChild(p5);
         const p6 = document.createElement("p");
-        p6.classList.add("card-dDay-post");
+        p6.classList.add("card-dDay-post","font-weight-bold");
         p6.innerHTML=`${dto.remainDay}`;
         div4.appendChild(p6);
 
@@ -320,18 +320,7 @@ let postInsertForm ={
                             const address2Dom = document.querySelector(".post-error-style-address2")
                             const salaryDom = document.querySelector(".post-error-style-salary")
                             const contentDom = document.querySelector(".post-error-style-content")
-                            // titleDom.innerHTML=""
-                            // occupationDom.innerHTML=""
-                            // recruitNumDom.innerHTML=""
-                            // genderDom.innerHTML=""
-                            // startDateDom.innerHTML=""
-                            // endDateDom.innerHTML=""
-                            // attachmentDom.innerHTML=""
-                            // zipcodeDom.innerHTML=""
-                            // address1Dom.innerHTML=""
-                            // address2Dom.innerHTML=""
-                            // salaryDom.innerHTML=""
-                            // contentDom.innerHTML=""
+
                             const reason = error.reason;
                             switch (error.field){
                                 case "postTitle":
@@ -442,10 +431,10 @@ let postInsertForm ={
             .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
 
     },
-    backToRedirectedFrom(redirectedFrom){
-        console.log(redirectedFrom);
-        location.href=`/post/${redirectedFrom}`;
-    },
+    // backToRedirectedFrom(redirectedFrom){
+    //     console.log(redirectedFrom);
+    //     location.href=`/post/${redirectedFrom}`;
+    // },
     redirectToRegisterPage(redirectedFrom){
         location.href=`/${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
     }
@@ -464,6 +453,7 @@ let postDetailViewWithMap = {
         console.log(dto.occName);
         postJS.insertPostListCard('changePostDiv',1,4,'count',dto.occName);
         _this.setRedirectToUpdatePage(_this.postDetailViewWithMap,dto.postId);
+        _this.setCarouselActive()
     },
     postDetailViewWithMap:"postDetailViewWithMap",
     redirectToUpdatePage(redirectedFrom, postId){
@@ -472,9 +462,16 @@ let postDetailViewWithMap = {
     setRedirectToUpdatePage(redirectedFrom, postId){
         const _this = this;
         const btn = document.querySelector(".post-read-side_bar-toModifyBtn");
-        btn.addEventListener("click",function (){
-            _this.redirectToUpdatePage(redirectedFrom,postId);
-        })
+        if(btn !==null){
+            btn.addEventListener("click",function (){
+                _this.redirectToUpdatePage(redirectedFrom,postId);
+            })
+        }
+    },
+    setCarouselActive(){
+        const dom = document.querySelector(".carousel-item");
+        console.log(dom);
+        dom.classList.add("active");
     }
 
 

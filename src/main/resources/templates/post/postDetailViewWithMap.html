@@ -1,39 +1,44 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <div class="container" style="height: 3rem;"></div>
         <div class="container">
             <div class="flex-row d-flex justify-content-center mt-3">
                 <div style="height: 30px;"></div>
                 <h3 class="text-center">채용공고 상세페이지</h3>
             </div>
-            <div class="col p-0 d-flex">
-                <div class="col-9 ps-0">
-                    <div class="ps-5">
-                        <div class="d-flex flex-row mt-2 ps-5 carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <th:block th:each="file:${dto.attachment}">
-                                    <!--                                <img alt="image" th:src="@{/post/file/{fileName}(fileName=${file.getName()}) }">-->
-                                    <div class="carousel-item active" style="width: 80rem; height: 30rem">
-                                        <img th:src="@{/post/file/{fileName}(fileName=${file.getName()}) }" class="d-block img-fluid" alt="...">
+            <div class="col p-0 d-flex justify-content-center">
+                <div class="col-9 ps-0 mt-5">
+
+<!--                    <div class="ps-5 mt-2">-->
+
+                        <div class="d-flex flex-row carousel slide justify-content-center" id="carouselExampleIndicators" data-bs-ride="carousel">
+
+                            <div class="carousel-inner w-100 d-flex">
+
+                                <th:block th:each="fileName:${dto.attachment}">
+                                    <div class="carousel-item" >
+<!--                                        style="width: 50rem; height: 30rem"-->
+                                        <div class="p-0 m-0 embed-responsive embed-responsive-4by3 w-100 h-100 " >
+                                            <img th:src="@{/post/file/{fileName}(fileName=${fileName})}" class="d-block embed-responsive-item img-fluid h-100 w-100" alt="...">
+                                        </div>
                                     </div>
                                 </th:block>
                             </div>
-                            <div class="carousel-indicators">
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
 
-                        <div class="d-flex flex-row mt-2 ps-5">
+                        <div class="d-flex flex-row mt-2">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
-                                    <div class="col-12">
+                                    <div class="col-12 mt-3">
                                         <div>
                                             <div class="col-12 p-0">
                                                 <h4> [[${dto.title}]] </h4>
@@ -67,7 +72,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row mt-2 ps-5">
+                        <div class="d-flex flex-row mt-2">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
@@ -80,7 +85,7 @@
                             </div>
                         </div>
                         <hr class="mt-3 mb-3 border-top">
-                        <div class="d-flex flex-row mt-2 ps-5">
+                        <div class="d-flex flex-row mt-2">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
@@ -102,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-row ps-5">
+                        <div class="d-flex flex-row">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
@@ -119,7 +124,7 @@
                             </div>
                         </div>
                         <hr class="border-top">
-                        <div class="d-flex flex-row ps-5">
+                        <div class="d-flex flex-row">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
@@ -146,7 +151,7 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-row ps-5">
+                        <div class="d-flex flex-row">
                             <div class="d-flex col flex-row">
                                 <div class="d-flex flex-fill">
                                     <div class="col-12">
@@ -167,11 +172,11 @@
                         </div>
 
 
-                    </div>
+<!--                    </div>-->
                 </div>
 
 
-                <div class="col-3 p-0 justify-content-center">
+                <div class="col-3 mt-5 p-0 justify-content-center">
                     <div class="" style="position: sticky; top: 4rem">
                         <div class="card">
                             <div class="card-body">
@@ -238,9 +243,9 @@
 
             </div>
 
-            <div class="post-wrapper ps-5 mt-5">
-                <div class="ps-5">
-                    <div class="col-12">
+            <div class="post-wrappermt-5">
+                <div >
+                    <div class="col-12 mt-5">
                         <div class="col-3">
                             <h4>추천공고</h4>
                         </div>

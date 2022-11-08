@@ -96,6 +96,8 @@ public class postServiceImpl implements PostService {
         Address address = new Address(HtmlUtils.htmlEscape(postInsertDTO.getPostcode()), HtmlUtils.htmlEscape(postInsertDTO.getPostAddress()), HtmlUtils.htmlEscape(postInsertDTO.getPostDetailAddress()),HtmlUtils.htmlEscape(postInsertDTO.getEtc()+""));
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
+        log.info("=================================");
+        postInsertDTO.getPostImg().forEach(log::info);
         List<UploadFile> uploadFiles =  fileService.storeFiles(postInsertDTO.getPostImg());
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && salary.isPresent()){
@@ -107,7 +109,11 @@ public class postServiceImpl implements PostService {
     @Override
     public PostDetailsDTO readPost(Long postId) throws IOException {
         Optional<Post> result = postRepository.findById(postId);
-        List<File> fileList = fileService.getFiles(result.get().getPostImg());
+
+        List<String> fileList = fileService.getFiles(result.get().getPostImg());
+        if(fileList.isEmpty()){
+            fileList.add("no_image.png");
+        }
         // 게시글 조회 후 조회수를 +1 한다.
         postRepository.increasePostCount(postId);
         return result.map((Post post) -> entityToDtoForRead(post,fileList)).orElse(null);

@@ -24,7 +24,7 @@ public class PostDetailsDTO {
     private String postAddress1; // 주소1
     private String postAddress2; // 주소2
     private String postGender; // 성별
-    private List<File> attachment; // 첨부파일
+    private List<String> attachment; // 첨부파일
 
     private String occName; // 공고 직종명
     private String comName; // 공고 회사명

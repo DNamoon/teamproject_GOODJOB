@@ -64,17 +64,17 @@ public class FileService implements WebMvcConfigurer {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
-    public List<File> getFiles(List<UploadFile> uploadFileList) throws IOException {
+    public List<String> getFiles(List<UploadFile> uploadFileList) throws IOException {
         Path fileStorageLocation = Paths.get(fileDir).toAbsolutePath().normalize();
         log.info("fileStorageLocation :"+fileStorageLocation);
-        List<File> fileList = new ArrayList<>();
+        List<String> fileList = new ArrayList<>();
         for( UploadFile uploadFile: uploadFileList){
             Path filePath = fileStorageLocation.resolve(uploadFile.getStoreFileName()).normalize();
             File file = new File(filePath.toAbsolutePath().toString());
             log.info(file.getName());
             log.info(file.getAbsolutePath());
             log.info(file);
-            fileList.add(file);
+            fileList.add(file.getName());
         }
 
         return fileList;

@@ -52,10 +52,6 @@ public class Post {
     @Column
     private String postGender; // 성별
 
-//    @ManyToOne
-//    @JoinColumn(name = "regCode")
-//    private Region postRegion;
-
     @ManyToOne
     @JoinColumn(name = "salaryId")
     private PostSalary postSalary; // 연봉
@@ -74,23 +70,5 @@ public class Post {
     @AttributeOverride(name = "etc", column = @Column(name = "post_etc"))
     private Address address;
 
-//    private String postAddress; // 주소1
 
-//    private String postDetailAddress; // 주소2
-
-
-
-    // 10.7 더미 데이터 생성을 위한 임시 생성자. By.OH
-    public Post(String postTitle, Occupation postOccCode, Company postComId, String postContent, String postRecruitNum, Date postStartDate, Date postEndDate, String postGender, List<UploadFile> postImg, PostSalary postSalary) {
-        this.postTitle = postTitle;
-        this.postOccCode = postOccCode;
-        this.postComId = postComId;
-        this.postContent = postContent;
-        this.postRecruitNum = postRecruitNum;
-        this.postStartDate = postStartDate;
-        this.postEndDate = postEndDate;
-        this.postGender = postGender;
-        this.postImg = postImg;
-        this.postSalary = postSalary;
-    }
 }

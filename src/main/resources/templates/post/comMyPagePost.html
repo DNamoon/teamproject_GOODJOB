@@ -103,9 +103,9 @@
                     <th:block th:if="${result.totalCount}!=0">
                         <th:block th:each="dto:${result.dtoList}">
                             <tr class="row comMyPage-post-table_row p-0 mt-3 align-items-center" >
-                                <td class="col-lg-2 p-2">
+                                <td class="col-lg-2 p-2 embed-responsive embed-responsive-4by3">
                                     <figure>
-                                        <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="img-fluid d-block comMypage-post-img">
+                                        <img th:src="@{/post/file/{fileName}(fileName=${dto.attachmentFileName})}" class="img-fluid d-block comMypage-post-img embed-responsive-item">
                                     </figure>
 
                                 </td>

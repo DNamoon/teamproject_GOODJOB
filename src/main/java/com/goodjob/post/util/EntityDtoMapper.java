@@ -47,7 +47,7 @@ public interface EntityDtoMapper {
         }
 
     }
-    default PostDetailsDTO entityToDtoForRead(Post post, List<File> fileList){
+    default PostDetailsDTO entityToDtoForRead(Post post, List<String> fileList){
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         String remainDay = String.valueOf(difDay/ (24*60*60));
@@ -73,6 +73,9 @@ public interface EntityDtoMapper {
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         String remainDay = String.valueOf(difDay/ (24*60*60));
+        post.getPostImg().forEach(e-> System.out.println("파일이름"+e.getStoreFileName()));
+        String attachmentFileName = post.getPostImg().isEmpty()? "no_image.png": post.getPostImg().get(0).getStoreFileName();
+//        String fileName = post.getPostImg().get(0).getStoreFileName();
         remainDay = remainDay.equals("0")? "오늘 종료": "D - "+remainDay;
         return PostCardDTO.builder()
                 .id(post.getPostId())
@@ -80,6 +83,7 @@ public interface EntityDtoMapper {
                 .regionName(post.getAddress().getAddress1())
                 .remainDay(remainDay)
                 .salaryRange(post.getPostSalary().getSalaryRange())
+                .attachmentFileName(attachmentFileName)
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
@@ -94,6 +98,7 @@ public interface EntityDtoMapper {
         long difDay2 = (now.getTime()-post.getPostStartDate().getTime())/1000;
         String endDateMinusNow = String.valueOf(difDay/ (24*60*60)); // 0보다 크면 모집 종료 전
         String startDateMinusNow = String.valueOf(difDay2/(24*60*60)); // 0보다 작으면 모집 시작전
+        String attachmentFileName = post.getPostImg().isEmpty()? "no_image.png": post.getPostImg().get(0).getStoreFileName();
         String remainDay;
         if(endDateMinusNow.equals("0")){
             remainDay = "(오늘) 모집 종료";
@@ -116,6 +121,7 @@ public interface EntityDtoMapper {
                 .gender(HtmlUtils.htmlUnescape(post.getPostGender()))
                 .address(HtmlUtils.htmlUnescape(post.getAddress().getAddress1()))
                 .count(post.getPostReadCount())
+                .attachmentFileName(attachmentFileName)
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
