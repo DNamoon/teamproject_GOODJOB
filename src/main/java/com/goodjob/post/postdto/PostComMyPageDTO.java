@@ -18,6 +18,7 @@ public class PostComMyPageDTO {
     private String gender; // 공고 모집 성별 "남자", "여자", "성별무관"
     private String address; // 공고 근무처
     private int count; // 공고 조회수
+    private String attachmentFileName; // 첨부파일 파일 이름
 
     private String region; // 공고 근무처
     private String occName; // 공고 직종명

@@ -3,12 +3,17 @@ package com.goodjob.post.fileupload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -31,7 +36,6 @@ public class FileService implements WebMvcConfigurer {
         List<UploadFile> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                log.info("multipartFile :"+multipartFile);
                 storeFileResult.add(storeFile(multipartFile));
             }
         }
@@ -43,26 +47,49 @@ public class FileService implements WebMvcConfigurer {
             return null;
         }
         String originalFilename = multipartFile.getOriginalFilename();
-        log.info("originalFilename :"+originalFilename);
         String storeFileName = createStoreFileName(originalFilename);
-        log.info("storeFileName :"+storeFileName);
 //        multipartFile.transferTo(new File(getFullPath(storeFileName)));
         Path path = Paths.get(getFullPath(storeFileName)).toAbsolutePath();
-        log.info("path :"+path);
         multipartFile.transferTo(path.toFile());
         return new UploadFile(originalFilename, storeFileName);
     }
 
     public String createStoreFileName(String originalFilename) {
         String ext = extractExt(originalFilename);
-        log.info("ext :"+ext);
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + ext;
     }
 
     private String extractExt(String originalFilename) {
         int pos = originalFilename.lastIndexOf(".");
-        log.info("pos :"+pos);
         return originalFilename.substring(pos + 1);
+    }
+    public List<String> getFiles(List<UploadFile> uploadFileList) throws IOException {
+        Path fileStorageLocation = Paths.get(fileDir).toAbsolutePath().normalize();
+        log.info("fileStorageLocation :"+fileStorageLocation);
+        List<String> fileList = new ArrayList<>();
+        for( UploadFile uploadFile: uploadFileList){
+            Path filePath = fileStorageLocation.resolve(uploadFile.getStoreFileName()).normalize();
+            File file = new File(filePath.toAbsolutePath().toString());
+            log.info(file.getName());
+            log.info(file.getAbsolutePath());
+            log.info(file);
+            fileList.add(file.getName());
+        }
+
+        return fileList;
+    }
+    public ResponseEntity<byte[]> getFile(String fileName) throws IOException {
+        log.info("fileName : "+fileName);
+        ResponseEntity<byte[]> result = null;
+        File file = new File(fileDir+fileName);
+        log.info("file.getAbsoluteFile() : "+file.getAbsoluteFile());
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("Content-Type", Files.probeContentType(file.toPath()));
+        log.info("headers : "+headers);
+        result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),headers, HttpStatus.OK);
+        return result;
+
     }
 }
