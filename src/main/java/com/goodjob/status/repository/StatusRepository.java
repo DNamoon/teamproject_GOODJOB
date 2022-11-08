@@ -36,7 +36,7 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(String loginId, String pass);
     int countStatusByStatResumeId_ResumeId(Long resumeId);
     int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPostId_PostId(String loginId, Long postId);
-    int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(String loginId, String pass);
+    int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(String loginId, String pass);
     int countStatusByStatResumeId_ResumeMemId_MemLoginId(String loginId);
     @Transactional
     @Modifying

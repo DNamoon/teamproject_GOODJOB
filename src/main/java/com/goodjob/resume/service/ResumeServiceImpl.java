@@ -95,8 +95,8 @@ public class ResumeServiceImpl implements ResumeService {
         List<Integer> menuList = new ArrayList<>();
         menuList.add(resumeRepository.countResumeByResumeMemId_MemLoginIdAndDeleted(loginId, false));
         menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginId(loginId));
-        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(loginId, "최종합격"));
-        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(loginId, "불합격"));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(loginId, "최종합격"));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(loginId, "불합격"));
         return menuList;
     }
 

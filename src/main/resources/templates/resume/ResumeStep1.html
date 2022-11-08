@@ -40,120 +40,91 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 200px;">
-                                        <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group">
-                                            <select class="form-select" id="startPhoneNum" name="memFirstPhoneNum"
-                                                    required>
-                                                <option th:value="${memberInfo.memFirstPhoneNum}">
-                                                    [[${memberInfo.memFirstPhoneNum}]] (기본정보)
-                                                </option>
-                                                <option value="010">010</option>
-                                                <option value="011">011</option>
-                                                <option value="070">070</option>
-                                            </select>
-                                        </div>
-                                        <label id="phoneNumValiDiv"></label>
-                                    </div>
-                                    <div class="col-mb-6" style="width: 5px;">
-                                        <label>&nbsp;</label>
-                                        -
-                                    </div>
-                                    <div class="col-md-6" style="width: 200px;">
-                                        <label>&nbsp;</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" placeholder="가운데 자리" type="text"
-                                                   th:value="${memberInfo.getMemMiddlePhoneNum()}"
-                                                   id="memMiddlePhoneNum"
-                                                   name="memMiddlePhoneNum"
-                                                   onfocusout="isFourNumber(document.getElementById('memMiddlePhoneNum'))"
-                                                   required>
-                                        </div>
-                                    </div>
-                                    <div class="col-mb-6" style="width: 5px;">
-                                        <label>&nbsp;</label>
-                                        -
-                                    </div>
-                                    <div class="col-md-6" style="width: 200px;">
-                                        <label>&nbsp;</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" placeholder="마지막 자리" type="text"
-                                                   th:value="${memberInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
-                                                   name="memLastPhoneNum"
-                                                   onfocusout="isFourNumber(document.getElementById('memLastPhoneNum'))"
-                                                   required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" style="width: 300px; margin-left: 50px;">
-                                        <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="memGender" value="남"
-                                                       th:checked="${memberInfo.memGender eq '남'}" id="genderM">
-                                                <label class="form-check-label">남자</label>
-                                            </div>&nbsp;&nbsp;
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="memGender" value="여"
-                                                       th:checked="${memberInfo.memGender eq '여'}" id="genderF">
-                                                <label class="form-check-label">여자</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="card-body">
+                                <label>이메일</label>
+                                <label style="float: right;color: red;">이메일을 작성하지 않을 시 합격 연락에 제한이 있을 수 있습니다.</label>
+                                <div class="input-group mb-4">
+                                    <input class="form-control border" type="text" th:value="${memberInfo.memFirstEmail}"
+                                           name="memFirstEmail" style="width:45px;">&nbsp;@ &nbsp;
+                                    <select class="form-select border" id="endEmail" name="memLastEmail">
+                                        <option th:value="${memberInfo.memLastEmail}">[[${memberInfo.memLastEmail}]]
+                                            (기본정보)
+                                        </option>
+                                        <option value="naver.com">naver.com</option>
+                                        <option value="gmail.com">gmail.com</option>
+                                        <option value="daum.net">daum.net</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row" style="float: inline-start;">
-                                <div class="col-md-6">
-                                    <label>이메일</label>
+                                <div class="col-md-6" >
+                                    <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                     <div class="input-group mb-4">
-                                        <input class="form-control" type="text" th:value="${memberInfo.memFirstEmail}"
-                                               name="memFirstEmail">
-                                    </div>
-                                </div>
-                                <div class="col-mb-2" style="width: 5px;">
-                                    <label>&nbsp;</label>
-                                    @
-                                </div>
-                                &nbsp;&nbsp;
-                                <div class="col-md-5" style="width: 460px">
-                                    <label style="float: right;color: red;">이메일을 작성하지 않을 시 합격 연락에 제한이 있을 수 있습니다.</label>
-                                    <div class="input-group mb-4" style="margin-top: 33px">
-                                        <select class="form-select" id="endEmail" name="memLastEmail">
-                                            <option th:value="${memberInfo.memLastEmail}">[[${memberInfo.memLastEmail}]]
-                                                (기본정보)
+                                        <select class="form-select border" id="startPhoneNum" name="memFirstPhoneNum" style="width: 100px;"
+                                                required>
+                                            <option th:value="${memberInfo.memFirstPhoneNum}">
+                                                [[${memberInfo.memFirstPhoneNum}]] (기본정보)
                                             </option>
-                                            <option value="naver.com">naver.com</option>
-                                            <option value="gmail.com">gmail.com</option>
-                                            <option value="daum.net">daum.net</option>
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="070">070</option>
                                         </select>
+                                        <label id="phoneNumValiDiv"></label>
+                                        &nbsp;&nbsp;-&nbsp;&nbsp;
+                                        <input class="form-control border" placeholder="가운데 자리" type="text" style="width: 100px;"
+                                               th:value="${memberInfo.getMemMiddlePhoneNum()}"
+                                               id="memMiddlePhoneNum"
+                                               name="memMiddlePhoneNum"
+                                               onfocusout="isFourNumber(document.getElementById('memMiddlePhoneNum'))"
+                                               required>
+                                        &nbsp; &nbsp;-&nbsp;&nbsp;
+                                        <input class="form-control border" placeholder="마지막 자리" type="text" style="width: 100px;"
+                                               th:value="${memberInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
+                                               name="memLastPhoneNum"
+                                               onfocusout="isFourNumber(document.getElementById('memLastPhoneNum'))"
+                                               required>
                                     </div>
                                 </div>
-                                <div class="row" style="float: inline-start;padding-right: 0px;">
-                                    <div class="col-md-6" style="width: 500px">
-                                        <label>주소</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" type="text" id="userAddress"
-                                                   onclick="execPostCode()" th:value="${memberInfo.memFirstAddress}"
-                                                   readonly
-                                                   name="memFirstAddress">
+                                <div class="col-md-6">
+                                    <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                    <div class="input-group">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="memGender" value="남"
+                                                   th:checked="${memberInfo.memGender eq '남'}" id="genderM">
+                                            <label class="form-check-label">남자</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="memGender" value="여"
+                                                   th:checked="${memberInfo.memGender eq '여'}" id="genderF">
+                                            <label class="form-check-label">여자</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>&nbsp;</label>
-                                        <button type="button" class="btn bg-gradient-dark w-100 findAddress"
-                                                onclick="execPostCode()">주소찾기
-                                        </button>
+                                </div>
+
+                                <div class="col-md-6" >
+                                    <label>주소</label>
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" id="userAddress"
+                                               onclick="execPostCode()" th:value="${memberInfo.memFirstAddress}"
+                                               readonly
+                                               name="memFirstAddress">
                                     </div>
-                                    <div class="col-md-5" style="width: 310px; padding-right: 0px;">
-                                        <label>상세주소</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" type="text" id="userDetailAddress"
-                                                   th:value="${memberInfo.memLastAddress}" name="memLastAddress">
-                                        </div>
+                                </div>
+                                <div class="col-md-2" style="margin-left: 0px;">
+                                    <label>&nbsp;</label>
+                                    <button type="button" class="btn bg-gradient-dark w-100 findAddress"
+                                            onclick="execPostCode()">주소찾기
+                                    </button>
+                                </div>
+                                <div class="col-md-4" >
+                                    <label>상세주소</label>
+                                    <div class="input-group mb-4">
+                                        <input class="form-control" type="text" id="userDetailAddress"
+                                               th:value="${memberInfo.memLastAddress}" name="memLastAddress">
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- 학적사항 -->
                             <div style="height: 30px;"></div>
