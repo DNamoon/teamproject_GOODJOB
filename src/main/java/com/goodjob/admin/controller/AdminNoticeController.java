@@ -74,7 +74,7 @@ public class AdminNoticeController {
                 .build();
 
         noticeService.insertNotice(notice);
-        return "redirect:/admin";
+        return "redirect:/admin/notice/"+noticeId+"/details";
     }
 
     @GetMapping("/{noticeId}/details")

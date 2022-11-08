@@ -93,7 +93,7 @@ public class CustomerInquiryServiceImpl implements CustomerInquiryService {
 
     @Override
     public Page<CustomerInquiryPost> findAllByWriter(Pageable pageable, String loginId) {
-        return customerInquiryPostRepository.findAllByInquiryPostWriter(pageable, loginId);
+        return customerInquiryPostRepository.findAllByInquiryPostWriterContaining(pageable, loginId);
     }
 
     @Override
