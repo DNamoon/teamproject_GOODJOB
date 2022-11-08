@@ -186,7 +186,7 @@ let comMyPagePost = {
     updatePost(postId){
         location.href=`/post/updatePost/${postId}`;
     },
-    showApplierList(postId){   //박채원 22.11.01 추가
+    showApplierList(postId,postTitle){   //박채원 22.11.01 추가
         location.href=`/com/myPageApplier/${postId}`;
     }
 
