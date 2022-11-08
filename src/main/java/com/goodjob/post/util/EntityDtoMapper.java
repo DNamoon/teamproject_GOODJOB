@@ -9,6 +9,7 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.salary.PostSalary;
+import org.springframework.web.util.HtmlUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,15 +52,15 @@ public interface EntityDtoMapper {
         remainDay = "D - "+remainDay;
         return PostDetailsDTO.builder()
                 .postId(post.getPostId())
-                .title(post.getPostTitle())
-                .content(post.getPostContent())
+                .title(HtmlUtils.htmlUnescape(post.getPostTitle()))
+                .content(HtmlUtils.htmlUnescape(post.getPostContent()))
                 .startDate(post.getPostStartDate().toString())
-                .endDate(post.getPostStartDate().toString())
+                .endDate(post.getPostEndDate().toString())
                 .remainDay(remainDay)
-                .regionName(post.getAddress().getAddress1())
                 .salary(post.getPostSalary().getSalaryRange())
-                .postAddress(post.getAddress().getAddress1())
-                .postAddress2(post.getAddress().getAddress2())
+                .recruitNum(HtmlUtils.htmlUnescape(post.getPostRecruitNum()))
+                .postAddress1(HtmlUtils.htmlUnescape(post.getAddress().getAddress1()))
+                .postAddress2(HtmlUtils.htmlUnescape(post.getAddress().getAddress2()))
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
                 .build();
@@ -71,7 +72,7 @@ public interface EntityDtoMapper {
         remainDay = remainDay.equals("0")? "오늘 종료": "D - "+remainDay;
         return PostCardDTO.builder()
                 .id(post.getPostId())
-                .title(post.getPostTitle())
+                .title(HtmlUtils.htmlUnescape(post.getPostTitle()))
                 .regionName(post.getAddress().getAddress1())
                 .remainDay(remainDay)
                 .salaryRange(post.getPostSalary().getSalaryRange())
@@ -103,13 +104,13 @@ public interface EntityDtoMapper {
         String endDate = endDateArr[0]+"년 "+endDateArr[1]+"월 "+endDateArr[2]+"일"+remainDay;
         return PostComMyPageDTO.builder()
                 .postId(post.getPostId())
-                .title(post.getPostTitle())
+                .title(HtmlUtils.htmlUnescape(post.getPostTitle()))
                 .salaryRange(post.getPostSalary().getSalaryRange())
                 .startDate(startDate)
                 .endDate(endDate)
-                .recruitNum(post.getPostRecruitNum())
-                .gender(post.getPostGender())
-                .address(post.getAddress().getAddress1())
+                .recruitNum(HtmlUtils.htmlUnescape(post.getPostRecruitNum()))
+                .gender(HtmlUtils.htmlUnescape(post.getPostGender()))
+                .address(HtmlUtils.htmlUnescape(post.getAddress().getAddress1()))
                 .count(post.getPostReadCount())
                 .occName(post.getPostOccCode().getOccName())
                 .comName(post.getPostComId().getComName())
@@ -119,19 +120,19 @@ public interface EntityDtoMapper {
     default PostInsertDTO entityToDtoForUpdate(Post post){
         return PostInsertDTO.builder()
                 .id(post.getPostId())
-                .postTitle(post.getPostTitle())
+                .postTitle(HtmlUtils.htmlEscape(post.getPostTitle()))
                 .postOccCode(post.getPostOccCode().getOccId())
-                .postRecruitNum(post.getPostRecruitNum())
-                .postGender(post.getPostGender())
+                .postRecruitNum(HtmlUtils.htmlEscape(post.getPostRecruitNum()))
+                .postGender(HtmlUtils.htmlEscape(post.getPostGender()))
                 .postStartDate(post.getPostStartDate())
                 .postEndDate(post.getPostEndDate())
 //                .postImg(post.getPostImg())
-                .postAddress(post.getAddress().getAddress1())
-                .postDetailAddress(post.getAddress().getAddress2())
+                .postAddress(HtmlUtils.htmlEscape(post.getAddress().getAddress1()))
+                .postDetailAddress(HtmlUtils.htmlEscape(post.getAddress().getAddress2()))
                 .postcode(post.getAddress().getZipCode())
-                .etc(post.getAddress().getEtc())
+                .etc(HtmlUtils.htmlEscape(post.getAddress().getEtc()))
                 .postSalaryId(post.getPostSalary().getSalaryId())
-                .postContent(post.getPostContent())
+                .postContent(HtmlUtils.htmlEscape(post.getPostContent()))
                 .build();
     }
     default Post dtoToEntityForInsert(PostInsertDTO postInsertDTO, Occupation occ, Company com, PostSalary postSalary, List<UploadFile> uploadFileList,Address address){
@@ -139,12 +140,12 @@ public interface EntityDtoMapper {
         if(postInsertDTO.getId() != null){
             return Post.builder()
                     .postId(postInsertDTO.getId())
-                    .postTitle(postInsertDTO.getPostTitle())
-                    .postContent(postInsertDTO.getPostContent())
-                    .postRecruitNum(postInsertDTO.getPostRecruitNum())
+                    .postTitle(HtmlUtils.htmlEscape(postInsertDTO.getPostTitle()))
+                    .postContent(HtmlUtils.htmlEscape(postInsertDTO.getPostContent()))
+                    .postRecruitNum(HtmlUtils.htmlEscape(postInsertDTO.getPostRecruitNum()))
                     .postStartDate(postInsertDTO.getPostStartDate())
                     .postEndDate(postInsertDTO.getPostEndDate())
-                    .postGender(postInsertDTO.getPostGender())
+                    .postGender(HtmlUtils.htmlEscape(postInsertDTO.getPostGender()))
                     .postSalary(postSalary)
                     .postOccCode(occ)
                     .postComId(com)
@@ -156,12 +157,12 @@ public interface EntityDtoMapper {
         } else {
 
             return Post.builder()
-                    .postTitle(postInsertDTO.getPostTitle())
-                    .postContent(postInsertDTO.getPostContent())
-                    .postRecruitNum(postInsertDTO.getPostRecruitNum())
+                    .postTitle(HtmlUtils.htmlEscape(postInsertDTO.getPostTitle()))
+                    .postContent(HtmlUtils.htmlEscape(postInsertDTO.getPostContent()))
+                    .postRecruitNum(HtmlUtils.htmlEscape(postInsertDTO.getPostRecruitNum()))
                     .postStartDate(postInsertDTO.getPostStartDate())
                     .postEndDate(postInsertDTO.getPostEndDate())
-                    .postGender(postInsertDTO.getPostGender())
+                    .postGender(HtmlUtils.htmlEscape(postInsertDTO.getPostGender()))
                     .postSalary(postSalary)
                     .postOccCode(occ)
                     .postComId(com)

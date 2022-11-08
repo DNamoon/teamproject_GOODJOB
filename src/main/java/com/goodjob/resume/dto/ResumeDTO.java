@@ -21,6 +21,7 @@ public class ResumeDTO {
     private String memFirstEmail;
     private String memLastEmail;
     private String memFirstPhoneNum;
+    private boolean deleted;
 
     @NotNull(message = "전화번호를 입력해 주세요")
     @Pattern(regexp = "/\\d{4}/", message = "숫자 4자리로 입력해 주세요")

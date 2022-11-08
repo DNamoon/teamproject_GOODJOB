@@ -34,7 +34,7 @@ public class PageRequestDTO {
     private String sort;
     // 직종, 연봉, 지역 추가 필터링 조건
     private String filterOccupation;
-    private String filterRegion;
+//    private String filterRegion;
     private String filterAddress;
     private String filterSalary;
     // "active"(기본)은 현재 모집중인 공고 리스트만 가져오는 조건을 추가한다.
@@ -49,6 +49,7 @@ public class PageRequestDTO {
         this.size=10;
         this.sort="new";
         this.outOfDateState="active";
+        this.type="titleCompanyName";
     }
     public Pageable getPageable(Sort sort){
 

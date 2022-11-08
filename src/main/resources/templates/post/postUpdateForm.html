@@ -7,7 +7,7 @@
                 <div class="flex-row d-flex justify-content-center mt-3">
                     <h3 class="text-center">채용공고 수정</h3>
                 </div>
-                <form th:action="@{/post/savePost}" th:method="post" enctype="multipart/form-data">
+                <form th:action="@{/post/savePost}" id="savePostForm" th:method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" th:value="${dto.id}">
                     <div class="d-flex flex-row mt-2 px-5">
                         <div class="d-flex col flex-row">
@@ -16,6 +16,7 @@
                                     <label class="m-1" for="postTitle">공고제목</label>
                                     <input type="text" class="flex-fill form-control input-group w-90"
                                            id="postTitle" th:value="${dto.postTitle}" name="postTitle">
+                                    <label class="post-error-style-title post-error-style"></label>
                                 </div>
                             </div>
                         </div>
@@ -66,11 +67,12 @@
                                         <select type="input" name="postOccCode"
                                                 class="form-select form-select-sm border-radius-section border-2 w-80"
                                                 id="inputGroupSelect02" required>
-                                            <option selected>업직종</option>
+                                            <option selected th:value=0>업직종</option>
                                             <th:block th:each="occ : ${occList}">
                                                 <option th:selected="${occ.occId == dto.postOccCode}" th:value="${occ.occId}">[[${occ.occName}]]</option>
                                             </th:block>
                                         </select>
+                                        <label class="post-error-style-occupation post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -85,6 +87,7 @@
                                         <label class="m-1" for="postRecruitNum">모집인원</label>
                                         <input type="text" class="flex-fill form-control input-group"
                                                id="postRecruitNum" th:value="${dto.postRecruitNum}" name="postRecruitNum">
+                                        <label class="post-error-style-recruit_number post-error-style"></label>
                                     </div>
                                     <div class="col-4 p-0">
                                         <select type="input" style="margin-top: 1.8rem" name="postGender"
@@ -95,6 +98,7 @@
                                             <option value="여자" th:selected="${dto.postGender.equals('여자')}">여자</option>
 
                                         </select>
+                                        <label class="post-error-style-gender post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -112,6 +116,7 @@
                                                         <input type="date"
                                                                class="form-control flex-fill input-group w-90"
                                                                id="postStartDate" th:value="${dto.postStartDate}" name="postStartDate">
+                                                        <label class="post-error-style-start_date post-error-style"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -124,6 +129,7 @@
                                                         <input type="date"
                                                                class="form-control flex-fill input-group w-90"
                                                                id="postEndDate" th:value="${dto.postEndDate}" name="postEndDate">
+                                                        <label class="post-error-style-end_date post-error-style"></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,6 +150,7 @@
                                         <label class="m-1" for="postImg">파일첨부</label>
                                         <input type="file" id="postImg" name="postImg" multiple
                                                class="flex-fill form-control w-80">
+                                        <label class="post-error-style-attachment post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -157,8 +164,9 @@
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">우편번호</label>
-                                        <input type="text" class="flex-fill input-group w-100 form-control"
-                                               id="sample6_postcode" th:value="${dto.getPostcode()}" placeholder="우편번호" readonly>
+                                        <input type="text" class="flex-fill input-group w-100 form-control" name="postcode"
+                                               id="postcode" th:value="${dto.getPostcode()}" placeholder="우편번호" readonly>
+                                        <label class="post-error-style-zipcode post-error-style"></label>
                                     </div>
                                     <div class="flex-row d-flex">
                                         <div class="flex-fill">
@@ -180,8 +188,10 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">주소</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_address"  readonly th:value="${dto.postAddress}"
+                                               name="postAddress"
+                                               id="postAddress"  readonly th:value="${dto.postAddress}"
                                                placeholder="상세주소" required>
+                                        <label class="post-error-style-address1 post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -190,8 +200,9 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">참고항목</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_extraAddress" th:value="${dto.getEtc()}"
+                                               id="etc" th:value="${dto.getEtc()}"
                                                placeholder="참고항목">
+                                        <label class="post-error-style-etc post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -205,12 +216,12 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="companyName">상세주소</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="sample6_detailAddress" name="postDetailAddress" th:value="${dto.postDetailAddress}"
+                                               id="postDetailAddress" name="postDetailAddress" th:value="${dto.postDetailAddress}"
                                                placeholder="상세주소" required>
+                                        <label class="post-error-style-address2 post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="postAddress" id="postAddress">
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
@@ -218,13 +229,14 @@
                                         <select type="input" id="postSalary"
                                                 class="form-select form-select-sm border-radius-section border-2 w-80"
                                                 required name="postSalaryId">
-                                            <option selected>연봉</option>
+                                            <option th:value=0 selected>연봉</option>
                                             <th:block th:each="postSalary : ${salaryList}">
                                                 <option th:value="${postSalary.salaryId}" th:selected="${postSalary.salaryId == dto.postSalaryId}">
                                                     [[${postSalary.salaryRange}]]
                                                 </option>
                                             </th:block>
                                         </select>
+                                        <label class="post-error-style-salary post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -240,6 +252,7 @@
                                         <textarea type="text" style="resize: none; min-height: 10rem" id="postContent"
                                                   class="flex-fill form-control input-group w-90"
                                                   name="postContent">[[${dto.postContent}]]</textarea>
+                                        <label class="post-error-style-content post-error-style"></label>
                                     </div>
                                 </div>
                             </div>
@@ -251,8 +264,7 @@
                     <div class="d-flex flex-row">
                         <div class="d-flex flex-fill">
                             <div class="d-flex flex-fill justify-content-center">
-                                <input type="submit" class="btn bg-gradient-dark m-2" value="작성">
-                                <!--                                <input type="button" class="btn bg-gradient-dark m-2 post-insertForm-toComMyPost" value="목록">-->
+                                <input type="submit" id="saveBtn" class="btn bg-gradient-dark m-2" value="작성">
                                 <input type="button" class="btn bg-gradient-dark m-2" th:onclick="|location.href='@{/post/comMyPagePost}'|" value="목록">
 
                             </div>
@@ -336,24 +348,24 @@
                                 extraAddr = ' (' + extraAddr + ')';
                             }
                             // 조합된 참고항목을 해당 필드에 넣는다.
-                            document.getElementById("sample6_extraAddress").value = extraAddr;
+                            document.getElementById("postAddress").value = extraAddr;
 
                         } else {
-                            document.getElementById("sample6_extraAddress").value = '';
+                            document.getElementById("postAddress").value = '';
                         }
 
                         // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                        let postcode = document.getElementById('sample6_postcode').value = data.zonecode;
-                        let address = document.getElementById("sample6_address").value = addr;
-                        let extraAddress = document.getElementById("sample6_extraAddress").value;
+                        let postcode = document.getElementById('postcode').value = data.zonecode;
+                        let address = document.getElementById("postAddress").value = addr;
+                        let extraAddress = document.getElementById("postDetailAddress").value;
                         // 커서를 상세주소 필드로 이동한다.
-                        document.getElementById("sample6_detailAddress").focus();
-                        document.getElementById("postAddress").value = address + extraAddress
+                        document.getElementById("postDetailAddress").focus();
+                        // document.getElementById("postAddress").value = address + extraAddress
                         // document.getElementById("postAddress").value = '(' + postcode + ')' + address + extraAddress
                     }
                 }).open();
             }
-
+            postUpdateForm.init();
         </script>
 
 

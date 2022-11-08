@@ -4,12 +4,15 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.service.MailService;
 import com.goodjob.member.service.MemberService;
+import com.goodjob.status.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -29,6 +32,7 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final StatusService statusService;
 
     @GetMapping("/signUp")
     public String signUpForm(HttpServletRequest request, Model model, MemberDTO memberDTO) {
@@ -40,10 +44,14 @@ public class MemberController {
 
     //ID 중복확인
     @ResponseBody
-    @RequestMapping(value="/checkId",method = RequestMethod.GET)
-    public Long checkIdDuplication(@RequestParam("id") String id) {
-        Long result = memberService.countByMemLoginId(id);
-        return result;
+    @RequestMapping(value="/checkId",method = RequestMethod.POST)
+    public int checkIdDuplication(@RequestParam("id") String id) {
+        int result = memberService.checkId2(id);
+            if(result != 0) {
+                return 1;	// 중복 아이디가 존재
+            } else {
+                return 2;	// 중복 아이디 x
+            }
     }
 
     //email 중복확인
@@ -52,11 +60,13 @@ public class MemberController {
     public String checkEmailDuplication(@RequestParam("email") String email) {
         String result = memberService.checkEmail(email);
         return result;
+
     }
 
     //회원가입
     @RequestMapping(value="/signUp",method = RequestMethod.POST)
-    public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result) {
+    public String signUp(@Valid @ModelAttribute(name = "memberDTO") MemberDTO memberDTO , BindingResult result, RedirectAttributes redirectAttributes) {
+
         if(result.hasErrors()){
             return "member/signup";
             }
@@ -81,11 +91,12 @@ public class MemberController {
         memberDTO.setPw(passwordEncoder.encode(memberDTO.getPw()));
         Member mem = memberDTO.toEntity();
         memberService.register(mem);
+        redirectAttributes.addAttribute("param", "1");
         return "redirect:/";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request) {
+    public String login(@ModelAttribute(name = "memberDTO") MemberDTO memberDTO, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         Optional<Member> mem = memberService.loginIdCheck(memberDTO.getLoginId());
 
         if (mem.isPresent()) {  // id null 체크
@@ -97,6 +108,12 @@ public class MemberController {
                     HttpSession session = request.getSession();
                     session.setAttribute("sessionId", memberDTO.getLoginId());
                     session.setAttribute("Type", "member");
+
+                    //박채원 22.11.02 추가 (이하 5줄) - 합격한 회사가 있는지 확인
+                    String loginId = (String) session.getAttribute("sessionId");
+                    if(statusService.havePass(loginId)){
+                        redirectAttributes.addAttribute("havePass",String.valueOf(statusService.havePass(loginId)));
+                    }
                     return "redirect:/"; // 로그인 성공 시 메인페이지
                 } else {
                     return "redirect:/login?error";  //pw가 틀린 경우

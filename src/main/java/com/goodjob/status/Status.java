@@ -1,6 +1,5 @@
 package com.goodjob.status;
 
-import com.goodjob.member.Member;
 import com.goodjob.post.Post;
 import com.goodjob.resume.Resume;
 import lombok.AllArgsConstructor;
@@ -13,9 +12,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * 박채원 22.10.26 수정 - 합불합, 지원날짜 추가
+ * 박채원 22.11.02 수정 - 합격결과 출력여부 컬럼 추가
+ * 박채원 22.11.05 수정 - 면접장소, 면접날짜 컬럼 추가
  */
 
 @AllArgsConstructor
@@ -33,10 +35,19 @@ public class Status {
     //boolean 타입으로 합불합을 판단하려고 했는데 디폴트값이 false(불합격)라서 바꿈 - cw
     @Column(columnDefinition = "varchar(20) default '미정'")
     private String statPass;
+
+    @Column(nullable = false)
+    private Boolean statShow;
     
     @Column
     @CreationTimestamp
     private Date statApplyDate;
+
+    @Column
+    private LocalDateTime statInterviewDate;
+
+    @Column
+    private String statInterviewPlace;
 
     @ManyToOne
     @JoinColumn(name = "statPostId")

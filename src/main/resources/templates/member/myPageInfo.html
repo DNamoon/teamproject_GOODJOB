@@ -47,7 +47,7 @@
                                         <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input type="tel" class="form-control" placeholder="000-0000-0000" name="memPhone" th:value="${memberInfo.memPhone}"
-                                                   onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" required>
+                                                   onkeyup="checkPhone()" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -131,10 +131,10 @@
                                 </div>
                                 <div class="modal-body">
                                     <label text="비밀번호"> </label>
-                                   <p style="color: red">* 회원탈퇴 시 작성된 이력서 및 지원이력은 모두 삭제됩니다.</p>
-                                    <input id="deletePw" type="text" name="deletePw" class="form-control">
+                                   <p style="color: red">* 회원탈퇴 시 기존 작성된 이력서는 삭제되고 지원이력은 보관됩니다.</p>
+                                    <input id="deletePw" type="password" name="deletePw" class="form-control">
                                     <div class="d-flex justify-content-center">
-                                        <button id="deletebtn" type="button" class="btn bg-gradient-dark mt-3">확인</button>
+                                        <button id="deletebtn" type="button"onclick="deleteMember()" class="btn bg-gradient-dark mt-3">확인</button>
                                     </div>
                                 </div>
                             </div>

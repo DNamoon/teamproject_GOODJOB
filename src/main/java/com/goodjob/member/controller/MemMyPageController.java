@@ -66,7 +66,7 @@ public class MemMyPageController {
 //        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
 //            result.rejectValue("","emailInCorrect",
 //                    "이미 가입된 이메일입니다.");
-//            return "member/myPageInfo";
+//            return "redirect:/member/myPage";
 //        }
         memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
@@ -91,7 +91,6 @@ public class MemMyPageController {
     @PostMapping("/changePw")
     @ResponseBody
     public String changePwCheck(@RequestParam("checkPw")String checkPw, @RequestParam("id")String loginId){
-        System.out.println("pw"+checkPw+"////id"+loginId);
         Optional<Member> mem = memberService.loginIdCheck(loginId);
         if (mem.isPresent()) {
             Member member = mem.get();
@@ -122,7 +121,7 @@ public class MemMyPageController {
                     "입력하신 비밀번호가 일치하지 않습니다.");
             return "member/memChangePassword";
         }
-                System.out.println("chchchch"+memberDTO.getPw2());
+//                System.out.println("chchchch"+memberDTO.getPw2());
         memberService.changePassword(memberDTO.getPw2(),mem.getMemId());
         model.addAttribute("memberInfo",mem);
         return "member/myPageInfo";
