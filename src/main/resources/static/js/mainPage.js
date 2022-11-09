@@ -54,20 +54,23 @@ let postJS = {
     insertPostListCard(targetDomClassName,page,size,sort,filterOccupation, filterAddress, filterSalary){
         const _this = this;
         const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
+
         let title = document.querySelector(".mainPage-sort-title");
-        switch (sort){
-            case "count":
-                title.innerHTML = "인기있는 공고 TOP8";
-                break;
-            case "salary":
-                title.innerHTML = "연봉이 높은 공고 TOP8"
-                break;
-            case "new":
-                title.innerHTML = "최근 등록된 공고 TOP8"
-                break;
-            case "end":
-                title.innerHTML = "마감이 임박한 공고 TOP8"
-                break;
+        if(title !== null){
+            switch (sort){
+                case "count":
+                    title.innerHTML = "인기있는 공고 TOP8";
+                    break;
+                case "salary":
+                    title.innerHTML = "연봉이 높은 공고 TOP8"
+                    break;
+                case "new":
+                    title.innerHTML = "최근 등록된 공고 TOP8"
+                    break;
+                case "end":
+                    title.innerHTML = "마감이 임박한 공고 TOP8"
+                    break;
+            }
         }
         // console.log(document.querySelector(".postDetailOccName").textContent)
         fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary))
