@@ -1,8 +1,5 @@
 package com.goodjob;
 
-import com.goodjob.member.memDTO.MemberDTO;
-import com.goodjob.member.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
