@@ -35,8 +35,6 @@ public class NoticeController {
     @GetMapping("/detail")
     @ResponseBody
     public String loadNoticeContent(@RequestParam("noticeId")Long noticeId){
-        log.info("loadNoticeContent");
-        log.info("noticeId={}",noticeId);
         return noticeService.findOne(noticeId).orElse(null).getNoticeContent();
     }
 }
