@@ -7,6 +7,7 @@ import com.goodjob.post.util.EntityDtoMapper;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface PostService extends EntityDtoMapper {
@@ -31,5 +32,8 @@ public interface PostService extends EntityDtoMapper {
     void deletePost(Long postId);
 
     List<String> searchSalaryRange();
+
+    // 오성훈 추가
+    Optional<Post> findOne(Long postId);
 
 }

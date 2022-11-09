@@ -1,5 +1,6 @@
 package com.goodjob.post;
 
+import com.goodjob.bookmark.BookMark;
 import com.goodjob.company.Company;
 import com.goodjob.post.fileupload.UploadFile;
 import com.goodjob.post.occupation.Occupation;
@@ -16,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-@ToString
 public class Post {
 
     @Id
@@ -69,5 +69,11 @@ public class Post {
     @AttributeOverride(name = "etc", column = @Column(name = "post_etc"))
     private Address address;
 
+    @OneToMany(mappedBy = "bookMarkPostId", cascade = CascadeType.ALL)
+    private List<BookMark> postBookMark;
+
+//    private String postAddress; // 주소1
+
+//    private String postDetailAddress; // 주소2
 
 }

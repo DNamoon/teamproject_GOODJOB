@@ -8,11 +8,8 @@ import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.occupation.occupationdto.OccupationDto;
 import com.goodjob.post.postdto.*;
 import com.goodjob.post.salary.PostSalary;
-import org.springframework.core.io.Resource;
 import org.springframework.web.util.HtmlUtils;
 
-import java.io.File;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

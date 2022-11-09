@@ -63,7 +63,7 @@ public class Company {
     private String comAddress;
     // 오성훈 22.10.30 cascade 연관관계 추가 및 cascade 확인완료
     @OneToMany(mappedBy = "postComId", cascade = CascadeType.ALL)
-    private List<Post> memResume = new ArrayList<>();
+    private List<Post> comPostId = new ArrayList<>();
 
     @OneToMany(mappedBy = "inquiryPostComId", cascade = CascadeType.ALL)
     private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
