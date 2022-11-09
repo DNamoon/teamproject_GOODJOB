@@ -110,18 +110,13 @@ function findId() {
                             .then(function (){
                                 location.href = "/login";
                             })
-                        // alert("회원타입은 기업회원입니다! "+result[2]+"님의 아이디는 ["+result[1]+"]입니다.");
-                        // location.href = "/login";
                     } else if(result[0] == "2") {
                         Swal.fire("개인회원",result[1]+"님의 아이디는 ["+result[2]+"]입니다.")
                             .then(function (){
                                 location.href = "/login";
                             })
-                        // alert("회원타입은 개인회원입니다! "+result[2]+"님의 아이디는 ["+result[1]+"]입니다.");
-                        // location.href = "/login";
                     } else {
                         Swal.fire("회원정보 없음","찾으시는 회원정보가 없습니다.","error");
-                        //alert("찾으시는 회원정보가 없습니다. 입력정보를 확인해주세요.");
                     }
                 }
 
@@ -144,8 +139,6 @@ $(document).ready(function(){
                     Swal.fire("비밀번호 변경페이지로 이동!","","success").then(function (){
                         location.href = "/com/changePassword";
                     })
-                    // alert("비밀번호 변경 페이지로 이동합니다.");
-                    // location.href = "/com/changePassword";
                 } else {
                     Swal.fire("비밀번호를 확인해주세요!","","error");
                 }
@@ -167,12 +160,9 @@ $(document).ready(function(){
                 if(result == 1) {
                     Swal.fire("회원정보를 수정합니다!","","success").then(function (){
                         $("#contact-form").submit();
-                        // location.href("/com/myPage");
                     })
-                    //alert("회원정보를 수정합니다.");
                 } else {
                     Swal.fire("비밀번호를 확인해주세요!","","error");
-                    //alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요.");
                 }
             }
 
