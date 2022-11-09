@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +56,7 @@ public class CompanyController {
 
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/signup")
-    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, HttpServletResponse response, Model model) throws Exception {
+    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, RedirectAttributes redirectAttributes, Model model) throws Exception {
         System.out.println("====================" + companyDTO);
         if(result.hasErrors()){
             model.addAttribute("companyDTO",companyDTO);
@@ -78,11 +79,10 @@ public class CompanyController {
             return "/company/companySignUpForm";
         }
 
-        System.out.println("companyDTO.toString() = " + companyDTO.toString());
         companyService.createCompanyUser(companyDTO);
 
-        model.addAttribute("loginId","["+companyDTO.getLoginId()+"]님의 회원가입을 축하드립니다!");
-        return "/company/companySignUpView";
+        redirectAttributes.addAttribute("param", "1");
+        return "redirect:/";
     }
 
     //회원가입 아이디 증복확인시 $.ajax 사용하기 위한 코드
@@ -90,7 +90,6 @@ public class CompanyController {
     @RequestMapping(value = "/check", method = RequestMethod.POST)
     public String memberIdChkPOST(String comLoginId) throws Exception{
         int result = companyService.checkId2(comLoginId);
-        log.info("???? : "+result);
         if(result != 0) {
             return "fail";	// 중복 아이디가 존재
         } else {
