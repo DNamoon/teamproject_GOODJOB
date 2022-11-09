@@ -34,4 +34,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
 
     //박채원 22.11.08 추가
     Post findPostByPostId(Long postId);
+    //박채원 22.11.09 추가
+    @Modifying
+    @Query("update Post p set p.postComId.comId = null where p.postComId.comId =:comId")
+    void setComIdNull(Long comId);
 }

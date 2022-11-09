@@ -136,17 +136,6 @@ function changeTitle(data) {
             getJSONResumeList();
         }
     })
-
-    //put으로 하는거 왜 안되는지 모름
-    // $.ajax({
-    //     url: "/resume/changeTitle/" + resumeId,
-    //     type: "put",
-    //     data: JSON.stringify(resume),
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function (){
-    //         getJSONResumeList($("input[id=sessionInput]").val());
-    //     }
-    // })
 }
 
 //체크된 이력서들을 삭제함
@@ -212,12 +201,6 @@ function getApplyList(pageNum) {
             $(".applyTable").html(list);
 
             var pageBtn = '';
-
-            //이렇게 적으면 버튼하나를 누를 때마다 result.page가 1씩 증가하는데 왜 그런겨
-            // $.each(result.pageList, function (pageIdx, page){
-            //     pageBtn += '<li class="page-item"><a class="page-link" onclick="getApplyList('+ result.page +')">'+ page +'</a></li>';
-            //     console.log(result.page);
-            // })
 
             pageBtn += '<li class="page-item" th:if="${'+ result.prev +'}">';
             pageBtn += '<a class="page-link" onclick="getApplyList(' + (result.start - 1) + ')" tabindex="-1"><<</a>';

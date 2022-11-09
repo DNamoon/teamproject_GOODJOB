@@ -149,9 +149,7 @@ public class ResumeController {
     }
 
     @GetMapping("/goPreviousStep1/{resumeId}")
-    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
-        String id = (String)session.getAttribute("sessionId");
-
+    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model){
         model.addAttribute("resumeId", resumeId);
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
@@ -216,9 +214,4 @@ public class ResumeController {
     public List<Integer> getMenuValue(HttpSession session){
         return resumeService.getResumeMenu((String) session.getAttribute("sessionId"));
     }
-
-//    @PutMapping("/changeTitle/{resumeId}")
-//    public void changeTitle(@RequestBody ResumeListDTO resumeListDTO){
-//        resumeService.changeTitle(resumeListDTO);
-//    }
 }

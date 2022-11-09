@@ -2,7 +2,6 @@ package com.goodjob.selfIntroduction;
 
 import com.goodjob.resume.Resume;
 import lombok.*;
-
 import javax.persistence.*;
 
 /**
