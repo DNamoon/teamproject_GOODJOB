@@ -1,7 +1,6 @@
 package com.goodjob.post.util;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.post.Address;
 import com.goodjob.post.Post;
 import com.goodjob.post.fileupload.UploadFile;

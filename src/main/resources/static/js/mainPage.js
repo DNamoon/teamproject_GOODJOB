@@ -410,8 +410,8 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postImg":
-                                    if(reason==="Empty Img"){
-                                        attachmentDom.innerHTML=`공고 사진은 필수값입니다.`
+                                    if(reason==="Empty Attachments"){
+                                        attachmentDom.innerHTML=`사진은 최소 한 장을 업로드해야합니다.`
                                     }
                                     break;
                                 case "postcode":
