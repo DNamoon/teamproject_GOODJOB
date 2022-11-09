@@ -4,6 +4,7 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public interface MemberService {
@@ -68,9 +69,12 @@ public interface MemberService {
 
     void deleteById(Long memId);
 
+
     String checkEmail(String memEmail);
 
-    void updatePassword(String tmpPw, String memberEmail,String type);
+    String updateEmailCheck(String memEmail, HttpSession session);
+
+    void updatePassword(String tmpPw, String memberEmail, String type);
 
     String getTmpPassword();
 
