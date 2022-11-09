@@ -89,12 +89,11 @@ public class postServiceImpl implements PostService {
         Address address = new Address(HtmlUtils.htmlEscape(postInsertDTO.getPostcode()), HtmlUtils.htmlEscape(postInsertDTO.getPostAddress()), HtmlUtils.htmlEscape(postInsertDTO.getPostDetailAddress()),HtmlUtils.htmlEscape(postInsertDTO.getEtc()+""));
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
-        log.info("=================================");
-        postInsertDTO.getPostImg().forEach(log::info);
         List<UploadFile> uploadFiles =  fileService.storeFiles(postInsertDTO.getPostImg());
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && salary.isPresent()){
             Post post = postRepository.save(dtoToEntityForInsert(postInsertDTO,occupation.get(),company.get(),salary.get(),uploadFiles,address));
+            log.info("post.getPostComName() : "+post.getPostComName());
             return post.getPostId();
         }
         return null;

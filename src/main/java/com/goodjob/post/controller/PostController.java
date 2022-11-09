@@ -53,6 +53,7 @@ public class PostController {
     @PostMapping(value = "/savePost",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<?> postSave(@Valid @ModelAttribute PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
+        log.info("postInsertDTO : "+postInsertDTO);
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
         if(sessionId != null){
             postInsertDTO.setComLoginId(sessionId);
@@ -123,12 +124,12 @@ public class PostController {
 
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         model.addAttribute("dto",postDetailsDTO);
-        String comLoginId = getSessionInfo(httpServletRequest, "sessionId");
-        if(comLoginId != null){
-            if(Objects.equals(companyService.loginIdCheck(comLoginId).orElseThrow(RuntimeException::new).getComName(), postDetailsDTO.getComName())){
-                model.addAttribute("isCompanySession", true);
-            }
-        }
+//        String comLoginId = getSessionInfo(httpServletRequest, "sessionId");
+//        if(comLoginId != null){
+//            if(Objects.equals(companyService.loginIdCheck(comLoginId).orElseThrow(RuntimeException::new).getComName(), postDetailsDTO.getComName())){
+//                model.addAttribute("isCompanySession", true);
+//            }
+//        }
         return "/post/postDetailViewWithMap";
     }
 
