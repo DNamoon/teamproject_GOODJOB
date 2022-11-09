@@ -160,7 +160,7 @@ public class CompanyController {
     }
 
     //22.10.10추가
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request){
 
         HttpSession session = request.getSession(false);

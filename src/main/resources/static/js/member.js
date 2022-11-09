@@ -293,32 +293,34 @@ function checkEmail() {
         $.ajax({
             type: 'post',
             url: '/member/checkEmail',
+            dataType: "text",
             data: {
                 'memEmail': email
+
             },
-            dataType: "text",
-        }).done(function (result) {
-            // console.log("result :" + result);
-            if (result == "com") {
-                sendEmail("com");
-                Swal.fire("임시 비밀번호 발송", '임시 비밀번호를 전송 했습니다.메일을 확인해주세요.', "success")
-                    .then(function () {
-                        location.href = "/login";
-                    })
-                // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
-            } else if (result == "mem") {
-                sendEmail("mem");
-                alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
-                window.location.href = "/login";
-            } else if (result == "false") {
-                // Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
-                alert("가입정보가 없는 이메일입니다.")
+            success: function (result) {
+        // }).done(function (result) {
+                if (result == "false") {
+                    Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
+                    // alert("가입정보가 없는 이메일입니다.")
+                } else if (result == "com") {
+                    sendEmail("com");
+                    Swal.fire("임시 비밀번호 발송", '임시 비밀번호를 전송 했습니다.메일을 확인해주세요!.', "success")
+                        .then(function () {
+                            location.href = "/login";
+                        })
+                    // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+                } else if (result == "mem") {
+                    sendEmail("mem");
+                    Swal.fire("임시 비밀번호 발송", '임시 비밀번호를 전송 했습니다.메일을 확인해주세요.', "success")
+                        .then(function () {
+                            location.href = "/login";
+                        })
+                }
             }
-        }).fail(function (error) {
-            alert(JSON.stringify(error));
-        })
+    })
     }
-};
+}
 
 //임시비밀번호 메일발송
 function sendEmail(type) {
@@ -331,7 +333,7 @@ function sendEmail(type) {
             'mailType': type
         }, success: function (result) {
             // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
-            alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
+            alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요?.');
         },
         error: function (error) {
             alert("ㅇㅇㅇㅇㅇㅇ" + JSON.stringify(error));
