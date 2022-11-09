@@ -1,6 +1,5 @@
 package com.goodjob.resume;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goodjob.career.dto.CareerDTO;

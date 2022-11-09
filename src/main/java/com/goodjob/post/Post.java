@@ -1,5 +1,6 @@
 package com.goodjob.post;
 
+import com.goodjob.bookmark.BookMark;
 import com.goodjob.company.Company;
 import com.goodjob.post.fileupload.UploadFile;
 import com.goodjob.post.occupation.Occupation;
@@ -67,6 +68,9 @@ public class Post {
     @AttributeOverride(name = "address2", column = @Column(name = "post_address2"))
     @AttributeOverride(name = "etc", column = @Column(name = "post_etc"))
     private Address address;
+
+    @OneToMany(mappedBy = "bookMarkPostId", cascade = CascadeType.ALL)
+    private List<BookMark> postBookMark;
 
 //    private String postAddress; // 주소1
 

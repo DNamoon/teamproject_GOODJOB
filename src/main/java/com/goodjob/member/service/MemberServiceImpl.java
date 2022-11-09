@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.Optional;
 
@@ -33,15 +34,15 @@ public class MemberServiceImpl implements MemberService {
         String[] phoneNum = member.getMemPhone().split("-");
         String[] email = member.getMemEmail().split("@");
         String[] address = member.getMemAddress().split("@");
-        
-        ResumeMemberDTO resumeMemberDTO = entityToDTO(member, phoneNum[0],phoneNum[1],phoneNum[2], email[0], email[1], address[0],address[1]);
+
+        ResumeMemberDTO resumeMemberDTO = entityToDTO(member, phoneNum[0], phoneNum[1], phoneNum[2], email[0], email[1], address[0], address[1]);
         return resumeMemberDTO;
     }
 
-/**
- * 김도현 22.9.29 작성
- * 10.20 수정(이메일 확인,임시비밀번호 생성,임시비밀번호 db에 업데이트 메소드)
- **/
+    /**
+     * 김도현 22.9.29 작성
+     * 10.20 수정(이메일 확인,임시비밀번호 생성,임시비밀번호 db에 업데이트 메소드)
+     **/
 
     @Override
     public Member register(Member member) {
@@ -52,6 +53,7 @@ public class MemberServiceImpl implements MemberService {
     public int checkId2(String comLoginId) {
         return memberRepository.checkId2(comLoginId);
     }
+
     @Override
     public Long countByMemLoginId(String memLoginId) {
         Long result = memberRepository.countByMemLoginId(memLoginId);
@@ -60,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Optional<Member> loginIdCheck(String memLoginId) {
-       return memberRepository.findByMemLoginId(memLoginId);
+        return memberRepository.findByMemLoginId(memLoginId);
     }
 
     @Override
@@ -78,27 +80,56 @@ public class MemberServiceImpl implements MemberService {
 
         return memberDTO;
     }
+
     @Override
     public void updateMemInfo(MemberDTO memberDTO) {
-        Member mem =  memberDTO.toEntity();
+        Member mem = memberDTO.toEntity();
         memberRepository.updateInfo(mem);
     }
-    /** 이메일 가입여부 확인 **/
+
+    /**
+     * 이메일 가입여부 확인
+     **/
     @Override
     public String checkEmail(String memEmail) {
         Company com = companyRepository.findByComEmail(memEmail);
         Member mem = memberRepository.findByMemEmail(memEmail);
-        if(com!=null){
+        if (com != null) {
             return "com";
         }
-        if(mem!=null){
+        if (mem != null) {
             return "mem";
         }
         return "false";
     }
-    /** 임시 비밀번호로 업데이트 **/
+
     @Override
-    public void updatePassword(String tmpPw, String memEmail,String type) {
+    public String updateEmailCheck(String memEmail, HttpSession session) {
+        String id = (String) session.getAttribute("sessionId");
+        Company com = companyRepository.findByComEmail(memEmail);
+        Member mem = memberRepository.findByMemEmail(memEmail);
+//        if (mem.getMemLoginId().equals(id)) {
+//            return "mine";
+//        } else if (mem != null) {
+//            return "mem";
+//        } else if (com != null) {
+//            return "com";
+//        } else
+//            return "false";
+        if(mem == null && com == null) {
+            return "false";
+
+        } else if (mem.getMemLoginId().equals(id)){
+            return "mine";
+        }
+        return "no";
+    }
+
+    /**
+     * 임시 비밀번호로 업데이트
+     **/
+    @Override
+    public void updatePassword(String tmpPw, String memEmail, String type) {
         String encryptPassword = passwordEncoder.encode(tmpPw);
         if (type.equals("mem")) {
             Member member = memberRepository.findByMemEmail(memEmail);
@@ -110,10 +141,12 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    /** 임시 비밀번호 생성 **/
+    /**
+     * 임시 비밀번호 생성
+     **/
     @Override
     public String getTmpPassword() {
-        char[] charSet = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
@@ -121,22 +154,25 @@ public class MemberServiceImpl implements MemberService {
 
         // 문자 배열 길이의 값을 랜덤으로 10개를 뽑아 조합
         int idx = 0;
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             idx = (int) (charSet.length * Math.random());
             pwd += charSet[idx];
         }
 
         return pwd;
     }
-    /** 비밀번호 변경 **/
+
+    /**
+     * 비밀번호 변경
+     **/
     @Override
     public void changePassword(String changePw, Long id) {
-        System.out.println(changePw+">>>>"+id);
+        System.out.println(changePw + ">>>>" + id);
         String encryptPassword = passwordEncoder.encode(changePw);
         Member member = memberRepository.findByMemId(id);
         member.updatePassword(encryptPassword);
         memberRepository.save(member);
-        }
+    }
 
     //회원 탈퇴
     @Override
@@ -144,6 +180,7 @@ public class MemberServiceImpl implements MemberService {
         //박채원 22.11.07 추가 (이하 1줄) - 회원탈퇴 전에 이력서의 memId를 null으로 바꿈
         resumeRepository.setMemberIdNull(memId);
         memberRepository.deleteById(memId);
+        System.out.println("delete" + memId);
     }
 
     //22.11.01 ho 추가. 아이디 찾기
@@ -158,7 +195,7 @@ public class MemberServiceImpl implements MemberService {
 
         Long num = memberRepository.countByMemNameAndMemEmail(newName, newEmail);
         System.out.println("이름과 이메일로 카운트하는 수 num = " + num);
-        if(num == 0) {
+        if (num == 0) {
             return "fail";
         } else {
             Member mem = memberRepository.findByMemNameAndMemEmail(newName, newEmail);
@@ -167,7 +204,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     //22.11.01 ho 추가. 아이디 찾기용 MemberDTO 만들기 메서드.
-    private MemberDTO getMemberDTOForFindId(String name, String email){
+    private MemberDTO getMemberDTOForFindId(String name, String email) {
         return MemberDTO.builder()
                 .memName(name)
                 .memEmail1(email)

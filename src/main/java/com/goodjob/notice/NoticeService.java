@@ -13,6 +13,7 @@ public interface NoticeService {
     Optional<Notice> findOne(Long noticeId);
 
     Page<Notice> findNoticeList(Pageable pageable);
+    Page<Notice> findNoticeListWithStatus(Pageable pageable,String noticeStatus);
     List<Notice> findAll();
 
     Notice insertNotice(Notice notice);

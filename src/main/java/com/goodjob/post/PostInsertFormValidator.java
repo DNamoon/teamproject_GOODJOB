@@ -22,7 +22,6 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
 
     @Override
     public boolean isValid(PostInsertDTO value, ConstraintValidatorContext context) {
-        System.out.println(value);
         SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
         Date nowDate = null;
         try {
@@ -35,7 +34,7 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             addConstraintViolation(context,"Invalid value","postOccCode");
             invalidCount +=1;
         }
-        if(value.getPostSalaryId()<0 || value.getPostOccCode()>14){
+        if(value.getPostSalaryId()<0 || value.getPostSalaryId()>14){
             addConstraintViolation(context,"Invalid value","postSalaryId");
             invalidCount +=1;
         }
@@ -67,6 +66,11 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             addConstraintViolation(context, "The end date must be after the start date.","postEndDate");
             invalidCount += 1;
         }
+        if(value.getPostImg().get(0).isEmpty() && value.getPostImg().get(0).getSize()==0){
+            addConstraintViolation(context, "Empty Attachments","postImg");
+            invalidCount += 1;
+        }
+
         return invalidCount == 0;
     }
     private boolean checkIfNumber(String number){ // true 이면 정수

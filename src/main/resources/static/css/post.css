@@ -98,7 +98,7 @@
         font-family: Pretendard,Pretendard JP,Pretendard Std,-apple-system,system-ui,BlinkMacSystemFont,Roboto,Segoe UI,Helvetica,Arial,Apple SD Gothic Neo,Nanum Gothic,Malgun Gothic,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,sans-serif;
     }
     .card-body-css{
-        padding: 5px 15px 10px 25px;
+        padding: 5px 15px 10px 15px;
     }
     .card-img-post {
         border-top-left-radius: 7px;
@@ -318,4 +318,7 @@
 
 /*2022-10-30 - jhc postDetailView.html 공고 조회 페이지 css 끝*/
 
-/*2022-11-05 - jhc postInsertForm.html 공고 조회 페이지 css 끝*/
+/*2022-11-05 - jhc postInsertForm.html 공고 조회 페이지 css 시작*/
+.post-error-style{
+    color:red;
+}

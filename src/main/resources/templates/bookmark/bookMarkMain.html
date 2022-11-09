@@ -1,0 +1,83 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
+    <th:block th:fragment="content">
+        <div class="container" style="height: 3rem;"></div>
+        <div class="container py-4 flex-wrap">
+            <div class="col-12 mb-5">
+                <div class="d-flex flex-row justify-content-center">
+                    <h3>북마크</h3>
+                </div>
+            </div>
+            <th:block th:if="${!bookMarks.hasContent()}">
+                <div>
+                    <div class="d-flex flex-column justify-content-center mt-2">
+                        <div class="d-flex flex-row justify-content-center">
+                            <div class="d-flex flex-column align-self-center" style="min-height: 20rem">
+                                <h5 style="margin-top: 5rem">등록된 북마크가 없습니다.</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+            <div class="row row-cols-1 row-cols-md-4 g-4 p-0">
+                <th:block th:each="dto:${bookMarks}">
+                    <div class="post-wrapper">
+                        <div class="col p-0">
+                            <div class="p-0 m-2 card-css">
+                                <div class="w-100 p-0 h-50 img-css">
+                                    <a class="p-0 m-0"
+                                       th:href="@{/post/readPost/{postId}(postId=${dto.bookMarkPostId.postId})}"><img
+                                            th:src="@{/member/bookmark/images/{fileName}(fileName=${dto.bookMarkPostId.postImg.get(0).storeFileName})}"
+                                            class=" w-100 h-100 card-img-post"></a>
+                                </div>
+                                <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
+
+                                    <a style="position: absolute; right: 1.5rem" id="deleteBookMark"
+                                       th:onclick="|javascript:deleteBookMark('${dto.bookMarkId}')|"><span
+                                            class="material-symbols-outlined">delete</span></a>
+
+                                    <div class="col-9 p-0">
+                                        <p class="card-title-post" th:text="${dto.bookMarkPostId.postTitle}"></p></a>
+                                    </div>
+                                    <p class="card-company-post"
+                                       th:text="|기업명 : ${dto.bookMarkPostId.postComId.comName}|"></p>
+                                    <p class="card-text-post"
+                                       th:text="|연봉 : ${dto.bookMarkPostId.postSalary.salaryRange}|"></p>
+                                    <p class="card-text-post"
+                                       th:text="|위치 : ${dto.bookMarkPostId.address.address1} ${dto.bookMarkPostId.address.address2}|">
+                                        위치</p>
+                                    <p class="card-text-post"
+                                       th:text="|직종 : ${dto.bookMarkPostId.postOccCode.occName}|"></p>
+                                    <p class="card-text-post"
+                                       th:text="|마감일 : ${#dates.format(dto.bookMarkPostId.postEndDate,'yyyy-MM-dd')}|"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+        <script th:inline="javascript">
+
+            function deleteBookMark(bookMarkId) {
+                $.ajax({
+                    url: "/member/bookmark/delete",
+                    type: "post",
+                    data: {bookMarkId: bookMarkId},
+                    success: function (data, status, xhr) {
+                        alert(data);
+                        location.href = '/member/bookmark';
+                    },
+                    error: function (xhr, status, error) {
+                    },
+                    complete: function (xhr, status) {
+                    }
+                });
+
+            };
+
+            comMyPagePost.init();
+
+        </script>
+    </th:block>
+</th:block>
