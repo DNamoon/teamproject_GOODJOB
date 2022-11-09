@@ -101,7 +101,7 @@
                                 <div class="col p-0">
                                     <div class="p-0 m-2 card-css" th:onclick="|javascript:comMyPagePost.readPost('${dto.id}')|" >
                                         <div class="w-100 p-0 h-50 img-css" >
-                                            <img src="https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08" class=" w-100 h-100 card-img-post">
+                                            <img th:src="@{/post/file/{fileName}(fileName=${dto.attachmentFileName})}" class=" w-100 h-100 card-img-post">
                                         </div>
                                         <div class="h-41 align-self-auto pt-3 m-0 card-body-css">
                                             <p class="card-title-post">[[${dto.title}]]</p>
