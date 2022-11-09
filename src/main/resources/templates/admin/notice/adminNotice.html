@@ -51,11 +51,6 @@
                                     <tr th:object="${noticeList}" th:each="notice : ${noticeList}">
                                         <td>
                                             <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <!--                                                    <h6 th:text="${mainPage.postId}" class="m-lg-1 text-sm"></h6>-->
-                                                    <!--<img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
-                                                              alt="user1">-->
-                                                </div>
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <p th:text="${notice.noticeId}"
                                                        class="text-sm font-weight-bold m-lg-1"/>
@@ -76,7 +71,6 @@
                                                       class="badge rounded-pill badge-sm bg-gradient-faded-secondary-vertical">미게시</span>
                                             </th:block>
                                         </td>
-
                                         <td class="align-middle text-center text-sm">
                                             <span th:id="${notice.noticeId}"
                                                   onclick="javascript:updateNoticeStatus(this.getAttribute('id'))"
@@ -84,7 +78,6 @@
                                                 변경
                                             </span>
                                         </td>
-
                                         <td class="align-middle text-center">
                                             <span th:text="${notice.noticeDate}"
                                                   class="text-secondary text-xs font-weight-bold"></span>
@@ -92,13 +85,12 @@
                                         <td class="align-middle text-center text-sm">
                                             <span th:id="${notice.noticeId}"
                                                   th:onclick="deleteNotice(this.getAttribute('id'))"
-                                                  class="badge badge-sm btn btn-sm btn-outline-danger rounded-pill text-danger m-0" role="button">
+                                                  class="badge badge-sm btn btn-sm btn-outline-danger rounded-pill text-danger m-0"
+                                                  role="button">
                                                 삭제
                                             </span>
                                         </td>
                                     </tr>
-
-
                                     </tbody>
                                 </table>
                                 <div class="d-flex flex-row justify-content-center">
@@ -130,7 +122,6 @@
             </div>
         </div>
     </div>
-    </div>
 </main>
 <script th:inline="javascript">
     function deleteNotice(noticeId) {
@@ -155,14 +146,12 @@
                 data: {noticeId: noticeId},
                 success: function (data) {
                     location.href = data;
-                }, error: function (){
+                }, error: function () {
                     alert("asd")
                 },
             })
         }
     }
-
-
 </script>
 </body>
 </html>
