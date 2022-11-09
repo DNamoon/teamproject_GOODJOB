@@ -16,6 +16,7 @@
                                         <div class="input-group">
                                             <input class="form-control" type="text" id="id" name="loginId" th:value="${session.sessionId}" readonly>
                                             <input type="hidden" id="memId" name="memId" th:value="${memberInfo.memId}">
+                                            <input type="hidden" id="memTerms" name="memTerms" th:value="${memberInfo.memTerms}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -34,29 +35,30 @@
                                     <div class="col-md-6">
                                         <label>이름<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
-                                            <input class="form-control" type="text" name="memName" th:value="${memberInfo.memName}" >
+                                            <input class="form-control" id="name" type="text" name="memName" th:value="${memberInfo.memName}" required >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
-                                            <input class="form-control" type="date" name="memBirthDate" th:value="${memberInfo.memBirthDate}" >
+                                            <input class="form-control" type="date" name="memBirthDate" id="bday" th:value="${memberInfo.memBirthDate}" required >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; ( - 을 포함하여 입력해주세요.)</span></label>
+                                        <div class="input-group">
                                             <input type="tel" class="form-control" placeholder="000-0000-0000" name="memPhone" th:value="${memberInfo.memPhone}"
-                                                   onkeyup="checkPhone()" required>
+                                                   id="phoneCheck" onkeyup="checkPhone()" required>
                                         </div>
+                                        <label id="phone_error"></label>
                                     </div>
                                     <div class="col-md-6">
                                         <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control border" type="text" th:value="${memberInfo.memEmail1}" name="memEmail1"
-                                                   onchange="emailCheckMassage()" id="signUpEmail">
+                                        <div class="input-group">
+                                            <input class="form-control border" type="text" th:value="${memberInfo.memEmail1}" name="memEmail1" required
+                                                   onchange="updateCheckEmail()" id="signUpEmail">
                                             &nbsp;@&nbsp;
-                                            <select class="form-select border" name="memEmail2" id="emailSelect" required onchange="emailCheckMassage()" >
+                                            <select class="form-select border" name="memEmail2" id="emailSelect" required onchange="updateCheckEmail()" style="border-radius: 5px;" >
                                                 <option th:value="${memberInfo.memEmail2}">[[${memberInfo.memEmail2}]] (기본정보)</option>
                                                 <option value="naver.com">naver.com</option>
                                                 <option value="gmail.com">gmail.com</option>
@@ -66,10 +68,10 @@
                                         <label id="emailCheckMassage"></label>
                                     </div>
 
-                                    <div class="col-md-6" style="width: 350px;">
-                                        <label>주소</label>
+                                    <div class="col-md-6">
+                                        <label>주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
-                                            <input class="form-control" type="text" id="userAddress"
+                                            <input class="form-control" type="text" id="userAddress" required
                                                    onclick="execPostCode()" th:value="${memberInfo.memAddress}" name="memAddress" >
                                         </div>
                                     </div>
@@ -79,7 +81,7 @@
                                                 onclick="execPostCode()">주소찾기
                                         </button>
                                     </div>
-                                    <div class="col-md-6" style="width: 350px;">
+                                    <div class="col-md-4" style="margin-left: 0px;">
                                         <label>상세주소</label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="userDetailAddress" th:value="${memberInfo.detailAddress}" name="detailAddress" >
@@ -103,6 +105,7 @@
                             </div>
                         </div>
                     </form>
+                    <input type="hidden" id = "emailNo">
                     <!--개인정보 수정 Modal -->
                     <div class="modal fade" id="pwCheck" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

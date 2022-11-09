@@ -2,6 +2,7 @@ package com.goodjob.member.controller;
 
 import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
+import com.goodjob.member.memDTO.MemberPwDTO;
 import com.goodjob.member.service.MemberService;
 import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
@@ -60,14 +61,16 @@ public class MemMyPageController {
         }
         return "1";
     }
+    @ResponseBody
+    @RequestMapping(value="/myPageInfo",method = RequestMethod.GET)
+    public String updateEmailCheck(@RequestParam("email") String email, HttpSession session) {
+        String result = memberService.updateEmailCheck(email,session);
+        return result;
 
+    }
     @PostMapping("/myPageInfo")
     public String infoUpdate(@Valid MemberDTO memberDTO, BindingResult result){
-//        if(memberService.checkEmail(memberDTO.getMemEmail1()+"@"+memberDTO.getMemEmail2()) != "false"){
-//            result.rejectValue("","emailInCorrect",
-//                    "이미 가입된 이메일입니다.");
-//            return "redirect:/member/myPage";
-//        }
+
         memberService.updateMemInfo(memberDTO);
         return "redirect:/member/myPage";
     }
@@ -103,26 +106,25 @@ public class MemMyPageController {
 
     // 비밀번호 변경
     @GetMapping("/changePassword")
-    public String changePwForm(MemberDTO memberDTO){
+    public String changePwForm(MemberPwDTO memberPwDTO){
         return "member/memChangePassword";
     }
 
     @RequestMapping(value="/changePassword",method = RequestMethod.POST)
-    public String changePw(@Valid MemberDTO memberDTO, BindingResult result, HttpSession session,Model model) {
+    public String changePw(@Valid MemberPwDTO memberPwDTO, BindingResult result, HttpSession session,Model model) {
         if(result.hasErrors()){
-            return "member/signup";
+            return "member/memChangePassword";
         }
         String id = (String)session.getAttribute("sessionId");
         MemberDTO mem = memberService.memInfo(id);
         model.addAttribute("changePwMem",mem.getMemId());
         //비밀번호 일치하지 않을 시 에러 발생
-        if(!memberDTO.getPw().equals(memberDTO.getPw2())){
+        if(!memberPwDTO.getPw().equals(memberPwDTO.getPw2())){
             result.rejectValue("","passwordInCorrect",
                     "입력하신 비밀번호가 일치하지 않습니다.");
             return "member/memChangePassword";
         }
-//                System.out.println("chchchch"+memberDTO.getPw2());
-        memberService.changePassword(memberDTO.getPw2(),mem.getMemId());
+        memberService.changePassword(memberPwDTO.getPw2(),mem.getMemId());
         model.addAttribute("memberInfo",mem);
         return "member/myPageInfo";
     }
