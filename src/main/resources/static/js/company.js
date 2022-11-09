@@ -244,7 +244,7 @@ function emailDuplicationForUpdate() {
             data: {emailCheck: emailCheck},
             success: function (result) {
                 console.log(result)
-                if (result[0] == "null") {
+                if (result[0] == "null" ) {
                     emailError.css('color', '#54b254');
                     emailError.html("사용 가능한 이메일입니다.");
                 } else if (result[0] == "com") {
@@ -253,6 +253,9 @@ function emailDuplicationForUpdate() {
                 } else if (result[0] == "mem") {
                     emailError.css('color', '#ff0000');
                     emailError.html("이미 개인회원으로 가입한 이메일입니다.");
+                } else if (result[0] == "mine") {
+                    emailError.css('color', '#54b254');
+                    emailError.html("본인 계정의 이메일입니다.");
                 }
             }
         })
@@ -585,7 +588,10 @@ function btn_change_info(){
             } else if(result[0] == "com") {
 
             } else if(result[0] == "mem") {
+            } else if(result[0] == "mine"){
+                result7 = "true";
             }
+
             return result7;
         }
     });
