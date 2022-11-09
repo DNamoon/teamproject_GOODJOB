@@ -11,20 +11,15 @@ package com.goodjob.company.service;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
-import com.goodjob.company.repository.RegionRepository;
-import com.goodjob.member.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,7 +31,6 @@ public class CompanyService {
 
     //22.10.09 - 비밀번호 암호화를 위해 추가
     private final PasswordEncoder passwordEncoder;
-    private final RegionRepository regionRepository;
 
 
     //비밀번호 변경
@@ -51,26 +45,6 @@ public class CompanyService {
         companyRepository.updatePassword(company.getComPw(),comLoginId);
 
     }
-
-    //아이디 찾기 10.30일날 한 듯. DTO로 처음부터 받았는데 String으로 name,email 받아서 DTO로 변경하기로 함. 224라인에 새로 메서드 만듦.
-//    public String findId2(CompanyDTO companyDTO) {
-//        Company company1 = companyDTO.toEntityForFindId();
-//        String name = company1.getComName();
-//        log.info("??? name 받아오는 값: " + name);
-//        String email = company1.getComEmail();
-//        log.info("??? email 받아오는 값: " + email);
-//
-//        Long num = companyRepository.countByComNameAndComEmail(name,email);
-//        log.info("??? name과 emial로 찾아온 갯수 : "+num);
-//        if(num == 0){
-//            return "fail";
-//        } else {
-//            Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
-//            log.info("???: "+ email +"email일부일텐데??? "+ company.get().getComEmail());
-//            return company.get().getComLoginId();
-//        }
-//
-//    }
 
     //22.10.29 아이디 찾기
     public String findId(CompanyDTO companyDTO){
@@ -108,30 +82,6 @@ public class CompanyService {
     public Optional<Company> loginIdCheck(String comLoginId) {
         return companyRepository.findByComLoginId(comLoginId);
     }
-
-//    public CompanyDTO entityToDTO(String comLoginId, String comName, String comBusiNum, String comPhone,
-//                                  String comComdivCode, String comRegCode, String comEmail1, String comEmail2,
-//                                  String comAddress1, String comAddress2, String comAddress3,
-//                                  String comAddress4, String comInfo){
-//
-//        CompanyDTO dto = CompanyDTO.builder()
-//                .loginId(comLoginId)
-//                .comName(comName)
-//                .comBusiNum(comBusiNum)
-//                .comPhone(comPhone)
-//                .comComdivCode(comComdivCode)
-//                .comRegCode(comRegCode)
-//                .comEmail1(comEmail1+"@")
-//                .comEmail2(comEmail2)
-//                .comAddress1(comAddress1)
-//                .comAddress2(comAddress2)
-//                .comAddress3(comAddress3)
-//                .comAddress4(comAddress4)
-//                .comInfo(comInfo)
-//                .build();
-//
-//        return dto;
-//    }
 
     public CompanyDTO entityToDTO2(Company company) {
         String comLoginId = company.getComLoginId();
@@ -196,20 +146,11 @@ public class CompanyService {
         System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
     }
-    public List<String> searchRegName(){
-        return regionRepository.regName();
-    }
 
     //22.10.25 - ho 기업회원 탈퇴
     public void delete(Long comId) {
         companyRepository.deleteById(comId);
     }
-
-//    public String findId(String comName, String comEmail){
-//        Optional<Company> company = companyRepository.checkNameAndEmail(comName, comEmail);
-//        return company.get().getComLoginId();
-//    }
-
 
     //22.11.01 ho - 아이디 찾기용 DTO만들기 메서드.
     public CompanyDTO getCompanyDTOForFindId(String name, String email) {

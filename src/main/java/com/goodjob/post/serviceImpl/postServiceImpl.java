@@ -1,9 +1,7 @@
 package com.goodjob.post.serviceImpl;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
-import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Address;
 import com.goodjob.post.Post;
 import com.goodjob.post.fileupload.FileService;
@@ -41,7 +39,6 @@ public class postServiceImpl implements PostService {
     private final OccupationRepository occupationRepository;
     private final CompanyRepository companyRepository;
     private final SalaryRepository salaryRepository;
-    private final RegionRepository regionRepository;
     private final FileService fileService;
 
     @Override
@@ -82,10 +79,7 @@ public class postServiceImpl implements PostService {
     public List<Occupation> getListOccupation(){
         return occupationRepository.findAll();
     }
-    @Override
-    public List<Region> getListRegion(){
-        return regionRepository.findAll();
-    }
+
     @Override
     public List<PostSalary> getListSalary(){
         return salaryRepository.findAll();

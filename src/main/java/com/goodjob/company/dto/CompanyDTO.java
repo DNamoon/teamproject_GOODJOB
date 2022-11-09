@@ -25,15 +25,9 @@ package com.goodjob.company.dto;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @ToString
@@ -51,17 +45,14 @@ public class CompanyDTO {
     private String loginId;
 
     @Size(min = 3, max = 25, message = "Password는 3~25자 사이여야 합니다.")
-    //@NotBlank(message = "비밀번호는 필수항목입니다.")
+    @NotBlank(message = "비밀번호는 필수항목입니다.")
     //ho - 22.10.17 comPw1 -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
     private String pw;
 
     //비밀번호가 일치하지 않으면 넘어가지 않도록 하기 위해 엔티티와는 별개로 DTO에만 comPw2 추가
-    //@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
+    @NotBlank(message = "비밀번호 확인은 필수항목입니다.")
     private String comPw2;
-//    @NotBlank
-//    private Region comRegCode;
-//    @NotBlank
-//    private Comdiv comComdivCode;
+
     @NotBlank
     private String comComdivCode;
 

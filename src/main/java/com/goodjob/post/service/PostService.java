@@ -1,5 +1,4 @@
 package com.goodjob.post.service;
-import com.goodjob.company.Region;
 import com.goodjob.post.Post;
 import com.goodjob.post.occupation.Occupation;
 import com.goodjob.post.postdto.*;
@@ -20,8 +19,6 @@ public interface PostService extends EntityDtoMapper {
     CompanyInfoDTO getComInfo(String sessionId);
 
     List<Occupation> getListOccupation();
-
-    List<Region> getListRegion();
 
     List<PostSalary> getListSalary();
 
