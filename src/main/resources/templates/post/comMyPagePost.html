@@ -1,5 +1,6 @@
 <th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <div class="container" style="height: 3rem;"></div>
         <div class="container py-4 flex-wrap">
             <section class="row comMyPage-post-search">
                 <form th:action="@{/post/comMyPagePost}" class="comMyPage-post-search-form" >
