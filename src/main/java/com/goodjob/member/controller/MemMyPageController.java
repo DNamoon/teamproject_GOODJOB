@@ -81,6 +81,7 @@ public class MemMyPageController {
         if (mem.isPresent()) {
             Member member = mem.get();
             if (passwordEncoder.matches(deletePw,member.getMemPw())) {
+                System.out.println("eee2"+deletePw);
                 memberService.deleteById(memId);
                 session.invalidate();
                 return "0";
