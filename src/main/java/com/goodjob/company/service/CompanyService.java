@@ -194,6 +194,7 @@ public class CompanyService {
 
     //22.10.25 - ho 기업회원 탈퇴
     public void delete(Long comId) {
+        postRepository.setComIdNull(comId);
         companyRepository.deleteById(comId);
     }
 

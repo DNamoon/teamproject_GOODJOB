@@ -62,7 +62,7 @@ public interface EntityDtoMapper {
                 .postAddress1(HtmlUtils.htmlUnescape(post.getAddress().getAddress1()))
                 .postAddress2(HtmlUtils.htmlUnescape(post.getAddress().getAddress2()))
                 .occName(post.getPostOccCode().getOccName())
-                .comName(post.getPostComId().getComName())
+                .comName(post.getPostComName())
                 .build();
     }
     default PostCardDTO entityToDtoInMain(Post post) {
@@ -81,7 +81,7 @@ public interface EntityDtoMapper {
                 .salaryRange(post.getPostSalary().getSalaryRange())
                 .attachmentFileName(attachmentFileName)
                 .occName(post.getPostOccCode().getOccName())
-                .comName(post.getPostComId().getComName())
+                .comName(post.getPostComName())
                 .build();
     }
     default PostComMyPageDTO entityToDtoInComMyPage(Post post) {
@@ -119,7 +119,7 @@ public interface EntityDtoMapper {
                 .count(post.getPostReadCount())
                 .attachmentFileName(attachmentFileName)
                 .occName(post.getPostOccCode().getOccName())
-                .comName(post.getPostComId().getComName())
+                .comName(post.getPostComName())
                 .build();
     }
 
@@ -156,6 +156,7 @@ public interface EntityDtoMapper {
                     .postOccCode(occ)
                     .postComId(com)
                     .postReadCount(0)
+                    .postComName(postInsertDTO.getComName())
                     .postImg(uploadFileList)
                     .address(address)
                     .build();
@@ -173,6 +174,7 @@ public interface EntityDtoMapper {
                     .postOccCode(occ)
                     .postComId(com)
                     .postReadCount(0)
+                    .postComName(postInsertDTO.getComName())
                     .postImg(uploadFileList)
                     .address(address)
                     .build();

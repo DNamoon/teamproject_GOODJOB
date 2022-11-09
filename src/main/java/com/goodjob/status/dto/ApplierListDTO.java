@@ -3,7 +3,6 @@ package com.goodjob.status.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
 import java.sql.Date;
 
 @Data

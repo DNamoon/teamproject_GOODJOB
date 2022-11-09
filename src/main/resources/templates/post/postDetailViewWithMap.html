@@ -17,7 +17,7 @@
                         <div class="carousel-inner w-100 d-flex">
 
                             <th:block th:each="fileName:${dto.attachment}">
-                                <div class="carousel-item" >
+                                <div class="carousel-item active">
                                     <!--                                        style="width: 50rem; height: 30rem"-->
                                     <div class="p-0 m-0 embed-responsive embed-responsive-4by3 w-100 h-100 " >
                                         <img th:src="@{/post/file/{fileName}(fileName=${fileName})}" class="d-block embed-responsive-item img-fluid h-100 w-100" alt="...">
@@ -334,7 +334,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn bg-gradient-primary doneSelectResume" data-bs-dismiss="modal">
+                        <button type="button" class="btn bg-gradient-dark doneSelectResume" data-bs-dismiss="modal">
                             완료
                         </button>
                     </div>

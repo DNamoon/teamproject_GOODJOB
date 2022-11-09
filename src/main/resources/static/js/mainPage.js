@@ -55,6 +55,23 @@ let postJS = {
         const _this = this;
         const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
 
+        let title = document.querySelector(".mainPage-sort-title");
+        if(title !== null){
+            switch (sort){
+                case "count":
+                    title.innerHTML = "인기있는 공고 TOP8";
+                    break;
+                case "salary":
+                    title.innerHTML = "연봉이 높은 공고 TOP8"
+                    break;
+                case "new":
+                    title.innerHTML = "최근 등록된 공고 TOP8"
+                    break;
+                case "end":
+                    title.innerHTML = "마감이 임박한 공고 TOP8"
+                    break;
+            }
+        }
         // console.log(document.querySelector(".postDetailOccName").textContent)
         fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary))
             .then(data => {
@@ -345,20 +362,32 @@ let postInsertForm ={
                         console.log(data)
                         console.log(data.errors)
                         let criticalErrorCount = 0;
-                        for(let error of data.errors){
-                            const titleDom = document.querySelector(".post-error-style-title")
-                            const occupationDom =  document.querySelector(".post-error-style-occupation")
-                            const recruitNumDom = document.querySelector(".post-error-style-recruit_number")
-                            const genderDom = document.querySelector(".post-error-style-gender")
-                            const startDateDom = document.querySelector(".post-error-style-start_date")
-                            const endDateDom = document.querySelector(".post-error-style-end_date")
-                            const attachmentDom = document.querySelector(".post-error-style-attachment")
-                            const zipcodeDom = document.querySelector(".post-error-style-zipcode")
-                            const address1Dom = document.querySelector(".post-error-style-address1")
-                            const address2Dom = document.querySelector(".post-error-style-address2")
-                            const salaryDom = document.querySelector(".post-error-style-salary")
-                            const contentDom = document.querySelector(".post-error-style-content")
+                        let titleDom = document.querySelector(".post-error-style-title")
+                        let occupationDom =  document.querySelector(".post-error-style-occupation")
+                        let recruitNumDom = document.querySelector(".post-error-style-recruit_number")
+                        let genderDom = document.querySelector(".post-error-style-gender")
+                        let startDateDom = document.querySelector(".post-error-style-start_date")
+                        let endDateDom = document.querySelector(".post-error-style-end_date")
+                        let attachmentDom = document.querySelector(".post-error-style-attachment")
+                        let zipcodeDom = document.querySelector(".post-error-style-zipcode")
+                        let address1Dom = document.querySelector(".post-error-style-address1")
+                        let address2Dom = document.querySelector(".post-error-style-address2")
+                        let salaryDom = document.querySelector(".post-error-style-salary")
+                        let contentDom = document.querySelector(".post-error-style-content")
+                        titleDom.innerHTML="";
+                        occupationDom.innerHTML="";
+                        recruitNumDom.innerHTML="";
+                        genderDom.innerHTML="";
+                        startDateDom.innerHTML="";
+                        endDateDom.innerHTML="";
+                        attachmentDom.innerHTML="";
+                        zipcodeDom.innerHTML="";
+                        address1Dom.innerHTML="";
+                        address2Dom.innerHTML="";
+                        salaryDom.innerHTML="";
+                        contentDom.innerHTML="";
 
+                        for(let error of data.errors){
                             const reason = error.reason;
                             switch (error.field){
                                 case "postTitle":

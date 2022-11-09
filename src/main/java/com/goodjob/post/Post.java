@@ -72,8 +72,6 @@ public class Post {
     @OneToMany(mappedBy = "bookMarkPostId", cascade = CascadeType.ALL)
     private List<BookMark> postBookMark;
 
-//    private String postAddress; // 주소1
-
-//    private String postDetailAddress; // 주소2
+    private String postComName;
 
 }

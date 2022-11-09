@@ -4,6 +4,7 @@ import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public interface MemberService {
@@ -53,7 +54,7 @@ public interface MemberService {
     //회원정보 db저장
     Member register(Member member);
 
-    int checkId2(String comLoginId);
+    int checkId2(String memLoginId);
 
     //회원가입 시 아이디 중복 여부 확인
     Long countByMemLoginId(String memLoginId);
@@ -68,9 +69,12 @@ public interface MemberService {
 
     void deleteById(Long memId);
 
+
     String checkEmail(String memEmail);
 
-    void updatePassword(String tmpPw, String memberEmail,String type);
+    String updateEmailCheck(String memEmail, HttpSession session);
+
+    void updatePassword(String tmpPw, String memberEmail, String type);
 
     String getTmpPassword();
 

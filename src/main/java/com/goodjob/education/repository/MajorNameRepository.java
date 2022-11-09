@@ -2,8 +2,6 @@ package com.goodjob.education.repository;
 
 import com.goodjob.education.MajorName;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
 /**

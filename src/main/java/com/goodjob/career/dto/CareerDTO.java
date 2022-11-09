@@ -1,7 +1,6 @@
 package com.goodjob.career.dto;
 
 import lombok.*;
-
 import java.sql.Date;
 
 /**
@@ -9,10 +8,10 @@ import java.sql.Date;
  */
 
 @Data
-@ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Builder
 public class CareerDTO {
     private Long careerId;
     private String careerCompanyName;

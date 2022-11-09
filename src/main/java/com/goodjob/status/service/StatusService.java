@@ -5,8 +5,6 @@ import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
 import com.goodjob.status.dto.*;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 /**
@@ -46,7 +44,7 @@ public interface StatusService {
                 .statPass(status.getStatPass())
                 .statApplyDate(status.getStatApplyDate())
                 .postName(status.getStatPostId().getPostTitle())
-                .companyName(status.getStatPostId().getPostComId().getComName())
+                .companyName(status.getStatPostId().getPostComName())
                 .resumeTitle(status.getStatResumeId().getResumeTitle())
                 .build();
 
@@ -60,7 +58,6 @@ public interface StatusService {
                 .statResumeId(status.getStatResumeId().getResumeId())
                 .statPass(status.getStatPass())
                 .statApplyDate(status.getStatApplyDate())
-//                .applierId(status.getStatResumeId().getResumeMemId().getMemLoginId())
                 .applierName(status.getStatResumeId().getResumeMemName())
                 .postTitle(status.getStatPostId().getPostTitle())
                 .postOccupation(status.getStatPostId().getPostOccCode().getOccName())

@@ -14,8 +14,6 @@ import java.sql.Date;
 
 public interface EducationRepository extends JpaRepository<Education, Long> {
     Education findEducationByResume_ResumeId(Long resumeId);
-    @Query("select e.resume.resumeId from Education e where e.resume.resumeId =:resumeId")
-    Long findByResumeId(Long resumeId);
     @Transactional
     @Modifying
     @Query("update Education e set e.schoolName.schName =:schoolName, e.eduGraduationDate =:graduDate, e.majorName.majName =:majorName, e.eduCredit =:credit where e.resume.resumeId =:resumeId")
