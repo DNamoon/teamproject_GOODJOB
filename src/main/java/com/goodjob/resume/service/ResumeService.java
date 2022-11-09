@@ -1,10 +1,10 @@
 package com.goodjob.resume.service;
+
 import com.goodjob.member.Member;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.resume.dto.ResumeDTO;
 import com.goodjob.resume.dto.ResumeListDTO;
-
 import java.util.List;
 
 /**

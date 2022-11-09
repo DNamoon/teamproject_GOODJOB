@@ -1,6 +1,5 @@
 package com.goodjob.resume.repository;
 
-import com.goodjob.member.Member;
 import com.goodjob.resume.Resume;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -35,6 +34,5 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
     @Modifying
     @Query("update Resume r set r.resumeMemId = null where r.resumeMemId.memId =:memId")
     void setMemberIdNull(Long memId);
-    int countResumeByResumeMemId_MemId(Long memId);
     int countResumeByResumeMemId_MemLoginIdAndDeleted(String loginId, boolean deleted);
 }

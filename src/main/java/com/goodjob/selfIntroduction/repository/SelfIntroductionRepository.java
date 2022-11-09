@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface SelfIntroductionRepository extends JpaRepository<SelfIntroduction, Long> {
     SelfIntroduction findByResume_ResumeId(Long resumeId);
-
     @Transactional
     @Modifying
     @Query("update SelfIntroduction s set s.selfInterActivity =:interActivity, s.selfLetter =:selfLetter where s.resume.resumeId =:resumeId")

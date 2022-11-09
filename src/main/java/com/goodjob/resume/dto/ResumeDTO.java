@@ -1,7 +1,6 @@
 package com.goodjob.resume.dto;
 
 import lombok.*;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
@@ -12,10 +11,7 @@ import java.sql.Date;
  */
 
 @Data
-@ToString
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ResumeDTO {
     private String memName;
     private String memGender;

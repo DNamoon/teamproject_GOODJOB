@@ -5,8 +5,6 @@ import com.goodjob.post.postdto.PageResultDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.status.Status;
 import com.goodjob.status.dto.*;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 /**

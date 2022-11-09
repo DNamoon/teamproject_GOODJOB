@@ -285,4 +285,5 @@ public class postServiceImpl implements PostService {
     public List<String> searchSalaryRange(){
         return  postRepository.salaryRange();
     }
+
 }

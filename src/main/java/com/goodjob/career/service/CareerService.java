@@ -1,6 +1,5 @@
 package com.goodjob.career.service;
 
-
 import com.goodjob.career.Career;
 import com.goodjob.career.dto.CareerDTO;
 import com.goodjob.resume.Resume;
@@ -14,8 +13,6 @@ import java.util.List;
 public interface CareerService {
 
     void registerCareerInfo(List<CareerDTO> careerDTO);
-
-//    int existOrNotResumeId(Long resumeId);
     List<CareerDTO> bringCareerInfo(Long resumeId);
     Long addNullCareerInfo(Long resumeId);
     void deleteCareerList(Long careerId);

@@ -141,10 +141,8 @@ public class MemberServiceImpl implements MemberService {
     //회원 탈퇴
     @Override
     public void deleteById(Long memId) {
-        //박채원 22.11.07 추가 (이하 3줄) - 회원탈퇴 전에 이력서의 memId를 null으로 바꿈
-        for(int i = 0; i < resumeRepository.countResumeByResumeMemId_MemId(memId); i++){
-            resumeRepository.setMemberIdNull(memId);
-        }
+        //박채원 22.11.07 추가 (이하 1줄) - 회원탈퇴 전에 이력서의 memId를 null으로 바꿈
+        resumeRepository.setMemberIdNull(memId);
         memberRepository.deleteById(memId);
     }
 
