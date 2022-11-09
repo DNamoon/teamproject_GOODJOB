@@ -96,9 +96,9 @@ public class CompanyDTO {
                 .build();
 
         //2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
-        if(comAddress4.equals("")){
-            comAddress4 = "null";
-        }
+//        if(comAddress4.equals("")){
+//            comAddress4 = "null";
+//        }
 
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 93,96라인 변경
         Company com = Company.builder()

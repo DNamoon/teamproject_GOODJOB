@@ -36,12 +36,7 @@ public class CompanyService {
     //비밀번호 변경
     public void changePw(CompanyDTO companyDTO,String comLoginId){
         companyDTO.setPw(passwordEncoder.encode(companyDTO.getPw()));
-        log.info("???: 서비스 changePw에서 암호화하는과정에서 에러일가?");
         Company company = companyDTO.toEntityForFindId();
-        log.info("???: toEntity에서나는 에러같은데");
-        log.info("???: 로그인 아이디 뭐 받아오는거지" + company.getComLoginId());
-        log.info("???: 로그인 아이디 뭐 받아오는거지" + comLoginId);
-
         companyRepository.updatePassword(company.getComPw(),comLoginId);
 
     }
@@ -96,25 +91,23 @@ public class CompanyService {
         String comAddress = company.getComAddress();
         String[] address = comAddress.split("@");
 
-        /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함. */
-
-        log.info("==============="+address.length);
-
         String comInfo = company.getComInfo();
 
-        log.info("================address[3]은 무엇이냐" + address[address.length - 1]);
+        /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함. */
 
-        if (address.length == 3) {
+        if (address.length == 3) {//주소3 O, 주소4 X
             String[] newAddress = Arrays.copyOf(address, address.length + 1);
             newAddress[address.length] = "null";
-
             return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, newAddress);
-
-        } else {
+        } else if (address.length == 2) {  //주소3 X, 주소4 X
+            String[] newAddress = Arrays.copyOf(address, address.length + 2);
+            newAddress[address.length] = "null";
+            newAddress[address.length + 1] = "null";
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, newAddress);
+        } else {  //주소1,2,3,4 다 존재하거나 주소 4가 존재할 때
             return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, address);
+
         }
-
-
     }
 
     /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
@@ -142,8 +135,6 @@ public class CompanyService {
     //22.10.18 - ho 기업회원정보 수정하고 DB에 저장.
     public void companyInfoUpdate(CompanyDTO companyDTO){
         Company company = companyDTO.toEntity();
-        System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());
-        System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
     }
 
@@ -165,12 +156,9 @@ public class CompanyService {
         CompanyDTO companyDTO = getCompanyDTOForFindId(name, email);
         Company company1 = companyDTO.toEntityForFindId();
         String newName = company1.getComName();
-        log.info("??? name 받아오는 값: " + newName);
         String newEmail = company1.getComEmail();
-        log.info("??? email 받아오는 값: " + email);
 
         Long num = companyRepository.countByComNameAndComEmail(newName,newEmail);
-        log.info("??? name과 emial로 찾아온 갯수 : "+num);
         if(num == 0){
             return "fail";
         } else {
