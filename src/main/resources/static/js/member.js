@@ -287,7 +287,6 @@ $(document).ready(function () {
 
 function checkEmail() {
     const email = $('#email').val();
-    // console.log(email);
     if (!email || email.trim() === "") {
         alert("이메일을 입력해주세요.")
     } else {

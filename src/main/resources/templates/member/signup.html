@@ -6,7 +6,8 @@
             <div class="container py-4">
                 <div class="row">
                     <div class="col-lg-10 mx-auto" style="width : 1000px">
-                        <form th:action="@{/member/signUp}" role="form" id="contact-form" name="frm" th:method="mainPage"
+                        <form th:action="@{/member/signUp}" role="form" id="contact-form" name="frm"
+                              th:method="mainPage"
                               th:object="${memberDTO}">
                             <h3 class="text-center">개인회원가입</h3>
                             <div class="card-body">
@@ -24,7 +25,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group">
+                                        <div class="input-group mb-4">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" th:field="*{memGender}"
                                                        value="남" id="genderM">
@@ -39,7 +40,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>이름<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group">
+                                        <div class="input-group mb-4">
                                             <input class="form-control" type="text" th:field="*{memName}" required>
                                         </div>
                                         <label></label>
@@ -50,19 +51,19 @@
                                             <input class="form-control" type="date" th:field="*{memBirthDate}" required>
                                         </div>
                                     </div>
-                                    <label></label>
                                     <div class="col-md-6">
                                         <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; (최소 1개의 영문, 숫자, 특수문자를 포함해야합니다.)</span></label>
-                                        <div class="input-group ">
+                                        <div class="input-group mb-4">
                                             <input type="text" placeholder="비밀번호는 3~25자 사이여야 합니다."
-                                                   class="form-control" id="pw1" th:field="*{pw}" onkeyup="test()" required>
+                                                   class="form-control" id="pw1" th:field="*{pw}" onkeyup="test()"
+                                                   required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="pw2" th:field="*{pw2}"
-                                                   onkeyup="test()"  required>
+                                                   onkeyup="test()" required>
                                         </div>
                                         <label id="confirmMsg"></label>
                                     </div>
@@ -70,8 +71,9 @@
                                     <div class="col-md-6">
                                         <label>전화번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; ( - 을 포함하여 입력해주세요.)</span></label>
                                         <div class="input-group">
-                                            <input type="tel" class="form-control" placeholder="000-0000-0000" id="phoneCheck"
-                                                   th:field="*{memPhone}" onkeyup="checkPhone()" required  />
+                                            <input type="tel" class="form-control" placeholder="000-0000-0000"
+                                                   id="phoneCheck"
+                                                   th:field="*{memPhone}" onkeyup="checkPhone()" required/>
                                         </div>
                                         <label id="phone_error"></label>
                                     </div>
@@ -79,10 +81,12 @@
                                     <div class="col-md-6">
                                         <label>이메일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control w-40 border" th:field="*{memEmail1}" onchange="emailCheckMassage()"
+                                            <input type="text" class="form-control w-40 border" th:field="*{memEmail1}"
+                                                   onchange="emailCheckMassage()"
                                                    placeholder="goodjob" id="signUpEmail"
                                                    required> &nbsp;@ &nbsp;
-                                            <select id="emailSelect" class="form-control w-40 border" th:field="*{memEmail2}" onchange="emailCheckMassage()"
+                                            <select id="emailSelect" class="form-control w-40 border"
+                                                    th:field="*{memEmail2}" onchange="emailCheckMassage()"
                                                     style="border-radius: 5px;" required>
                                                 <option value="">선택해주세요.</option>
                                                 <option value="naver.com">naver.com</option>
@@ -94,7 +98,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>주소<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group">
+                                        <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="userAddress"
                                                    onclick="execPostCode()" readonly th:field="*{memAddress}">
                                         </div>
@@ -163,7 +167,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button id="btn" type="submit"  class="btn bg-gradient-dark w-100">회원가입</button>
+                                        <button id="btn" type="submit" class="btn bg-gradient-dark w-100">회원가입</button>
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +176,6 @@
                 </div>
             </div>
             </div>
-       </section>
+        </section>
     </th:block>
 </th:block>

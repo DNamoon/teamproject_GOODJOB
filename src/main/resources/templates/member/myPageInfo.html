@@ -13,10 +13,9 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>아이디<span style="color: rgb(244, 54, 54);">&nbsp;(변경불가) </span></label>
-                                        <div class="input-group">
+                                        <div class="input-group mb-4">
                                             <input class="form-control" type="text" id="id" name="loginId" th:value="${session.sessionId}" readonly>
                                             <input type="hidden" id="memId" name="memId" th:value="${memberInfo.memId}">
-                                            <input type="hidden" id="memTerms" name="memTerms" th:value="${memberInfo.memTerms}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -153,7 +152,6 @@
                                 </div>
                                 <div class="modal-body">
                                     <form id="changePwForm" >
-<!--                                        <input id="loginId" type="hidden" name="loginId" th:value="${session.sessionId}" >-->
                                     <label text="비밀번호"> </label>
                                     <input id="checkPw" type="password" name="checkPw" class="form-control">
                                     <div class="d-flex justify-content-center">

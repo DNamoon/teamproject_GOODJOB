@@ -50,8 +50,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int checkId2(String comLoginId) {
-        return memberRepository.checkId2(comLoginId);
+    public int checkId2(String memLoginId) {
+        return memberRepository.checkId2(memLoginId);
     }
 
     @Override
@@ -102,20 +102,13 @@ public class MemberServiceImpl implements MemberService {
         }
         return "false";
     }
-
+    //개인정보 수정-이메일 중복 체크
     @Override
     public String updateEmailCheck(String memEmail, HttpSession session) {
         String id = (String) session.getAttribute("sessionId");
         Company com = companyRepository.findByComEmail(memEmail);
         Member mem = memberRepository.findByMemEmail(memEmail);
-//        if (mem.getMemLoginId().equals(id)) {
-//            return "mine";
-//        } else if (mem != null) {
-//            return "mem";
-//        } else if (com != null) {
-//            return "com";
-//        } else
-//            return "false";
+
         if(mem == null && com == null) {
             return "false";
 
@@ -125,9 +118,8 @@ public class MemberServiceImpl implements MemberService {
         return "no";
     }
 
-    /**
-     * 임시 비밀번호로 업데이트
-     **/
+    // 임시 비밀번호로 업데이트
+
     @Override
     public void updatePassword(String tmpPw, String memEmail, String type) {
         String encryptPassword = passwordEncoder.encode(tmpPw);
@@ -141,9 +133,8 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    /**
-     * 임시 비밀번호 생성
-     **/
+   // 임시 비밀번호 생성
+
     @Override
     public String getTmpPassword() {
         char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -162,9 +153,8 @@ public class MemberServiceImpl implements MemberService {
         return pwd;
     }
 
-    /**
-     * 비밀번호 변경
-     **/
+    // 비밀번호 변경
+
     @Override
     public void changePassword(String changePw, Long id) {
         System.out.println(changePw + ">>>>" + id);
