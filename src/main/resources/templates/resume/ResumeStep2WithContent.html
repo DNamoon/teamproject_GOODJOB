@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <title>RESUME STEP1</title>
+        <title>RESUME STEP2</title>
     </head>
     <th:block th:fragment="content">
         <section>
@@ -17,17 +17,18 @@
                         <form role="form" id="contact-form" method="post" autocomplete="off">
                             <input type="hidden" th:value="${resumeId}" name="resumeId">
                             <div class="card-body">
-<!--                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>-->
+                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
                                 <h4 class="text-left">| 자격증</h4>
                                 &nbsp;
                                 <div class="row" style="float: inline-start;" th:each="certiInfo : ${certiInfo}">
                                     <div class="col-md-6" style="width: 400px;">
                                         <label>자격증명</label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control" type="text" name="certificateName"
                                                    id="certificateName0"
                                                    th:value="${certiInfo.certificateName}" readonly>
                                         </div>
+                                        <label id="certiNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -73,7 +74,7 @@
                                     <div th:each="careerInfo : ${careerInfo}">
                                         <div>
                                             <div class="row" style="float: inline-start;">
-                                                <div class="col-md-6" style="width: 400px;">
+                                                <div class="col-md-6">
                                                     <label>회사명</label>
                                                     <div class="input-group mb-4">
                                                         <input class="form-control" type="text" name="careerCompanyName"
@@ -82,18 +83,18 @@
                                                     <input type="hidden" th:value="${careerInfo.careerId}"
                                                            name="careerId">
                                                 </div>
-                                                <div class="col-md-6" style="width: 200px;">
+                                                <div class="col-md-2" style="width: 200px;">
                                                     <label>근무기간</label>
                                                     <div class="input-group mb-4">
                                                         <input class="form-control" type="date" name="careerJoinedDate"
                                                                th:value="${careerInfo.careerJoinedDate}">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6" style="width: 5px;">
+                                                <div class="col-md-2" style="width: 5px;">
                                                     <label>&nbsp;</label>
                                                     ~
                                                 </div>
-                                                <div class="col-md-6" style="width: 200px;">
+                                                <div class="col-md-2" style="width: 200px;">
                                                     <label>&nbsp;</label>
                                                     <div class="input-group mb-4">
                                                         <input class="form-control careerRetireDate" type="date"
@@ -102,7 +103,7 @@
                                                                onclick="rangeDate(this)">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div style="width: 10px">
                                                     <label>&nbsp;</label>
                                                     <button type="button" class="btn-close" id="deleteCareerBtn"
                                                             th:careerId="${careerInfo.careerId}"
@@ -129,13 +130,11 @@
                                     <div style="height: 50px;"></div>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
-                                            <button type="button" class="btn bg-gradient-dark w-100"
-                                                    onclick="getListToPrev()">이전
+                                            <button type="button" class="btn bg-gradient-dark w-100" id="goBackStep1">이전
                                             </button>
                                         </div>
                                         <div class="col-md-6 mx-auto">
-                                            <button type="button" class="btn bg-gradient-dark w-100"
-                                                    onclick="getListToNext()">저장 후
+                                            <button type="button" class="btn bg-gradient-dark w-100" id="submitStep2">저장 후
                                                 STEP 3로
                                             </button>
                                         </div>

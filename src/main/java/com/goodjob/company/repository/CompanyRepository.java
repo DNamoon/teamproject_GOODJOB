@@ -9,7 +9,6 @@
 package com.goodjob.company.repository;
 
 import com.goodjob.company.Company;
-import com.goodjob.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -50,7 +49,7 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
     @Transactional
     @Modifying
     @Query("update Company c set c.comName =:#{#c.comName}, c.comBusiNum =:#{#c.comBusiNum}, c.comPhone =:#{#c.comPhone}," +
-            "c.comComdivCode.comdivCode =:#{#c.comComdivCode.comdivCode}, c.comRegCode.regCode =:#{#c.comRegCode.regCode}, c.comEmail =:#{#c.comEmail}," +
+            "c.comComdivCode.comdivCode =:#{#c.comComdivCode.comdivCode}, c.comEmail =:#{#c.comEmail}," +
             " c.comAddress =:#{#c.comAddress} where c.comLoginId =:#{#c.comLoginId}")
     int updateInfo(@Param("c") Company company);
 

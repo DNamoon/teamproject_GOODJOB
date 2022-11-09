@@ -116,7 +116,7 @@
                                         </div>
                                         <div class="col-8">
                                             <h5 class="text-dark text-center">총 방문수</h5>
-                                            <h5 class="text-dark text-center" id="totalVisitor">2311</h5>
+                                            <h5 class="text-dark text-center" id="totalVisitor"></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -132,14 +132,14 @@
                                 <div class="row-md-4">
                                     <div class="row">
                                         <div class="col-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
-                                                 fill="currentColor" class="bi bi-toggle-on" viewBox="0 0 16 16">
-                                                <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-envelope-exclamation" viewBox="0 0 16 16">
+                                                <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+                                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1.5a.5.5 0 0 1-1 0V11a.5.5 0 0 1 1 0Zm0 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
                                             </svg>
                                         </div>
                                         <div class="col-8">
-                                            <h5 class="text-dark text-center">일일방문</h5>
-                                            <h5 class="text-dark text-center">2311</h5>
+                                            <h5 class="text-dark text-center">미답변문의</h5>
+                                            <h5 class="text-dark text-center" id="countByUnanswered"></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -147,29 +147,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="row g-1 card2">
-                    <div class="d-flex flex-row md-4 mt-6 justify-content-center">
-                        <div class="card col-9 p-3 mb-4">
-                            <div class="card-body">
-                                <div class="row-md-4">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"
-                                                 fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                                <path fill-rule="evenodd"
-                                                      d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                                            </svg>
-                                        </div>
-                                        <div class="col-8">
-                                            <h5 class="text-center">신규 회원 수</h5>
-                                            <h5 class="text-center">135315</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row g-1 card2" style="min-height: 15.5rem">
+<!--                    <div class="d-flex flex-row md-4 mt-6 justify-content-center">-->
+<!--                        <div class="card col-9 p-3 mb-4">-->
+<!--                            <div class="card-body">-->
+<!--                                <div class="row-md-4">-->
+<!--                                    <div class="row">-->
+<!--                                        <div class="col-4">-->
+<!--                                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"-->
+<!--                                                 fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">-->
+<!--                                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>-->
+<!--                                                <path fill-rule="evenodd"-->
+<!--                                                      d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>-->
+<!--                                            </svg>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-8">-->
+<!--                                            <h5 class="text-center">신규 회원 수</h5>-->
+<!--                                            <h5 class="text-center">135315</h5>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -178,13 +178,8 @@
 </main>
 </body>
 <script th:src="@{/js/osh/chart.js}"></script>
-<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.26.3/apexcharts.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script th:src="@{/css/osh/vendors/jquery/jquery.min.js}"></script>
 <script th:src="@{/css/osh/vendors/apexcharts/apexcharts.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-        crossorigin="anonymous"></script>
 </html>

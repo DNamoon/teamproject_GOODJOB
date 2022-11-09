@@ -15,7 +15,7 @@
                 <div class="col-12">
                     <div class="card mb-4">
                         <div class="card-header pb-0">
-                            <h6 class="text-2xl m-lg-1">공고 관리 게시판</h6>
+                            <h6 class="text-2xl m-lg-1">공고 현황</h6>
                         </div>
                         <hr>
                         <div class="card-body px-0 pt-0 pb-2">
@@ -53,14 +53,14 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <h6 th:text="${post.postTitle}" class="m-lg-2 text-sm"/>
+                                            <a th:href="@{/post/readPost/{postId}(postId=${post.postId})}"><h6 th:text="${post.postTitle}" class="m-lg-2 text-sm"/></a>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             <th:block th:if="${#dates.createNow().after(post.postEndDate)}">
-                                                <span class="badge rounded-pill badge-sm bg-gradient-warning">공고마감</span>
+                                                <span class="badge rounded-pill badge-sm bg-gradient-faded-secondary-vertical">공고마감</span>
                                             </th:block>
                                             <th:block th:if="${#dates.createNow().before(post.postEndDate)}">
-                                                <span class="badge rounded-pill badge-sm bg-gradient-success">공고 중</span>
+                                                <span class="badge rounded-pill badge-sm bg-gradient-dark">공고 중</span>
                                             </th:block>
                                         </td>
                                         <td class="align-middle text-center">
@@ -86,11 +86,11 @@
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${postPage.getNumber()-4})}">&lt;&lt;</a>
                                             </th:block>
                                             <th:block
-                                                    th:each="num : ${#numbers.sequence(postPage.getNumber(),postPage.getNumber()+5)}">
+                                                    th:each="num : ${#numbers.sequence(pageNum -1,pageNum+4)}">
                                                 <a class="m-lg-1 fs-5" th:text="${num}" th:if="${num>0 && num<postPage.getTotalPages()+1}"
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${num})}"></a>
                                             </th:block>
-                                            <th:block th:if="${postPage.getNumber() < postPage.totalPages-5 && !postPage.isLast()}">
+                                            <th:block th:if="${postPage.getNumber() < postPage.getTotalPages()-5 && !postPage.isLast()}">
                                                 <a class="m-lg-1 fs-5"
                                                    th:href="@{/admin/postManage/{pageNum}(pageNum=${postPage.getNumber()+6})}">&gt;&gt;</a>
                                             </th:block>
@@ -115,7 +115,7 @@
                 data: {postId : postId},
                 success: function () {
                     alert("삭제되었습니다");
-                    location.href = "/admin/post/1";
+                    location.href = "/admin/postManage/1";
                 }
             })
         } else {

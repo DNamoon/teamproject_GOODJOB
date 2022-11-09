@@ -1,9 +1,7 @@
 package com.goodjob.post.serviceImpl;
 
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
-import com.goodjob.company.repository.RegionRepository;
 import com.goodjob.post.Address;
 import com.goodjob.post.Post;
 import com.goodjob.post.fileupload.FileService;
@@ -20,13 +18,13 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
@@ -41,7 +39,6 @@ public class postServiceImpl implements PostService {
     private final OccupationRepository occupationRepository;
     private final CompanyRepository companyRepository;
     private final SalaryRepository salaryRepository;
-    private final RegionRepository regionRepository;
     private final FileService fileService;
 
     @Override
@@ -82,10 +79,7 @@ public class postServiceImpl implements PostService {
     public List<Occupation> getListOccupation(){
         return occupationRepository.findAll();
     }
-    @Override
-    public List<Region> getListRegion(){
-        return regionRepository.findAll();
-    }
+
     @Override
     public List<PostSalary> getListSalary(){
         return salaryRepository.findAll();
@@ -96,6 +90,8 @@ public class postServiceImpl implements PostService {
         Address address = new Address(HtmlUtils.htmlEscape(postInsertDTO.getPostcode()), HtmlUtils.htmlEscape(postInsertDTO.getPostAddress()), HtmlUtils.htmlEscape(postInsertDTO.getPostDetailAddress()),HtmlUtils.htmlEscape(postInsertDTO.getEtc()+""));
         Optional<Occupation> occupation = occupationRepository.findById(postInsertDTO.getPostOccCode());
         Optional<Company> company = companyRepository.findByComLoginId(postInsertDTO.getComLoginId());
+        log.info("=================================");
+        postInsertDTO.getPostImg().forEach(log::info);
         List<UploadFile> uploadFiles =  fileService.storeFiles(postInsertDTO.getPostImg());
         Optional<PostSalary> salary = salaryRepository.findById(postInsertDTO.getPostSalaryId());
         if(occupation.isPresent() && company.isPresent() && salary.isPresent()){
@@ -105,11 +101,16 @@ public class postServiceImpl implements PostService {
         return null;
     }
     @Override
-    public PostDetailsDTO readPost(Long postId){
+    public PostDetailsDTO readPost(Long postId) throws IOException {
         Optional<Post> result = postRepository.findById(postId);
+
+        List<String> fileList = fileService.getFiles(result.get().getPostImg());
+        if(fileList.isEmpty()){
+            fileList.add("no_image.png");
+        }
         // 게시글 조회 후 조회수를 +1 한다.
         postRepository.increasePostCount(postId);
-        return result.map(this::entityToDtoForRead).orElse(null);
+        return result.map((Post post) -> entityToDtoForRead(post,fileList)).orElse(null);
     }
     @Override
     public PostInsertDTO getPostById(Long postId){
@@ -291,5 +292,10 @@ public class postServiceImpl implements PostService {
     @Override
     public List<String> searchSalaryRange(){
         return  postRepository.salaryRange();
+    }
+
+    @Override
+    public Optional<Post> findOne(Long postId) {
+        return postRepository.findById(postId);
     }
 }

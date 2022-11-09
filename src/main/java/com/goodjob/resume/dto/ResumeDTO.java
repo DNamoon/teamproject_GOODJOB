@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.sql.Date;
 
 /**
  * 박채원 22.10.05 작성
@@ -16,6 +17,9 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResumeDTO {
+    private String memName;
+    private String memGender;
+    private Date memBirthDate;
     private String memFirstAddress;
     private String memLastAddress;
     private String memFirstEmail;

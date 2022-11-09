@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  * 박채원 22.10.03 작성

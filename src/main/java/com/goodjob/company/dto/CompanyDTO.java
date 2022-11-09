@@ -18,20 +18,16 @@
  *
  *  +2022.10.24
  *  기업분류, 지역분류 타입 변경. (회원정보에서 코드와 이름으로 받아오기 위해서)
+ *
+ *  +22.11.06 기업 회원 지역 테이블 삭제 -> String타입 comRegCode '지역분류코드'필드, comRegName 필드 삭제.
  */
 package com.goodjob.company.dto;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @ToString
@@ -56,14 +52,6 @@ public class CompanyDTO {
     //비밀번호가 일치하지 않으면 넘어가지 않도록 하기 위해 엔티티와는 별개로 DTO에만 comPw2 추가
     //@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
     private String comPw2;
-//    @NotBlank
-//    private Region comRegCode;
-//    @NotBlank
-//    private Comdiv comComdivCode;
-    @NotBlank
-    private String comRegCode;
-
-    private String comRegName;
     @NotBlank
     private String comComdivCode;
 
@@ -87,6 +75,7 @@ public class CompanyDTO {
     private String comAddress4;  // 회사주소(참고항목)
     @NotBlank
     private String comEmail1;
+    @NotBlank(message = "이메일을 선택해주세요.")
     private String comEmail2;
 
     //22.10.29 - 아이디 찾기 때 사용하는 엔티티 변환 메서드. 기존 toEntity 메서드 if문 때문에 에러 발생.
@@ -96,18 +85,10 @@ public class CompanyDTO {
                 .comName(comName)
                 .comEmail(comEmail1)
                 .build();
-
-//        return Company.builder()
-//               .comName(comName)
-//               .comEmail(comEmail1)
-//               .build();
     }
 
     public Company toEntity() {
         //엔티티 바꿀 때는 builder이용해서 필요한 객체 만들자.
-        Region region = Region.builder()
-                .regCode(comRegCode)
-                .build();
 
         Comdiv comdiv = Comdiv.builder()
                 .comdivCode(comComdivCode)
@@ -121,7 +102,6 @@ public class CompanyDTO {
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 93,96라인 변경
         Company com = Company.builder()
                 .comLoginId(loginId)
-                .comRegCode(region)
                 .comComdivCode(comdiv)
                 .comPw(pw)
                 .comPhone(comPhone)

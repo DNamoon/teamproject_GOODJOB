@@ -8,8 +8,6 @@ import com.goodjob.selfIntroduction.SelfIntroduction;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -52,13 +50,21 @@ public class Resume {
     @Column(length = 45)
     private String resumeMemAddress;
 
+    @Column(length = 45)
+    private String resumeMemName;
+
+    @Column(length = 45)
+    private String resumeMemGender;
+
+    @Column
+    private Date resumeMemBirthDate;
+
     @Column
     private boolean deleted;
 
     @ManyToOne
-    @JoinColumn(name = "resumeMemId", nullable = false)
+    @JoinColumn(name = "resumeMemId")
     private Member resumeMemId;
-
 
     //하나의 이력서 조회할 때 관련된 모든 항목을 불러오게 하려고 했는데 manytoone이 여러개 있어서 자꾸 오류남 - 하나만 있을 때는 정상작동
     @OneToMany(mappedBy = "resume", cascade = CascadeType.REMOVE)

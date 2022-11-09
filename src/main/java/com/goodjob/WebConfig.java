@@ -17,6 +17,9 @@ public class WebConfig implements WebMvcConfigurer {
     private String connectPath = "/Users/kesia/Desktop/goodjobimg/**";
     private String resourcePath = "file:///Users/kesia/Desktop/goodjobimg/";
 
+//    private String connectPath = "C:\\Users\\pc\\Desktop\\Coding\\project\\GOODJOB\\goodjobimg/**";
+//    private String resourcePath = "file:///C:\\Users\\pc\\Desktop\\Coding\\project\\GOODJOB\\goodjobimg";
+
     //인터셉터 추가 메소드
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -33,6 +36,17 @@ public class WebConfig implements WebMvcConfigurer {
                         "/member/login","/member/signUp","/member/checkId","/member/signupEmail","/member/checkEmail"
                         ,"/member/sendPw");
 
+        registry.addInterceptor(new LoginInterceptor())
+                .order(3)
+                .addPathPatterns("/com/**")  //세션 없으면 로그인 페이지로
+                .excludePathPatterns("/login","/*.css","/*.js","/assets/**","/css/**")  //세션 없어도 돌아가도록
+                .excludePathPatterns("/com/emailCheck","/com/login","/com/findId","/com/check","/com/signup","/com/update")
+                .excludePathPatterns("/com/emailCheck2");
+
+        registry.addInterceptor(new LoginInterceptor())
+                .order(4)
+                .addPathPatterns("/resume/**","/status/**") // 세션필요한
+                .excludePathPatterns("/css/**","/js/**","/login","/*.css","/*.js","/assets/**");  //세션 없는
     }
     // 썸머노트(텍스트 에디터)에 대한 요청 응답 핸들러
     @Override

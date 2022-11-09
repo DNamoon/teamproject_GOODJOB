@@ -29,6 +29,11 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public Page<Notice> findNoticeListWithStatus(Pageable pageable, String noticeStatus) {
+        return noticeRepository.findAllByNoticeStatus(pageable,noticeStatus);
+    }
+
+    @Override
     public List<Notice> findAll() {
         return noticeRepository.findAll();
     }

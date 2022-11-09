@@ -11,20 +11,16 @@ package com.goodjob.company.service;
 
 import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
-import com.goodjob.company.Region;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
-import com.goodjob.company.repository.RegionRepository;
-import com.goodjob.member.Member;
+import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,8 +32,7 @@ public class CompanyService {
 
     //22.10.09 - 비밀번호 암호화를 위해 추가
     private final PasswordEncoder passwordEncoder;
-    private final RegionRepository regionRepository;
-
+    private final PostRepository postRepository;
 
     //비밀번호 변경
     public void changePw(CompanyDTO companyDTO,String comLoginId){
@@ -139,7 +134,6 @@ public class CompanyService {
         String comBusiNum = company.getComBusiNum();
         String comPhone = company.getComPhone();
         Comdiv comComdivCode = company.getComComdivCode();
-        Region comRegCode = company.getComRegCode();
 
         String comEmail = company.getComEmail();
         String[] email = comEmail.split("@");
@@ -159,10 +153,10 @@ public class CompanyService {
             String[] newAddress = Arrays.copyOf(address, address.length + 1);
             newAddress[address.length] = "null";
 
-            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, comRegCode, email, comInfo, newAddress);
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, newAddress);
 
         } else {
-            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, comRegCode, email, comInfo, address);
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, address);
         }
 
 
@@ -170,7 +164,7 @@ public class CompanyService {
 
     /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
      * 메서드 추가 */
-    private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, Region comRegCode, String[] email, String comInfo, String[] address) {
+    private CompanyDTO getCompanyDTO(String comLoginId, String comName, String comBusiNum, String comPhone, Comdiv comComdivCode, String[] email, String comInfo, String[] address) {
         CompanyDTO dto = CompanyDTO.builder()
                 .loginId(comLoginId)
                 .comName(comName)
@@ -178,8 +172,6 @@ public class CompanyService {
                 .comPhone(comPhone)
                 .comComdivCode(comComdivCode.getComdivCode())
                 .comComdivName(comComdivCode.getComdivName())
-                .comRegCode(comRegCode.getRegCode())
-                .comRegName(comRegCode.getRegName())
                 .comEmail1(email[0])
                 .comEmail2(email[1])
                 .comAddress1(address[0])
@@ -198,9 +190,6 @@ public class CompanyService {
         System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());
         System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
-    }
-    public List<String> searchRegName(){
-        return regionRepository.regName();
     }
 
     //22.10.25 - ho 기업회원 탈퇴
@@ -240,6 +229,11 @@ public class CompanyService {
             return company.get().getComLoginId();
         }
 
+    }
+
+    //박채원 22.11.08 추가
+    public String getPostTitle(Long postId){
+        return postRepository.findPostByPostId(postId).getPostTitle();
     }
 
 }

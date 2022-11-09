@@ -3,6 +3,8 @@ package com.goodjob.Admin;
 import com.goodjob.admin.Admin;
 import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
+import com.goodjob.admin.customerInquiry.CustomerInquiryPostAnswerDTO;
+import com.goodjob.company.Company;
 import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.customerInquiry.repository.CustomerInquiryPostRepository;
 import com.goodjob.customerInquiry.CustomerInquiryPostType;
@@ -13,6 +15,7 @@ import com.goodjob.notice.Notice;
 import com.goodjob.notice.NoticeRepository;
 import com.goodjob.post.Post;
 import com.goodjob.post.repository.PostRepository;
+import org.apache.ibatis.annotations.Update;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +27,12 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -56,44 +64,6 @@ public class AdminTest {
 
     @Test
     @Commit
-    public void visitTest() {
-//        int dayOfMonth = LocalDate.now().getDayOfMonth();
-//        System.out.println("dayOfMonth = " + dayOfMonth);
-
-//        VisitorStatistics visitorStatistics = new VisitorStatistics(LocalDate.of(2022,10,4), 34L);
-//        visitorStatisticsRepository.save(visitorStatistics);
-//        VisitorStatistics visitorStatistics2 = new VisitorStatistics(LocalDate.of(2022,10,5), 64L);
-//        visitorStatisticsRepository.save(visitorStatistics2);
-//        VisitorStatistics visitorStatistics3 = new VisitorStatistics(LocalDate.of(2022,10,6), 12L);
-//        visitorStatisticsRepository.save(visitorStatistics3);
-
-//        Long longs = visitorStatisticsRepository.sumVisitor();
-//        System.out.println("aLong = " + longs);
-//        visitorStatisticsRepository.updateVisitor(LocalDate.now());
-
-//        LocalDate localDate = LocalDate.now().minusDays(7L);
-//        System.out.println("localDateTime = " + localDate);
-
-//        LocalDate startDate = LocalDate.of(2022, 10, 4);
-//        LocalDate endDate = LocalDate.of(2022, 10, 6);
-//        List<VisitorStatistics> allByXBetween = visitorStatisticsRepository.findAllByXBetween(startDate, endDate);
-//        System.out.println("allByXBetween = " + allByXBetween);
-
-//        List<VisitorStatistics> all = visitorStatisticsRepository.findAll();
-//        VisitorStatistics visitorStatistics = all.get(0);
-//        System.out.println("visitorStatistics = " + visitorStatistics);
-    }
-    @Test
-    void pageTest(){
-        Sort sort = Sort.by("noticeId").descending();
-        Pageable pageable = PageRequest.of(0,10 , sort);
-        Page<Notice> result = noticeRepository.findAll(pageable);
-        for (Notice notice : result) {
-            System.out.println("notice = " + notice);
-        }
-    }
-    @Test
-    @Commit
     void saveNotice(){
         LongStream.rangeClosed(6,50).forEach(i->{
             noticeRepository.save(new Notice(i,"test"+i,"contentTest"+i,LocalDate.now(),"0"));
@@ -112,16 +82,54 @@ public class AdminTest {
     @Test
     @Commit
     void 고객문의생성테스트(){
-        CustomerInquiryPost build = CustomerInquiryPost.builder().inquiryPostCategory(CustomerInquiryPostType.ETC)
-                .inquiryPostMemberId(memberRepository.findById(2L).get())
-                .inquiryPostContent("content")
-                .inquiryPostId(4L)
-                .inquiryPostPublishedDate(Date.valueOf(LocalDate.now()))
-                .inquiryPostStatus("0")
-                .inquiryPostTitle("title")
-                .inquiryPostWriter("writer")
-                .build();
-        customerInquiryPostRepository.save(build);
+        LongStream.rangeClosed(12,72).forEach(i->{
+            CustomerInquiryPost build = CustomerInquiryPost.builder().inquiryPostCategory(CustomerInquiryPostType.GENERAL)
+                    .inquiryPostMemberId(memberRepository.findById(1L).get())
+                    .inquiryPostContent("content")
+                    .inquiryPostId(i)
+                    .inquiryPostPublishedDate(LocalDateTime.now())
+                    .inquiryPostStatus("0")
+                    .inquiryPostTitle("title")
+                    .inquiryPostWriter("writer")
+                    .build();
+            customerInquiryPostRepository.save(build);
+        });
+
+    }
+    @Test
+    void 멤버로문의조회(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> byCompany = customerInquiryPostRepository.findAllByInquiryPostComId(pageable, "test");
+        Page<CustomerInquiryPost> byMember = customerInquiryPostRepository.findAllByInquiryPostMemberId(pageable, "test");
+        System.out.println("test = " + byCompany.getContent().size());
+        System.out.println("test = " + byMember.getContent().size());
+    }
+    @Test
+    void 개인만조회및정렬(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> allByInquiryPostComIdIsNull = customerInquiryPostRepository.findAllByInquiryPostComIdIsNull(pageable);
+        allByInquiryPostComIdIsNull.getContent().forEach(i-> System.out.println("i = " + i.getInquiryPostComId()));
     }
 
+    @Test
+    void 카테고리검색(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> etc = customerInquiryPostRepository.findAllByCategory(pageable, CustomerInquiryPostType.GENERAL);
+        for (CustomerInquiryPost customerInquiryPost : etc) {
+            System.out.println("customerInquiryPost = " + customerInquiryPost.getInquiryPostTitle());
+        }
+    }
+    @Test
+    void 미답변테스트(){
+        Sort sort = Sort.by("inquiryPostId").descending();
+        Pageable pageable = PageRequest.of(0, 10, sort);
+        Page<CustomerInquiryPost> allByInquiryPostStatus = customerInquiryPostRepository.findAllByInquiryPostStatus(pageable, "0");
+        for (CustomerInquiryPost byInquiryPostStatus : allByInquiryPostStatus) {
+            System.out.println("byInquiryPostStatus = " + byInquiryPostStatus.getInquiryPostTitle());
+        }
+        System.out.println("customerInquiryPostRepository.countByInquiryPostStatus(\"0\") = " + customerInquiryPostRepository.countByInquiryPostStatus("0"));
+    }
 }
