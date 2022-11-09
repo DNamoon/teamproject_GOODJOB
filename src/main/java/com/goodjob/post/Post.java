@@ -74,6 +74,4 @@ public class Post {
 
     private String postComName;
 
-
-
 }

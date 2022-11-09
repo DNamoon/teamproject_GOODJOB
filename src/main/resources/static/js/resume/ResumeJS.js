@@ -560,9 +560,7 @@ function WinPrint() {
         document.body.innerHTML = g_oBeforeBody;
     };
     window.print();
-
-    $(".buttonDiv").replaceWith('<button class="btn btn-secondary" type="button" onclick="WinPrint()">인쇄</button>\n' +
-        '        <button class="btn btn-danger" type="button" onclick="WinClose()">닫기</button>');
+    location.reload();
 }
 
 //입력검증
