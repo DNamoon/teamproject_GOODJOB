@@ -34,7 +34,7 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             addConstraintViolation(context,"Invalid value","postOccCode");
             invalidCount +=1;
         }
-        if(value.getPostSalaryId()<0 || value.getPostOccCode()>14){
+        if(value.getPostSalaryId()<0 || value.getPostSalaryId()>14){
             addConstraintViolation(context,"Invalid value","postSalaryId");
             invalidCount +=1;
         }

@@ -52,4 +52,5 @@ public class PostInsertDTO {
     private String postContent; // 공고 내용
     @Nullable
     private String comLoginId; // 회사 로그인 id
+    private String comName; // 회사 이름
 }
