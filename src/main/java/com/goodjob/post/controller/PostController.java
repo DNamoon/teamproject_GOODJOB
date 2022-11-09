@@ -124,12 +124,6 @@ public class PostController {
 
         PostDetailsDTO postDetailsDTO = postService.readPost(postId);
         model.addAttribute("dto",postDetailsDTO);
-//        String comLoginId = getSessionInfo(httpServletRequest, "sessionId");
-//        if(comLoginId != null){
-//            if(Objects.equals(companyService.loginIdCheck(comLoginId).orElseThrow(RuntimeException::new).getComName(), postDetailsDTO.getComName())){
-//                model.addAttribute("isCompanySession", true);
-//            }
-//        }
         return "/post/postDetailViewWithMap";
     }
 
@@ -146,15 +140,12 @@ public class PostController {
     private String getSessionInfo(HttpServletRequest httpServletRequest, String typeOrSessionId){
         HttpSession httpSession = httpServletRequest.getSession(false);
         if(httpSession != null && httpSession.getAttribute("Type").toString().equals("company")){
-            System.out.println("if 문 안으로 들어옴");
             // 세션 타입 체크
             if (typeOrSessionId.equals("Type")) {
-                System.out.println("타입으로 체크포인트");
                 System.out.println((String)httpSession.getAttribute("Type"));
                 System.out.println(httpSession.getAttribute("Type").toString());
                 return httpSession.getAttribute("Type").toString();
             } else if (typeOrSessionId.equals("sessionId")) {
-                System.out.println("세션아이디 체크");
                 System.out.println((String)httpSession.getAttribute("sessionId"));
                 System.out.println(httpSession.getAttribute("sessionId").toString());
                 return httpSession.getAttribute("sessionId").toString();
