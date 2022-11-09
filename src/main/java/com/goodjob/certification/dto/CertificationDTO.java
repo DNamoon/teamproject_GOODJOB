@@ -9,6 +9,9 @@ import java.sql.Date;
  */
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Builder
 public class CertificationDTO {
     private Long certiId;

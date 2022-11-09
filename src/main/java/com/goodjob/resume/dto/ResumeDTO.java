@@ -11,6 +11,9 @@ import java.sql.Date;
  */
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Builder
 public class ResumeDTO {
     private String memName;

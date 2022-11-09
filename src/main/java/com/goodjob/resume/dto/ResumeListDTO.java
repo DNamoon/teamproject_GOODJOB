@@ -4,6 +4,9 @@ import lombok.*;
 import java.sql.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Builder
 public class ResumeListDTO {
     private Long resumeId;
