@@ -17,7 +17,7 @@
                         <div class="carousel-inner w-100 d-flex">
 
                             <th:block th:each="fileName:${dto.attachment}">
-                                <div class="carousel-item active">
+                                <div class="carousel-item">
                                     <!--                                        style="width: 50rem; height: 30rem"-->
                                     <div class="p-0 m-0 embed-responsive embed-responsive-4by3 w-100 h-100 " >
                                         <img th:src="@{/post/file/{fileName}(fileName=${fileName})}" class="d-block embed-responsive-item img-fluid h-100 w-100" alt="...">
@@ -50,13 +50,13 @@
                                             <div class="col-1 text-center p-0">
                                                 <h6>|</h6>
                                             </div>
-                                            <div class="col-1 p-0 text-center">
+                                            <div class="col-2 p-0 text-center">
                                                 <h6 class="">[[${dto.salary}]]</h6>
                                             </div>
                                             <div class="col-1 text-center p-0">
                                                 <h6>|</h6>
                                             </div>
-                                            <div class="col-1 p-0 text-center">
+                                            <div class="col-2 p-0 text-center">
                                                 <h6 class="">[[${dto.postGender}]] [[${dto.recruitNum}]]명</h6>
                                             </div>
                                             <div class="col-1 text-center p-0">
@@ -214,7 +214,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-fill mt-3">
-                                    <th:block>
+                                    <th:block th:if="${existsPostInCompany}">
                                         <div class="d-flex flex-fill mt-3">
                                             <th:block th:if="${#session.getAttribute('sessionId') == null}">
                                                 <div class="col-6">
@@ -245,8 +245,6 @@
                                                 </div>
                                             </th:block>
                                             <div class="col-6">
-                                                <!--                                        <a role="button" class="btn"-->
-                                                <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
                                                 <input type="hidden" th:value="${dto.postId}" id="postId">
                                                 <th:block th:if="${#session.getAttribute('Type') == 'member'}">
                                                     <button type="button" class="btn btn-primary applyBtn"

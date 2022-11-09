@@ -47,7 +47,7 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <p th:text="${post.postComId.getComName()}"
+                                                    <p th:text="${post.postComName}"
                                                        class="text-sm font-weight-bold m-lg-1"/>
                                                 </div>
                                             </div>
@@ -57,11 +57,14 @@
                                                     th:text="${post.postTitle}" class="m-lg-2 text-sm"/></a>
                                         </td>
                                         <td class="align-middle text-center text-sm">
-                                            <th:block th:if="${#dates.createNow().after(post.postEndDate)}">
+                                            <th:block th:if="${#dates.createNow().after(post.postEndDate) && post.postComId != null}">
                                                 <span class="badge rounded-pill badge-sm bg-gradient-faded-secondary-vertical">공고마감</span>
                                             </th:block>
-                                            <th:block th:if="${#dates.createNow().before(post.postEndDate)}">
+                                            <th:block th:if="${#dates.createNow().before(post.postEndDate) && post.postComId != null}">
                                                 <span class="badge rounded-pill badge-sm bg-gradient-dark">공고 중</span>
+                                            </th:block>
+                                            <th:block th:if="${post.postComId == null}">
+                                                <span class="badge rounded-pill badge-sm bg-gradient-dark">삭제대기</span>
                                             </th:block>
                                         </td>
                                         <td class="align-middle text-center">
