@@ -63,8 +63,15 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<ResumeListDTO> getResumeList(String loginId) {
-        List<Resume> resumeList = resumeRepository.getResumeByResumeMemId_MemLoginIdAndDeletedOrderByResumeId(loginId, false);
+    public List<ResumeListDTO> getResumeList(String loginId, String type) {
+        List<Resume> resumeList = new ArrayList<>();
+        if(type.equals("my")){
+            //회원의 이력서 관리에 가져오는 이력서 리스트는 삭제 컬럼이 false인지만 비교해서 가져옴
+            resumeList = resumeRepository.getResumeByResumeMemId_MemLoginIdAndDeletedOrderByResumeId(loginId, false);
+        }else{
+            //지원하기의 이력서 리스트는 삭제 컬럼이 false인지와 최종제출 컬럼이 true인지를 비교해서 가져옴
+            resumeList = resumeRepository.getResumeByResumeMemId_MemLoginIdAndDeletedAndSubmittedOrderByResumeId(loginId, false, true);
+        }
         return resumeList.stream().map(resume -> entityToListDTO(resume)).collect(Collectors.toList());
     }
 
@@ -95,5 +102,10 @@ public class ResumeServiceImpl implements ResumeService {
         menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(loginId, "최종합격"));
         menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(loginId, "불합격"));
         return menuList;
+    }
+
+    @Override
+    public void setSubmittedTrue(Long resumeId) {
+        resumeRepository.setSubmitted(resumeId);
     }
 }

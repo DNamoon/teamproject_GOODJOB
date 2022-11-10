@@ -16,7 +16,7 @@ $(document).ready(function(){
 function havePass(){
     if($("#havePass").val() === 'true'){
         Swal.fire({
-            title: '서류 합격을 축하드립니다',
+            title: '합격을 축하드립니다',
             text: '이후 전형에 대한 안내는 이력서의 이메일을 확인해주세요',
             icon: 'info'
         });

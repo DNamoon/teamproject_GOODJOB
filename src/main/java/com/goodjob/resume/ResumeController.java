@@ -143,9 +143,11 @@ public class ResumeController {
         return "/resume/ResumeStep3";
     }
 
-    @GetMapping("/submitResume")
-    public String submitResume(@Valid SelfIntroductionDTO selfIntroductionDTO){
+    @GetMapping("/submitResume/{resumeId}")
+    public String submitResume(SelfIntroductionDTO selfIntroductionDTO, @PathVariable("resumeId") Long resumeId){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
+        //박채원 22.11.10 추가 (이하 1줄) - 지원할 때 표시되는 이력서 리스트에서 최종제출 되지 않은 이력서는 띄우지 않기 위함
+        resumeService.setSubmittedTrue(resumeId);
         return "redirect:/member/myPageResume";
     }
 
@@ -159,7 +161,7 @@ public class ResumeController {
     }
 
     @GetMapping("/goPreviousStep2/{resumeId}")
-    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, @Valid SelfIntroductionDTO selfIntroductionDTO, Model model){
+    public String goPreviousStep2(@PathVariable("resumeId") Long resumeId, SelfIntroductionDTO selfIntroductionDTO, Model model){
         selfIntroductionService.registerSelfInfo(selfIntroductionDTO);
 
         model.addAttribute("resumeId", resumeId);
