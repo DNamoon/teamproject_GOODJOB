@@ -49,6 +49,9 @@ public class Status {
     @Column
     private String statInterviewPlace;
 
+    @Column(length = 45)
+    private String statPostName;
+
     @ManyToOne
     @JoinColumn(name = "statPostId")
     private Post statPostId;

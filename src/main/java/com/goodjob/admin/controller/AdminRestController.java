@@ -8,6 +8,7 @@ import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
 import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.post.repository.PostRepository;
+import com.goodjob.status.repository.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -42,6 +43,7 @@ public class AdminRestController {
     private final VisitorStatisticsRepository vs;
     private final PostRepository postRepository;
     private final CustomerInquiryService customerInquiryService;
+    private final StatusRepository statusRepository;
     @Value("${editor.img.save.url}")
     private String saveUrl;
 
@@ -89,8 +91,8 @@ public class AdminRestController {
 
     @PostMapping("/deletePost")
     public void deletePost(@Param("postId") Long postId) {
+        statusRepository.setPostIdNull(postId);
         postRepository.deleteById(postId);
-
     }
 
     @PostMapping("/inquiryPost/delete")
