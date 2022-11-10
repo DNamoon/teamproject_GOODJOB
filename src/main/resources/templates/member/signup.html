@@ -54,7 +54,7 @@
                                     <div class="col-md-6">
                                         <label>비밀번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast; (최소 1개의 영문, 숫자, 특수문자를 포함해야합니다.)</span></label>
                                         <div class="input-group mb-4">
-                                            <input type="text" placeholder="비밀번호는 3~25자 사이여야 합니다."
+                                            <input type="password" placeholder="비밀번호는 3~25자 사이여야 합니다."
                                                    class="form-control" id="pw1" th:field="*{pw}" onkeyup="test()"
                                                    required>
                                         </div>
@@ -62,7 +62,7 @@
                                     <div class="col-md-6">
                                         <label>비밀번호 확인<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="pw2" th:field="*{pw2}"
+                                            <input type="password" class="form-control" id="pw2" th:field="*{pw2}"
                                                    onkeyup="test()" required>
                                         </div>
                                         <label id="confirmMsg"></label>

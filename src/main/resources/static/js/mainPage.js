@@ -39,7 +39,7 @@ function signupCheck() {
 let postJS = {
     init(){
       const _this = this;
-      _this.insertPostListCard('changeContentDiv',1,8,'new');
+      _this.insertPostListCard('changeContentDiv',1,8,'count');
     },
     pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary){
         return {
