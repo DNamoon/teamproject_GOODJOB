@@ -28,22 +28,28 @@ function emailCheckMassage() {
     const inputEmail = $('#signUpEmail').val();
     const selectEmail = $('#emailSelect').val();
     const email = inputEmail + "@" + selectEmail;
-    $.ajax({
-        url: '/member/signupEmail?email=' + email,
-        success: function (result) {
-            console.log(result)
-            if (result == "false") {
-                $('#emailCheckMassage').css('color', 'blue')
-                $('#emailCheckMassage').html("가입 가능한 이메일입니다.")
-            } else if (result == "mem") {
-                $('#emailCheckMassage').css('color', 'red')
-                $('#emailCheckMassage').html("이미 개인회원으로 가입한 이메일입니다.")
-            } else if (result == "com") {
-                $('#emailCheckMassage').css('color', 'red')
-                $('#emailCheckMassage').html("이미 기업회원으로 가입한 이메일입니다.")
+    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])$/i;
+    if (!regExp.test(email)) {
+        $('#emailCheckMassage').css('color', 'red')
+        $('#emailCheckMassage').html("올바른 이메일 양식이 아닙니다.")
+    } else {
+        $.ajax({
+            url: '/member/signupEmail?email=' + email,
+            success: function (result) {
+                console.log(result)
+                if (result == "false") {
+                    $('#emailCheckMassage').css('color', 'blue')
+                    $('#emailCheckMassage').html("가입 가능한 이메일입니다.")
+                } else if (result == "mem") {
+                    $('#emailCheckMassage').css('color', 'red')
+                    $('#emailCheckMassage').html("이미 개인회원으로 가입한 이메일입니다.")
+                } else if (result == "com") {
+                    $('#emailCheckMassage').css('color', 'red')
+                    $('#emailCheckMassage').html("이미 기업회원으로 가입한 이메일입니다.")
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 //주소찾기
@@ -155,17 +161,21 @@ function updateCheckEmail() {
     const inputEmail = $('#signUpEmail').val();
     const selectEmail = $('#emailSelect').val();
     const email = inputEmail + "@" + selectEmail;
+    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])$/i;
     $.ajax({
         url: '/member/myPageInfo?email=' + email,
         success: function (result) {
             $("#emailNo").val(result);
-            console.log(result)
-            if (result == "false") {
+            if(!regExp.test(signUpEmail)){
+                $('#emailCheckMassage').css('color', 'red')
+                $('#emailCheckMassage').html("올바른 이메일 양식이 아닙니다.")
+            }
+            else if (result == "false") {
                 $('#emailCheckMassage').css('color', 'blue')
-                $('#emailCheckMassage').html("가입 가능한 이메일입니다.")
+                $('#emailCheckMassage').html("사용 가능한 이메일입니다.")
             } else if (result == "no") {
                 $('#emailCheckMassage').css('color', 'red')
-                $('#emailCheckMassage').html("이미 가입한 이메일입니다.")
+                $('#emailCheckMassage').html("이미 사용중인 이메일입니다.")
             } else if (result == "mine") {
                 $('#emailCheckMassage').css('color', 'blue')
                 $('#emailCheckMassage').html("현재 회원님의 이메일입니다.")
@@ -196,7 +206,8 @@ function infoUpdateCheck() {
     let email = $('#signUpEmail').val();
     let rs3 = "false";
     let emailtype = $('#emailNo').val();
-    if (email == "" || emailtype == "no") {
+    let regExp2 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])$/i;
+    if (email == "" || emailtype == "no" ||!regExp2.test(email) ) {
         $('#signUpEmail').focus();
     } else {
         rs3 = "true";
