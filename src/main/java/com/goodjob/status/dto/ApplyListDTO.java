@@ -18,7 +18,9 @@ public class ApplyListDTO {
     private Long statResumeId;
     private String statPass;
     private Date statApplyDate;
-    private String postName;
-    private String companyName;
+    @Builder.Default
+    private String postName = "탈퇴한 회사의 공고입니다.";
+    @Builder.Default
+    private String companyName = "탈퇴한 회사";
     private String resumeTitle;
 }

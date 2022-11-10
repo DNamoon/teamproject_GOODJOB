@@ -198,7 +198,7 @@ function getApplyList(pageNum) {
             $.each(result.dtoList, function (applyIdx, apply) {
                 list += '    <tr>\n' +
                     '      <th scope="row">' + (applyIdx + 1) + '</th>\n' +
-                    '      <td><a href="/post/readPost/'+ apply.statPostId +'">' + apply.postName.substr(0, 10) + "..." + '</a></td>\n' +
+                    '      <td><a onclick="alertDeleted(' + apply.statPostId + ')">' + apply.postName.substr(0, 10) + "..." + '</a></td>\n' +
                     '      <td>' + apply.companyName + '</td>\n' +
                     '      <td><a href="/resume/resumeRead/' + loginId + '/'+ apply.statResumeId +'" target="_blank">' + apply.resumeTitle.substr(0, 6) + "..." + '</a></td>\n' +
                     '      <td>' + apply.statApplyDate + '</td>\n' +
@@ -227,6 +227,18 @@ function getApplyList(pageNum) {
         }
 
     });
+}
+
+function alertDeleted(id){
+    if(id === 0){
+        Swal.fire({
+            title: '탈퇴한 기업의 공고입니다',
+            test: '더 이상 공고를 열람할 수 없습니다.',
+            icon: 'error'
+        });
+    }else{
+        location.href = "/post/readPost/" + id;
+    }
 }
 
 function getMenuValue(){
