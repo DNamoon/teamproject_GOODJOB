@@ -101,7 +101,7 @@ public interface EntityDtoMapper {
         } else if (endDateMinusNow.contains("-")) {
             remainDay = "(종료됨)";
         } else {
-            remainDay = "(D - "+endDateMinusNow+") 모집 종료";
+            remainDay = "(D - "+endDateMinusNow+") 모집 종료 예정";
         }
         String[] startDateArr = post.getPostStartDate().toString().split("-");
         String startDate = startDateArr[0]+"년 "+startDateArr[1]+"월 "+startDateArr[2]+"일 ";
