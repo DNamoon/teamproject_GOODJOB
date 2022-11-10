@@ -32,40 +32,16 @@ public class CompanyService {
 
     //22.10.09 - 비밀번호 암호화를 위해 추가
     private final PasswordEncoder passwordEncoder;
+
     private final PostRepository postRepository;
 
     //비밀번호 변경
     public void changePw(CompanyDTO companyDTO,String comLoginId){
         companyDTO.setPw(passwordEncoder.encode(companyDTO.getPw()));
-        log.info("???: 서비스 changePw에서 암호화하는과정에서 에러일가?");
         Company company = companyDTO.toEntityForFindId();
-        log.info("???: toEntity에서나는 에러같은데");
-        log.info("???: 로그인 아이디 뭐 받아오는거지" + company.getComLoginId());
-        log.info("???: 로그인 아이디 뭐 받아오는거지" + comLoginId);
-
         companyRepository.updatePassword(company.getComPw(),comLoginId);
 
     }
-
-    //아이디 찾기 10.30일날 한 듯. DTO로 처음부터 받았는데 String으로 name,email 받아서 DTO로 변경하기로 함. 224라인에 새로 메서드 만듦.
-//    public String findId2(CompanyDTO companyDTO) {
-//        Company company1 = companyDTO.toEntityForFindId();
-//        String name = company1.getComName();
-//        log.info("??? name 받아오는 값: " + name);
-//        String email = company1.getComEmail();
-//        log.info("??? email 받아오는 값: " + email);
-//
-//        Long num = companyRepository.countByComNameAndComEmail(name,email);
-//        log.info("??? name과 emial로 찾아온 갯수 : "+num);
-//        if(num == 0){
-//            return "fail";
-//        } else {
-//            Optional<Company> company = companyRepository.findByComNameAndComEmail(name, email);
-//            log.info("???: "+ email +"email일부일텐데??? "+ company.get().getComEmail());
-//            return company.get().getComLoginId();
-//        }
-//
-//    }
 
     //22.10.29 아이디 찾기
     public String findId(CompanyDTO companyDTO){
@@ -104,30 +80,6 @@ public class CompanyService {
         return companyRepository.findByComLoginId(comLoginId);
     }
 
-//    public CompanyDTO entityToDTO(String comLoginId, String comName, String comBusiNum, String comPhone,
-//                                  String comComdivCode, String comRegCode, String comEmail1, String comEmail2,
-//                                  String comAddress1, String comAddress2, String comAddress3,
-//                                  String comAddress4, String comInfo){
-//
-//        CompanyDTO dto = CompanyDTO.builder()
-//                .loginId(comLoginId)
-//                .comName(comName)
-//                .comBusiNum(comBusiNum)
-//                .comPhone(comPhone)
-//                .comComdivCode(comComdivCode)
-//                .comRegCode(comRegCode)
-//                .comEmail1(comEmail1+"@")
-//                .comEmail2(comEmail2)
-//                .comAddress1(comAddress1)
-//                .comAddress2(comAddress2)
-//                .comAddress3(comAddress3)
-//                .comAddress4(comAddress4)
-//                .comInfo(comInfo)
-//                .build();
-//
-//        return dto;
-//    }
-
     public CompanyDTO entityToDTO2(Company company) {
         String comLoginId = company.getComLoginId();
         String comName = company.getComName();
@@ -141,25 +93,23 @@ public class CompanyService {
         String comAddress = company.getComAddress();
         String[] address = comAddress.split("@");
 
-        /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함. */
-
-        log.info("==============="+address.length);
-
         String comInfo = company.getComInfo();
 
-        log.info("================address[3]은 무엇이냐" + address[address.length - 1]);
+        /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함. */
 
-        if (address.length == 3) {
+        if (address.length == 3) {//주소3 O, 주소4 X
             String[] newAddress = Arrays.copyOf(address, address.length + 1);
             newAddress[address.length] = "null";
-
             return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, newAddress);
-
-        } else {
+        } else if (address.length == 2) {  //주소3 X, 주소4 X
+            String[] newAddress = Arrays.copyOf(address, address.length + 2);
+            newAddress[address.length] = "null";
+            newAddress[address.length + 1] = "null";
+            return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, newAddress);
+        } else {  //주소1,2,3,4 다 존재하거나 주소 4가 존재할 때
             return getCompanyDTO(comLoginId, comName, comBusiNum, comPhone, comComdivCode, email, comInfo, address);
+
         }
-
-
     }
 
     /** 2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
@@ -187,8 +137,6 @@ public class CompanyService {
     //22.10.18 - ho 기업회원정보 수정하고 DB에 저장.
     public void companyInfoUpdate(CompanyDTO companyDTO){
         Company company = companyDTO.toEntity();
-        System.out.println("==============company.getComComdivCode() = " + company.getComComdivCode());
-        System.out.println("===========company = " + company.getComName());
         companyRepository.updateInfo(company);
     }
 
@@ -197,12 +145,6 @@ public class CompanyService {
         postRepository.setComIdNull(comId);
         companyRepository.deleteById(comId);
     }
-
-//    public String findId(String comName, String comEmail){
-//        Optional<Company> company = companyRepository.checkNameAndEmail(comName, comEmail);
-//        return company.get().getComLoginId();
-//    }
-
 
     //22.11.01 ho - 아이디 찾기용 DTO만들기 메서드.
     public CompanyDTO getCompanyDTOForFindId(String name, String email) {
@@ -217,12 +159,9 @@ public class CompanyService {
         CompanyDTO companyDTO = getCompanyDTOForFindId(name, email);
         Company company1 = companyDTO.toEntityForFindId();
         String newName = company1.getComName();
-        log.info("??? name 받아오는 값: " + newName);
         String newEmail = company1.getComEmail();
-        log.info("??? email 받아오는 값: " + email);
 
         Long num = companyRepository.countByComNameAndComEmail(newName,newEmail);
-        log.info("??? name과 emial로 찾아온 갯수 : "+num);
         if(num == 0){
             return "fail";
         } else {

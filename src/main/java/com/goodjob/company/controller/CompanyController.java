@@ -10,7 +10,6 @@ package com.goodjob.company.controller;
 import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
-import com.goodjob.member.memDTO.MemberDTO;
 import com.goodjob.member.service.MemberService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,14 +51,12 @@ public class CompanyController {
         logout(request);
 
         model.addAttribute("companyDTO", companyDTO);
-//        model.addAttribute("comdivCode",companyDTO.getComComdivCode());
-//        model.addAttribute("comdivName",companyDTO.getComComdivName());
         return "/company/companySignUpForm";
     }
 
     //회원가입시 돌아가는 로직. 패스워드 일치하지 않으면 회원가입 불가.
     @PostMapping("/signup")
-    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, HttpServletResponse response, Model model) throws Exception {
+    public String companySignUp(@Valid CompanyDTO companyDTO, BindingResult result, RedirectAttributes redirectAttributes, Model model) throws Exception {
         System.out.println("====================" + companyDTO);
         if(result.hasErrors()){
             model.addAttribute("companyDTO",companyDTO);
@@ -82,27 +79,10 @@ public class CompanyController {
             return "/company/companySignUpForm";
         }
 
-        System.out.println("companyDTO.toString() = " + companyDTO.toString());
         companyService.createCompanyUser(companyDTO);
 
-        //22.10.27 회원가입시 alert 환영메시지 후 메인페이지 이동
-//        try {
-//            response.setContentType("text/html; charset=utf-8");
-//            PrintWriter w = response.getWriter();
-//            w.write("<script>alert('"+companyDTO.getLoginId()+"님 가입을 환영합니다!');</script>");
-////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
-////                    ".then(function(){location.href='/';</script>");
-//            w.write("<script>location.href='/';</script>");
-//            w.flush();
-//            w.close();
-//            return null;
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-
-        model.addAttribute("loginId","["+companyDTO.getLoginId()+"]님의 회원가입을 축하드립니다!");
-        return "/company/companySignUpView";
+        redirectAttributes.addAttribute("param", "1");
+        return "redirect:/";
     }
 
     //회원가입 아이디 증복확인시 $.ajax 사용하기 위한 코드
@@ -110,7 +90,6 @@ public class CompanyController {
     @RequestMapping(value = "/check", method = RequestMethod.POST)
     public String memberIdChkPOST(String comLoginId) throws Exception{
         int result = companyService.checkId2(comLoginId);
-        log.info("???? : "+result);
         if(result != 0) {
             return "fail";	// 중복 아이디가 존재
         } else {
@@ -118,12 +97,6 @@ public class CompanyController {
         }
 
     }
-
-    //22.10.10추가
-//    @GetMapping("/login")
-//    public String loginForm() {
-//        return "/company/login";
-//    }
 
     //22.10.10추가
     @RequestMapping(value="/login",method = RequestMethod.POST)
@@ -204,106 +177,8 @@ public class CompanyController {
             }
             return result;
         }
-//        if(findId != "fail") {
-//            try {
-//                response.setContentType("text/html; charset=utf-8");
-//                PrintWriter w = response.getWriter();
-//                w.write("<script>alert('회원타입은 기업회원입니다! " + name + "님의 아이디는 [" + findId + "] 입니다!');</script>");
-////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
-////                    ".then(function(){location.href='/';</script>");
-//                w.write("<script>location.href='/login';</script>");
-//                w.flush();
-//                w.close();
-//                return null;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        } else {
-//            if(id != "fail") {
-//                try {
-//                    response.setContentType("text/html; charset=utf-8");
-//                    PrintWriter w = response.getWriter();
-//                    w.write("<script>alert('회원타입은 개인회원입니다! " + name + "님의 아이디는 [" + id + "] 입니다!');</script>");
-//                    w.write("<script>location.href='/login';</script>");
-//                    w.flush();
-//                    w.close();
-//                    return null;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    return null;
-//                }
-//            }
-//            try {
-//                response.setContentType("text/html; charset=utf-8");
-//                PrintWriter w = response.getWriter();
-//                w.write("<script>alert('입력한 회원정보가 없습니다. 다시 확인해주세요.');</script>");
-//                w.write("<script>location.href='/com/findId';</script>");
-//                w.flush();
-//                w.close();
-//                return null;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-
 
     }
-
-//    @ResponseBody
-//    @RequestMapping("/findId")
-//    public String findLoginId(CompanyDTO companyDTO, MemberDTO memberDTO, HttpServletResponse response){
-//
-//        String findId = companyService.findId2(companyDTO);
-//        String id = memberService.findId(memberDTO);
-//
-//        if(findId != "fail") {
-//            try {
-//                response.setContentType("text/html; charset=utf-8");
-//                PrintWriter w = response.getWriter();
-//                w.write("<script>alert('회원타입은 기업회원입니다! " + companyDTO.getName() + "님의 아이디는 [" + findId + "] 입니다!');</script>");
-////            w.write("<script>swal('회원가입 완료','"+companyDTO.getLoginId()+"님 가입을 환영합니다!','success')" +
-////                    ".then(function(){location.href='/';</script>");
-//                w.write("<script>location.href='/login';</script>");
-//                w.flush();
-//                w.close();
-//                return null;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        } else {
-//            if(id != "fail") {
-//                try {
-//                    response.setContentType("text/html; charset=utf-8");
-//                    PrintWriter w = response.getWriter();
-//                    w.write("<script>alert('회원타입은 개인회원입니다! " + memberDTO.getMemName() + "님의 아이디는 [" + id + "] 입니다!');</script>");
-//                    w.write("<script>location.href='/login';</script>");
-//                    w.flush();
-//                    w.close();
-//                    return null;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    return null;
-//                }
-//            }
-//            try {
-//                response.setContentType("text/html; charset=utf-8");
-//                PrintWriter w = response.getWriter();
-//                w.write("<script>alert('입력한 회원정보가 없습니다. 다시 확인해주세요.');</script>");
-//                w.write("<script>location.href='/com/findId';</script>");
-//                w.flush();
-//                w.close();
-//                return null;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//
-//
-//    }
 
     //22.11.06 이메일 중복 검사
     @ResponseBody
