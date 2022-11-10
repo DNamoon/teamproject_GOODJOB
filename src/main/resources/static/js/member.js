@@ -29,7 +29,7 @@ function emailCheckMassage() {
     const selectEmail = $('#emailSelect').val();
     const email = inputEmail + "@" + selectEmail;
     let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])$/i;
-    if (!regExp.test(email)) {
+    if (!regExp.test(inputEmail)) {
         $('#emailCheckMassage').css('color', 'red')
         $('#emailCheckMassage').html("올바른 이메일 양식이 아닙니다.")
     } else {
@@ -166,7 +166,7 @@ function updateCheckEmail() {
         url: '/member/myPageInfo?email=' + email,
         success: function (result) {
             $("#emailNo").val(result);
-            if(!regExp.test(signUpEmail)){
+            if(!regExp.test(inputEmail)){
                 $('#emailCheckMassage').css('color', 'red')
                 $('#emailCheckMassage').html("올바른 이메일 양식이 아닙니다.")
             }
@@ -270,7 +270,7 @@ function deleteMember() {
                 })
                     .then((result) => {
                         if (result.isConfirmed) {
-                            location.href = "/member/deleteConfirm";
+                            location.replace("/member/deleteConfirm");
                         } else if (!result.isConfirmed) {
                             Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
                         }
@@ -306,14 +306,12 @@ function checkEmail() {
                 // }).done(function (result) {
                 if (result == "false") {
                     Swal.fire("ERROR", "가입정보가 없는 이메일입니다.", "error");
-                    // alert("가입정보가 없는 이메일입니다.")
                 } else if (result == "com") {
                     sendEmail("com");
                     Swal.fire("임시 비밀번호 발송", '임시 비밀번호를 전송 했습니다.메일을 확인해주세요!.', "success")
                         .then(function () {
                             location.href = "/login";
                         })
-                    // alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
                 } else if (result == "mem") {
                     sendEmail("mem");
                     Swal.fire("임시 비밀번호 발송", '임시 비밀번호를 전송 했습니다.메일을 확인해주세요.', "success")
@@ -337,7 +335,7 @@ function sendEmail(type) {
             'mailType': type
         }, success: function (result) {
             // Swal.fire("임시 비밀번호 발송",'임시 비밀번호를 전송 했습니다.메일을 확인해주세요.',"success");
-            alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요?.');
+            alert('임시비밀번호를 전송 했습니다.메일을 확인해주세요.');
         },
         error: function (error) {
             alert("ㅇㅇㅇㅇㅇㅇ" + JSON.stringify(error));
