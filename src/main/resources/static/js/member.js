@@ -28,7 +28,7 @@ function emailCheckMassage() {
     const inputEmail = $('#signUpEmail').val();
     const selectEmail = $('#emailSelect').val();
     const email = inputEmail + "@" + selectEmail;
-    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])$/i;
+    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z]){2,25}$/i;
     if (!regExp.test(inputEmail)) {
         $('#emailCheckMassage').css('color', 'red')
         $('#emailCheckMassage').html("올바른 이메일 양식이 아닙니다.")
@@ -161,7 +161,7 @@ function updateCheckEmail() {
     const inputEmail = $('#signUpEmail').val();
     const selectEmail = $('#emailSelect').val();
     const email = inputEmail + "@" + selectEmail;
-    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])$/i;
+    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z]){2,25}$/i;
     $.ajax({
         url: '/member/myPageInfo?email=' + email,
         success: function (result) {
