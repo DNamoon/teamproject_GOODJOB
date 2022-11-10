@@ -1,7 +1,6 @@
 package com.goodjob.education.dto;
 
 import lombok.*;
-
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 

@@ -2,8 +2,6 @@ package com.goodjob.status.dto;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 

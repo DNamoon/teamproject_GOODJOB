@@ -3,9 +3,9 @@ package com.goodjob.career;
 import com.goodjob.resume.Resume;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-
 import javax.persistence.*;
 import java.sql.Date;
+
 
 /**
  * 박채원 22.10.02 작성

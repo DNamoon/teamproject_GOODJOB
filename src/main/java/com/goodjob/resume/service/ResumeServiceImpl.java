@@ -11,7 +11,6 @@ import com.goodjob.status.repository.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,8 +46,6 @@ public class ResumeServiceImpl implements ResumeService {
         String mergePhoneNum = resumeMemberDTO.getMemFirstPhoneNum() + '-' + resumeMemberDTO.getMemMiddlePhoneNum() + '-' + resumeMemberDTO.getMemLastPhoneNum();
         String mergeAddress = resumeMemberDTO.getMemFirstAddress() + '@' + resumeMemberDTO.getMemLastAddress();
         String mergeEmail = resumeMemberDTO.getMemFirstEmail() + '@' + resumeMemberDTO.getMemLastEmail();
-
-//        Resume resume = dtoToEntity(resumeMemberDTO, mergePhoneNum, mergeAddress, mergeEmail);
 
         log.info("=========== 이력서 인적사항 수정 ===========");
         resumeRepository.updateMemberInfo(mergePhoneNum, mergeEmail, mergeAddress, resumeId);
@@ -95,16 +92,8 @@ public class ResumeServiceImpl implements ResumeService {
         List<Integer> menuList = new ArrayList<>();
         menuList.add(resumeRepository.countResumeByResumeMemId_MemLoginIdAndDeleted(loginId, false));
         menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginId(loginId));
-        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(loginId, "최종합격"));
-        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPass(loginId, "불합격"));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(loginId, "최종합격"));
+        menuList.add(statusRepository.countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(loginId, "불합격"));
         return menuList;
     }
-
-//    @Override
-//    public void changeTitle(ResumeListDTO resumeListDTO) {
-//        Resume resume = listDTOToEntity(resumeListDTO);
-//        resumeRepository.save(resume);
-//    }
-
-
 }

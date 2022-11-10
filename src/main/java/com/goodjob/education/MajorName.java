@@ -1,7 +1,6 @@
 package com.goodjob.education;
 
 import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
