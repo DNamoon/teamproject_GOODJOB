@@ -15,10 +15,11 @@ public interface ResumeService {
     Long registerResume(String loginId);
     void updateResumeMemberInfo(ResumeMemberDTO resumeMemberDTO, Long resumeId);
     ResumeDTO bringResumeInfo(Long resumeId);
-    List<ResumeListDTO> getResumeList(String loginId);
+    List<ResumeListDTO> getResumeList(String loginId, String type);
     void setDeleteResume(List<String> resumeId);
     void changeTitle(Long resumeId, String title);
     List<Integer> getResumeMenu(String loginId);
+    void setSubmittedTrue(Long resumeId);
     default Resume dtoToEntity(ResumeMemberDTO resumeMemberDTO, String mergePhoneNum, String mergeAddress, String mergeEmail){
         Member member = Member.builder().memId(resumeMemberDTO.getMemId()).build();
 
@@ -48,6 +49,7 @@ public interface ResumeService {
                 .memMiddlePhoneNum(middlePhoneNum)
                 .memLastPhoneNum(lastPhoneNum)
                 .deleted(false)
+                .submitted(false)
                 .build();
 
         return resumeDTO;
@@ -58,6 +60,7 @@ public interface ResumeService {
                 .resumeId(resume.getResumeId())
                 .resumeTitle(resume.getResumeTitle())
                 .resumeUpdateDate(resume.getResumeUpdateDate())
+                .submitted(resume.isSubmitted())
                 .build();
 
         return resumeListDTO;

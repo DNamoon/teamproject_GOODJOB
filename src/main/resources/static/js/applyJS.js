@@ -14,7 +14,9 @@ $(document).ready(function(){
 
 //지원하기 버튼 눌렀을 때 작성한 이력서 리스트 출력
 function getJSONResumeList() {
-    $.getJSON('/member/getResumeList', function (arr) {
+    //지원하기와 이력서 관리페이지의 이력서 리스트 뿌리는 과정을 같은 메소드를 사용해 구현하려고 type을 줌
+    var type = "apply";
+    $.getJSON('/member/getResumeList/' + type, function (arr) {
         var list = '';
 
         if(arr.length > 0){

@@ -21,7 +21,7 @@
                             <div class="d-flex flex-row justify-content-end col-8">
                                 <div class="">
                                     <a role="button" class="text-white btn"
-                                       th:href="@{/admin/customerInquiry}"
+                                       th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostId')}"
                                        style="background-color: #344767;">목록</a>
                                 </div>
                             </div>
@@ -158,11 +158,6 @@
     textarea = document.querySelector('#inquiryPostAnswer');
     textarea.innerHTML = content;
     document.querySelector('#inquiryPostAnswer').append(textarea);
-</script>
-<script th:inline="javascript">
-
-
-</script>
 </script>
 </body>
 </html>

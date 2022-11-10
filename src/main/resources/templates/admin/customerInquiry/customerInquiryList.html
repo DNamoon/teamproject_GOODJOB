@@ -50,11 +50,6 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
-                                                    <div>
-                                                        <!--                                                    <h6 th:text="${mainPage.postId}" class="m-lg-1 text-sm"></h6>-->
-                                                        <!--<img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
-                                                                  alt="user1">-->
-                                                    </div>
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <p class="text-sm font-weight-bold m-lg-1"
                                                            th:text="${inquiryPost.getInquiryPostCategory().getCustomerInquiryPostCategory()}"/>
@@ -87,7 +82,7 @@
                                                   class="text-secondary text-xs font-weight-bold"></span>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-danger rounded-pill"
+                                            <span class="badge badge-sm btn btn-sm btn-outline-danger rounded-pill text-danger m-0"
                                                   th:id="${inquiryPost.inquiryPostId}"
                                                   onclick="javascript:deleteinquiryPost(this.getAttribute('id'))"
                                                   role="button">
@@ -102,7 +97,6 @@
                                     </tbody>
                                     <div class="d-flex flex-row">
                                         <div class="justify-content-end mb-2 col-7">
-                                            <!-- Example single danger button -->
                                             <div class="btn-group">
                                                 <button type="button"
                                                         class="btn bg-gradient-dark btn-sm dropdown-toggle"
@@ -134,20 +128,24 @@
                                                th:href="@{/admin/customerInquiry/{pageNum}(pageNum=1,sort='inquiryPostPublishedDate')}">등록일정렬</a>
                                         </div>
                                         <div class="col-5 d-flex ms-4">
-                                            <form th:action="@{/admin/customerInquiry/search/{pageNum}(pageNum=1)}" method="get">
+                                            <form th:action="@{/admin/customerInquiry/search/{pageNum}(pageNum=1)}"
+                                                  method="get">
                                                 <div class="col-3">
-                                                    <select class="form-select" style="height: 2.2rem" type="input" name="searchCategory">
+                                                    <select class="form-select" style="height: 2.2rem" type="input"
+                                                            name="searchCategory">
                                                         <option value="searchById" selected>아이디로 검색</option>
                                                         <option value="searchByTitle">제목으로 검색</option>
                                                         <option value="searchByContent">내용으로 검색</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-6">
-                                                    <input type="text" class="form-control" name="searchText" style="height: 2.2rem">
+                                                    <input type="text" class="form-control" name="searchText"
+                                                           style="height: 2.2rem">
                                                 </div>
                                                 <div class="col-2">
                                                     <input type="submit" class="btn bg-gradient-dark form-control"
-                                                           style="height: 2.2rem;--bs-btn-padding-y: 0.2rem;" value="검색">
+                                                           style="height: 2.2rem;--bs-btn-padding-y: 0.2rem;"
+                                                           value="검색">
                                                 </div>
                                             </form>
                                         </div>

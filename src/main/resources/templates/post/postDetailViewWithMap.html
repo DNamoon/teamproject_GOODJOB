@@ -50,13 +50,13 @@
                                             <div class="col-1 text-center p-0">
                                                 <h6>|</h6>
                                             </div>
-                                            <div class="col-1 p-0 text-center">
+                                            <div class="col-2 p-0 text-center">
                                                 <h6 class="">[[${dto.salary}]]</h6>
                                             </div>
                                             <div class="col-1 text-center p-0">
                                                 <h6>|</h6>
                                             </div>
-                                            <div class="col-1 p-0 text-center">
+                                            <div class="col-2 p-0 text-center">
                                                 <h6 class="">[[${dto.postGender}]] [[${dto.recruitNum}]]명</h6>
                                             </div>
                                             <div class="col-1 text-center p-0">
@@ -219,7 +219,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-fill mt-3">
-                                    <th:block>
+                                    <th:block th:if="${existsPostInCompany}">
                                         <div class="d-flex flex-fill mt-3">
                                             <th:block th:if="${#session.getAttribute('sessionId') == null}">
                                                 <div class="col-6">
@@ -250,8 +250,6 @@
                                                 </div>
                                             </th:block>
                                             <div class="col-6">
-                                                <!--                                        <a role="button" class="btn"-->
-                                                <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
                                                 <input type="hidden" th:value="${dto.postId}" id="postId">
                                                 <th:block th:if="${#session.getAttribute('Type') == 'member'}">
                                                     <button type="button" class="btn btn-primary applyBtn"
@@ -328,7 +326,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">이력서 선택</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <label>작성 완료된 이력서만 지원할 수 있습니다.</label>
                     </div>
                     <div class="modal-body">
                         <div class="row" style="">
