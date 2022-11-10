@@ -277,6 +277,7 @@ function emailDuplication(){
     //let regExp = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
     let emailError = $('#email_error');
     emailError.css("color", "#ff0000");
+
     if (!regExp.test(emailCheck)) {
         emailError.show().text("올바른 이메일 양식이 아닙니다!")
     } else {
@@ -342,7 +343,6 @@ function passwordConfirm() {
 //onkeyup이 여기서는 "change keyup"이다!!!
 $('#id_input').on("change keyup", function(){
 
-    console.log("keyup 테스트");
     var comLoginId = $('#id_input').val();			// .id_input에 입력되는 값
     var data = {comLoginId : comLoginId};			// '컨트롤에 넘길 데이터 이름' : '데이터(.id_input에 입력되는 값)'
     var idError = $('.id_error');
@@ -371,7 +371,6 @@ $('#id_input').on("change keyup", function(){
             } else {  //중복되는 아이디가 있을 경우
                 idError.show().text("이미 존재하는 아이디입니다.");
             }
-            console.log(submit);
             return submit;
         }
     });
@@ -439,7 +438,6 @@ function btnRexExp() {
         async: false,
         data: {emailCheck: emailCheck},
         success: function (result) {
-            console.log(result)
             if (result[0] == "null") {
                 result7 = "true";
             } else if(result[0] == "com") {
@@ -449,7 +447,6 @@ function btnRexExp() {
             return result7;
         }
     });
-    console.log("이메일 중복확인은 한번에 가자~~~" + result7);
     if (result7 == "false") {
         $('#email').focus();
     }
@@ -480,21 +477,14 @@ function btnRexExp() {
             if(result != 'fail'){  //중복되는 아이디가 없을 때
                 let regExp = /^[a-z0-9_-]{3,15}$/; //아이디 정규식(영문 소문자, 숫자만 허용. 길이제한 3~15)
                 if(comLoginId === null || comLoginId ==="") {  //아이디 입력을 안 했을 때
-                    console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?111111" + result6);
                 } else {
                     if(!regExp.test(comLoginId)) {  //아이디 정규식이 맞지 않을 때
-                        console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?22222" + result6);
                     } else { //아이디 중복도 없고 정규식도 올바를 때
-                        console.log("설마 여기로 떨어져??? 성공으로?");
                         result6 = "true";
-                        console.log("그럼 왜 result6 안 바뀌어???" + result6)
                     }
                 }
             } else {  //중복되는 아이디가 있을 경우
-                console.log("여기로 떨어지나? 중복되는 아이디가 있는경우?3333" + result6);
             }
-
-            console.log("리턴되기 마지막 result6 !!! 왜 true가 아니냐!" + result6);
             return result6;
         }
     });
@@ -502,7 +492,6 @@ function btnRexExp() {
     if (result6 == "false") {
           $('#id_input').focus();
     }
-    console.log("버튼 눌렀을 때 아이디 중복 result6 값: " + result6);
 
     //아이디 정규식 확인
     var result1 = "false";
@@ -518,7 +507,27 @@ function btnRexExp() {
         }
     }
 
-    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" && result5 == "true" && result6 == "true" && result7 == "true") {
+
+    //기업소개 null값 방지
+    let comInfo = $('#comInfo').val();
+    let result12 = "false";
+    if (comInfo === null || comInfo === "") {  //기업소개 입력을 안 했을 때
+        $('#comInfo').focus();
+    } else {
+        result12 = "true";
+    }
+
+    //기업명 null값 방지
+    let comName = $('#comName').val();
+    let result10 = "false";
+    if (comName === null || comName === "") {  //기업명 입력을 안 했을 때
+        $('#comName').focus();
+    } else {
+        result10 = "true";
+    }
+
+    if (result1 == "true" && result2 == "true" && result3 == "true" && result4 == "true" &&
+        result5 == "true" && result6 == "true" && result7 == "true" && result10 == "true" && result12 == "true") {
         $('#contact-form').submit();
     } else {
     }
