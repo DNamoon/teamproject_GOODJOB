@@ -87,7 +87,8 @@ public class ResumeController {
     }
 
     @GetMapping("/resumeStep2/{resumeId}")
-    public String resumeStep2(@PathVariable("resumeId") Long resumeId, @Valid ResumeMemberDTO resumeMemberDTO, @Valid EducationDTO educationDTO, Model model){
+    public String resumeStep2(@PathVariable("resumeId") Long resumeId, ResumeMemberDTO resumeMemberDTO, EducationDTO educationDTO, Model model){
+
         resumeService.updateResumeMemberInfo(resumeMemberDTO, resumeId);
         educationService.registerSchoolInfo(educationDTO);
 
