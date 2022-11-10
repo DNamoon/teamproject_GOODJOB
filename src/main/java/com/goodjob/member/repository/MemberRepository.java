@@ -47,5 +47,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Long countByMemNameAndMemEmail(String memName, String memEmail);
 
     //22.11.01 ho 추가. 아이디 반환하기
-    Member findByMemNameAndMemEmail(String memName, String memEamil);
+    Member findByMemNameAndMemEmail(String memName, String memEmail);
 }
