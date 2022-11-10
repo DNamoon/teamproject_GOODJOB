@@ -48,6 +48,6 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     void updateInterviewInfo(Long statId, String interviewPlace, LocalDateTime interviewDate);
     @Transactional
     @Modifying
-    @Query("update Status s set s.statPostId = null, s.statPostName = '존재하지 않는 공고입니다' where s.statId =:statId")
+    @Query("update Status s set s.statPostId = null where s.statId =:statId")
     void setPostIdNull(Long statId);
 }
