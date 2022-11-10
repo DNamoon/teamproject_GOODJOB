@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.*;
+import java.util.Optional;
 
 @Log4j2
 @Controller
@@ -32,9 +32,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final MemberService memberService;
     private final BookMarkService bookMarkService;
-    private final CompanyService companyService;
     private final FileService fileService;
 
     @GetMapping("/savePost")
@@ -55,9 +53,8 @@ public class PostController {
     @PostMapping(value = "/savePost", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<?> postSave(@Valid @ModelAttribute PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
-        log.info("postInsertDTO : " + postInsertDTO);
-        String sessionId = getSessionInfo(httpServletRequest, "sessionId");
-        if (sessionId != null) {
+        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
+        if(sessionId != null){
             postInsertDTO.setComLoginId(sessionId);
         } else {
             throw new SessionNotFoundException();
@@ -133,7 +130,6 @@ public class PostController {
 
     @GetMapping(value = {"/file/{fileName}"})
     public ResponseEntity<?> getFile(@PathVariable String fileName) throws IOException {
-        log.info("fileName : " + fileName);
         return fileService.getFile(fileName);
     }
 
