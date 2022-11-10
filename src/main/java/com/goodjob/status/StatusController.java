@@ -63,6 +63,7 @@ public class StatusController {
       }
    }
 
+   //불합격
    @ResponseBody
    @GetMapping("/changeUnPass/{statId}")
    public void changeUnPass(@PathVariable("statId") Long statId, @RequestParam("applyResult") String result){
@@ -75,6 +76,7 @@ public class StatusController {
       }
    }
 
+   //합격결과 있으면 로그인 시 팝업 띄우기
    @ResponseBody
    @PostMapping("/changeStatShow")
    public void changeStatShow(HttpSession session){
@@ -82,12 +84,14 @@ public class StatusController {
       statusService.changeStatShow(id);
    }
 
+   //면접 리스트 띄우기
    @ResponseBody
    @GetMapping("/getIntervieweeList/{postId}/{pageNum}")
    public ResponseEntity<PageResultDTO<IntervieweeListDTO, Status>> getIntervieweeApplierList(HttpSession session, @PathVariable("postId") Long postId, @PathVariable("pageNum") int pageNum){
       return new ResponseEntity<>(statusService.getIntervieweeList((String) session.getAttribute("sessionId"), postId, pageNum), HttpStatus.OK);
    }
 
+   //면접 일정 메일로 전송
    @ResponseBody
    @GetMapping("/updateInterviewInfo/{statId}")
    public void updateInterviewInfo(@PathVariable("statId") Long statId, @RequestParam("place") String place, @RequestParam("date") String date){

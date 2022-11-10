@@ -146,9 +146,9 @@ public class MemMyPageController {
 
     //박채원 - restful api 사용해서 리스트 뿌리는 거 해보려고 작성한 메소드
     @ResponseBody
-    @GetMapping(value = "/getResumeList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ResumeListDTO>> getResumeList(HttpSession session){
-        return new ResponseEntity<>(resumeService.getResumeList((String) session.getAttribute("sessionId")), HttpStatus.OK);
+    @GetMapping(value = "/getResumeList/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ResumeListDTO>> getResumeList(HttpSession session, @PathVariable("type") String type){
+            return new ResponseEntity<>(resumeService.getResumeList((String) session.getAttribute("sessionId"), type), HttpStatus.OK);
     }
 
     @GetMapping("/myPageApply")

@@ -66,14 +66,23 @@ public class StatusServiceImpl implements StatusService{
 
     @Override
     public boolean havePass(String loginId) {
-        return statusRepository.existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(loginId,"서류합격");
+        if(statusRepository.existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(loginId,"서류합격") || statusRepository.existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsTrueAndStatPass(loginId, "최종합격")){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
     public void changeStatShow(String loginId) {
-        List<Long> list = statusRepository.getStatId(loginId);
-        for(Long statId : list){
-            statusRepository.changeStatShow(statId);
+        List<Long> resumePass = statusRepository.getStatId(loginId,"서류합격",false);
+        for(Long statId : resumePass){
+            statusRepository.changeStatShow(true, statId);
+        }
+
+        List<Long> interviewPass = statusRepository.getStatId(loginId,"최종합격",true);
+        for(Long statId : interviewPass){
+            statusRepository.changeStatShow(false, statId);
         }
     }
 
