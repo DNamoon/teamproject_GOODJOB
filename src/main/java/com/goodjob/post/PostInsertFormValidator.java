@@ -9,6 +9,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -22,13 +24,13 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
 
     @Override
     public boolean isValid(PostInsertDTO value, ConstraintValidatorContext context) {
-        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
-        Date nowDate = null;
-        try {
-            nowDate = sp.parse(sp.format(new Date()));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+//        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+//        Date nowDate = null;
+//        try {
+//            nowDate = sp.parse(sp.format(new Date()));
+//        } catch (ParseException e) {
+//            throw new RuntimeException(e);
+//        }
         int invalidCount = 0;
         if(value.getPostOccCode()<0 || value.getPostOccCode()>64){
             addConstraintViolation(context,"Invalid value","postOccCode");
@@ -50,6 +52,15 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             addConstraintViolation(context, "Gender values must be either male, female, or gender-independent","postGender");
             invalidCount += 1;
         }
+        System.out.println("DATE"+Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()).getTime());
+        System.out.println("DATE"+Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        System.out.println("Date"+"빈값"+value.getPostStartDate());
+        System.out.println("Date"+"빈값"+value.getPostEndDate());
+//        if(value.getPostStartDate().equals("")){
+//            addConstraintViolation(context, "The start date must be before the end date.","postStartDate");
+//            invalidCount += 1;
+//        }
+
 //        if(value.getPostStartDate().getTime() < nowDate.getTime()){
 //            addConstraintViolation(context, "The start date must be after today.","postStartDate");
 //            invalidCount += 1;
@@ -58,18 +69,29 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
 //            addConstraintViolation(context, "The end date must be after today.","postEndDate");
 //            invalidCount += 1;
 //        }
-        if(value.getPostStartDate().getTime() > value.getPostEndDate().getTime()){
-            addConstraintViolation(context, "The start date must be before the end date.","postStartDate");
+        if(value.getPostStartDate()!=null) {
+            if (value.getPostStartDate().getTime() > value.getPostEndDate().getTime()) {
+                addConstraintViolation(context, "The start date must be before the end date.", "postStartDate");
+                invalidCount += 1;
+            }
+        } else {
+            addConstraintViolation(context,"Null value","postStartDate");
             invalidCount += 1;
         }
-        if(value.getPostStartDate().getTime() > value.getPostEndDate().getTime()){
-            addConstraintViolation(context, "The end date must be after the start date.","postEndDate");
+        if(value.getPostEndDate()!=null) {
+            if (value.getPostStartDate().getTime() > value.getPostEndDate().getTime()) {
+                addConstraintViolation(context, "The end date must be after the start date.", "postEndDate");
+                invalidCount += 1;
+            }
+        } else {
+            addConstraintViolation(context,"Null value","postEndDate");
             invalidCount += 1;
         }
         if(value.getPostImg().get(0).isEmpty() && value.getPostImg().get(0).getSize()==0){
             addConstraintViolation(context, "Empty Attachments","postImg");
             invalidCount += 1;
         }
+
 
         return invalidCount == 0;
     }

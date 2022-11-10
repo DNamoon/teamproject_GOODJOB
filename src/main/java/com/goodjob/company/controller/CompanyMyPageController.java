@@ -47,7 +47,7 @@ public class CompanyMyPageController {
 
         if(dbEmail.equals(email)) {
             log.info("??? 같은 값이라고 이야기 할까? 과연? DB에 이메일 있나 체크" + dbEmail +"=======입력값:"+email);
-            result2.add("null");
+            result2.add("mine");
         } else {
             String result = memberService.checkEmail(email);
             if(result == "com") {

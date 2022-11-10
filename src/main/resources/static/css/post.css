@@ -129,7 +129,7 @@
     /*}*/
 
     .comMyPage-post-filter>div{
-        border-bottom: #e6721d solid 1px;
+        border-bottom: #182848 solid 1px;
         padding: 5px 0 5px 12px;
         margin: 0;
     }
@@ -155,8 +155,8 @@
         padding-top: 10px;
         padding-bottom: 10px;
         /*padding: 5px 0 5px 12px;*/
-        border-top: #e6721d solid 1px;
-        border-bottom: #e6721d solid 1px;
+        border-top: #182848 solid 1px;
+        border-bottom: #182848 solid 1px;
     }
     .comMyPage-post-search-status_select_box ul {
         display: flex;
@@ -181,7 +181,7 @@
 
     /* comMyPage-post-search-search_box(검색 input box 시작 */
     .comMyPage-post-search-search_box{
-        border-bottom: #e6721d solid 1px;
+        border-bottom: #182848 solid 1px;
         padding-top: 10px;
         padding-bottom: 10px;
         align-items: center;
@@ -200,7 +200,7 @@
 
     /* comMyPage-post-search-option_box (추가설정 box) 시작 */
     .comMyPage-post-search-option_box{
-        border-bottom: #e6721d solid 1px;
+        border-bottom: #182848 solid 1px;
         align-items: center;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -209,7 +209,7 @@
 
     /* comMyPage-post-search-sort_box(정렬 box) 시작 */
     .comMyPage-post-search-sort_box{
-        border-bottom: #e6721d solid 1px;
+        border-bottom: #182848 solid 1px;
         align-items: center;
         padding-top: 10px;
         padding-bottom: 10px;
