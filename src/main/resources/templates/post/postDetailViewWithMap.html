@@ -116,7 +116,7 @@
                                             <h6 class="text-secondary">근무지역</h6>
                                         </div>
                                         <div class="col-10">
-                                            <h6 class="post-details-postAddress">[[${dto.postAddress1}]] [[${dto.postAddress2}]]</h6>
+                                            <h6 ><span class="post-details-postAddress">[[${dto.postAddress1}]]</span>[[${dto.postAddress2}]]</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +194,12 @@
                                 <div class="d-flex flex-fill">
                                     <div class="col-6">
                                         <h6>D-day</h6>
-                                        <h6 class="text-secondary">[[${dto.remainDay}]]</h6>
+                                        <th:block th:if="${dto.remainDay.contains('-')}">
+                                            <h6 class="text-secondary">모집 종료</h6>
+                                        </th:block>
+                                        <th:block th:if="${!dto.remainDay.contains('-')}">
+                                            <h6 class="text-secondary">[[${dto.remainDay}]]</h6>
+                                        </th:block>
                                     </div>
                                     <div class="col-6">
                                         <h6>연봉</h6>

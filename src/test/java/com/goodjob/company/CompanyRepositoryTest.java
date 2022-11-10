@@ -24,15 +24,4 @@ class CompanyRepositoryTest {
         System.out.println("t = " + t);
     }
 
-    @Test
-    @Commit
-    void saveCompany() {
-        IntStream.rangeClosed(1, 20).forEach(i -> {
-
-//            Company company = new Company(new Region("02", "서울특별시"), new Comdiv("Foreign", "외국계기업")
-//                    , "test" + i, "1234");
-//            companyRepository.save(company);
-        });
-    }
-
 }

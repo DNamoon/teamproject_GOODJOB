@@ -45,13 +45,14 @@ public class CompanyDTO {
     private String loginId;
 
     @Size(min = 3, max = 25, message = "Password는 3~25자 사이여야 합니다.")
-    //@NotBlank(message = "비밀번호는 필수항목입니다.")
+    @NotBlank(message = "비밀번호는 필수항목입니다.")
     //ho - 22.10.17 comPw1 -> pw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일)
     private String pw;
 
     //비밀번호가 일치하지 않으면 넘어가지 않도록 하기 위해 엔티티와는 별개로 DTO에만 comPw2 추가
-    //@NotBlank(message = "비밀번호 확인은 필수항목입니다.")
+    @NotBlank(message = "비밀번호 확인은 필수항목입니다.")
     private String comPw2;
+
     @NotBlank
     private String comComdivCode;
 
@@ -93,11 +94,6 @@ public class CompanyDTO {
         Comdiv comdiv = Comdiv.builder()
                 .comdivCode(comComdivCode)
                 .build();
-
-        //2022.10.25 - 주소 4의 값 없을 때 보여줄 때 에러 발생 -> null일때  "null"을 DB에 넣기로 함.
-        if(comAddress4.equals("")){
-            comAddress4 = "null";
-        }
 
         //ho - 22.10.17 getMemPw -> getPw (로그인 폼 input name 통일. DTO 필드 loginId,pw 로 통일) 93,96라인 변경
         Company com = Company.builder()

@@ -31,7 +31,9 @@ public class PostInsertDTO {
     private String postRecruitNum; // 공고 모집인원
     @NotEmpty(message = "Empty Gender")
     private String postGender; // 공고 성별 (남,여,무관)
+//    @NotNull(message = "Null value")
     private Date postStartDate; // 공고 시작일
+//    @NotNull(message = "Null value")
     private Date postEndDate; // 공고 종료일
     @NotEmpty(message = "Empty Img")
     private List<MultipartFile> postImg;

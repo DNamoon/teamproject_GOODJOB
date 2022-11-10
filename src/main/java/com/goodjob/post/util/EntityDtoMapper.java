@@ -10,7 +10,12 @@ import com.goodjob.post.postdto.*;
 import com.goodjob.post.salary.PostSalary;
 import org.springframework.web.util.HtmlUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -85,28 +90,40 @@ public interface EntityDtoMapper {
                 .build();
     }
     default PostComMyPageDTO entityToDtoInComMyPage(Post post) {
-        Date now = new Date();
+        System.out.println("new Date() : "+new Date());
+        ZonedDateTime z = ZonedDateTime.now(ZoneId.systemDefault());
+        String str = z.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        System.out.println("날짜에요" + str);
+        Date now = null;
+        try {
+            now = new SimpleDateFormat("yyyy-MM-dd").parse(str);
+            System.out.println(now);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(post.getPostEndDate());
-        cal.add(Calendar.DATE,1);
+//        cal.add(Calendar.DATE, 1);
 
-        long difDay = (cal.getTime().getTime()-now.getTime())/1000;
-        long difDay2 = (now.getTime()-post.getPostStartDate().getTime())/1000;
-        String endDateMinusNow = String.valueOf(difDay/ (24*60*60)); // 0보다 크면 모집 종료 전
-        String startDateMinusNow = String.valueOf(difDay2/(24*60*60)); // 0보다 작으면 모집 시작전
-        String attachmentFileName = post.getPostImg().isEmpty()? "no_image.png": post.getPostImg().get(0).getStoreFileName();
+        long difDay = (cal.getTime().getTime() - now.getTime()) / 1000;
+        long difDay2 = (now.getTime() - post.getPostStartDate().getTime()) / 1000;
+        String endDateMinusNow = String.valueOf(difDay / (24 * 60 * 60)); // 0보다 크면 모집 종료 전
+        String startDateMinusNow = String.valueOf(difDay2 / (24 * 60 * 60)); // 0보다 작으면 모집 시작전
+        String attachmentFileName = post.getPostImg().isEmpty() ? "no_image.png" : post.getPostImg().get(0).getStoreFileName();
         String remainDay;
-        if(endDateMinusNow.equals("0")){
-            remainDay = "(오늘) 모집 종료";
+        if (endDateMinusNow.equals("0")) {
+            remainDay = " 모집 종료 예정 (오늘)";
         } else if (endDateMinusNow.contains("-")) {
-            remainDay = "(종료됨)";
+            remainDay = " (종료됨)";
         } else {
-            remainDay = "(D - "+endDateMinusNow+") 모집 종료";
+            remainDay = " 모집 종료 예정 (D - " + endDateMinusNow + " )";
         }
         String[] startDateArr = post.getPostStartDate().toString().split("-");
-        String startDate = startDateArr[0]+"년 "+startDateArr[1]+"월 "+startDateArr[2]+"일 ";
+        String startDate = startDateArr[0] + "년 " + startDateArr[1] + "월 " + startDateArr[2] + "일 ";
         String[] endDateArr = post.getPostEndDate().toString().split("-");
-        String endDate = endDateArr[0]+"년 "+endDateArr[1]+"월 "+endDateArr[2]+"일"+remainDay;
+        String endDate = endDateArr[0] + "년 " + endDateArr[1] + "월 " + endDateArr[2] + "일" + remainDay;
         return PostComMyPageDTO.builder()
                 .postId(post.getPostId())
                 .title(HtmlUtils.htmlUnescape(post.getPostTitle()))
