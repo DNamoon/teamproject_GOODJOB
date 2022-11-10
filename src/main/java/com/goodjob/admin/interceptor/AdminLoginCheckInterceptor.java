@@ -27,8 +27,6 @@ public class AdminLoginCheckInterceptor implements HandlerInterceptor {
             response.sendRedirect("/admin/login");
             return false;
         }
-
-
         return true;
     }
 

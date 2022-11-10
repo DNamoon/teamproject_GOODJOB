@@ -28,9 +28,9 @@
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="companyName">기업명</label>
+                                        <label class="m-1" for="comName">기업명</label>
                                         <input type="text" class="flex-fill form-control input-group w-80"
-                                               id="companyName" th:value="${comInfo.getComName()}" readonly>
+                                               id="comName" name="comName" th:value="${comInfo.getComName()}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
                             <div class="col-5">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="companyName">우편번호</label>
+                                        <label class="m-1" for="postcode">우편번호</label>
                                         <input type="text" class="flex-fill input-group w-100 form-control" name="postcode"
                                                id="postcode" th:value="${dto.getPostcode()}" placeholder="우편번호" readonly>
                                         <label class="post-error-style-zipcode post-error-style"></label>
@@ -186,7 +186,7 @@
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="companyName">주소</label>
+                                        <label class="m-1" for="postAddress">주소</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
                                                name="postAddress"
                                                id="postAddress"  readonly th:value="${dto.postAddress}"
@@ -200,7 +200,7 @@
                                     <div class="flex-fill">
                                         <label class="m-1" for="postComId">참고항목</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
-                                               id="etc" th:value="${dto.getEtc()}"
+                                               id="etc" th:value="${dto.getEtc()}" name="etc"
                                                placeholder="참고항목">
                                         <label class="post-error-style-etc post-error-style"></label>
                                     </div>
@@ -214,7 +214,7 @@
                             <div class="col-6">
                                 <div class="flex-row d-flex">
                                     <div class="flex-fill">
-                                        <label class="m-1" for="companyName">상세주소</label>
+                                        <label class="m-1" for="postDetailAddress">상세주소</label>
                                         <input type="text" class="form-control flex-fill input-group w-80"
                                                id="postDetailAddress" name="postDetailAddress" th:value="${dto.postDetailAddress}"
                                                placeholder="상세주소" required>

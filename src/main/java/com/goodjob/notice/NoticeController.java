@@ -6,12 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 /**
  * 22.10.19 공지사항 관련 컨트롤러 By.oh
@@ -35,8 +32,6 @@ public class NoticeController {
     @GetMapping("/detail")
     @ResponseBody
     public String loadNoticeContent(@RequestParam("noticeId")Long noticeId){
-        log.info("loadNoticeContent");
-        log.info("noticeId={}",noticeId);
         return noticeService.findOne(noticeId).orElse(null).getNoticeContent();
     }
 }

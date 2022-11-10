@@ -24,6 +24,6 @@ public class BookMark {
     private Member bookMarkMemId;
 
     @ManyToOne
-    @JoinColumn(name = "bookMarkPostId",unique = true)
+    @JoinColumn(name = "bookMarkPostId")
     private Post bookMarkPostId;
 }

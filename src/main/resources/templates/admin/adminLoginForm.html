@@ -6,20 +6,47 @@
         border-color: #dc3545;
         color: #dc3545;
     }
-    .form-control{
+
+    .form-control {
         border-color: #101214;
         color: #101214;
+    }
+
+    .has-search .form-control-feedback {
+        position: absolute;
+        z-index: 2;
+        display: block;
+        width: 2.375rem;
+        height: 2.375rem;
+        line-height: 2.375rem;
+        text-align: center;
+        pointer-events: none;
+        color: #aaa;
     }
 </style>
 <body>
 <header>
-
+    <nav class="navbar navbar-expand-lg bg-white fixed-top" style="height: 4rem">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">
+                <div class="webTitle"><b>GOODJOB</b></div>
+            </a>
+            <div style="width: 65rem"></div>
+            <form class="navbar-brand" style="height: 2rem;" name="frmSub" method="get">
+            </form>
+        </div>
+    </nav>
 </header>
 
 <main>
 
     <section class="py-7 mt-3">
         <div class="container">
+            <div class="d-flex flex-row justify-content-center">
+                <div class="justify-content-center">
+                    <div class="webTitle"><h2>GOODJOB 관리자 로그인</h2></div>
+                </div>
+            </div>
             <div class="row justify-space-between py-2">
                 <div class="col-lg-4 mx-auto">
                     <form th:action="@{login}" method="post" th:object="${adminDTO}">
@@ -30,15 +57,17 @@
                         </div>
 
                         <label th:for="ID" th:text="ID"> </label>
-                        <input th:id="ID" type="text" placeholder="ADMIN ID" th:field="*{adLoginId}" class="form-control">
+                        <input th:id="ID" type="text" placeholder="ADMIN ID" th:field="*{adLoginId}"
+                               class="form-control mb-3">
                         <div class="field-error" th:errors="*{adLoginId}"/>
 
                         <label th:for="PASSWORD" th:text="PASSWORD"> </label>
-                        <input th:id="PASSWORD" type="password" placeholder="ADMIN PASSWORD" th:field="*{adPw}" class="form-control">
+                        <input th:id="PASSWORD" type="password" placeholder="ADMIN PASSWORD" th:field="*{adPw}"
+                               class="form-control">
                         <div class="field-error" th:errors="*{adPw}"/>
 
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn bg-gradient-dark mt-3" th:text="LOGIN"/>
+                            <button type="submit" class="btn bg-gradient-dark mt-4" th:text="LOGIN"/>
                         </div>
                     </form>
                 </div>

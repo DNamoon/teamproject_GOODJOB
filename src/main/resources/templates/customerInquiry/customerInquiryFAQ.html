@@ -13,134 +13,162 @@
                     <a class="btn" style="width: 20%;" role="button" th:href="@{/customerInquiry/qna}">
                         1:1 문의
                     </a>
-                    <a class="btn" style="width: 20%;" role="button" th:href="@{/customerInquiry/notice/{pageNum}(pageNum=1)}">
+                    <a class="btn" style="width: 20%;" role="button"
+                       th:href="@{/customerInquiry/notice/{pageNum}(pageNum=1)}">
                         공지사항
                     </a>
-                    <a class="btn" style="width: 20%;"  role="button" th:href="@{/customerInquiry/policy}">
+                    <a class="btn" style="width: 20%;" role="button" th:href="@{/customerInquiry/policy}">
                         통합서비스 이용약관
                     </a>
                 </div>
                 <div class="d-flex flex-row mt-5">
                     <div class="d-flex flex-fill">
                         <div class="flex-fill">
-                            <div class="accordion accordion-flush" id="accordionFlushExample" style="position:relative;overflow:hidden;">
+                            <div class="accordion accordion-flush" id="accordionFlushExample"
+                                 style="position:relative;overflow:hidden;">
                                 <div class="accordion-item">
                                     <h1 class="accordion-header" id="flush-headingOne">
                                         <button class="accordion-button collapsed border" type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#flush-collapseOne" aria-expanded="false"
                                                 aria-controls="flush-collapseOne">
-                                            계정 비밀번호를 잃어버렸어요.
+                                            <h6 class="p-0 m-0">계정 비밀번호를 잃어버렸어요.</h6>
                                         </button>
-                                        <p class="view" style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;"><i class="bi bi-arrow-down-circle-fill"></i></p>
+                                        <p class="view"
+                                           style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;">
+                                            <i class="bi bi-arrow-down-circle-fill"></i></p>
                                     </h1>
                                     <div id="flush-collapseOne" class="accordion-collapse collapse"
                                          aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.
+                                        <div class="accordion-body"><h6 class="text-sm">홈페이지 우측 상단 로그인 버튼 클릭 후 화면에서 '비밀번호 찾기'를 클릭해주세요.
+                                            사용 중인 이메일을 통해 임시 비밀번호를 보내드려요.</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="accordion accordion-flush" id="accordionFlush2">
+                            <div class="accordion accordion-flush" id="accordionFlush2"
+                                 style="position:relative;overflow:hidden;">
                                 <div class="accordion-item">
                                     <h1 class="accordion-header" id="flush-heading2">
                                         <button class="accordion-button collapsed border" type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#flush-collapse2" aria-expanded="false"
                                                 aria-controls="flush-collapse2">
-                                            계정 비밀번호를 잃어버렸어요.
+                                            <h6 class="p-0 m-0">아이디를 찾고 싶어요.</h6>
                                         </button>
+                                        <p class="view"
+                                           style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;">
+                                            <i class="bi bi-arrow-down-circle-fill"></i></p>
                                     </h1>
                                     <div id="flush-collapse2" class="accordion-collapse collapse"
                                          aria-labelledby="flush-heading2" data-bs-parent="#accordionFlush2">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.
+                                        <div class="accordion-body"><h6 class="text-sm">홈페이지 우측 상단 로그인 버튼 클릭 후 화면에서 '아이디 찾기'를 클릭해주세요.
+                                            가입한 이름, 이메일 계정을 입력하면 찾을 수 있어요.</h6>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="accordion-item">
-                                    <h1 class="accordion-header" id="flush-heading3">
-                                        <button class="accordion-button collapsed border" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#flush-collapse3" aria-expanded="false"
-                                                aria-controls="flush-collapse3">
-                                            계정 비밀번호를 잃어버렸어요.
-                                        </button>
-                                    </h1>
-                                    <div id="flush-collapse3" class="accordion-collapse collapse"
-                                         aria-labelledby="flush-heading3" data-bs-parent="#accordionFlush3">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.
+                                <div class="accordion accordion-flush" id="accordionFlush3"
+                                     style="position:relative;overflow:hidden;">
+                                    <div class="accordion-item">
+                                        <h1 class="accordion-header" id="flush-heading3">
+                                            <button class="accordion-button collapsed border" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#flush-collapse3" aria-expanded="false"
+                                                    aria-controls="flush-collapse3">
+                                                <h6 class="p-0 m-0">이메일 정보를 변경하고 싶어요.</h6>
+                                            </button>
+                                            <p class="view"
+                                               style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;">
+                                                <i class="bi bi-arrow-down-circle-fill"></i></p>
+                                        </h1>
+                                        <div id="flush-collapse3" class="accordion-collapse collapse"
+                                             aria-labelledby="flush-heading3" data-bs-parent="#accordionFlush3">
+                                            <div class="accordion-body"><h6 class="text-sm">로그인 후 홈페이지 우측 상단 아이콘 버튼 클릭 후 화면에서 '회원정보수정'을 클릭해주세요.
+                                                <br>※ 변경이 어려울 경우 1:1문의를 통해 도와드려요. </h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="accordion-item">
-                                    <h1 class="accordion-header" id="flush-heading4">
-                                        <button class="accordion-button collapsed border" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#flush-collapse4" aria-expanded="false"
-                                                aria-controls="flush-collapse4">
-                                            계정 비밀번호를 잃어버렸어요.
-                                        </button>
-                                    </h1>
-                                    <div id="flush-collapse4" class="accordion-collapse collapse"
-                                         aria-labelledby="flush-heading4" data-bs-parent="#accordionFlush4">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.
+                                <div class="accordion accordion-flush" id="accordionFlush4"
+                                     style="position:relative;overflow:hidden;">
+                                    <div class="accordion-item">
+                                        <h1 class="accordion-header" id="flush-heading4">
+                                            <button class="accordion-button collapsed border" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#flush-collapse4" aria-expanded="false"
+                                                    aria-controls="flush-collapse4">
+                                                <h6 class="p-0 m-0">면접 및 합격 유무는 어떻게 알 수 있나요?</h6>
+                                            </button>
+                                            <p class="view"
+                                               style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;">
+                                                <i class="bi bi-arrow-down-circle-fill"></i></p>
+                                        </h1>
+                                        <div id="flush-collapse4" class="accordion-collapse collapse"
+                                             aria-labelledby="flush-heading4" data-bs-parent="#accordionFlush4">
+                                            <div class="accordion-body"><h6 class="text-sm">지원하신 기업에서 면접을 요청할 시 등록하신 이메일로 관련 정보를 발송해드려요. 합격유무는 이력서관리 페이지에서 확인이 가능합니다.</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="accordion-item">
-                                    <h1 class="accordion-header" id="flush-heading5">
-                                        <button class="accordion-button collapsed border" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#flush-collapse5" aria-expanded="false"
-                                                aria-controls="flush-collapse5">
-                                            계정 비밀번호를 잃어버렸어요.
-                                        </button>
-                                    </h1>
-                                    <div id="flush-collapse5" class="accordion-collapse collapse"
-                                         aria-labelledby="flush-heading5" data-bs-parent="#accordionFlush5">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.
+                                <div class="accordion accordion-flush" id="accordionFlush5"
+                                     style="position:relative;overflow:hidden;">
+                                    <div class="accordion-item">
+                                        <h1 class="accordion-header" id="flush-heading5">
+                                            <button class="accordion-button collapsed border" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#flush-collapse5" aria-expanded="false"
+                                                    aria-controls="flush-collapse5">
+                                                <h6 class="p-0 m-0">탈퇴하고 싶어요.</h6>
+                                            </button>
+                                            <p class="view"
+                                               style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;">
+                                                <i class="bi bi-arrow-down-circle-fill"></i></p>
+                                        </h1>
+                                        <div id="flush-collapse5" class="accordion-collapse collapse"
+                                             aria-labelledby="flush-heading5" data-bs-parent="#accordionFlush5">
+                                            <div class="accordion-body"><h6 class="text-sm">로그인 후 홈페이지 우측 상단 아이콘 버튼 클릭 후 화면에서 '회원정보 수정'을 클릭해주세요.
+                                            페이지 하단 탈퇴 버튼을 눌러주세요.<br>※ 탈퇴할 경우 해당 계정의 모든 데이터가 데이터 보관기간(30일)이내에 삭제되며 복구가 불가능하니 신중히 결정하시는 것을 권장 드려요.</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="accordion-item">
-                                    <h1 class="accordion-header" id="flush-heading6">
-                                        <button class="accordion-button collapsed border" type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#flush-collapse6" aria-expanded="false"
-                                                aria-controls="flush-collapse6">
-                                            계정 비밀번호를 잃어버렸어요.
-                                        </button>
-                                    </h1>
-                                    <div id="flush-collapse6" class="accordion-collapse collapse"
-                                         aria-labelledby="flush-heading6" data-bs-parent="#accordionFlush6">
-                                        <div class="accordion-body">Placeholder content for this accordion, which is
-                                            intended to demonstrate the <code>.accordion-flush</code> class. This is the
-                                            first item's accordion body.
+                                <div class="accordion accordion-flush" id="accordionFlush6"
+                                     style="position:relative;overflow:hidden;">
+                                    <div class="accordion-item">
+                                        <h1 class="accordion-header" id="flush-heading6">
+                                            <button class="accordion-button collapsed border" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#flush-collapse6" aria-expanded="false"
+                                                    aria-controls="flush-collapse6">
+                                                <h6 class="p-0 m-0">1:1문의는 어떻게 하나요?</h6>
+                                            </button>
+                                            <p class="view"
+                                               style="position:absolute;top:40px;right:10px;width:36px;height:50px;overflow:hidden;z-index:1;">
+                                                <i class="bi bi-arrow-down-circle-fill"></i></p>
+                                        </h1>
+                                        <div id="flush-collapse6" class="accordion-collapse collapse"
+                                             aria-labelledby="flush-heading6" data-bs-parent="#accordionFlush6">
+                                            <div class="accordion-body"><h6 class="text-sm">홈페이지 하단 1:1문의 버튼 클릭 후 문의를 작성해 주세요.
+                                            작성하신 문의는 빠른 시일 내에 답변할게요.</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
+        <script>
+            $('h1 > button:nth-child(1)').click(function () {
+                if ($(this).attr('aria-expanded') == 'true') {
+                    $(this).next(1).children(1).attr('class', 'bi bi-arrow-up-circle-fill');
+                } else {
+                    $(this).next(1).children(1).attr('class', 'bi bi-arrow-down-circle-fill');
+                }
+            })
+        </script>
     </th:block>
 </th:block>
