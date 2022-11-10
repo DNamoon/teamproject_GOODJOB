@@ -228,9 +228,9 @@ public class postServiceImpl implements PostService {
                     // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
                     // keyword 를 가지는 글만 가져오는 조건 추가
                     keywordList.forEach(e -> {
-                        bd.or(qPost.postTitle.contains(e).or(qPost.postComId.comName.contains(e)));
+                        bd.or(qPost.postTitle.contains(e).or(qPost.postComName.contains(e)));
                     });
-                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
+                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComName.contains(keyword));
                     break;
             }
             return bd;

@@ -298,8 +298,13 @@ let postInsertForm ={
       _this.setInputDateDefaultToday()
     },
     setInputDateDefaultToday(){
-        const startDate = document.getElementById('postStartDate').valueAsDate = new Date();
-        const endDate = document.getElementById('postEndDate').valueAsDate = new Date();
+        // const now = new Date(); // 현재 시간
+        // const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000); // 현재 시간을 utc로 변환한 밀리세컨드값
+        // const koreaTimeDiff = 9 * 60 * 60 * 1000; // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
+        // const koreaNow = new Date(utcNow + koreaTimeDiff); // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
+        // const startDate = document.getElementById('postStartDate').valueAsDate = koreaNow;
+        // console.log(startDate.value)
+        // const endDate = document.getElementById('postEndDate').valueAsDate = koreaNow;
         maxDate();
         rangeDate();
 
@@ -330,6 +335,8 @@ let postInsertForm ={
             }
 
             today = yyyy + '-' + mm + '-' + dd;
+            $("#postStartDate").val(today)
+            $("#postEndDate").val(today)
             $("#postStartDate").attr("min", today);
         }
 
@@ -423,6 +430,9 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postStartDate":
+                                    if(reason==="Null value"){
+                                        startDateDom.innerHTML=`시작일은 필수 값입니다.`
+                                    }
                                     if(reason==="The start date must be after today."){
                                         startDateDom.innerHTML=`시작일은 오늘 이후여야 합니다.`
                                     }
@@ -431,6 +441,9 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postEndDate":
+                                    if(reason==="Null value"){
+                                        endDateDom.innerHTML=`모집 종료일은 필수 값입니다.`
+                                    }
                                     if(reason==="The end date must be after today."){
                                         endDateDom.innerHTML=`모집 종료일은 오늘 이후여야 합니다.`
                                     }

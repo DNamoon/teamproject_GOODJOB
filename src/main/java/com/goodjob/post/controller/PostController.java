@@ -54,6 +54,7 @@ public class PostController {
     @ResponseBody
     public ResponseEntity<?> postSave(@Valid @ModelAttribute PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
         log.info("postInsertDTO : "+postInsertDTO);
+        log.info("눌값인가"+postInsertDTO.getEtc());
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
         if(sessionId != null){
             postInsertDTO.setComLoginId(sessionId);
