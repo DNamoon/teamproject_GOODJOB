@@ -166,7 +166,7 @@ public class postServiceImpl implements PostService {
             booleanBuilder.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
         }
 
-        System.out.println("불리언 빌더(final)============최종 쿼리 조건 : "+booleanBuilder);
+//        System.out.println("불리언 빌더 최종 쿼리 조건 : "+booleanBuilder);
         return booleanBuilder;
     }
 

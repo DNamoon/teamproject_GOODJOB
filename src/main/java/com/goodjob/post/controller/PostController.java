@@ -1,8 +1,6 @@
 package com.goodjob.post.controller;
 
 import com.goodjob.bookmark.service.BookMarkService;
-import com.goodjob.company.service.CompanyService;
-import com.goodjob.member.service.MemberService;
 import com.goodjob.post.Post;
 import com.goodjob.post.error.SessionCompanyAccountNotFound;
 import com.goodjob.post.error.SessionNotFoundException;
@@ -23,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.*;
 
 @Log4j2
 @Controller
@@ -31,9 +28,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final MemberService memberService;
     private final BookMarkService bookMarkService;
-    private final CompanyService companyService;
     private final FileService fileService;
 
     @GetMapping("/savePost")
@@ -53,8 +48,6 @@ public class PostController {
     @PostMapping(value = "/savePost",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<?> postSave(@Valid @ModelAttribute PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
-        log.info("postInsertDTO : "+postInsertDTO);
-        log.info("눌값인가"+postInsertDTO.getEtc());
         String sessionId = getSessionInfo(httpServletRequest,"sessionId");
         if(sessionId != null){
             postInsertDTO.setComLoginId(sessionId);
@@ -130,7 +123,6 @@ public class PostController {
 
     @GetMapping(value={"/file/{fileName}"})
     public ResponseEntity<?> getFile(@PathVariable String fileName) throws IOException {
-        log.info("fileName : "+fileName);
         return fileService.getFile(fileName);
     }
 
@@ -143,12 +135,8 @@ public class PostController {
         if(httpSession != null && httpSession.getAttribute("Type").toString().equals("company")){
             // 세션 타입 체크
             if (typeOrSessionId.equals("Type")) {
-                System.out.println((String)httpSession.getAttribute("Type"));
-                System.out.println(httpSession.getAttribute("Type").toString());
                 return httpSession.getAttribute("Type").toString();
             } else if (typeOrSessionId.equals("sessionId")) {
-                System.out.println((String)httpSession.getAttribute("sessionId"));
-                System.out.println(httpSession.getAttribute("sessionId").toString());
                 return httpSession.getAttribute("sessionId").toString();
             } else {
                 throw new SessionCompanyAccountNotFound();
