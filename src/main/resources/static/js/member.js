@@ -1,6 +1,6 @@
 //id 중복 확인
 function checkMassage() {
-    const id = $('#id').val(); //id값이 "id"인 입력란의 값을 저장
+    const id = $('#id').val();
     let regExp = /^[a-z0-9_-]{3,15}$/;
     $.ajax({
         type: "post",
@@ -149,6 +149,7 @@ $(document).ready(function () {
         $("#realUpdate").append("<button type=\"button\" id=\"updateModal\"onclick=\"infoUpdateCheck()\" class=\"btn bg-gradient-dark w-100\" style=\"font-size:15px\" data-target=\"#pwCheck\">수정완료</button>");
     })
 });
+
 //마이페이지-email 확인
 function updateCheckEmail() {
     const inputEmail = $('#signUpEmail').val();
@@ -172,11 +173,12 @@ function updateCheckEmail() {
         }
     });
 }
+
 function infoUpdateCheck() {
     let id = $('#name').val();
-    console.log("id+"+name);
+    console.log("id+" + name);
     let rs = "false";
-    if (id == ""|| id ==null) {
+    if (id == "" || id == null) {
         $('#name').focus();
     } else {
         rs = "true";
@@ -185,7 +187,7 @@ function infoUpdateCheck() {
     let brith = $('#bday').val();
 
     let rs2 = "false";
-    if (brith == ""|| brith ==null) {
+    if (brith == "" || brith == null) {
         $('#bday').focus();
     } else {
         rs2 = "true";
@@ -240,42 +242,33 @@ $(document).ready(function () {
 
 //회원탈퇴
 function deleteMember() {
-    Swal.fire({
-        title: "정말 탈퇴하시겠습니까?",
-        text: "회원탈퇴 시 기존 작성된 이력서는 삭제되고 지원이력은 보관됩니다.",
-        icon: "warning",
-        confirmButtonText: "예",
-        cancelButtonText: "아니요",
-        closeOnConfirm: true,
-        showCancelButton: true,
-    })
-        .then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "POST",
-                    url: "/member/delete",
-                    data: "memId=" + $("#memId").val() + "&loginId=" + $("#id").val() + "&deletePw=" + $('#deletePw').val(),
-
-                    success: function (data) {
-                        if (data == "0") {
-                            Swal.fire({
-                                icon: 'success',                         // Alert 타입
-                                title: '회원탈퇴',         // Alert 제목
-                                text: '회원탈퇴가 완료되었습니다.'  // Alert 내용
-                            }).then(function () {
-                                location.replace('/'); //뒤로가기 불가능
-                            });
-                        } else {
-                            Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
+    $.ajax({
+        type: "POST",
+        url: "/member/delete",
+        data: "memId=" + $("#memId").val() + "&loginId=" + $("#id").val() + "&deletePw=" + $('#deletePw').val(),
+        success: function (data) {
+            if (data == "1") {
+                Swal.fire({
+                    title: "정말 탈퇴하시겠습니까?",
+                    text: "회원탈퇴 시 어떤방법으로도 계정이 복구되지 않습니다.",
+                    icon: "warning",
+                    confirmButtonText: "예",
+                    cancelButtonText: "아니요",
+                    closeOnConfirm: true,
+                    showCancelButton: true,
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = "/member/deleteConfirm";
+                        } else if (!result.isConfirmed) {
+                            Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
                         }
-                    }, error: function (e) {
-                        console.log(e)
-                    }
-                });
-            } else if (result.isCancled) {
-                Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
+                    })
+            } else {
+                Swal.fire("ERROR", "비밀번호를 확인해주세요.", "error");
             }
-        })
+        }
+    })
 }
 
 //비밀번호 찾기
@@ -299,9 +292,9 @@ function checkEmail() {
 
             },
             success: function (result) {
-        // }).done(function (result) {
+                // }).done(function (result) {
                 if (result == "false") {
-                    Swal.fire("ERROR","가입정보가 없는 이메일입니다.","error");
+                    Swal.fire("ERROR", "가입정보가 없는 이메일입니다.", "error");
                     // alert("가입정보가 없는 이메일입니다.")
                 } else if (result == "com") {
                     sendEmail("com");
@@ -318,7 +311,7 @@ function checkEmail() {
                         })
                 }
             }
-    })
+        })
     }
 }
 
