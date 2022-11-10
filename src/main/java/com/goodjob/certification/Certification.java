@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  *박채원 22.10.02 작성
@@ -32,10 +31,10 @@ public class Certification {
     private String certiScore;
 
     @ManyToOne
-    @JoinColumn(name = "certiResumeId", unique = true)
+    @JoinColumn(name = "certiResumeId", nullable = false)
     private Resume resume;
 
     @ManyToOne
-    @JoinColumn(name = "certiCertiName")
+    @JoinColumn(name = "certiCertiName", nullable = false)
     private CertificateName certificateName;
 }

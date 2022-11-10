@@ -1,6 +1,5 @@
 package com.goodjob.resume;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goodjob.career.dto.CareerDTO;
@@ -14,7 +13,6 @@ import com.goodjob.education.dto.EducationDTO;
 import com.goodjob.education.service.EducationService;
 import com.goodjob.member.memDTO.ResumeMemberDTO;
 import com.goodjob.member.service.MemberService;
-import com.goodjob.resume.dto.ResumeListDTO;
 import com.goodjob.resume.service.ResumeService;
 import com.goodjob.selfIntroduction.service.SelfIntroductionService;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
@@ -29,7 +27,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 박채원 22.10.02 작성
@@ -152,11 +149,8 @@ public class ResumeController {
     }
 
     @GetMapping("/goPreviousStep1/{resumeId}")
-    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
-        String id = (String)session.getAttribute("sessionId");
-
+    public String goPreviousStep1(@PathVariable("resumeId") Long resumeId, Model model){
         model.addAttribute("resumeId", resumeId);
-        model.addAttribute("memberInfo", memberService.bringMemInfo(id));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
 
@@ -204,9 +198,8 @@ public class ResumeController {
     }
 
     @GetMapping("/resumeRead/{memId}/{resumeId}")
-    public String resumeReadForm(@PathVariable("memId") String memId, @PathVariable("resumeId") Long resumeId, Model model, HttpSession session){
+    public String resumeReadForm(@PathVariable("memId") String memId, @PathVariable("resumeId") Long resumeId, Model model){
 
-        model.addAttribute("memberInfo", memberService.bringMemInfo(memId));
         model.addAttribute("resumeMemInfo", resumeService.bringResumeInfo(resumeId));
         model.addAttribute("schoolInfo", educationService.bringSchoolInfo(resumeId));
         model.addAttribute("certiInfo", certificationService.bringCertiInfo(resumeId));
@@ -216,8 +209,9 @@ public class ResumeController {
         return "/resume/ResumeRead";
     }
 
-//    @PutMapping("/changeTitle/{resumeId}")
-//    public void changeTitle(@RequestBody ResumeListDTO resumeListDTO){
-//        resumeService.changeTitle(resumeListDTO);
-//    }
+    @ResponseBody
+    @GetMapping("/getMenuValue")
+    public List<Integer> getMenuValue(HttpSession session){
+        return resumeService.getResumeMenu((String) session.getAttribute("sessionId"));
+    }
 }

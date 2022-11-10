@@ -16,8 +16,7 @@
                         &nbsp;
                         <form role="form" id="contact-form" th:method="get" autocomplete="off"
                               th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
-                            <input type="hidden" th:value="${memberInfo.memId}" name="memId">
-                            <input type="hidden" th:value="${resumeId}" name="resumeId">
+                            <input type="hidden" id="resumeId" th:value="${resumeId}">
                             <div class="card-body">
                         <span style="float: right; font-size: 14px;"><span
                                 style="color: rgb(244, 54, 54);">&nbsp;&ast;</span> 는 필수사항 입니다.</span>
@@ -28,125 +27,101 @@
                                         <label>성명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="text" name="memName"
-                                                   th:value="${memberInfo.memName}" readonly>
+                                                   th:value="${resumeMemInfo.memName}" readonly>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="width:400px">
+                                    <div class="col-md-6">
                                         <label>생년월일<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
                                         <div class="input-group mb-4">
                                             <input class="form-control" type="date"
-                                                   th:value="${memberInfo.memBirthDate}"
+                                                   th:value="${resumeMemInfo.memBirthDate}"
                                                    name="memBirthDate" readonly>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 200px;">
-                                        <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group">
-                                            <select class="form-select" id="startPhoneNum" name="memFirstPhoneNum" required>
-                                                <option th:value="${resumeMemInfo.memFirstPhoneNum}">
-                                                    [[${resumeMemInfo.memFirstPhoneNum}]] (기본정보)
-                                                </option>
-                                                <option value="010">010</option>
-                                                <option value="011">011</option>
-                                                <option value="070">070</option>
-                                            </select>
-                                        </div>
-                                        <label id="phoneNumValiDiv"></label>
+                            </div>
+                            <div class="card-body">
+                                <label>이메일</label>
+                                <label style="float: right;color: red;">이메일을 작성하지 않을 시 합격 연락에 제한이 있을 수 있습니다.</label>
+                                <div class="input-group mb-1">
+                                    <input class="form-control border" type="text" id="firstEmail" th:value="${resumeMemInfo.memFirstEmail}"
+                                           name="memFirstEmail" style="width:45px;" onkeyup="emailDuplication()">&nbsp;@ &nbsp;
+                                    <select class="form-select border" id="endEmail" name="memLastEmail" onchange="emailDuplication()">
+                                        <option th:value="${resumeMemInfo.memLastEmail}">[[${resumeMemInfo.memLastEmail}]]
+                                            (기본정보)
+                                        </option>
+                                        <option value="naver.com">naver.com</option>
+                                        <option value="gmail.com">gmail.com</option>
+                                        <option value="daum.net">daum.net</option>
+                                    </select>
+                                </div>
+                                <label id="emailValiDiv"></label>
+                            </div>
+                            <div class="row" style="float: inline-start;">
+                                <div class="col-md-6" >
+                                    <label>휴대폰 번호<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                    <div class="input-group mb-1">
+                                        <select class="form-select border" id="startPhoneNum" name="memFirstPhoneNum" style="width: 100px;"
+                                                required>
+                                            <option th:value="${resumeMemInfo.memFirstPhoneNum}">
+                                                [[${resumeMemInfo.memFirstPhoneNum}]] (기본정보)
+                                            </option>
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="070">070</option>
+                                        </select>
+                                        &nbsp;&nbsp;-&nbsp;&nbsp;
+                                        <input class="form-control border" placeholder="가운데 자리" type="text" style="width: 100px;"
+                                               th:value="${resumeMemInfo.getMemMiddlePhoneNum()}"
+                                               id="memMiddlePhoneNum"
+                                               name="memMiddlePhoneNum"
+                                               onfocusout="isFourNumber(document.getElementById('memMiddlePhoneNum'))"
+                                               required>
+                                        &nbsp; &nbsp;-&nbsp;&nbsp;
+                                        <input class="form-control border" placeholder="마지막 자리" type="text" style="width: 100px;"
+                                               th:value="${resumeMemInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
+                                               name="memLastPhoneNum"
+                                               onfocusout="isFourNumber(document.getElementById('memLastPhoneNum'))"
+                                               required>
                                     </div>
-                                    <div class="col-mb-6" style="width: 5px;">
-                                        <label>&nbsp;</label>
-                                        -
-                                    </div>
-                                    <div class="col-md-6" style="width: 200px;">
-                                        <label>&nbsp;</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" placeholder="가운데 자리" type="text"
-                                                   th:value="${resumeMemInfo.getMemMiddlePhoneNum()}"
-                                                   id="memMiddlePhoneNum"
-                                                   name="memMiddlePhoneNum" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-mb-6" style="width: 5px;">
-                                        <label>&nbsp;</label>
-                                        -
-                                    </div>
-                                    <div class="col-md-6" style="width: 200px;">
-                                        <label>&nbsp;</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" placeholder="마지막 자리" type="text"
-                                                   th:value="${resumeMemInfo.getMemLastPhoneNum()}" id="memLastPhoneNum"
-                                                   name="memLastPhoneNum" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" style="width: 300px; margin-left: 50px;">
-                                        <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="memGender" value="남"
-                                                       th:checked="${memberInfo.memGender eq '남'}" id="genderM">
-                                                <label class="form-check-label">남자</label>
-                                            </div>&nbsp;&nbsp;
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="memGender" value="여"
-                                                       th:checked="${memberInfo.memGender eq '여'}" id="genderF">
-                                                <label class="form-check-label">여자</label>
-                                            </div>
+                                    <label id="phoneNumValiDiv"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>성별<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
+                                    <div class="input-group">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="memGender" value="남"
+                                                   th:checked="${resumeMemInfo.memGender eq '남'}" id="genderM">
+                                            <label class="form-check-label">남자</label>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="memGender" value="여"
+                                                   th:checked="${resumeMemInfo.memGender eq '여'}" id="genderF">
+                                            <label class="form-check-label">여자</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 400px;">
-                                        <label>이메일</label>
-                                        <div class="input-group mb-4">
-                                            <input class="form-control" type="text"
-                                                   th:value="${resumeMemInfo.memFirstEmail}"
-                                                   name="memFirstEmail">
-                                        </div>
+
+                                <div class="col-md-6" >
+                                    <label>주소</label>
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" id="userAddress"
+                                               onclick="execPostCode()" th:value="${resumeMemInfo.memFirstAddress}"
+                                               readonly
+                                               name="memFirstAddress">
                                     </div>
-                                    <div class="col-mb-6" style="width: 5px;">
-                                        <label>&nbsp;</label>
-                                        @
-                                    </div>
-                                    &nbsp;&nbsp;
-                                    <div class="col-md-6" style="width: 215px;">
-                                        <label>&nbsp;</label>
-                                        <div class="input-group mb-4">
-                                            <select class="form-select" id="endEmail" name="memLastEmail">
-                                                <option th:value="${resumeMemInfo.memLastEmail}">
-                                                    [[${resumeMemInfo.memLastEmail}]] (기본정보)
-                                                </option>
-                                                <option value="naver.com">naver.com</option>
-                                                <option value="gmail.com">gmail.com</option>
-                                                <option value="daum.net">daum.net</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row" style="float: inline-start;">
-                                        <div class="col-md-6" style="width: 400px;">
-                                            <label>주소</label>
-                                            <div class="input-group mb-4">
-                                                <input class="form-control" type="text" id="userAddress"
-                                                       onclick="execPostCode()"
-                                                       th:value="${resumeMemInfo.memFirstAddress}"
-                                                       readonly name="memFirstAddress">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2" style="margin-left: 0px;">
-                                            <label>&nbsp;</label>
-                                            <button type="button" class="btn bg-gradient-dark w-100 findAddress"
-                                                    onclick="execPostCode()">주소찾기
-                                            </button>
-                                        </div>
-                                        <div class="col-md-6" style="width: 330px;">
-                                            <label>상세주소</label>
-                                            <div class="input-group mb-4">
-                                                <input class="form-control" type="text" id="userDetailAddress"
-                                                       th:value="${resumeMemInfo.memLastAddress}" name="memLastAddress">
-                                            </div>
-                                        </div>
+                                </div>
+                                <div class="col-md-2" style="margin-left: 0px;">
+                                    <label>&nbsp;</label>
+                                    <button type="button" class="btn bg-gradient-dark w-100 findAddress"
+                                            onclick="execPostCode()">주소찾기
+                                    </button>
+                                </div>
+                                <div class="col-md-4" >
+                                    <label>상세주소</label>
+                                    <div class="input-group mb-4">
+                                        <input class="form-control" type="text" id="userDetailAddress"
+                                               th:value="${resumeMemInfo.memLastAddress}" name="memLastAddress">
                                     </div>
                                 </div>
                             </div>
@@ -158,41 +133,41 @@
                                 <h4 class="text-left">| 학적</h4>
                                 &nbsp;
                                 <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 400px;">
+                                    <div class="col-md-6">
                                         <label>학교명<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control" type="text" name="schoolName" id="schoolName"
                                                    th:value="${schoolInfo.schoolName}" readonly>
                                         </div>
                                         <label id="schoolNameValiDiv"></label>
                                     </div>
-                                    <div class="col-md-2" style="margin-left: 0px;">
+                                    <div class="col-md-2">
                                         <label>&nbsp;</label>
                                         <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
                                                 data-bs-target="#findSchoolModal">학교찾기
                                         </button>
                                     </div>
-                                    <div class="col-md-6" style="width: 325px;">
+                                    <div class="col-md-4">
                                         <label>졸업년월<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control eduGraduationDate" placeholder="YYYY-MM-DD"
                                                    type="date"
                                                    name="eduGraduationDate" th:value="${schoolInfo.eduGraduationDate}"
-                                                   max=""
-                                                   required>
+                                                   max="" onchange="confirmValidGradDate()">
                                         </div>
+                                        <label id="graduDateValiDiv"></label>
                                     </div>
                                 </div>
                                 <div class="row" style="float: inline-start;">
-                                    <div class="col-md-6" style="width: 400px;">
+                                    <div class="col-md-6">
                                         <label>전공<span style="color: rgb(244, 54, 54);">&nbsp;&ast;</span></label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control" type="text" name="majorName" id="majorName"
                                                    th:value="${schoolInfo.majorName}" readonly>
                                         </div>
                                         <label id="majorNameValiDiv"></label>
                                     </div>
-                                    <div class="col-md-2" style="margin-left: 0px;">
+                                    <div class="col-md-2">
                                         <label>&nbsp;</label>
                                         <button type="button" class="btn bg-gradient-dark w-100" data-bs-toggle="modal"
                                                 data-bs-target="#findMajorModal">전공찾기
@@ -225,7 +200,7 @@
                                 </div>
                                 <div style="height: 50px;"></div>
                                 <div class="col-md-6 mx-auto">
-                                    <button type="submit" id="submitStep1" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
+                                    <button type="button" id="submitStep1" class="btn bg-gradient-dark w-100">저장 후 STEP 2로</button>
                                 </div>
                             </div>
                         </form>
@@ -259,7 +234,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn bg-gradient-primary doneFindSchool" data-bs-dismiss="modal">
+                        <button type="button" class="btn bg-gradient-dark doneFindSchool" data-bs-dismiss="modal">
                             완료
                         </button>
                     </div>
@@ -292,7 +267,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn bg-gradient-primary doneFindMajor" data-bs-dismiss="modal">완료
+                        <button type="button" class="btn bg-gradient-dark doneFindMajor" data-bs-dismiss="modal">완료
                         </button>
                     </div>
                 </div>

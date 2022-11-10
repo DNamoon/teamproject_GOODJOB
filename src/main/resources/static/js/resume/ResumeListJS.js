@@ -6,7 +6,7 @@ $(document).ready(function () {
     var pageNum = 0;
     getJSONResumeList();
     getApplyList(pageNum);
-    getResumeData();  //동작 안됨
+    setMenuValue();
 
     //이력서 등록버튼 누르면 이력서 번호부터 등록하고 시작
     $("#registerResume").click(function () {
@@ -31,11 +31,6 @@ $(document).ready(function () {
         }
     })
 })
-
-function getResumeData() {
-    var count = $("input[id=resumeCheckBox]").length;
-    $(".resumeCount").text(count);
-}
 
 //이력서 리스트 출력
 function getJSONResumeList() {
@@ -81,7 +76,7 @@ function deleteResume(data) {
         icon: 'warning',
 
         showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        confirmButtonColor: '#344767', // confrim 버튼 색깔 지정
         cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
         confirmButtonText: '확인', // confirm 버튼 텍스트 지정
         cancelButtonText: '취소', // cancel 버튼 텍스트 지정
@@ -141,17 +136,6 @@ function changeTitle(data) {
             getJSONResumeList();
         }
     })
-
-    //put으로 하는거 왜 안되는지 모름
-    // $.ajax({
-    //     url: "/resume/changeTitle/" + resumeId,
-    //     type: "put",
-    //     data: JSON.stringify(resume),
-    //     contentType: "application/json; charset=utf-8",
-    //     success: function (){
-    //         getJSONResumeList($("input[id=sessionInput]").val());
-    //     }
-    // })
 }
 
 //체크된 이력서들을 삭제함
@@ -170,7 +154,7 @@ function deleteCheckedResume() {
         icon: 'warning',
 
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#344767',
         cancelButtonColor: '#d33',
         confirmButtonText: '확인',
         cancelButtonText: '취소',
@@ -218,12 +202,6 @@ function getApplyList(pageNum) {
 
             var pageBtn = '';
 
-            //이렇게 적으면 버튼하나를 누를 때마다 result.page가 1씩 증가하는데 왜 그런겨
-            // $.each(result.pageList, function (pageIdx, page){
-            //     pageBtn += '<li class="page-item"><a class="page-link" onclick="getApplyList('+ result.page +')">'+ page +'</a></li>';
-            //     console.log(result.page);
-            // })
-
             pageBtn += '<li class="page-item" th:if="${'+ result.prev +'}">';
             pageBtn += '<a class="page-link" onclick="getApplyList(' + (result.start - 1) + ')" tabindex="-1"><<</a>';
             pageBtn += '</li>';
@@ -240,5 +218,32 @@ function getApplyList(pageNum) {
             $(".noData").html(list);
         }
 
+    });
+}
+
+function getMenuValue(){
+    var valueJson = {};
+    var valueArray = [];
+
+    $.ajax({
+        url: "/resume/getMenuValue",
+        type: "get",
+        async: false,
+        dataType: "json",
+        success(data){
+            $.each(data, function(key, value){
+                valueJson.id = key;
+                valueJson.val = value;
+                valueArray.push({...valueJson});
+            });
+        }
     })
+    return valueArray;
+}
+
+function setMenuValue(){
+    $(".resumeCount").text(getMenuValue()[0].val);
+    $(".applyCount").text(getMenuValue()[1].val);
+    $(".passCount").text(getMenuValue()[2].val);
+    $(".unPassCount").text(getMenuValue()[3].val);
 }

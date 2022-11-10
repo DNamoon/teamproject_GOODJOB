@@ -1,8 +1,8 @@
 package com.goodjob.member;
 
+import com.goodjob.bookmark.BookMark;
 import com.goodjob.customerInquiry.CustomerInquiryPost;
 import com.goodjob.resume.Resume;
-import com.goodjob.status.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,8 +28,8 @@ public class Member {
     @Column(unique = true, columnDefinition = "varbinary(128)")
     private String memLoginId;
 
-    @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
-    private List<Resume> memResume = new ArrayList<>();
+//    @OneToMany(mappedBy = "resumeMemId", cascade = CascadeType.ALL)
+//    private List<Resume> memResume = new ArrayList<>();
     // 오성훈 22.10.30
     @OneToMany(mappedBy = "inquiryPostMemberId", cascade = CascadeType.ALL)
     private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();
@@ -58,8 +58,13 @@ public class Member {
     @Column(length = 2)
     private String memTerms;
 
-    /** 비밀번호 변경 **/
-    public void updatePassword(String password){
+    @OneToMany(mappedBy = "bookMarkMemId", cascade = CascadeType.ALL)
+    private List<BookMark> memberBookMark;
+
+    /**
+     * 비밀번호 변경
+     **/
+    public void updatePassword(String password) {
         this.memPw = password;
     }
 

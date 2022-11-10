@@ -18,7 +18,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -66,12 +65,8 @@ public class postServiceImpl implements PostService {
 
         if(optionalCompany.isPresent()){
             Company company = optionalCompany.get();
-            ArrayList<String> list = new ArrayList<>();
-            StringTokenizer st = new StringTokenizer(company.getComAddress(),"@");
-            while(st.hasMoreTokens()){
-                list.add(st.nextToken());
-            }
-            return new CompanyInfoDTO(list.get(0), list.get(1), list.get(2), list.get(3), company.getComName(),company.getComBusiNum(),company.getComComdivCode().getComdivName());
+            String[] str = company.getComAddress().split("@");
+            return new CompanyInfoDTO(str[0], str[1], str[2], str[3], company.getComName(),company.getComBusiNum(),company.getComComdivCode().getComdivName());
         }
         return null;
     }
@@ -99,11 +94,16 @@ public class postServiceImpl implements PostService {
         return null;
     }
     @Override
-    public PostDetailsDTO readPost(Long postId){
+    public PostDetailsDTO readPost(Long postId) throws IOException {
         Optional<Post> result = postRepository.findById(postId);
+
+        List<String> fileList = fileService.getFiles(result.get().getPostImg());
+        if(fileList.isEmpty()){
+            fileList.add("no_image.png");
+        }
         // 게시글 조회 후 조회수를 +1 한다.
         postRepository.increasePostCount(postId);
-        return result.map(this::entityToDtoForRead).orElse(null);
+        return result.map((Post post) -> entityToDtoForRead(post,fileList)).orElse(null);
     }
     @Override
     public PostInsertDTO getPostById(Long postId){
@@ -141,6 +141,9 @@ public class postServiceImpl implements PostService {
                 booleanBuilder.and(qPost.postComId.comLoginId.eq(pageRequestDTO.getAuth()));
             }
         }
+        // 공고를 등록한 기업 계정이 삭제 됬을 경우에는 검색 대상이 되지 않는 조건을 추가한다.
+        // 로그인 아이디가 null 이면
+        booleanBuilder.and(qPost.postComId.comLoginId.isNotNull());
 
         // 모집상태(모집중, 모집시작 전, 모집 종료, 전체) 조건을 추가하는 코드(기본은 모집중)
         booleanBuilder.and(getOutOfDateState(pageRequestDTO,qPost));
@@ -174,25 +177,20 @@ public class postServiceImpl implements PostService {
             List<String> addressKeywordList = tokenizerStringToList(addressKeyword," ");
             List<String> addressDepth1 = new ArrayList<>(Arrays.asList("서울","경기","인천","강원","대전","세종","부산","울산","대구","광주","제주"));
             List<String> addressDepth1_do = new ArrayList<>(Arrays.asList("경상남","경상북","충청남","충청북","전라남","전라북"));
-            addressKeywordList.forEach(log::info);
             addressKeywordList = addressKeywordList.stream().map(e->{
                 bd.or(qPost.address.address1.contains(e));
                 for(String str : addressDepth1){
                     if(e.startsWith(str)){
                         e = str;
-                        log.info("e : "+e);
                     };
                 }
                 for(String str : addressDepth1_do){
                     if(e.startsWith(str)){
                        e =String.valueOf(str.charAt(0))+String.valueOf(str.charAt(2));
-                       log.info("e : "+e);
                     };
                 }
                 return e;
             }).collect(Collectors.toList());
-            addressKeywordList.forEach(log::info);
-            log.info("================"+addressKeywordList);
             addressKeywordList.forEach(e -> {
                 bd.or(qPost.address.address1.contains(e));
             });
@@ -233,9 +231,9 @@ public class postServiceImpl implements PostService {
                     // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
                     // keyword 를 가지는 글만 가져오는 조건 추가
                     keywordList.forEach(e -> {
-                        bd.or(qPost.postTitle.contains(e).or(qPost.postComId.comName.contains(e)));
+                        bd.or(qPost.postTitle.contains(e).or(qPost.postComName.contains(e)));
                     });
-                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
+                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComName.contains(keyword));
                     break;
             }
             return bd;
@@ -285,5 +283,10 @@ public class postServiceImpl implements PostService {
     @Override
     public List<String> searchSalaryRange(){
         return  postRepository.salaryRange();
+    }
+
+    @Override
+    public Optional<Post> findOne(Long postId) {
+        return postRepository.findById(postId);
     }
 }

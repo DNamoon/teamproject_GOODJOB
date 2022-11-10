@@ -1,172 +1,182 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="~{mainPageTemplate ::setContent(~{this::content})}">
     <th:block th:fragment="content">
+        <div class="container" style="height: 3rem;"></div>
         <div class="container">
             <div class="flex-row d-flex justify-content-center mt-3">
                 <div style="height: 30px;"></div>
                 <h3 class="text-center">채용공고 상세페이지</h3>
             </div>
-            <div class="col p-0 d-flex">
-                <div class="col-9 ps-0">
-                    <div class="ps-5">
-                        <div class="d-flex flex-row mt-2 ps-5 carousel slide" id="carouselExampleControls" data-bs-ride="carousel">
-                            <div class="carousel-inner">
+            <div class="col p-0 d-flex justify-content-center">
+                <div class="col-9 ps-0 mt-5">
+
+                    <!--                    <div class="ps-5 mt-2">-->
+
+                    <div class="d-flex flex-row carousel slide justify-content-center" id="carouselExampleIndicators" data-bs-ride="carousel">
+
+                        <div class="carousel-inner w-100 d-flex">
+
+                            <th:block th:each="fileName:${dto.attachment}">
                                 <div class="carousel-item active">
-                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" class="d-block w-100" alt="...">
+                                    <!--                                        style="width: 50rem; height: 30rem"-->
+                                    <div class="p-0 m-0 embed-responsive embed-responsive-4by3 w-100 h-100 " >
+                                        <img th:src="@{/post/file/{fileName}(fileName=${fileName})}" class="d-block embed-responsive-item img-fluid h-100 w-100" alt="...">
+                                    </div>
                                 </div>
-                                <div class="carousel-item">
-                                    <img src="https://airweb.co.kr/data/file/logo_portfolio/3035080643_Mnu3Yx8U_ECA3BCEC8B9DED9A8CEC82AC_ECBC80EC9DB4EBB984EC94A8EC9794EC94A8.jpg" class="d-block w-100" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="https://images.unsplash.com/photo-1665263515157-e07dbcc7d2ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80" class="d-block w-100" alt="...">
-                                </div>
-                            </div>
-                            <div class="carousel-indicators">
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
+                            </th:block>
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
 
-                        <div class="d-flex flex-row mt-2 ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-                                        <div>
-                                            <div class="col-12 p-0">
-                                                <h4> [[${dto.title}]] </h4>
+                    <div class="d-flex flex-row mt-2">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12 mt-3">
+                                    <div>
+                                        <div class="col-12 p-0">
+                                            <h4> [[${dto.title}]] </h4>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="p-0 text-center">
+                                                <h6 class="">[[${dto.comName}]]</h6>
                                             </div>
-                                            <div class="d-flex">
-                                                <div class="p-0">
-                                                    <h6 class="">[[${dto.comName}]]</h6>
-                                                </div>
-                                                <div class="col-1 text-center">
-                                                    <h6>|</h6>
-                                                </div>
-                                                <div class="col-1 p-0">
-                                                    <h6 class="">[[${dto.salary}]]</h6>
-                                                </div>
-                                                <div class="col-1 text-center">
-                                                    <h6>|</h6>
-                                                </div>
-                                                <div class="col-1 p-0">
-                                                    <h6 class="">[[${dto.recruitNum}]]</h6>
-                                                </div>
+                                            <div class="col-1 text-center p-0">
+                                                <h6>|</h6>
                                             </div>
+                                            <div class="col-1 p-0 text-center">
+                                                <h6 class="">[[${dto.salary}]]</h6>
+                                            </div>
+                                            <div class="col-1 text-center p-0">
+                                                <h6>|</h6>
+                                            </div>
+                                            <div class="col-1 p-0 text-center">
+                                                <h6 class="">[[${dto.postGender}]] [[${dto.recruitNum}]]명</h6>
+                                            </div>
+                                            <div class="col-1 text-center p-0">
+                                                <h6>|</h6>
+                                            </div>
+<!--                                            <div class="col-1 p-0 text-center">-->
+<!--                                                <h6 class="">[[${dto.postGender}]]</h6>-->
+<!--                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="d-flex flex-row mt-2 ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-<!--                                        <div class="" style="min-height: 50rem;">-->
-                                        <div class="">
-                                            [[${dto.content}]]
+                    <div class="d-flex flex-row mt-2">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12">
+                                    <!--                                        <div class="" style="min-height: 50rem;">-->
+                                    <div class="">
+                                        [[${dto.content}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-3 mb-3 border-top">
+                    <div class="d-flex flex-row mt-2">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12">
+                                    <div class="d-flex">
+                                        <div class="col-2 p-0">
+                                            <h6 class="text-secondary">시작일</h6>
+                                        </div>
+                                        <div class="col-3">
+                                            <h6>[[${dto.startDate}]]</h6>
+                                        </div>
+                                        <div class="col-2 p-0">
+                                            <h6 class="text-secondary">마감일</h6>
+                                        </div>
+                                        <div class="col-3">
+                                            <h6>[[${dto.endDate}]]</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr class="mt-3 mb-3 border-top">
-                        <div class="d-flex flex-row mt-2 ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-                                        <div class="d-flex">
-                                            <div class="col-2 p-0">
-                                                <h6 class="text-secondary">시작일</h6>
-                                            </div>
-                                            <div class="col-3">
-                                                <h6>[[${dto.startDate}]]</h6>
-                                            </div>
-                                            <div class="col-2 p-0">
-                                                <h6 class="text-secondary">마감일</h6>
-                                            </div>
-                                            <div class="col-3">
-                                                <h6>[[${dto.endDate}]]</h6>
-                                            </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12">
+                                    <div class="d-flex">
+                                        <div class="col-2 p-0">
+                                            <h6 class="text-secondary">근무지역</h6>
+                                        </div>
+                                        <div class="col-10">
+                                            <h6 class="post-details-postAddress">[[${dto.postAddress1}]] [[${dto.postAddress2}]]</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-row ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-                                        <div class="d-flex">
-                                            <div class="col-2 p-0">
-                                                <h6 class="text-secondary">근무지역</h6>
-                                            </div>
-                                            <div class="col-10">
-                                                <h6 class="post-details-postAddress">[[${dto.postAddress1}]] [[${dto.postAddress2}]]</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="border-top">
-                        <div class="d-flex flex-row ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-                                        <div class="map_wrap mb-4">
-                                            <div id="map"
-                                                 style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-                                            <!-- 지도타입 컨트롤 div 입니다 -->
-                                            <!--                                                <div class="custom_typecontrol radius_border">-->
-                                            <!--                                                    <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>-->
-                                            <!--                                                    <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>-->
-                                            <!--                                                </div>-->
-                                            <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
-                                            <div class="custom_zoomcontrol radius_border">
+                    </div>
+                    <hr class="border-top">
+                    <div class="d-flex flex-row">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12">
+                                    <div class="map_wrap mb-4">
+                                        <div id="map"
+                                             style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+                                        <!-- 지도타입 컨트롤 div 입니다 -->
+                                        <!--                                                <div class="custom_typecontrol radius_border">-->
+                                        <!--                                                    <span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>-->
+                                        <!--                                                    <span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>-->
+                                        <!--                                                </div>-->
+                                        <!-- 지도 확대, 축소 컨트롤 div 입니다 -->
+                                        <div class="custom_zoomcontrol radius_border">
                                                 <span onclick="zoomIn()"><img
                                                         src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
                                                         alt="확대"></span>
-                                                <span onclick="zoomOut()"><img
-                                                        src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
-                                                        alt="축소"></span>
-                                            </div>
+                                            <span onclick="zoomOut()"><img
+                                                    src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+                                                    alt="축소"></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="d-flex flex-row ps-5">
-                            <div class="d-flex col flex-row">
-                                <div class="d-flex flex-fill">
-                                    <div class="col-12">
-                                        <div class="d-flex flex-fill">
-                                            <div class="card flex-fill" style="background-color:rgba(0,0,0,0.13);">
-                                                <div class="card-body d-flex">
-                                                    <img class="col-2" src="/img/favicon.ico" width="30" height="30">
-                                                    <h6 class="col-9 text-sm">본 채용정보는 굿잡의 동의없이 무단전재, 재배포, 재가공할 수 없으며,
-                                                        구직활동
-                                                        이외의
-                                                        용도로 사용할 수 없습니다.</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
                     </div>
+
+                    <div class="d-flex flex-row">
+                        <div class="d-flex col flex-row">
+                            <div class="d-flex flex-fill">
+                                <div class="col-12">
+                                    <div class="d-flex flex-fill">
+                                        <div class="card flex-fill" style="background-color:rgba(0,0,0,0.13);">
+                                            <div class="card-body d-flex">
+                                                <img class="col-2" src="/img/favicon.ico" width="30" height="30">
+                                                <h6 class="col-9 text-sm">본 채용정보는 굿잡의 동의없이 무단전재, 재배포, 재가공할 수 없으며,
+                                                    구직활동
+                                                    이외의
+                                                    용도로 사용할 수 없습니다.</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--                    </div>-->
                 </div>
-                <div class="col-3 p-0 justify-content-center">
+
+
+                <div class="col-3 mt-5 p-0 justify-content-center">
                     <div class="" style="position: sticky; top: 4rem">
                         <div class="card">
                             <div class="card-body">
@@ -183,8 +193,8 @@
                                 </div>
                                 <div class="d-flex flex-fill">
                                     <div class="col-6">
-                                        <h6>업직종</h6>
-                                        <h6 class="text-secondary postDetailOccName">[[${dto.occName}]]</h6>
+                                        <h6>D-day</h6>
+                                        <h6 class="text-secondary">[[${dto.remainDay}]]</h6>
                                     </div>
                                     <div class="col-6">
                                         <h6>연봉</h6>
@@ -192,35 +202,68 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-fill">
-                                    <div class="col-6">
+                                    <div class="col-12">
+                                        <h6>업직종</h6>
+                                        <h6 class="text-secondary postDetailOccName">[[${dto.occName}]]</h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-fill">
+                                    <div class="col-12">
                                         <h6>근무지</h6>
                                         <h6 class="text-secondary">[[${dto.postAddress1}]]</h6>
                                     </div>
-                                    <div class="col-6">
-                                        <h6>D-day</h6>
-                                        <h6 class="text-secondary">[[${dto.remainDay}]]</h6>
-                                    </div>
                                 </div>
                                 <div class="d-flex flex-fill mt-3">
-                                    <th:block th:if="${isCompanySession != true}">
-                                        <div class="col-6">
-                                            <a role="button" class="btn"
-                                               style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;"><i
-                                                    class="bi bi-bookmark"></i>북마크</a>
-                                        </div>
-                                        <div class="col-6">
-                                            <!--                                        <a role="button" class="btn"-->
-                                            <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
-                                            <input type="hidden" th:value="${dto.postId}" id="postId">
-                                            <button type="button" class="btn btn-primary applyBtn" data-bs-toggle="modal"
-                                                    data-bs-target="#selectResumeModal" style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</button>
-                                        </div>
-                                    </th:block>
-                                    <th:block th:if="${isCompanySession == true}">
-                                        <div class="col-12" style="text-align: center">
-                                            <a role="button" class="btn post-read-side_bar-toModifyBtn"
-                                               style="color: #0d6efd; background-color: #fff; border-color: #0d6efd; margin:auto"
-                                            >수정하기</a>
+                                    <th:block>
+                                        <div class="d-flex flex-fill mt-3">
+                                            <th:block th:if="${#session.getAttribute('sessionId') == null}">
+                                                <div class="col-6">
+                                                    <button role="button" class="btn"
+                                                            th:onclick="|location.href='@{/login}'|"
+                                                            style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;">
+                                                        <i
+                                                                class="bi bi-bookmark"></i>북마크
+                                                    </button>
+                                                </div>
+                                            </th:block>
+                                            <th:block
+                                                    th:if="${existsBookmarkByMember && #session.getAttribute('Type') eq 'member'}">
+                                                <div class="col-6">
+                                                    <button role="button" class="btn" disabled="disabled"
+                                                            style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;">
+                                                        <i class="bi bi-bookmark-check"></i>북마크
+                                                    </button>
+                                                </div>
+                                            </th:block>
+                                            <th:block
+                                                    th:if="${!existsBookmarkByMember && #session.getAttribute('sessionId') ne null && #session.getAttribute('Type') eq 'member'}">
+                                                <div class="col-6">
+                                                    <a role="button" class="btn"
+                                                       th:onclick="|javascript:saveBookMark('${dto.postId}')|"
+                                                       style="color: #0d6efd; background-color: #fff; border-color: #0d6efd;"><i
+                                                            class="bi bi-bookmark"></i>북마크</a>
+                                                </div>
+                                            </th:block>
+                                            <div class="col-6">
+                                                <!--                                        <a role="button" class="btn"-->
+                                                <!--                                           style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">지원하기</a>-->
+                                                <input type="hidden" th:value="${dto.postId}" id="postId">
+                                                <th:block th:if="${#session.getAttribute('Type') == 'member'}">
+                                                    <button type="button" class="btn btn-primary applyBtn"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#selectResumeModal"
+                                                            style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">
+                                                        지원하기
+                                                    </button>
+                                                </th:block>
+                                                <th:block th:if="${#session.getAttribute('sessionId') == null}">
+                                                    <button type="button" class="btn btn-primary"
+                                                            th:onclick="|location.href='/login'|"
+                                                            style="color: #fff;  background-color: #0d6efd;  border-color: #0d6efd;">
+                                                        지원하기
+                                                    </button>
+                                                </th:block>
+                                            </div>
                                         </div>
                                     </th:block>
                                 </div>
@@ -231,9 +274,9 @@
 
             </div>
 
-            <div class="post-wrapper ps-5 mt-5">
-                <div class="ps-5">
-                    <div class="col-12">
+            <div class="post-wrappermt-5">
+                <div >
+                    <div class="col-12 mt-5">
                         <div class="col-3">
                             <h4>추천공고</h4>
                         </div>
@@ -242,7 +285,7 @@
 
 
                     </div>
-                 </div>
+                </div>
             </div>
 
 
@@ -260,18 +303,18 @@
                                 <i id="copy_icon" class="bi bi-clipboard fs-4"
                                    style="border-radius: 2rem"></i></a>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                     </div>
                     <div class="modal-body mt-3">
                         <a th:href="${#request.requestURI}"><p id="setURI"></p></a>
                     </div>
                     <div class="modal-footer">
+                        <h6 style="font-size: 0.8rem;color: #0c63e4" id="copy_success"></h6>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     </div>
                 </div>
             </div>
-
-
         </div>
         <!-- 박채원 22.10.26 추가 - 지원하기 버튼 눌렀을 때 뜨는 이력서 선택 모달 -->
         <div class="modal fade" id="selectResumeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -291,7 +334,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn bg-gradient-primary doneSelectResume" data-bs-dismiss="modal">
+                        <button type="button" class="btn bg-gradient-dark doneSelectResume" data-bs-dismiss="modal">
                             완료
                         </button>
                     </div>
@@ -304,19 +347,38 @@
                 src="//dapi.kakao.com/v2/maps/sdk.js?appkey=aedf851b3363925087804b263c52a803&libraries=services"></script>
         <script type="text/javascript" src="/js/osh/kakaoMap.js"></script>
         <script type="text/javascript" src="/js/applyJS.js"></script>
-        <script>
+
+        <script type="text/javascript" th:inline="javascript">
+
             function getURI() {
                 const url = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 $('#setURI').html(url);
             }
 
             $('#copy_btn').click(function () {
-
                 const copyText = document.getElementById('setURI').textContent;
-                let promise = navigator.clipboard.writeText(copyText);
-                $('#copy_icon').attr('class', 'bi bi-clipboard-check fs-4 m-0')
+                navigator.clipboard.writeText(copyText);
+                $('#copy_icon').attr('class', 'bi bi-clipboard-check fs-4 m-0');
+                $('#copy_success').text('복사완료');
             })
 
+            function saveBookMark(postId) {
+                let memberId = [[${#session.getAttribute('sessionId')}]];
+                $.ajax({
+                    url: "/member/bookmark/save",
+                    type: "post",
+                    data: {postId: postId, memberId: memberId},
+                    success: function (data, status, xhr) {
+                        alert(data);
+                        location.href = '/post/readPost/' + postId;
+                    },
+                    error: function (xhr, status, error) {
+                        alert('등록에 실패했습니다.');
+                    },
+                    complete: function (xhr, status) {
+                    }
+                });
+            };
 
         </script>
         <script type="text/javascript" th:inline="javascript">

@@ -1,9 +1,11 @@
 package com.goodjob.admin.controller;
 
+import com.goodjob.admin.AdminConst;
 import com.goodjob.admin.apexchart.GenderDTO;
 import com.goodjob.admin.apexchart.PostStatistics;
 import com.goodjob.admin.apexchart.VisitorStatistics;
 import com.goodjob.admin.apexchart.VisitorStatisticsRepository;
+import com.goodjob.customerInquiry.service.CustomerInquiryService;
 import com.goodjob.member.repository.MemberRepository;
 import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,8 +41,10 @@ public class AdminRestController {
     private final MemberRepository memberRepository;
     private final VisitorStatisticsRepository vs;
     private final PostRepository postRepository;
+    private final CustomerInquiryService customerInquiryService;
     @Value("${editor.img.save.url}")
     private String saveUrl;
+
     @GetMapping("/genderStatistics")
     public GenderDTO countGender() {
         GenderDTO genderDTO = new GenderDTO();
@@ -82,16 +88,25 @@ public class AdminRestController {
     }
 
     @PostMapping("/deletePost")
-    public void deletePost(@Param("postId")Long postId){
+    public void deletePost(@Param("postId") Long postId) {
         postRepository.deleteById(postId);
+
     }
+
+    @PostMapping("/inquiryPost/delete")
+    public String deleteInquiryPost(@Param("inquiryPostId") Long inquiryPostId) {
+        customerInquiryService.deleteByInquiryPostId(inquiryPostId);
+        return "/admin/customerInquiry/1?sort=inquiryPostId";
+    }
+
     @PostMapping("/logout")
-    public void adminLogout(HttpServletRequest request){
+    public void adminLogout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
     }
+
     @PostMapping(value = "/image", produces = "application/json; charset=utf8")
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
@@ -113,5 +128,16 @@ public class AdminRestController {
         }
         String jsonString = jsonObject.toString();
         return jsonString;
+    }
+
+    @GetMapping("/customerInquiry/update")
+    public String inquiryPostReply(@Param("id") Long id, Model model,
+                                   @Param("inquiryPostAnswer") String inquiryPostAnswer) {
+        customerInquiryService.updateInquiryPostWithAnswer(id, inquiryPostAnswer, AdminConst.ADMIN, LocalDateTime.now(), "0");
+        return inquiryPostAnswer;
+    }
+    @GetMapping("/customerInquiry/count")
+    public Long inquiryPostCountByUnanswered(){
+        return customerInquiryService.countByUnanswered();
     }
 }

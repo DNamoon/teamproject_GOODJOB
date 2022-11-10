@@ -1,19 +1,17 @@
 package com.goodjob.career.dto;
 
 import lombok.*;
-
 import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  * 박채원 22.10.03 작성
  */
 
 @Data
-@ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Builder
 public class CareerDTO {
     private Long careerId;
     private String careerCompanyName;

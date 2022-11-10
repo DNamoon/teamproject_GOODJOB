@@ -1,15 +1,12 @@
 package com.goodjob.status.repository;
 
 import com.goodjob.status.Status;
-import org.apache.catalina.LifecycleState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +33,8 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(String loginId, String pass);
     int countStatusByStatResumeId_ResumeId(Long resumeId);
     int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPostId_PostId(String loginId, Long postId);
+    int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(String loginId, String pass);
+    int countStatusByStatResumeId_ResumeMemId_MemLoginId(String loginId);
     @Transactional
     @Modifying
     @Query("update Status s set s.statShow = true where s.statId =:statId")

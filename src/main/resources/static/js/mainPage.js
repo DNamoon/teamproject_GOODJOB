@@ -55,17 +55,32 @@ let postJS = {
         const _this = this;
         const changeContentDiv = document.querySelector(`.${targetDomClassName}`);
 
+        let title = document.querySelector(".mainPage-sort-title");
+        if(title !== null){
+            switch (sort){
+                case "count":
+                    title.innerHTML = "인기있는 공고 TOP8";
+                    break;
+                case "salary":
+                    title.innerHTML = "연봉이 높은 공고 TOP8"
+                    break;
+                case "new":
+                    title.innerHTML = "최근 등록된 공고 TOP8"
+                    break;
+                case "end":
+                    title.innerHTML = "마감이 임박한 공고 TOP8"
+                    break;
+            }
+        }
         // console.log(document.querySelector(".postDetailOccName").textContent)
         fetchJs.post(fetchJs.url,'getPagingPostList',_this.pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary))
             .then(data => {
-                console.log("data :" + data);
                 // ajax 받아오기 전에 자식노드들 삭제
                 while(changeContentDiv.hasChildNodes()){
                     changeContentDiv.removeChild(changeContentDiv.firstChild);
                 }
                 if(data.totalCount !==0){
                     for(let dto of data.dtoList){
-                        console.log(dto);
                         changeContentDiv.appendChild(this.makePostListHtml(dto));
                     }
                 } else {
@@ -94,8 +109,8 @@ let postJS = {
         div3.classList.add("w-100","p-0","h-50","img-css");
         div3.setAttribute("onclick",`location.href="/post/readPost/${dto.id}"`)
         const img = document.createElement("img");
-        img.setAttribute("src","https://t1.daumcdn.net/cfile/tistory/237DF34C53EA159E08");
-        img.classList.add("w-100","h-100","card-img-post");
+        img.setAttribute("src",`/post/file/${dto. attachmentFileName}`);
+        img.classList.add("w-100","h-100","card-img-post","img-thumbnail");
         div3.appendChild(img);
         const div4 = document.createElement("div");
         div4.classList.add("h-41", "align-self-auto","pt-3","m-0","card-body-css");
@@ -120,7 +135,7 @@ let postJS = {
         p5.innerHTML=`직종 | ${dto.occName}`;
         div4.appendChild(p5);
         const p6 = document.createElement("p");
-        p6.classList.add("card-dDay-post");
+        p6.classList.add("card-dDay-post","font-weight-bold");
         p6.innerHTML=`${dto.remainDay}`;
         div4.appendChild(p6);
 
@@ -186,7 +201,7 @@ let comMyPagePost = {
     updatePost(postId){
         location.href=`/post/updatePost/${postId}`;
     },
-    showApplierList(postId){   //박채원 22.11.01 추가
+    showApplierList(postId,postTitle){   //박채원 22.11.01 추가
         location.href=`/com/myPageApplier/${postId}`;
     }
 
@@ -200,6 +215,7 @@ let searchPage = {
     init(){
         const _this=this;
         _this.infiniteScroll();
+        _this.preventSearchEnter()
     },
     searchPageUri:"searchPage",
 
@@ -207,7 +223,6 @@ let searchPage = {
         const _this = this;
         const controller = new AbortController();
         let page = 2;
-        console.log("셋팅 시작")
 
         document.addEventListener('scroll',onScroll,{signal:controller.signal})
         function onScroll () {
@@ -217,17 +232,21 @@ let searchPage = {
             const keyword = document.querySelector("#search").value;
 
             if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                console.log("무한스크롤 작동")
                 setTimeout(function(){
                     _this.insertPostListCard("infinite",page,8,"new",occ,addr,sal,keyword)
                 }, 500)
                 page += 1;
             }
             if(document.querySelector(".empty_box")!==null){
-                console.log("삭제 발동2")
                 controller.abort();
             }
         }
+    },
+    preventSearchEnter(){
+        $("#search").keydown(function(evt){
+            if(evt.keyCode === 13)
+                return false;
+        })
     },
 
     pageRequestDTOForMainPage(page,size,sort,filterOccupation,filterAddress,filterSalary,keyword){
@@ -279,8 +298,47 @@ let postInsertForm ={
       _this.setInputDateDefaultToday()
     },
     setInputDateDefaultToday(){
-        const startDate = document.getElementById('postStartDate').valueAsDate = new Date();
-        const endDate = document.getElementById('postEndDate').valueAsDate = new Date();
+        // const now = new Date(); // 현재 시간
+        // const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000); // 현재 시간을 utc로 변환한 밀리세컨드값
+        // const koreaTimeDiff = 9 * 60 * 60 * 1000; // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
+        // const koreaNow = new Date(utcNow + koreaTimeDiff); // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
+        // const startDate = document.getElementById('postStartDate').valueAsDate = koreaNow;
+        // console.log(startDate.value)
+        // const endDate = document.getElementById('postEndDate').valueAsDate = koreaNow;
+        maxDate();
+        rangeDate();
+
+        //입력검증
+        //이력서에서 근무기간 선택할 때 두번째 달력의 날짜가 첫번째 날짜보다 적게 입력되는거 방지
+        function rangeDate(){
+            document.querySelector("#postEndDate").addEventListener("click",()=>{
+                let endDate = document.querySelector("#postEndDate");
+                let startDate = document.querySelector("#postStartDate");
+                var minDate = startDate.value;
+                endDate.setAttribute("min", minDate);
+            })
+
+        }
+
+        //날짜 최댓값을 현재날짜로 제한
+        function maxDate(){
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = today.getMonth() + 1;  //1월이 0임
+            var dd = today.getDate();
+
+            if(dd < 10){
+                dd = '0' + dd;
+            }
+            if(mm < 10){
+                mm = '0' + mm;
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+            $("#postStartDate").val(today)
+            $("#postEndDate").val(today)
+            $("#postStartDate").attr("min", today);
+        }
 
     },
     setSaveBtn(){
@@ -311,31 +369,32 @@ let postInsertForm ={
                         console.log(data)
                         console.log(data.errors)
                         let criticalErrorCount = 0;
+                        let titleDom = document.querySelector(".post-error-style-title")
+                        let occupationDom =  document.querySelector(".post-error-style-occupation")
+                        let recruitNumDom = document.querySelector(".post-error-style-recruit_number")
+                        let genderDom = document.querySelector(".post-error-style-gender")
+                        let startDateDom = document.querySelector(".post-error-style-start_date")
+                        let endDateDom = document.querySelector(".post-error-style-end_date")
+                        let attachmentDom = document.querySelector(".post-error-style-attachment")
+                        let zipcodeDom = document.querySelector(".post-error-style-zipcode")
+                        let address1Dom = document.querySelector(".post-error-style-address1")
+                        let address2Dom = document.querySelector(".post-error-style-address2")
+                        let salaryDom = document.querySelector(".post-error-style-salary")
+                        let contentDom = document.querySelector(".post-error-style-content")
+                        titleDom.innerHTML="";
+                        occupationDom.innerHTML="";
+                        recruitNumDom.innerHTML="";
+                        genderDom.innerHTML="";
+                        startDateDom.innerHTML="";
+                        endDateDom.innerHTML="";
+                        attachmentDom.innerHTML="";
+                        zipcodeDom.innerHTML="";
+                        address1Dom.innerHTML="";
+                        address2Dom.innerHTML="";
+                        salaryDom.innerHTML="";
+                        contentDom.innerHTML="";
+
                         for(let error of data.errors){
-                            const titleDom = document.querySelector(".post-error-style-title")
-                            const occupationDom =  document.querySelector(".post-error-style-occupation")
-                            const recruitNumDom = document.querySelector(".post-error-style-recruit_number")
-                            const genderDom = document.querySelector(".post-error-style-gender")
-                            const startDateDom = document.querySelector(".post-error-style-start_date")
-                            const endDateDom = document.querySelector(".post-error-style-end_date")
-                            const attachmentDom = document.querySelector(".post-error-style-attachment")
-                            const zipcodeDom = document.querySelector(".post-error-style-zipcode")
-                            const address1Dom = document.querySelector(".post-error-style-address1")
-                            const address2Dom = document.querySelector(".post-error-style-address2")
-                            const salaryDom = document.querySelector(".post-error-style-salary")
-                            const contentDom = document.querySelector(".post-error-style-content")
-                            // titleDom.innerHTML=""
-                            // occupationDom.innerHTML=""
-                            // recruitNumDom.innerHTML=""
-                            // genderDom.innerHTML=""
-                            // startDateDom.innerHTML=""
-                            // endDateDom.innerHTML=""
-                            // attachmentDom.innerHTML=""
-                            // zipcodeDom.innerHTML=""
-                            // address1Dom.innerHTML=""
-                            // address2Dom.innerHTML=""
-                            // salaryDom.innerHTML=""
-                            // contentDom.innerHTML=""
                             const reason = error.reason;
                             switch (error.field){
                                 case "postTitle":
@@ -371,6 +430,9 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postStartDate":
+                                    if(reason==="Null value"){
+                                        startDateDom.innerHTML=`시작일은 필수 값입니다.`
+                                    }
                                     if(reason==="The start date must be after today."){
                                         startDateDom.innerHTML=`시작일은 오늘 이후여야 합니다.`
                                     }
@@ -379,6 +441,9 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postEndDate":
+                                    if(reason==="Null value"){
+                                        endDateDom.innerHTML=`모집 종료일은 필수 값입니다.`
+                                    }
                                     if(reason==="The end date must be after today."){
                                         endDateDom.innerHTML=`모집 종료일은 오늘 이후여야 합니다.`
                                     }
@@ -387,8 +452,8 @@ let postInsertForm ={
                                     }
                                     break;
                                 case "postImg":
-                                    if(reason==="Empty Img"){
-                                        attachmentDom.innerHTML=`공고 사진은 필수값입니다.`
+                                    if(reason==="Empty Attachments"){
+                                        attachmentDom.innerHTML=`사진은 최소 한 장을 업로드해야합니다.`
                                     }
                                     break;
                                 case "postcode":
@@ -446,10 +511,10 @@ let postInsertForm ={
             .catch(error =>console.log(`error : ${error}`)); // fetch는 요청 자체가 실패한 경우를 제외하고는  catch로 error가 넘어가지 않는다.
 
     },
-    backToRedirectedFrom(redirectedFrom){
-        console.log(redirectedFrom);
-        location.href=`/post/${redirectedFrom}`;
-    },
+    // backToRedirectedFrom(redirectedFrom){
+    //     console.log(redirectedFrom);
+    //     location.href=`/post/${redirectedFrom}`;
+    // },
     redirectToRegisterPage(redirectedFrom){
         location.href=`/${fetchJs.uri}savePost?redirectedFrom=${redirectedFrom}`
     }
@@ -468,6 +533,7 @@ let postDetailViewWithMap = {
         console.log(dto.occName);
         postJS.insertPostListCard('changePostDiv',1,4,'count',dto.occName);
         _this.setRedirectToUpdatePage(_this.postDetailViewWithMap,dto.postId);
+        _this.setCarouselActive()
     },
     postDetailViewWithMap:"postDetailViewWithMap",
     redirectToUpdatePage(redirectedFrom, postId){
@@ -476,9 +542,16 @@ let postDetailViewWithMap = {
     setRedirectToUpdatePage(redirectedFrom, postId){
         const _this = this;
         const btn = document.querySelector(".post-read-side_bar-toModifyBtn");
-        btn.addEventListener("click",function (){
-            _this.redirectToUpdatePage(redirectedFrom,postId);
-        })
+        if(btn !==null){
+            btn.addEventListener("click",function (){
+                _this.redirectToUpdatePage(redirectedFrom,postId);
+            })
+        }
+    },
+    setCarouselActive(){
+        const dom = document.querySelector(".carousel-item");
+        console.log(dom);
+        dom.classList.add("active");
     }
 
 
@@ -538,3 +611,5 @@ const fetchJs = {
         return response.ok ? response : new Error(message);
     }
 }
+
+

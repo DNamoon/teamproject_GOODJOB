@@ -70,15 +70,16 @@
                     <button class="btn bg-gradient-dark " th:onclick="|location.href='@{/login}'|">로그인</button>
                 </div>
             </th:block>
-            <form class="navbar-brand" style="height: 2rem;" name="frmSub" method="get">
+            <form class="navbar-brand" style="height: 2rem;" name="frmSub" method="get" >
                 <th:block th:if="${session.sessionId}">
                     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" >
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <th:block th:if="${session.Type eq 'member'}">
                                     <li><a class="dropdown-item" th:href="@{/member/myPageResume}">이력서 관리</a>
+                                    <li><a class="dropdown-item" th:href="@{/member/bookmark}">북마크 관리</a>
                                     <li><a class="dropdown-item" th:href="@{/member/myPage}">회원정보수정</a></li>
                                     <div style="height: auto; width: 100%; border-top:1px solid #67748e;">
                                         <li><a class="dropdown-item" th:onclick="|location.href='@{/member/logout}'|">로그아웃</a>
@@ -117,6 +118,7 @@
                 <p class="text-muted">&copy; 2022</p>
 
             </div>
+
             <div class="col mb-3">
 
             </div>
@@ -128,22 +130,22 @@
             <div class="col mb-3">
                 <h5>일반회원</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/}" class="nav-link p-0 text-muted">Home</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry/qna}" class="nav-link p-0 text-muted">1:1문의</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry/faq}" class="nav-link p-0 text-muted">FAQs</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry/policy}" class="nav-link p-0 text-muted">Policy</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry}" class="nav-link p-0 text-muted">About</a></li>
                 </ul>
             </div>
 
             <div class="col mb-3">
                 <h5>기업</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/}" class="nav-link p-0 text-muted">Home</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry/qna}" class="nav-link p-0 text-muted">1:1문의</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry/faq}" class="nav-link p-0 text-muted">FAQs</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry/policy}" class="nav-link p-0 text-muted">Policy</a></li>
+                    <li class="nav-item mb-2"><a th:href="@{/customerInquiry}" class="nav-link p-0 text-muted">About</a></li>
                 </ul>
             </div>
         </footer>
@@ -157,6 +159,8 @@
     <!--made-->
     <script src="/js/choices.js"></script>
     <script src="/js/company.js"></script>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     </body>
 </th:block>
 </html>

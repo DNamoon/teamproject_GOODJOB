@@ -12,7 +12,6 @@
 package com.goodjob.company;
 
 import com.goodjob.customerInquiry.CustomerInquiryPost;
-import com.goodjob.post.Post;
 import lombok.*;
 
 import javax.persistence.*;
@@ -61,9 +60,10 @@ public class Company {
     //22.10.05 ho - 회사 주소 넣기 위해 컬럼 추가
     @Column
     private String comAddress;
+
     // 오성훈 22.10.30 cascade 연관관계 추가 및 cascade 확인완료
-    @OneToMany(mappedBy = "postComId", cascade = CascadeType.ALL)
-    private List<Post> memResume = new ArrayList<>();
+//    @OneToMany(mappedBy = "postComId", cascade = CascadeType.ALL)
+//    private List<Post> memResume = new ArrayList<>();
 
     @OneToMany(mappedBy = "inquiryPostComId", cascade = CascadeType.ALL)
     private List<CustomerInquiryPost> customerInquiryPosts = new ArrayList<>();

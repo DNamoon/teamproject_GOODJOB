@@ -7,6 +7,7 @@ import com.goodjob.company.Company;
 import com.goodjob.company.dto.CompanyDTO;
 import com.goodjob.company.service.CompanyService;
 import com.goodjob.member.service.MemberService;
+import com.goodjob.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -65,12 +66,14 @@ public class CompanyMyPageController {
     @GetMapping("/myPageApplier/{postId}")
     public String myPageApplierList(@PathVariable("postId") Long postId, Model model){
         model.addAttribute("postId", postId);
+        model.addAttribute("postTitle", companyService.getPostTitle(postId));
         return "/company/companyMyPageResumeApplyList";
     }
 
     @GetMapping("/myPageInterviewee/{postId}")
     public String myPageIntervieweeList(@PathVariable("postId") Long postId, Model model){
         model.addAttribute("postId", postId);
+        model.addAttribute("postTitle", companyService.getPostTitle(postId));
         return "/company/companyMyPageIntervieweeList";
     }
 

@@ -2,8 +2,6 @@ package com.goodjob.status.dto;
 
 import lombok.Data;
 
-import java.sql.Date;
-
 /**
  * 박채원 22.10.26 작성
  */

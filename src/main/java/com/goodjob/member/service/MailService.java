@@ -3,7 +3,6 @@ package com.goodjob.member.service;
 import com.goodjob.status.dto.SendMailDTO;
 import com.goodjob.status.dto.SendMailToIntervieweeDTO;
 
-import java.util.Optional;
 
 /**
  * 김도현 22.10.19 작성

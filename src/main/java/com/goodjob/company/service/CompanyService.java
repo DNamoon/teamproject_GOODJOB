@@ -13,6 +13,7 @@ import com.goodjob.company.Comdiv;
 import com.goodjob.company.Company;
 import com.goodjob.company.repository.CompanyRepository;
 import com.goodjob.company.dto.CompanyDTO;
+import com.goodjob.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +33,7 @@ public class CompanyService {
     //22.10.09 - 비밀번호 암호화를 위해 추가
     private final PasswordEncoder passwordEncoder;
 
+    private final PostRepository postRepository;
 
     //비밀번호 변경
     public void changePw(CompanyDTO companyDTO,String comLoginId){
@@ -140,6 +142,7 @@ public class CompanyService {
 
     //22.10.25 - ho 기업회원 탈퇴
     public void delete(Long comId) {
+        postRepository.setComIdNull(comId);
         companyRepository.deleteById(comId);
     }
 
@@ -166,6 +169,11 @@ public class CompanyService {
             return company.get().getComLoginId();
         }
 
+    }
+
+    //박채원 22.11.08 추가
+    public String getPostTitle(Long postId){
+        return postRepository.findPostByPostId(postId).getPostTitle();
     }
 
 }

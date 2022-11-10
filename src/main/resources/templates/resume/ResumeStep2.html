@@ -16,16 +16,17 @@
                         <form role="form" id="contact-form" method="get" autocomplete="off">
                             <input type="hidden" th:value="${resumeId}" name="resumeId">
                             <div class="card-body">
-<!--                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>-->
+                                <span style="float: right; font-size: 14px;">자격증이 없는 경우, '없음'을 검색해 주세요.</span>
                                 <h4 class="text-left">| 자격증</h4>
                                 &nbsp;
                                 <div class="row" style="float: inline-start;">
                                     <div class="col-md-6" style="width: 400px;">
                                         <label>자격증명</label>
-                                        <div class="input-group mb-4">
+                                        <div class="input-group mb-1">
                                             <input class="form-control" type="text" name="certificateName"
                                                    id="certificateName0" readonly>
                                         </div>
+                                        <label id="certiNameValiDiv"></label>
                                     </div>
                                     <div class="col-md-2" style="margin-left: 0px;">
                                         <label>&nbsp;</label>
@@ -61,24 +62,24 @@
                                     <h4 class="text-left">| 경력사항</h4>
                                     &nbsp;
                                     <div class="row" style="float: inline-start;">
-                                        <div class="col-md-6" style="width: 400px;">
+                                        <div class="col-md-6">
                                             <label>회사명</label>
                                             <div class="input-group mb-4">
                                                 <input class="form-control" type="text" name="careerCompanyName">
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="width: 200px;">
+                                        <div class="col-md-2" style="width: 200px;">
                                             <label>근무기간</label>
                                             <div class="input-group mb-4">
                                                 <input class="form-control careerJoinedDate" id="careerJoinedDate"
                                                        type="date" name="careerJoinedDate">
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="width: 5px;">
+                                        <div class="col-md-2" style="width: 5px;">
                                             <label>&nbsp;</label>
                                             ~
                                         </div>
-                                        <div class="col-md-6" style="width: 200px;">
+                                        <div class="col-md-2" style="width: 200px;">
                                             <label>&nbsp;</label>
                                             <div class="input-group mb-4">
                                                 <input class="form-control careerRetireDate" type="date"
@@ -86,7 +87,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group mb-4" style="width: 1000px">
+                                    <div class="form-group mb-4">
                                         <label>주요업무</label>
                                         <textarea class="form-control" placeholder="근무했던 부서 및 담당 업무를 간단하게 작성해 주세요."
                                                   id="message" rows="3" name="careerTask"></textarea>
@@ -100,13 +101,12 @@
                                     <div style="height: 50px;"></div>
                                     <div class="row">
                                         <div class="col-md-6 mx-auto">
-                                            <button type="button" class="btn bg-gradient-dark w-100"
-                                                    onclick="getListToPrev()">이전
+                                            <button type="button" class="btn bg-gradient-dark w-100" id="goBackStep1">이전
                                             </button>
                                         </div>
                                         <div class="col-md-6 mx-auto">
-                                            <button type="button" class="btn bg-gradient-dark w-100"
-                                                    onclick="getListToNext()">저장 후 STEP 3로
+                                            <button type="button" class="btn bg-gradient-dark w-100" id="submitStep2">저장 후
+                                                STEP 3로
                                             </button>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn bg-gradient-dark close" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn bg-gradient-primary doneFindCerti" data-bs-dismiss="modal">완료
+                        <button type="button" class="btn bg-gradient-dark doneFindCerti" data-bs-dismiss="modal">완료
                         </button>
                     </div>
                 </div>

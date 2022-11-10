@@ -1,6 +1,5 @@
 package com.goodjob.selfIntroduction.service;
 
-import com.goodjob.certification.dto.CertificationDTO;
 import com.goodjob.resume.Resume;
 import com.goodjob.selfIntroduction.SelfIntroduction;
 import com.goodjob.selfIntroduction.dto.SelfIntroductionDTO;
