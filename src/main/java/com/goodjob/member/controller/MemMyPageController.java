@@ -89,7 +89,6 @@ public class MemMyPageController {
         }
         return "0";
     }
-
     @GetMapping("/deleteConfirm")
     public String deleteConfirm(HttpSession session) {
         String sessionId = (String) session.getAttribute("sessionId");
