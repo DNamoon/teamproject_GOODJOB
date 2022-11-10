@@ -81,14 +81,26 @@ public class MemMyPageController {
         if (mem.isPresent()) {
             Member member = mem.get();
             if (passwordEncoder.matches(deletePw,member.getMemPw())) {
-                System.out.println("eee2"+deletePw);
-                memberService.deleteById(memId);
-                session.invalidate();
+                return "1";
+            }
+            if (!passwordEncoder.matches(deletePw,member.getMemPw())) {
                 return "0";
             }
         }
-        return "1";
+        return "0";
     }
+
+    @GetMapping("/deleteConfirm")
+    public String deleteConfirm(HttpSession session) {
+        String sessionId = (String) session.getAttribute("sessionId");
+        Optional<Member> mem = memberService.loginIdCheck(sessionId);
+        Member member = mem.get();
+        memberService.deleteById(member.getMemId());
+        session.invalidate();
+
+        return "redirect:/";
+    }
+
     // 비밀번호 변경 전 기존 비밀번호 확인
     @PostMapping("/changePw")
     @ResponseBody
