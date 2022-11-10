@@ -141,6 +141,9 @@ public class postServiceImpl implements PostService {
                 booleanBuilder.and(qPost.postComId.comLoginId.eq(pageRequestDTO.getAuth()));
             }
         }
+        // 공고를 등록한 기업 계정이 삭제 됬을 경우에는 검색 대상이 되지 않는 조건을 추가한다.
+        // 로그인 아이디가 null 이면
+        booleanBuilder.and(qPost.postComId.comLoginId.isNotNull());
 
         // 모집상태(모집중, 모집시작 전, 모집 종료, 전체) 조건을 추가하는 코드(기본은 모집중)
         booleanBuilder.and(getOutOfDateState(pageRequestDTO,qPost));
@@ -228,9 +231,9 @@ public class postServiceImpl implements PostService {
                     // 검색 조건으로 type = "titleCompanyName" 인 경우, 공고 제목 또는 회사명으로
                     // keyword 를 가지는 글만 가져오는 조건 추가
                     keywordList.forEach(e -> {
-                        bd.or(qPost.postTitle.contains(e).or(qPost.postComId.comName.contains(e)));
+                        bd.or(qPost.postTitle.contains(e).or(qPost.postComName.contains(e)));
                     });
-                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComId.comName.contains(keyword));
+                    bd.or(qPost.postTitle.contains(keyword)).or(qPost.postComName.contains(keyword));
                     break;
             }
             return bd;
