@@ -255,7 +255,7 @@ public class postServiceImpl implements PostService {
     // getSearch() 메소드에 사용된다.
     private BooleanBuilder getOutOfDateState(PageRequestDTO pageRequestDTO,QPost qPost){
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        LocalDate curDateEnd = LocalDate.now().minusDays(1);
+        LocalDate curDateEnd = LocalDate.now();
         LocalDate curDateStart = LocalDate.now().plusDays(1);
         // "모집 시작일이 현재 보다 앞이다."라는 조건 즉, 모집 중.
         BooleanExpression startDateBeforeNow = qPost.postStartDate.before(java.sql.Date.valueOf(curDateStart));
