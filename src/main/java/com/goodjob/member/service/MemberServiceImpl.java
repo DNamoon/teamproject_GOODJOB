@@ -53,7 +53,6 @@ public class MemberServiceImpl implements MemberService {
     public int checkId2(String memLoginId) {
         return memberRepository.checkId2(memLoginId);
     }
-
     @Override
     public Long countByMemLoginId(String memLoginId) {
         Long result = memberRepository.countByMemLoginId(memLoginId);
