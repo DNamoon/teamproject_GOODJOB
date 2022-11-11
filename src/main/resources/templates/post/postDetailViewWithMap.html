@@ -191,11 +191,17 @@
                                 <div class="d-flex flex-fill">
                                     <div class="col-6">
                                         <h6>D-day</h6>
-                                        <th:block th:if="${dto.remainDay.contains('종료됨')}">
+                                        <th:block th:if="${dto.remainDay.contains('-')}">
                                             <h6 class="text-secondary">모집 종료</h6>
                                         </th:block>
-                                        <th:block th:if="${!dto.remainDay.contains('종료됨')}">
-                                            <h6 class="text-secondary">[[${dto.remainDay}]]</h6>
+                                        <th:block th:if="${!dto.remainDay.contains('-')}">
+                                            <th:block th:if="${dto.remainDay.equals('0')}">
+                                                <h6 class="text-secondary">오늘 마감</h6>
+                                            </th:block>
+                                            <th:block th:if="${!dto.remainDay.equals('0')}">
+                                                <h6 class="text-secondary">D - [[${dto.remainDay}]]</h6>
+                                            </th:block>
+
                                         </th:block>
                                     </div>
                                     <div class="col-6">
