@@ -1,5 +1,5 @@
 //22.10.19 ho - 마이페이지 js파일 + 다음 주소찾기 fuction
-
+//수정
 //Daum 주소 찾기API function
 function sample6_execDaumPostcode() {
     new daum.Postcode({
