@@ -143,7 +143,7 @@ public class postServiceImpl implements PostService {
         }
         // 공고를 등록한 기업 계정이 삭제 됬을 경우에는 검색 대상이 되지 않는 조건을 추가한다.
         // 로그인 아이디가 null 이면
-        booleanBuilder.and(qPost.postComId.comLoginId.isNotNull());
+        booleanBuilder.and(qPost.postComId.isNotNull());
 
         // 모집상태(모집중, 모집시작 전, 모집 종료, 전체) 조건을 추가하는 코드(기본은 모집중)
         booleanBuilder.and(getOutOfDateState(pageRequestDTO,qPost));
@@ -166,7 +166,7 @@ public class postServiceImpl implements PostService {
             booleanBuilder.and(qPost.postSalary.salaryRange.eq(pageRequestDTO.getFilterSalary()));
         }
 
-        System.out.println("불리언 빌더(final)============최종 쿼리 조건 : "+booleanBuilder);
+//        System.out.println("불리언 빌더 최종 쿼리 조건 : "+booleanBuilder);
         return booleanBuilder;
     }
 
@@ -255,7 +255,7 @@ public class postServiceImpl implements PostService {
     // getSearch() 메소드에 사용된다.
     private BooleanBuilder getOutOfDateState(PageRequestDTO pageRequestDTO,QPost qPost){
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        LocalDate curDateEnd = LocalDate.now().minusDays(1);
+        LocalDate curDateEnd = LocalDate.now();
         LocalDate curDateStart = LocalDate.now().plusDays(1);
         // "모집 시작일이 현재 보다 앞이다."라는 조건 즉, 모집 중.
         BooleanExpression startDateBeforeNow = qPost.postStartDate.before(java.sql.Date.valueOf(curDateStart));
@@ -288,5 +288,10 @@ public class postServiceImpl implements PostService {
     @Override
     public Optional<Post> findOne(Long postId) {
         return postRepository.findById(postId);
+    }
+
+    @Override
+    public boolean existsPostByPostIdAndPostComId(Long postId, Company company) {
+        return postRepository.existsPostByPostIdAndPostComId(postId, company);
     }
 }

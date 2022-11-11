@@ -14,8 +14,7 @@
                     <div class="col-lg-7 mx-auto" style="width : 1000px">
                         <h3 class="text-center mx-auto">STEP1</h3>
                         &nbsp;
-                        <form role="form" id="contact-form" th:method="get" autocomplete="off"
-                              th:action="@{/resume/resumeStep2/{resumeId}(resumeId=${resumeId})}">
+                        <form role="form" id="step1Form" th:method="get" autocomplete="off">
                             <input type="hidden" id="resumeId" th:value="${resumeId}">
                             <div class="card-body">
                         <span style="float: right; font-size: 14px;"><span

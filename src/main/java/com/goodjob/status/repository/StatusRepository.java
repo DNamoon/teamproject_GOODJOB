@@ -31,18 +31,23 @@ public interface StatusRepository extends JpaRepository<Status,Long> {
     @Query("select s from Status s where s.statId =:statId")
     Status findOneApplier(Long statId);
     boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsFalseAndStatPass(String loginId, String pass);
+    boolean existsStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatShowIsTrueAndStatPass(String loginId, String pass);
     int countStatusByStatResumeId_ResumeId(Long resumeId);
     int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPostId_PostId(String loginId, Long postId);
     int countStatusByStatResumeId_ResumeMemId_MemLoginIdAndStatPassContains(String loginId, String pass);
     int countStatusByStatResumeId_ResumeMemId_MemLoginId(String loginId);
     @Transactional
     @Modifying
-    @Query("update Status s set s.statShow = true where s.statId =:statId")
-    void changeStatShow(Long statId);
-    @Query("select s.statId from Status s where s.statResumeId.resumeMemId.memLoginId =:loginId and s.statPass='서류합격' and s.statShow=false")
-    List<Long> getStatId(String loginId);
+    @Query("update Status s set s.statShow =:statShow where s.statId =:statId")
+    void changeStatShow(boolean statShow, Long statId);
+    @Query("select s.statId from Status s where s.statResumeId.resumeMemId.memLoginId =:loginId and s.statPass =:statPass and s.statShow =:statShow")
+    List<Long> getStatId(String loginId, String statPass, boolean statShow);
     @Transactional
     @Modifying
     @Query("update Status s set s.statInterviewPlace =:interviewPlace, s.statInterviewDate =:interviewDate where s.statId =:statId")
     void updateInterviewInfo(Long statId, String interviewPlace, LocalDateTime interviewDate);
+    @Transactional
+    @Modifying
+    @Query("update Status s set s.statPostId = null where s.statId =:statId")
+    void setPostIdNull(Long statId);
 }

@@ -34,6 +34,8 @@ public class MemberDTO {
     @Pattern(regexp="\\d{2,3}-\\d{3,4}-\\d{4}", message = "전화번호 형식이 맞지 않습니다. 다시 확인해주세요.")
     private String memPhone;
     @NotBlank(message = "이메일은 필수항목입니다.")
+    @Pattern(regexp="[0-9a-zA-Z]([-_.]?[0-9a-zA-Z]){2,25}"
+            , message = "이메일 형식이 맞지 않습니다. 다시 확인해주세요.")
     private String memEmail1;
     private String memEmail2;
     @NotBlank(message = "이름은 필수항목입니다.")

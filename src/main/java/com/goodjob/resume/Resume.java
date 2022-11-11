@@ -62,6 +62,9 @@ public class Resume {
     @Column
     private boolean deleted;
 
+    @Column(nullable = false)
+    private boolean submitted;
+
     @ManyToOne
     @JoinColumn(name = "resumeMemId")
     private Member resumeMemId;

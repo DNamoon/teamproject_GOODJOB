@@ -69,7 +69,7 @@ function deleteCompany2() {
                 })
                     .then((result) => {
                         if (result.isConfirmed) {
-                            location.href = "/com/deleteConfirm";
+                            location.replace("/com/deleteConfirm");
                         } else if (!result.isConfirmed) {
                             Swal.fire("회원탈퇴", "회원탈퇴를 취소합니다.", "error");
                         }

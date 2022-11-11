@@ -683,7 +683,6 @@ function emailDuplication(){
 
 function step1Valid(){
     if(confirmValidSchool() && confirmValidGradDate() && confirmValidMajor()){
-        alert(confirmValidSchool() + "//" + confirmValidGradDate() + "//" + confirmValidMajor());
         $("#step1Form").attr("action", "/resume/resumeStep2/" + $("#resumeId").val());
         $("#step1Form").submit();
     }

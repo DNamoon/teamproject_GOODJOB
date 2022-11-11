@@ -45,19 +45,22 @@ public class MemMyPageController {
         model.addAttribute("memberInfo",memberService.memInfo(id));
         return "member/myPageInfo";
     }
-
+   // 비밀번호 확인 메소드
+   private String checkPassword(String pw, String id) {
+       Optional<Member> mem = memberService.loginIdCheck(id);
+       if (mem.isPresent()) {
+           Member member = mem.get();
+           if (passwordEncoder.matches(pw,member.getMemPw())) {
+               return "0";
+           }
+       }
+       return "1";
+   }
    //개인정보 수정 시 비밀번호 확인
     @ResponseBody
     @PostMapping("/checkPW")
-    public String checkPW(@Param("pw")String pw, @Param("id")String loginId) {
-        Optional<Member> mem = memberService.loginIdCheck(loginId);
-        if (mem.isPresent()) {
-            Member member = mem.get();
-            if (passwordEncoder.matches(pw,member.getMemPw())) {
-                return "0";
-            }
-        }
-        return "1";
+    public String updatePwCheck(@Param("pw")String pw, @Param("id")String loginId) {
+       return checkPassword(pw,loginId);
     }
     @ResponseBody
     @RequestMapping(value="/myPageInfo",method = RequestMethod.GET)
@@ -73,34 +76,38 @@ public class MemMyPageController {
         return "redirect:/member/myPage";
     }
 
-    //회원탈퇴 (비밀번호 확인 후 회원 정보 삭제,이력서 정보 같이 삭제)
+    //회원탈퇴 (비밀번호 확인 후 회원 정보, 이력서 정보 같이 삭제)
     @ResponseBody
     @RequestMapping("/delete")
-    public String deleteMember(@Param("deletePw")String deletePw, @Param("id")String loginId, @Param("memId")Long memId,HttpSession session) {
+    public String deleteMember(@Param("pw")String deletePw, @Param("id")String loginId) {
         Optional<Member> mem = memberService.loginIdCheck(loginId);
         if (mem.isPresent()) {
             Member member = mem.get();
             if (passwordEncoder.matches(deletePw,member.getMemPw())) {
-                System.out.println("eee2"+deletePw);
-                memberService.deleteById(memId);
-                session.invalidate();
+                return "1";
+            }
+            if (!passwordEncoder.matches(deletePw,member.getMemPw())) {
                 return "0";
             }
         }
-        return "1";
+        return "0";
     }
+    @GetMapping("/deleteConfirm")
+    public String deleteConfirm(HttpSession session) {
+        String sessionId = (String) session.getAttribute("sessionId");
+        Optional<Member> mem = memberService.loginIdCheck(sessionId);
+        Member member = mem.get();
+        memberService.deleteById(member.getMemId());
+        session.invalidate();
+
+        return "redirect:/";
+    }
+
     // 비밀번호 변경 전 기존 비밀번호 확인
     @PostMapping("/changePw")
     @ResponseBody
-    public String changePwCheck(@RequestParam("checkPw")String checkPw, @RequestParam("id")String loginId){
-        Optional<Member> mem = memberService.loginIdCheck(loginId);
-        if (mem.isPresent()) {
-            Member member = mem.get();
-            if (passwordEncoder.matches(checkPw,member.getMemPw())){
-                return "0";
-            }
-        }
-        return "1";
+    public String changePwCheck(@RequestParam("pw")String checkPw, @RequestParam("id")String loginId){
+        return checkPassword(checkPw,loginId);
     }
 
     // 비밀번호 변경
@@ -135,9 +142,9 @@ public class MemMyPageController {
 
     //박채원 - restful api 사용해서 리스트 뿌리는 거 해보려고 작성한 메소드
     @ResponseBody
-    @GetMapping(value = "/getResumeList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ResumeListDTO>> getResumeList(HttpSession session){
-        return new ResponseEntity<>(resumeService.getResumeList((String) session.getAttribute("sessionId")), HttpStatus.OK);
+    @GetMapping(value = "/getResumeList/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ResumeListDTO>> getResumeList(HttpSession session, @PathVariable("type") String type){
+            return new ResponseEntity<>(resumeService.getResumeList((String) session.getAttribute("sessionId"), type), HttpStatus.OK);
     }
 
     @GetMapping("/myPageApply")

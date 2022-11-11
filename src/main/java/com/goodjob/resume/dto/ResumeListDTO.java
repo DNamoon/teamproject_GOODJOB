@@ -12,4 +12,5 @@ public class ResumeListDTO {
     private Long resumeId;
     private String resumeTitle;
     private Date resumeUpdateDate;
+    private boolean submitted;
 }
