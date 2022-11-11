@@ -52,7 +52,7 @@ public interface EntityDtoMapper {
         Date now = new Date();
         long difDay = (post.getPostEndDate().getTime()-now.getTime())/1000;
         String remainDay = String.valueOf(difDay/ (24*60*60));
-        remainDay = "D - "+remainDay;
+//        remainDay = remainDay; // D- 9, -1
         return PostDetailsDTO.builder()
                 .postId(post.getPostId())
                 .title(HtmlUtils.htmlUnescape(post.getPostTitle()))
@@ -155,7 +155,7 @@ public interface EntityDtoMapper {
                 .postcode(post.getAddress().getZipCode())
                 .etc(HtmlUtils.htmlEscape(post.getAddress().getEtc()))
                 .postSalaryId(post.getPostSalary().getSalaryId())
-                .postContent(HtmlUtils.htmlEscape(post.getPostContent()))
+                .postContent(post.getPostContent())
                 .build();
     }
     default Post dtoToEntityForInsert(PostInsertDTO postInsertDTO, Occupation occ, Company com, PostSalary postSalary, List<UploadFile> uploadFileList,Address address){

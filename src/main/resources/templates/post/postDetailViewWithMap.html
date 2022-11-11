@@ -12,14 +12,13 @@
 
                     <!--                    <div class="ps-5 mt-2">-->
 
-                    <div class="d-flex flex-row carousel slide justify-content-center" id="carouselExampleIndicators"
+                    <div class="d-flex flex-row carousel slide justify-content-center" style="padding-left: 30px;padding-right: 30px" id="carouselExampleIndicators"
                          data-bs-ride="carousel">
 
                         <div class="carousel-inner w-100 d-flex">
 
                             <th:block th:each="fileName:${dto.attachment}">
                                 <div class="carousel-item">
-                                    <!--                                        style="width: 50rem; height: 30rem"-->
                                     <div class="p-0 m-0 embed-responsive embed-responsive-4by3 w-100 h-100 ">
                                         <img th:src="@{/post/file/{fileName}(fileName=${fileName})}"
                                              class="d-block embed-responsive-item img-fluid h-100 w-100" alt="...">
@@ -191,11 +190,17 @@
                                 <div class="d-flex flex-fill">
                                     <div class="col-6">
                                         <h6>D-day</h6>
-                                        <th:block th:if="${dto.remainDay.contains('종료됨')}">
+                                        <th:block th:if="${dto.remainDay.contains('-')}">
                                             <h6 class="text-secondary">모집 종료</h6>
                                         </th:block>
-                                        <th:block th:if="${!dto.remainDay.contains('종료됨')}">
-                                            <h6 class="text-secondary">[[${dto.remainDay}]]</h6>
+                                        <th:block th:if="${!dto.remainDay.contains('-')}">
+                                            <th:block th:if="${dto.remainDay.equals('0')}">
+                                                <h6 class="text-secondary">오늘 마감</h6>
+                                            </th:block>
+                                            <th:block th:if="${!dto.remainDay.equals('0')}">
+                                                <h6 class="text-secondary">D - [[${dto.remainDay}]]</h6>
+                                            </th:block>
+
                                         </th:block>
                                     </div>
                                     <div class="col-6">
