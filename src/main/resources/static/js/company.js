@@ -422,11 +422,15 @@ function btnRexExp() {
 
     //이메일 정규식 확인
     let result3 = "false";
-    if(!regExp3.test(emailCheck) || (emailCheck == null || emailCheck =="")) {
-        //Swal.fire("이메일 양식을 확인해주세요.","","error");
+
+    if(email2 == null || email2 == "") {
         $('#email2').focus();
     } else {
-        result3 = "true";
+        if(!regExp3.test(emailCheck)) {
+            $('#email').focus();
+        } else {
+            result3 = "true";
+        }
     }
 
     //이메일 중복 확인
@@ -570,11 +574,13 @@ function btn_change_info(){
 
     //이메일 정규식 확인용 변수
     let email = $('#email').val();
-    let regExp3 = /^[A-Z0-9a-z._%+-]{2,64}$/;
+    let email2 = $('#email2').val();
+    let emailCheck = email + "@" + email2;
+    let regExp3 = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
     //이메일 정규식 확인
     let result3 = "false";
-    if(!regExp3.test(email)){
+    if(!regExp3.test(emailCheck)){
         $('#email').focus();
     } else {
         result3 = "true";
@@ -583,8 +589,6 @@ function btn_change_info(){
     //이메일 중복 확인
     let result7 = "false";
 
-    let email2 = $('#email2').val();
-    let emailCheck = email + "@" + email2;
     $.ajax({
         type: "post",
         url: "/com/emailCheck2",
