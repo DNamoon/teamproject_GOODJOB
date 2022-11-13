@@ -76,7 +76,6 @@ public interface EntityDtoMapper {
         String remainDay = String.valueOf(difDay/ (24*60*60));
         post.getPostImg().forEach(e-> System.out.println("파일이름"+e.getStoreFileName()));
         String attachmentFileName = post.getPostImg().isEmpty()? "no_image.png": post.getPostImg().get(0).getStoreFileName();
-//        String fileName = post.getPostImg().get(0).getStoreFileName();
         remainDay = remainDay.equals("0")? "오늘 종료": "D - "+remainDay;
         return PostCardDTO.builder()
                 .id(post.getPostId())
@@ -90,14 +89,11 @@ public interface EntityDtoMapper {
                 .build();
     }
     default PostComMyPageDTO entityToDtoInComMyPage(Post post) {
-        System.out.println("new Date() : "+new Date());
         ZonedDateTime z = ZonedDateTime.now(ZoneId.systemDefault());
         String str = z.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        System.out.println("날짜에요" + str);
         Date now = null;
         try {
             now = new SimpleDateFormat("yyyy-MM-dd").parse(str);
-            System.out.println(now);
 
         } catch (Exception e) {
             e.getStackTrace();
@@ -105,7 +101,6 @@ public interface EntityDtoMapper {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(post.getPostEndDate());
-//        cal.add(Calendar.DATE, 1);
 
         long difDay = (cal.getTime().getTime() - now.getTime()) / 1000;
         long difDay2 = (now.getTime() - post.getPostStartDate().getTime()) / 1000;
@@ -149,7 +144,6 @@ public interface EntityDtoMapper {
                 .postGender(HtmlUtils.htmlEscape(post.getPostGender()))
                 .postStartDate(post.getPostStartDate())
                 .postEndDate(post.getPostEndDate())
-//                .postImg(post.getPostImg())
                 .postAddress(HtmlUtils.htmlEscape(post.getAddress().getAddress1()))
                 .postDetailAddress(HtmlUtils.htmlEscape(post.getAddress().getAddress2()))
                 .postcode(post.getAddress().getZipCode())

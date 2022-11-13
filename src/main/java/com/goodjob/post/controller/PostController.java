@@ -37,13 +37,7 @@ public class PostController {
 
     @GetMapping("/savePost")
     public String postSaveForm(String redirectedFrom, HttpServletRequest httpServletRequest, Model model) {
-
-        String sessionId = getSessionInfo(httpServletRequest, "sessionId");
-        if (sessionId != null) {
-            model.addAttribute("comInfo", postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
-        } else {
-            throw new SessionNotFoundException();
-        }
+        model.addAttribute("comInfo", postService.getComInfo(getSessionInfo(httpServletRequest, "sessionId"))); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
         model.addAttribute("redirectedFrom", redirectedFrom);
@@ -53,12 +47,7 @@ public class PostController {
     @PostMapping(value = "/savePost", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<?> postSave(@Valid @ModelAttribute PostInsertDTO postInsertDTO, HttpServletRequest httpServletRequest) throws IOException {
-        String sessionId = getSessionInfo(httpServletRequest,"sessionId");
-        if(sessionId != null){
-            postInsertDTO.setComLoginId(sessionId);
-        } else {
-            throw new SessionNotFoundException();
-        }
+        postInsertDTO.setComLoginId(getSessionInfo(httpServletRequest,"sessionId"));
         Long savedPostId = postService.savePost(postInsertDTO);
         if (savedPostId != null) {
             SuccessfulPostVo sp = new SuccessfulPostVo();
@@ -72,11 +61,7 @@ public class PostController {
     @GetMapping(value = {"/updatePost/{postId}"})
     public String postUpdate(@PathVariable(name = "postId") Long postId, String redirectedFrom, HttpServletRequest httpServletRequest, Model model) {
         String sessionId = getSessionInfo(httpServletRequest, "sessionId");
-        if (sessionId != null) {
-            model.addAttribute("comInfo", postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
-        } else {
-            throw new SessionNotFoundException();
-        }
+        model.addAttribute("comInfo", postService.getComInfo(sessionId)); // CompanyInfoDTO(회사 주소+이름+사업번호+구분)
         PostInsertDTO postInsertDTO = postService.getPostById(postId);
         model.addAttribute("comInfo", postService.getComInfo(sessionId));
         model.addAttribute("dto", postInsertDTO);
@@ -89,13 +74,8 @@ public class PostController {
     // 기업 마이 페이지 공고관리 처리 메소드
     @GetMapping(value = {"/comMyPagePost"})
     public String comMyPagePost(PageRequestDTO pageRequestDTO, HttpServletRequest httpServletRequest, Model model) {
-        String sessionType = getSessionInfo(httpServletRequest, "Type");
-        if (sessionType != null) {
-            pageRequestDTO.setAuthType(getSessionInfo(httpServletRequest, "Type"));
-            pageRequestDTO.setAuth(getSessionInfo(httpServletRequest, "sessionId"));
-        } else {
-            throw new SessionNotFoundException();
-        }
+        pageRequestDTO.setAuthType(getSessionInfo(httpServletRequest, "Type"));
+        pageRequestDTO.setAuth(getSessionInfo(httpServletRequest, "sessionId"));
         PageResultDTO<Post, PostComMyPageDTO> result = postService.getPagingPostListInComMyPage(pageRequestDTO);
         model.addAttribute("occList", postService.getListOccupation()); // 직업 리스트
         model.addAttribute("salaryList", postService.getListSalary()); // 연봉대 리스트
@@ -141,21 +121,13 @@ public class PostController {
     // "sessionId" -> 유저나 기업회원 로그인 ID 값
     private String getSessionInfo(HttpServletRequest httpServletRequest, String typeOrSessionId) {
         HttpSession httpSession = httpServletRequest.getSession(false);
-        if (httpSession != null && httpSession.getAttribute("Type").toString().equals("company")) {
-            // 세션 타입 체크
-            if (typeOrSessionId.equals("Type")) {
-                System.out.println((String) httpSession.getAttribute("Type"));
-                System.out.println(httpSession.getAttribute("Type").toString());
-                return httpSession.getAttribute("Type").toString();
-            } else if (typeOrSessionId.equals("sessionId")) {
-                System.out.println((String) httpSession.getAttribute("sessionId"));
-                System.out.println(httpSession.getAttribute("sessionId").toString());
-                return httpSession.getAttribute("sessionId").toString();
-            } else {
-                throw new SessionCompanyAccountNotFound();
-            }
+        // 세션 타입 체크
+        if (typeOrSessionId.equals("Type")) {
+            return httpSession.getAttribute("Type").toString();
+        } else if (typeOrSessionId.equals("sessionId")) {
+            return httpSession.getAttribute("sessionId").toString();
         } else {
-            return null;
+            throw new SessionCompanyAccountNotFound();
         }
     }
 

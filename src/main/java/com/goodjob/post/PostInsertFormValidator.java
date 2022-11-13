@@ -14,6 +14,7 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
     @Override
     public boolean isValid(PostInsertDTO value, ConstraintValidatorContext context) {
         int invalidCount = 0;
+        System.out.println("눌 체크"+value.getId());
         if(value.getPostStartDate()!=null) {
             if (value.getPostStartDate().getTime() > value.getPostEndDate().getTime()) {
                 addConstraintViolation
@@ -54,7 +55,7 @@ public class PostInsertFormValidator implements ConstraintValidator<PostInsertFo
             invalidCount += 1;
         }
 
-        if(value.getPostImg().get(0).isEmpty() && value.getPostImg().get(0).getSize()==0){
+        if(value.getId() == null && value.getPostImg().get(0).isEmpty() && value.getPostImg().get(0).getSize()==0){
             addConstraintViolation(context, "Empty Attachments","postImg");
             invalidCount += 1;
         }
