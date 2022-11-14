@@ -52,7 +52,6 @@ public class HomeController {
             havePass = "false";
         }
         model.addAttribute("havePass", havePass);
-        System.out.println("1111111 "+check);
         //김도현 22.11.07추가 (회원가입 확인)
         if (check != null && check.equals("1")) {
 
@@ -70,9 +69,7 @@ public class HomeController {
     @PostMapping(value = {"/getPagingPostList"})
     @ResponseBody
     public ResponseEntity<PageResultDTO<Post, PostCardDTO>> getPagingPostList(@RequestBody PageRequestDTO pageRequestDTO) {
-        log.info("================================="+pageRequestDTO);
         PageResultDTO<Post, PostCardDTO> result = postService.getPagingPostList(pageRequestDTO);
-        log.info("=================="+result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

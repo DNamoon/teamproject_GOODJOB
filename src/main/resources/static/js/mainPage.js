@@ -351,7 +351,6 @@ let postInsertForm ={
     },
     postSave(dataWithFile){
         fetchJs.postWithFile(fetchJs.url,fetchJs.uri+"savePost",dataWithFile)
-
             .then(response => {
                 console.log(dataWithFile)
                 if(response.ok){
